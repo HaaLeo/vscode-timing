@@ -1,0 +1,41 @@
+{
+    "name": "timing",
+    "displayName": "Timing",
+    "description": "Visualize timestamps in different formats.",
+    "version": "0.0.1",
+    "publisher": "HaaLeo",
+    "engines": {
+        "vscode": "^1.23.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:timing.convertTime"
+    ],
+    "main": "./out/timing",
+    "contributes": {
+        "commands": [
+            {
+                "command": "timing.convertTime",
+                "title": "Convert time to UTC"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "moment": "^2.22.1"
+    }
+}

@@ -1,14 +1,31 @@
 {
     "name": "timing",
     "displayName": "Timing",
-    "description": "Visualize timestamps in different formats.",
+    "description": "Convert timestamps in different formats.",
     "version": "0.0.1",
     "publisher": "HaaLeo",
     "engines": {
         "vscode": "^1.23.0"
     },
+    "preview": true,
+    "qna": "https://github.com/HaaLeo/vscode-timing/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/HaaLeo/vscode-timing"
+    },
+    "bugs": {
+        "url": "https://github.com/HaaLeo/vscode-timing/issues"
+    },
+    "author": {
+        "name": "Leo Hanisch"
+    },
+    "readme": "",
     "categories": [
-        "Other"
+        "Other",
+        "Formatters"
+    ],
+    "keywords": [
+        "timing", "converter", "time", "epoch", "ISO", "8601"
     ],
     "activationEvents": [
         "onCommand:timing.convertTime"
@@ -34,8 +51,5 @@
         "vscode": "^1.1.6",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
-    },
-    "dependencies": {
-        "moment": "^2.22.1"
     }
 }

@@ -5,14 +5,13 @@ import TimeConverter = require('./timeconverter')
 
 class DialogHandler {
 
-    private _timeCalculator: TimeConverter;
+    private _timeConverter: TimeConverter;
 
-    constructor(timeCalculator: TimeConverter) {
-        this._timeCalculator = timeCalculator;
+    constructor(timeConverter: TimeConverter) {
+        this._timeConverter = timeConverter;
     }
 
     public showInputDialog(): void {
-        const tokenSource = new vscode.CancellationTokenSource()
         vscode.window.showInputBox(
             {
                 ignoreFocusOut: true,
@@ -21,19 +20,17 @@ class DialogHandler {
                 validateInput: userInput => {
                     return isNaN(Number(userInput)) ? 'Please insert epoch time.' : null
                 }
-            },
-            tokenSource.token
+            }
         ).then(userInput => {
             if (userInput !== undefined) {
                 const input = this.getInputDefinition(userInput)
-                let result = this._timeCalculator.convertToISO(input.ms)
+                let result = this._timeConverter.convertToISO(input.ms)
                 this.showResultDialog(userInput, input ,result)
             }
         })
     }
 
     private showResultDialog(userInput: string, input:any, result: string): void {
-        const tokenSource = new vscode.CancellationTokenSource()
         vscode.window.showInputBox(
             {
                 ignoreFocusOut: true,
@@ -41,12 +38,11 @@ class DialogHandler {
                 value: 'Result: ' + result,
                 valueSelection: ['Result: '.length, 'Result: '.length + result.length],
                 prompt: 'Input: ' + userInput + '(' + input.unit + ')'
-            },
-            tokenSource.token
+            }
         ).then(userInput => {
             if (userInput !== undefined) {
                 const input = this.getInputDefinition(userInput)
-                let result = this._timeCalculator.convertToISO(input.ms)
+                let result = this._timeConverter.convertToISO(input.ms)
                 this.showResultDialog(userInput, input, result)
             }
         })
@@ -70,4 +66,5 @@ class DialogHandler {
         return { "ms": ms, "unit": unit};
     }
 }
+
 export = DialogHandler;

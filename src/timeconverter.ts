@@ -1,7 +1,5 @@
 'use strict';
 
-import * as moment from 'moment';
-
 class TimeConverter {
 
     public convertToISO(ms: number): string {

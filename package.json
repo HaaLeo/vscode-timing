@@ -19,7 +19,12 @@
     "author": {
         "name": "Leo Hanisch"
     },
-    "readme": "",
+    "galleryBanner": {
+        "color": "#252627",
+        "theme": "dark"
+    },
+    "icon": "doc/Icon_128x128.png",
+    "readme": "README.md",
     "categories": [
         "Other",
         "Formatters"

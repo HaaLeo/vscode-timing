@@ -30,7 +30,7 @@
         "Formatters"
     ],
     "keywords": [
-        "timing", "converter", "time", "epoch", "ISO", "8601"
+        "converter", "time", "epoch", "ISO", "8601"
     ],
     "activationEvents": [
         "onCommand:timing.convertTime"

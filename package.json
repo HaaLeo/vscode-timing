@@ -1,8 +1,8 @@
 {
     "name": "timing",
     "displayName": "Timing",
-    "description": "Convert timestamps in different formats.",
-    "version": "0.0.1",
+    "description": "Converts and visualizes timestamps in different formats.",
+    "version": "0.1.0",
     "publisher": "HaaLeo",
     "engines": {
         "vscode": "^1.23.0"
@@ -17,7 +17,8 @@
         "url": "https://github.com/HaaLeo/vscode-timing/issues"
     },
     "author": {
-        "name": "Leo Hanisch"
+        "name": "Leo Hanisch",
+        "url": "https://github.com/HaaLeo"
     },
     "galleryBanner": {
         "color": "#252627",
@@ -30,17 +31,21 @@
         "Formatters"
     ],
     "keywords": [
-        "converter", "time", "epoch", "ISO", "8601"
+        "converter",
+        "time",
+        "epoch",
+        "ISO",
+        "8601"
     ],
     "activationEvents": [
-        "onCommand:timing.convertTime"
+        "*"
     ],
     "main": "./out/timing",
     "contributes": {
         "commands": [
             {
                 "command": "timing.convertTime",
-                "title": "Convert time to UTC"
+                "title": "Timing: Convert time to UTC"
             }
         ]
     },
@@ -55,6 +60,7 @@
         "typescript": "^2.6.1",
         "vscode": "^1.1.6",
         "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
+        "@types/mocha": "^2.2.42",
+        "tslint": "^5.9.1"
     }
 }

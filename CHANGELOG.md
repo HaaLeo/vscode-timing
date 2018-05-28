@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## 2018-05-28 - v0.1.1
+### Fixed
+* Layout of table in readme.md
+### Updated
+* gif animations
+
 ## 2018-05-28 - v0.1.0
 ### Added
 * a feature that shows the converted time, when the mouse hovers over a number

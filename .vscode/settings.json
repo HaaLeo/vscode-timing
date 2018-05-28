@@ -6,6 +6,5 @@
         "out": true
     },
     "files.trimFinalNewlines": true,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "files.insertFinalNewline": true
 }

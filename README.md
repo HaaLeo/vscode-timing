@@ -1,13 +1,15 @@
 # Timing
 
 ## Description
-The *Timing* extension formats a given time into a human readable time string.
-This extension was inspired by [zodiac403's epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
+The *Timing* extension converts and visualizes a given epoch time into a human readable time string.
+This extension was inspired by  
+[zodiac403's  epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
 ## Features
 
 Currently this extension is capable to convert a given epoch time string into an ISO 8601 string.
 The epoch time string can be in **seconds**, **milliseconds** or **nanoseconds**. Which unit is assumed for a given epoch time is determined by its digit count:
+
 | Minimum Length| Maximum Length| Used Unit |
 |:--:|:--:|:--:|
 | 1 |11| **s**
@@ -32,5 +34,5 @@ When you hover over a number the extension shows you the **converted time** of t
 ![Hover Sample](doc/Hover_Sample.gif)
 
 ## Contribution
-If you found a bug or are missing a feature do not hesitate to [file an issue](https://github.com/HaaLeo/vscode-timing/issues/new).
+If you found a bug or are missing a feature do not hesitate to [file an issue](https://github.com/HaaLeo/vscode-timing/issues/new).  
 Pull Requests are welcome!

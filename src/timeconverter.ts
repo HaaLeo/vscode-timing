@@ -5,7 +5,7 @@ class TimeConverter {
     public convertToISO(ms: number): string {
         let result;
 
-        let date = new Date(ms);
+        const date = new Date(ms);
 
         if (!date.getTime()) {
             throw Error('Cannot parse to Date.');

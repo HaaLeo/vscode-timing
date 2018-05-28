@@ -1,20 +1,18 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import DialogHandler = require('./dialoghandler')
-import TimeConverter = require('./timeconverter')
-import TimeHoverProvider = require('./timehoverprovider')
+import { convertTime } from './commands/convertTime';
+import TimeConverter = require('./timeConverter');
+import TimeHoverProvider = require('./timeHoverProvider');
 
 export function activate(context: vscode.ExtensionContext) {
 
-    const timeconverter = new TimeConverter()
-    const dialoghandler = new DialogHandler(timeconverter)
-    let disposable = vscode.commands.registerCommand('timing.convertTime', () => {
-        dialoghandler.showInputDialog()
+    const timeConverter = new TimeConverter();
+    const disposable = vscode.commands.registerCommand('timing.convertTime', () => {
+        convertTime(timeConverter);
     });
 
-    let hoverProvider = new TimeHoverProvider(timeconverter)
-    let hoverDisposable = vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeconverter));
+    const hoverDisposable = vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeConverter));
     context.subscriptions.push(disposable, hoverDisposable);
 }
 

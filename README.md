@@ -1,6 +1,6 @@
 # Timing
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/HaaLeo/vscode-timing/master/LICENSE) [![Version](https://vsmarketplacebadge.apphb.com/version/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.vscode-timing) [![Installs](https://vsmarketplacebadge.apphb.com/installs/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Ratings](https://vsmarketplacebadge.apphb.com/rating/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/HaaLeo/vscode-timing/master/LICENSE) [![Version](https://vsmarketplacebadge.apphb.com/version/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Installs](https://vsmarketplacebadge.apphb.com/installs/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Ratings](https://vsmarketplacebadge.apphb.com/rating/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing)
 
 ## Description
 The *Timing* extension converts and visualizes a given epoch time into a human readable time string.

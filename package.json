@@ -2,11 +2,12 @@
     "name": "timing",
     "displayName": "Timing",
     "description": "Converts and visualizes timestamps in different formats.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "HaaLeo",
     "engines": {
         "vscode": "^1.23.0"
     },
+    "license": "MIT",
     "preview": true,
     "qna": "https://github.com/HaaLeo/vscode-timing/issues",
     "repository": {

@@ -1,24 +1,19 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## 2018-05-29 - v0.1.2
+* **Fixed** a bug that prevented the extension of running on linux systems
+* **Added** Travis CI build stage
+
 ## 2018-05-28 - v0.1.1
-
-### Fixed
-* Layout of table in readme.md
-
-### Updated
-* gif animations
+* **Fixed** layout of table in the readme
+* **Update** gif animations
 
 ## 2018-05-28 - v0.1.0
-
-### Added
-* a feature that shows the converted time, when the mouse hovers over a number
-*  a feature that the time conversion is directly applied if the user selected a number earlier
-
-### Updated
-* the extension's icon
+* **Added** a feature that shows the converted time, when the mouse hovers over a number
+* **Added** a feature that the time conversion is directly applied if the user selected a number earlier
+* **Updated** the extension's icon
 
 ## 2018-05-27 - v0.0.1
-
-### Added
-* a feature that enables time epoch to UTC conversion using the command palette
+* **Initial Release**
+* **Added** a feature that enables time epoch to UTC conversion using the command palette

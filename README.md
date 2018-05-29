@@ -4,7 +4,7 @@
 
 ## Description
 The *Timing* extension converts and visualizes a given epoch time into a human readable time string.
-This extension was inspired by  
+This extension was inspired by 
 [zodiac403's  epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
 ## Features

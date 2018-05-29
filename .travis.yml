@@ -19,6 +19,7 @@ before_install:
 
 install: 
   - npm install
+  - npm run vscode:prepublish
 
 jobs:
   include:
@@ -27,7 +28,6 @@ jobs:
         - npm run compile
         - npm run tslint
     - stage: integration test
-      skip_cleanup: true
       script: 
         - npm run integrationtest
 

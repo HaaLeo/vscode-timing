@@ -6,3 +6,5 @@ src/**
 doc/*.gif
 .gitignore
 tsconfig.json
+.travis.yml
+coverconfig.json

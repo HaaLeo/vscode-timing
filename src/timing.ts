@@ -2,8 +2,8 @@
 
 import * as vscode from 'vscode';
 import { convertTime } from './commands/convertTime';
-import TimeConverter = require('./timeConverter');
-import TimeHoverProvider = require('./timeHoverProvider');
+import TimeConverter = require('./timeconverter');
+import TimeHoverProvider = require('./timehoverprovider');
 
 export function activate(context: vscode.ExtensionContext) {
 

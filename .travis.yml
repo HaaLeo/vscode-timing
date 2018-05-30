@@ -6,6 +6,8 @@ env:
 
 stages:
   - build
+  - unit test
+  - integration test
 
 node_js:
   - "node"
@@ -17,7 +19,7 @@ before_install:
       sleep 3;
     fi
 
-install: 
+install:
   - npm install
   - npm run vscode:prepublish
 
@@ -27,8 +29,11 @@ jobs:
       script:
         - npm run compile
         - npm run tslint
+    - stage: unit test
+      script:
+        - npm run unittest
     - stage: integration test
-      script: 
+      script:
         - npm run integrationtest
 
 after_success:

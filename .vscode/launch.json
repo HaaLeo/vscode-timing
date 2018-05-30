@@ -33,6 +33,22 @@
                 "${workspaceFolder}/out/**/*.js"
             ],
             "preLaunchTask": "npm: watch"
+        },
+        {
+            "name": "Unit Tests",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "out/test/unittest/**/*.test.js",
+                "--colors"
+            ],
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js"
+            ],
+            "preLaunchTask": "npm: watch"
         }
     ]
 }

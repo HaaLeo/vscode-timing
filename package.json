@@ -60,7 +60,6 @@
                 "command": "timing.isoRfcToEpoch",
                 "title": "Timing: Convert ISO 8601 or RFC 2822 date to epoch time"
             }
-
         ]
     },
     "scripts": {
@@ -81,5 +80,8 @@
         "tslint": "^5.10.0",
         "typescript": "^2.8.3",
         "vscode": "^1.1.18"
+    },
+    "dependencies": {
+        "moment": "^2.22.2"
     }
 }

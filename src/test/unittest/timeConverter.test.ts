@@ -1,7 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import TimeConverter = require('../../timeconverter');
+import TimeConverter = require('../../timeConverter');
 
 describe('TimeConverter', () => {
     describe('convertToISO', () => {
@@ -12,7 +12,7 @@ describe('TimeConverter', () => {
         });
 
         it('Should convert to ISO correctly.', () => {
-            const result = testObject.convertToISO(123456789000);
+            const result = testObject.epochToIsoUtc(123456789000);
             assert.equal(result, '1973-11-29T21:33:09.000Z');
         });
     });

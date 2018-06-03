@@ -1,10 +1,10 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import InputDefinition = require('../inputdefinition');
-import TimeConverter = require('../timeconverter');
+import InputDefinition = require('../inputDefinition');
+import TimeConverter = require('../timeConverter');
 
-export function convertTime(timeConverter: TimeConverter): void {
+export function epochToIsoLocal(timeConverter: TimeConverter): void {
     if (!timeConverter) {
         throw Error('The time converter must not be null or undefined.');
     }
@@ -16,10 +16,10 @@ export function convertTime(timeConverter: TimeConverter): void {
             showInputDialog(timeConverter);
         } else {
             const selectedExpression = activeEditor.document.getText(activeSelection);
-            if (!isNaN(Number(selectedExpression))) {
+            if (timeConverter.isValidEpoch(selectedExpression)) {
                 const input = new InputDefinition(selectedExpression);
-                const utc = timeConverter.convertToISO(input.inputAsMs);
-                showResultDialog(timeConverter, selectedExpression, input, utc);
+                const local = timeConverter.epochToIsoLocal(input.inputAsMs);
+                showResultDialog(timeConverter, selectedExpression, input, local);
             } else {
                 showInputDialog(timeConverter);
             }
@@ -35,13 +35,13 @@ function showInputDialog(timeConverter: TimeConverter): void {
             placeHolder: '123456789',
             prompt: 'Insert epoch time.',
             validateInput: (userInput) => {
-                return isNaN(Number(userInput)) ? 'Please insert epoch time.' : null;
+                return timeConverter.isValidEpoch(userInput) ? null : 'Please insert epoch time.';
             }
         }
     ).then((userInput) => {
         if (userInput !== undefined) {
-            const input: InputDefinition = new InputDefinition(userInput);
-            const result = timeConverter.convertToISO(input.inputAsMs);
+            const input = new InputDefinition(userInput);
+            const result = timeConverter.epochToIsoLocal(input.inputAsMs);
             showResultDialog(timeConverter, userInput, input, result);
         }
     });
@@ -57,12 +57,12 @@ function showResultDialog(
             placeHolder: '123456789',
             value: 'Result: ' + result,
             valueSelection: ['Result: '.length, 'Result: '.length + result.length],
-            prompt: 'Input: ' + originalInput + '(' + input.originalUnit + ')'
+            prompt: 'Input: ' + originalInput + ' (' + input.originalUnit + ')'
         }
     ).then((userInput) => {
-        if (userInput !== undefined) {
+        if (timeConverter.isValidEpoch(userInput)) {
             const nextInput: InputDefinition = new InputDefinition(userInput);
-            const nextResult = timeConverter.convertToISO(nextInput.inputAsMs);
+            const nextResult = timeConverter.epochToIsoLocal(nextInput.inputAsMs);
             showResultDialog(timeConverter, userInput, nextInput, nextResult);
         }
     });

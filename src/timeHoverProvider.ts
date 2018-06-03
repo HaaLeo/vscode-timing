@@ -1,8 +1,8 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import InputDefinition = require('./inputdefinition');
-import TimeConverter = require('./timeconverter');
+import InputDefinition = require('./inputDefinition');
+import TimeConverter = require('./timeConverter');
 
 class TimeHoverProvider implements vscode.HoverProvider {
 
@@ -19,9 +19,9 @@ class TimeHoverProvider implements vscode.HoverProvider {
         let result: vscode.Hover;
         if (timeRange !== undefined) {
             const hoveredTime = new InputDefinition(document.getText(timeRange));
-            const utc = this._timeConverter.convertToISO(hoveredTime.inputAsMs);
+            const utc = this._timeConverter.epochToIsoUtc(hoveredTime.inputAsMs);
             result = new vscode.Hover(
-                '*Epoch Unit*: `' + hoveredTime.originalUnit + '`\n*UTC*: `' + utc + '`',
+                '*Epoch Unit*: `' + hoveredTime.originalUnit + '`  \n*UTC*: `' + utc + '`',
                 timeRange);
         }
 

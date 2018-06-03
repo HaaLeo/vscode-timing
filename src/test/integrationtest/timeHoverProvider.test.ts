@@ -3,8 +3,8 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import TimeConverter = require('../../timeconverter');
-import TimeHoverProvider = require('../../timehoverprovider');
+import TimeConverter = require('../../timeConverter');
+import TimeHoverProvider = require('../../timeHoverProvider');
 
 suite('TimeHoverProvider', () => {
 
@@ -31,6 +31,6 @@ suite('TimeHoverProvider', () => {
         const i = 3;
         assert.equal(
             (results[0].contents[0] as { language: string; value: string }).value,
-            '*Epoch Unit*: `s`\n*UTC*: `1973-11-29T21:33:09.000Z`');
+            '*Epoch Unit*: `s`  \n*UTC*: `1973-11-29T21:33:09.000Z`');
     });
 });

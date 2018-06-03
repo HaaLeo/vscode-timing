@@ -3,10 +3,10 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import command = require('../../commands/convertTime');
-import TimeConverter = require('../../timeconverter');
+import command = require('../../commands/epochToIsoUtc');
+import TimeConverter = require('../../timeConverter');
 
-suite('convertTime', () => {
+suite('epochToIsoUtc', () => {
 
     let testEditor: vscode.TextEditor;
     setup( async () => {
@@ -23,14 +23,14 @@ suite('convertTime', () => {
     });
 
     test('should calculate result directly.', async () => {
-        testEditor.selection = new vscode.Selection(new vscode.Position(3, 31), new vscode.Position(3, 40));
+        testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
         const spy = sinon.spy(vscode.window, 'showInputBox');
-        await vscode.commands.executeCommand('timing.convertTime');
+        await vscode.commands.executeCommand('timing.epochToIsoUtc');
         assert.equal(true, spy.calledOnceWith({
             placeHolder: '123456789',
             value: 'Result: ' + '1973-11-29T21:33:09.000Z',
             valueSelection: ['Result: '.length, 'Result: '.length + '1973-11-29T21:33:09.000Z'.length],
-            prompt: 'Input: 123456789(s)'
+            prompt: 'Input: 123456789 (s)'
         }));
     });
 });

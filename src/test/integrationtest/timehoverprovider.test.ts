@@ -31,6 +31,6 @@ suite('TimeHoverProvider', () => {
         const i = 3;
         assert.equal(
             (results[0].contents[0] as { language: string; value: string }).value,
-            '*Epoch Unit*: `s`\n*UTC*: `1973-11-29T21:33:09.000Z`');
+            '*Epoch Unit*: `s`  \n*UTC*: `1973-11-29T21:33:09.000Z`');
     });
 });

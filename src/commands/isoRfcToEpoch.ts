@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import InputDefinition = require('../inputdefinition');
 import TimeConverter = require('../timeconverter');
 
-export function epochToIsoUtc(timeConverter: TimeConverter): void {
+export function isoRfcToEpoch(timeConverter: TimeConverter): void {
     if (!timeConverter) {
         throw Error('The time converter must not be null or undefined.');
     }
@@ -16,10 +16,9 @@ export function epochToIsoUtc(timeConverter: TimeConverter): void {
             showInputDialog(timeConverter);
         } else {
             const selectedExpression = activeEditor.document.getText(activeSelection);
-            if (timeConverter.isValidEpoch(selectedExpression)) {
-                const input = new InputDefinition(selectedExpression);
-                const utc = timeConverter.epochToIsoUtc(input.inputAsMs);
-                showResultDialog(timeConverter, selectedExpression, input, utc);
+            if (timeConverter.isValidIsoRfc(selectedExpression)) {
+                const epoch = timeConverter.isoRfcToEpoch(selectedExpression);
+                showResultDialog(timeConverter, selectedExpression, epoch);
             } else {
                 showInputDialog(timeConverter);
             }
@@ -32,17 +31,16 @@ export function epochToIsoUtc(timeConverter: TimeConverter): void {
 function showInputDialog(timeConverter: TimeConverter): void {
     vscode.window.showInputBox(
         {
-            placeHolder: '123456789',
+            placeHolder: '1970-01-01T00:00:00.000Z',
             prompt: 'Insert epoch time.',
             validateInput: (userInput) => {
-                return timeConverter.isValidEpoch(userInput) ? null : 'Please insert epoch time.';
+                return timeConverter.isValidIsoRfc(userInput) ? null : 'Please insert ISO 86 time.';
             }
         }
     ).then((userInput) => {
         if (userInput !== undefined) {
-            const input = new InputDefinition(userInput);
-            const result = timeConverter.epochToIsoUtc(input.inputAsMs);
-            showResultDialog(timeConverter, userInput, input, result);
+            const result = timeConverter.isoRfcToEpoch(userInput);
+            showResultDialog(timeConverter, userInput, result);
         }
     });
 }
@@ -50,20 +48,18 @@ function showInputDialog(timeConverter: TimeConverter): void {
 function showResultDialog(
     timeConverter: TimeConverter,
     originalInput: string,
-    input: InputDefinition,
-    result: string): void {
+    result: number): void {
     vscode.window.showInputBox(
         {
-            placeHolder: '123456789',
+            placeHolder: '1970-01-01T00:00:00.000Z',
             value: 'Result: ' + result,
-            valueSelection: ['Result: '.length, 'Result: '.length + result.length],
-            prompt: 'Input: ' + originalInput + ' (' + input.originalUnit + ')'
+            valueSelection: ['Result: '.length, 'Result: '.length + result.toString().length],
+            prompt: 'Input: ' + originalInput
         }
     ).then((userInput) => {
-        if (timeConverter.isValidEpoch(userInput)) {
-            const nextInput: InputDefinition = new InputDefinition(userInput);
-            const nextResult = timeConverter.epochToIsoUtc(nextInput.inputAsMs);
-            showResultDialog(timeConverter, userInput, nextInput, nextResult);
+        if (timeConverter.isValidIsoRfc(userInput)) {
+            const nextResult = timeConverter.isoRfcToEpoch(userInput);
+            showResultDialog(timeConverter, userInput, nextResult);
         }
     });
 }

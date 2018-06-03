@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import InputDefinition = require('../inputdefinition');
 import TimeConverter = require('../timeconverter');
 
-export function epochToIsoUtc(timeConverter: TimeConverter): void {
+export function epochToIsoLocal(timeConverter: TimeConverter): void {
     if (!timeConverter) {
         throw Error('The time converter must not be null or undefined.');
     }
@@ -18,8 +18,8 @@ export function epochToIsoUtc(timeConverter: TimeConverter): void {
             const selectedExpression = activeEditor.document.getText(activeSelection);
             if (timeConverter.isValidEpoch(selectedExpression)) {
                 const input = new InputDefinition(selectedExpression);
-                const utc = timeConverter.epochToIsoUtc(input.inputAsMs);
-                showResultDialog(timeConverter, selectedExpression, input, utc);
+                const local = timeConverter.epochToIsoLocal(input.inputAsMs);
+                showResultDialog(timeConverter, selectedExpression, input, local);
             } else {
                 showInputDialog(timeConverter);
             }
@@ -41,7 +41,7 @@ function showInputDialog(timeConverter: TimeConverter): void {
     ).then((userInput) => {
         if (userInput !== undefined) {
             const input = new InputDefinition(userInput);
-            const result = timeConverter.epochToIsoUtc(input.inputAsMs);
+            const result = timeConverter.epochToIsoLocal(input.inputAsMs);
             showResultDialog(timeConverter, userInput, input, result);
         }
     });
@@ -62,7 +62,7 @@ function showResultDialog(
     ).then((userInput) => {
         if (timeConverter.isValidEpoch(userInput)) {
             const nextInput: InputDefinition = new InputDefinition(userInput);
-            const nextResult = timeConverter.epochToIsoUtc(nextInput.inputAsMs);
+            const nextResult = timeConverter.epochToIsoLocal(nextInput.inputAsMs);
             showResultDialog(timeConverter, userInput, nextInput, nextResult);
         }
     });

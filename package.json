@@ -35,8 +35,8 @@
         "converter",
         "time",
         "epoch",
-        "ISO",
-        "8601"
+        "ISO 8601",
+        "unix"
     ],
     "activationEvents": [
         "*"
@@ -46,8 +46,21 @@
         "commands": [
             {
                 "command": "timing.convertTime",
-                "title": "Timing: Convert time to UTC"
+                "title": "Timing: Convert time to UTC \n(DEPRECATED. Use timing.epochToIsoUtc instead)"
+            },
+            {
+                "command": "timing.epochToIsoUtc",
+                "title": "Timing: Convert epoch time to ISO format (UTC)"
+            },
+            {
+                "command": "timing.epochToIsoLocal",
+                "title": "Timing: Convert epoch time to ISO format (Local)"
+            },
+            {
+                "command": "timing.isoRfcToEpoch",
+                "title": "Timing: Convert ISO 8601 or RFC 2822 date to epoch time"
             }
+
         ]
     },
     "scripts": {

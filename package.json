@@ -2,7 +2,7 @@
     "name": "timing",
     "displayName": "Timing",
     "description": "Converts and visualizes timestamps in different formats.",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "publisher": "HaaLeo",
     "engines": {
         "vscode": "^1.23.0"

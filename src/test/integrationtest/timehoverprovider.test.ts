@@ -3,8 +3,8 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import TimeConverter = require('../../timeconverter');
-import TimeHoverProvider = require('../../timehoverprovider');
+import TimeConverter = require('../../timeConverter');
+import TimeHoverProvider = require('../../timeHoverProvider');
 
 suite('TimeHoverProvider', () => {
 

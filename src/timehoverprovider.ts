@@ -1,8 +1,8 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import InputDefinition = require('./inputdefinition');
-import TimeConverter = require('./timeconverter');
+import InputDefinition = require('./inputDefinition');
+import TimeConverter = require('./timeConverter');
 
 class TimeHoverProvider implements vscode.HoverProvider {
 

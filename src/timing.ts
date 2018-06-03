@@ -2,12 +2,12 @@
 
 import * as vscode from 'vscode';
 
-import { epochToIsoUtc } from './commands/convertTime';
 import { epochToIsoLocal } from './commands/epochToIsoLocal';
+import { epochToIsoUtc } from './commands/epochToIsoUtc';
 import { isoRfcToEpoch } from './commands/isoRfcToEpoch';
 
-import TimeConverter = require('./timeconverter');
-import TimeHoverProvider = require('./timehoverprovider');
+import TimeConverter = require('./timeConverter');
+import TimeHoverProvider = require('./timeHoverProvider');
 
 export function activate(context: vscode.ExtensionContext) {
 

@@ -1,7 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import TimeConverter = require('../../timeconverter');
+import TimeConverter = require('../../timeConverter');
 
 describe('TimeConverter', () => {
     describe('convertToISO', () => {

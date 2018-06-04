@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## 2018-06-04 - v0.2.1
+* **Fixed** a bug that prevented the `timing.epochToIso*` commands from accepting nanoseconds for conversion
+
 ## 2018-06-04 - v0.2.0
 * **Added** command `timing.epochToIsoUtc` to convert an epoch time to ISO 8601 *utc* format
 * **DEPRECATED** command `timing.convertTime` in favor for the `timing.epochToIsoUtc` command

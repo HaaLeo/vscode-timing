@@ -3,13 +3,13 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import TimeConverter = require('../../timeConverter');
-import TimeHoverProvider = require('../../timeHoverProvider');
+import { TimeConverter } from '../../timeConverter';
+import { TimeHoverProvider } from '../../timeHoverProvider';
 
 suite('TimeHoverProvider', () => {
 
     let testEditor: vscode.TextEditor;
-    setup( async () => {
+    setup(async () => {
         const ext = vscode.extensions.getExtension('HaaLeo.timing');
         if (!ext.isActive) {
             await ext.activate();

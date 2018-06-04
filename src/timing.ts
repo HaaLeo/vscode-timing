@@ -2,31 +2,45 @@
 
 import * as vscode from 'vscode';
 
-import { epochToIsoLocal } from './commands/epochToIsoLocal';
-import { epochToIsoUtc } from './commands/epochToIsoUtc';
-import { isoRfcToEpoch } from './commands/isoRfcToEpoch';
+import { EpochToIsoLocalCommand } from './commands/epochToIsoLocalCommand';
+import { EpochToIsoUtcCommand } from './commands/epochToIsoUtcCommand';
+import { IsoRfcToEpochCommand } from './commands/isoRfcToEpochCommand';
 
-import TimeConverter = require('./timeConverter');
-import TimeHoverProvider = require('./timeHoverProvider');
+import { DialogHandler } from './dialogHandler';
+import { TimeConverter } from './timeConverter';
+import { TimeHoverProvider } from './timeHoverProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 
+    // Create converter and dialog handler
     const timeConverter = new TimeConverter();
+    const dialogHandler = new DialogHandler();
+
+    // Create commands
+    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(timeConverter, dialogHandler);
+    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(timeConverter, dialogHandler);
+    const epochToIsoUtcCommand = new EpochToIsoUtcCommand(timeConverter, dialogHandler);
+
     context.subscriptions.push(
-        // Commands
-        vscode.commands.registerCommand('timing.convertTime', () => {
-            epochToIsoUtc(timeConverter);
-        }),
-        vscode.commands.registerCommand('timing.epochToIsoUtc', () => {
-            epochToIsoUtc(timeConverter);
-        }),
-        vscode.commands.registerCommand('timing.epochToIsoLocal', () => {
-            epochToIsoLocal(timeConverter);
-        }),
-        vscode.commands.registerCommand('timing.isoRfcToEpoch', () => {
-            isoRfcToEpoch(timeConverter);
-        }),
-        // Hover Provider
+        // Register Commands
+        vscode.commands.registerCommand(
+            'timing.convertTime',
+            epochToIsoUtcCommand.execute,
+            epochToIsoUtcCommand),
+        vscode.commands.registerCommand(
+            'timing.epochToIsoUtc',
+            epochToIsoUtcCommand.execute,
+            epochToIsoUtcCommand),
+        vscode.commands.registerCommand(
+            'timing.epochToIsoLocal',
+            epochToIsoLocalCommand.execute,
+            epochToIsoLocalCommand),
+        vscode.commands.registerCommand(
+            'timing.isoRfcToEpoch',
+            isoRfcToEpochCommand.execute,
+            isoRfcToEpochCommand),
+
+        // Register Hover Provider
         vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeConverter))
     );
 }

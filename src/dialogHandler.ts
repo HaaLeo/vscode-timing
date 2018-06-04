@@ -9,7 +9,7 @@ class DialogHandler {
     private _validateTime: (date: string) => boolean;
     private _diagnosisMessage: string;
     private _convertTime: (time: string, option: string | undefined) => string;
-    private _options: string[];
+    private _options: vscode.QuickPickItem[];
     private _placeholder: string;
     private _prompt: string;
 
@@ -19,7 +19,7 @@ class DialogHandler {
         convertTime: (time: string, option?: string) => string,
         placeholder: string,
         prompt: string,
-        options?: string[]) {
+        options?: vscode.QuickPickItem[]) {
 
         this._convertTime = convertTime;
         this._validateTime = validateTime;
@@ -52,14 +52,14 @@ class DialogHandler {
         if (this._options) {
             vscode.window.showQuickPick(this._options, {
                 canPickMany: false,
-                placeHolder: this._options[0],
+                placeHolder: this._options[0].label,
                 matchOnDescription: true,
                 matchOnDetail: true
             }).then((option) => {
                 const result = this._convertTime(
                     userInput.inputAsMs ? userInput.inputAsMs.toString() : userInput.originalInput,
-                    option);
-                this.showResultDialog(userInput, result, option);
+                    option.label);
+                this.showResultDialog(userInput, result, option.label);
             });
         } else {
             const result = this._convertTime(

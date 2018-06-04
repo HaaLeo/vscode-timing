@@ -4,19 +4,19 @@ import * as moment from 'moment';
 
 class TimeConverter {
 
-    public epochToIsoUtc(ms: string, option?: string): string {
+    public epochToIsoUtc(ms: string, targetFormat?: string): string {
         const result = moment(ms, 'x').toISOString(false);
         return result;
     }
 
-    public epochToIsoLocal(ms: string, option?: string): string {
+    public epochToIsoLocal(ms: string, targetFormat?: string): string {
         const result = moment(ms, 'x').toISOString(true);
         return result;
     }
 
-    public isoRfcToEpoch(date: string, option?: string): string {
+    public isoRfcToEpoch(date: string, targetFormat?: string): string {
         let result: number;
-        switch (option) {
+        switch (targetFormat) {
             case 's':
                 result = moment(date).unix();
                 break;
@@ -27,7 +27,7 @@ class TimeConverter {
                 result = moment(date).valueOf() * 1000000;
                 break;
             default:
-                throw new Error('Unknown option="' + option + '" detected.');
+                throw new Error('Unknown option="' + targetFormat + '" detected.');
         }
         return result.toString();
     }

@@ -9,7 +9,7 @@ This extension was inspired by
 
 ## Features
 
-Currently this extension is capable to do the following conversions, where the epoch time can be formated in **seconds**, **milliseconds** or **nanoseconds**.  
+Currently this extension is capable to do the following conversions, where the epoch time can be formated in **seconds**, **milliseconds** or **nanoseconds**:  
 
 | Source Format| Target Format|
 |:--:|:--:|
@@ -38,13 +38,17 @@ In order to convert a time via the command palette there exist several commands.
 
 ![Convert Sample](doc/Convert_Sample.gif)
 
-If a valid time string is pre-selected, the command will directly convert the user selection an show the corresponding result.
+If a valid time string is pre-selected, the command will directly convert the user selection and show the corresponding result.
 
 ![Convert Selection Sample](doc/Convert_Selection_Sample.gif)
 
 If required, the command will ask you to select the target format of the epoch time (s, ms, ns).
 
 ![Convert Selection Option Sample](doc/Convert_Selection_Option_Sample.gif)
+
+In addition, you can also get the current time.
+
+![Now as ISO 8601 Local](doc/Get_Now_Local_Sample.gif)
 
 ### Hover Preview
 
@@ -59,6 +63,7 @@ When you hover over a number the extension shows you the **converted UTC time** 
 * `timing.isoRfcToEpoch`: Convert ISO 8601 or RFC 2822 time to selected epoch format
 * `timing.nowAsIsoUtc`: Get current time as ISO 8601 UTC format
 * `timing.nowAsIsoLocal`: Get current time as ISO 8601 Local format
+* `timing.nowAsEpoch`: Get current time as epoch format
 * `timing.convertTime`: **DEPRECATED**, use `timing.epochToIsoUtc` instead
 
 ## Contribution

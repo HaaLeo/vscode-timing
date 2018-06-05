@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+# 2018-06-05 - v0.3.0
+* **Added**  command `timing.nowAsIsoUtc` to get current time as ISO 8601 UTC format
+* **Added**  command `timing.nowAsIsoLocal` to get current time as ISO 8601 Local format
+* **Added**  command `timing.nowAsEpoch` to get current time as epoch format
+
 ## 2018-06-04 - v0.2.1
 * **Fixed** a bug that prevented the `timing.epochToIso*` commands from accepting nanoseconds for conversion
 

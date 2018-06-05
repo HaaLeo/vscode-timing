@@ -17,6 +17,9 @@ Currently this extension is capable to do the following conversions, where the e
 | Epoch (s, ms, ns) | ISO 8601 Local|
 | ISO 8601 | Epoch (s, ms, ns)|
 | RFC 2282 | Epoch (s, ms, ns)|
+| - | Current Time as Epoch (s, ms, ns) |
+| - | Current Time as ISO 8601 UTC |
+| - | Current Time as ISO 8601 Local |
 
 When the *epoch time is the **source*** format of the conversion its unit is determined by its **digit count**:
 
@@ -54,6 +57,8 @@ When you hover over a number the extension shows you the **converted UTC time** 
 * `timing.epochToIsoUtc`: Convert epoch time to ISO 8601 format (UTC)
 * `timing.epochToIsoLocal`: Convert epoch time to ISO 8601 format (Local)
 * `timing.isoRfcToEpoch`: Convert ISO 8601 or RFC 2822 time to selected epoch format
+* `timing.nowAsIsoUtc`: Get current time as ISO 8601 UTC format
+* `timing.nowAsIsoLocal`: Get current time as ISO 8601 Local format
 * `timing.convertTime`: **DEPRECATED**, use `timing.epochToIsoUtc` instead
 
 ## Contribution

@@ -79,11 +79,63 @@ describe('TimeConverter', () => {
         });
 
         it('Should return true if it is a valid ISO time.', () => {
-            assert.equal(true, testObject.isValidIsoRfc('1973-11-29T21:33:09.000Z'));
+            assert.equal(testObject.isValidIsoRfc('1973-11-29T21:33:09.000Z'), true);
         });
 
         it('Should return false if it is an invalid ISO time.', () => {
-            assert.equal(false, testObject.isValidIsoRfc('123456789'));
+            assert.equal(testObject.isValidIsoRfc('123456789'), false);
         });
+    });
+
+    describe('getNowAsEpoch', () => {
+        let testObject: TimeConverter;
+
+        beforeEach('Set up test object.', () => {
+            testObject = new TimeConverter();
+        });
+
+        it('Should return current epoch time as seconds.', () => {
+            const now = moment().unix();
+            const result = testObject.getNowAsEpoch('not evaluated', 's');
+            assert.equal(isNaN(Number(result)), false);
+            assert.equal(now <= Number(result), true);
+        });
+
+        it('Should return current epoch time as milliseconds.', () => {
+            const now = moment().valueOf();
+            const result = testObject.getNowAsEpoch('not evaluated', 'ms');
+            assert.equal(isNaN(Number(result)), false);
+            assert.equal(now <= Number(result), true);
+        });
+
+        it('Should return current epoch time as milliseconds.', () => {
+            const now = moment().valueOf() * 1000000;
+            const result = testObject.getNowAsEpoch('not evaluated', 'ns');
+            assert.equal(isNaN(Number(result)), false);
+            assert.equal(now <= Number(result), true);
+        });
+    });
+
+    describe('getNowAsIsoUtc', () => {
+
+        it('Should return current time in ISO UTC format.', () => {
+            const testObject = new TimeConverter();
+            const now = moment();
+            const result = testObject.getNowAsIsoUtc('not evaluated', 'not evaluated');
+
+            // TODO: Fix me
+            // assert.equal(moment(result).isUTC(), true);
+            assert.equal(moment(result).isSameOrAfter(now), true);
+        });
+
+        it('Should return current time in ISO Local format.', () => {
+            const testObject = new TimeConverter();
+            const now = moment();
+            const result = testObject.getNowAsIsoLocal('not evaluated', 'not evaluated');
+
+            assert.equal(moment(result).isLocal(), true);
+            assert.equal(moment(result).isSameOrAfter(now), true);
+        });
+
     });
 });

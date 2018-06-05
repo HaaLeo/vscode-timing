@@ -33,7 +33,7 @@ class DialogHandler {
         vscode.window.showInputBox(
             {
                 placeHolder: this._placeholder,
-                prompt: this._diagnosisMessage,
+                prompt: this._prompt,
                 validateInput: (userInput) => {
                     const input = new InputDefinition(userInput);
                     return this._validateTime(input.inputAsMs ? input.inputAsMs.toString() : input.originalInput)
@@ -77,7 +77,7 @@ class DialogHandler {
             {
                 placeHolder: this._placeholder,
                 value: 'Result: ' + result + (targetUnit ? ' (' + targetUnit + ')' : ''),
-                valueSelection: ['Result: '.length, 'Result: '.length + result.toString().length],
+                valueSelection: ['Result: '.length, 'Result: '.length + result.length],
                 prompt: 'Input: ' + userInput.originalInput +
                     (userInput.originalUnit ? ' (' + userInput.originalUnit + ')' : '')
             }

@@ -5,8 +5,8 @@ All notable changes to the "timing" extension will be documented in this file.
 * **Fixed** a bug that prevented the `timing.epochToIso*` commands from accepting nanoseconds for conversion
 
 ## 2018-06-04 - v0.2.0
-* **Added** command `timing.epochToIsoUtc` to convert an epoch time to ISO 8601 *utc* format
 * **DEPRECATED** command `timing.convertTime` in favor for the `timing.epochToIsoUtc` command
+* **Added** command `timing.epochToIsoUtc` to convert an epoch time to ISO 8601 *utc* format
 * **Added** command `timing.epochToIsoLocal` to convert an epoch time to ISO 8601 *local* format
 * **Added** a command `timing.isoRfcToEpoch` to convert an ISO 8601 or RFC2282 formatted time to an epoch time. Further the user can select the target unit of the epoch time: **seconds**, **milliseconds** or **nanoseconds**
 

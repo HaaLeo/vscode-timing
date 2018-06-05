@@ -77,7 +77,7 @@ class DialogHandler {
             {
                 placeHolder: this._placeholder,
                 value: 'Result: ' + result + (targetUnit ? ' (' + targetUnit + ')' : ''),
-                valueSelection: ['Result: '.length, 'Result: '.length + result.toString().length],
+                valueSelection: ['Result: '.length, 'Result: '.length + result.length],
                 prompt: 'Input: ' + userInput.originalInput +
                     (userInput.originalUnit ? ' (' + userInput.originalUnit + ')' : '')
             }

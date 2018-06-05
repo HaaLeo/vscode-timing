@@ -3,20 +3,20 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { EpochToIsoUtcCommand } from '../../commands/epochToIsoUtcCommand';
-import { TimeConverter } from '../../timeConverter';
+import { EpochToIsoUtcCommand } from '../../../commands/epochToIsoUtcCommand';
+import { TimeConverter } from '../../../timeConverter';
 
 suite('epochToIsoUtc', () => {
 
     let testEditor: vscode.TextEditor;
-    setup(async () => {
+    suiteSetup(async () => {
         const ext = vscode.extensions.getExtension('HaaLeo.timing');
         if (!ext.isActive) {
             await ext.activate();
         }
 
         if (vscode.workspace.workspaceFolders !== undefined) {
-            const uris = await vscode.workspace.findFiles('*.txt');
+            const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
             testEditor = await vscode.window.showTextDocument(file);
         }
@@ -35,5 +35,6 @@ suite('epochToIsoUtc', () => {
                 prompt: 'Input: 123456789 (s)'
             }),
             JSON.stringify(spy.args[0][0]));
+        spy.restore();
     });
 });

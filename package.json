@@ -46,19 +46,38 @@
         "commands": [
             {
                 "command": "timing.convertTime",
-                "title": "Timing: Convert time to UTC (DEPRECATED. Use timing.epochToIsoUtc instead)"
+                "category": "Timing",
+                "title": "Convert time to UTC (DEPRECATED. Use timing.epochToIsoUtc instead)"
             },
             {
                 "command": "timing.epochToIsoUtc",
-                "title": "Timing: Convert epoch time to ISO 8601 format (UTC)"
+                "category": "Timing",
+                "title": "Convert epoch time to ISO 8601 format (UTC)"
             },
             {
                 "command": "timing.epochToIsoLocal",
-                "title": "Timing: Convert epoch time to ISO 8601 format (Local)"
+                "category": "Timing",
+                "title": "Convert epoch time to ISO 8601 format (Local)"
             },
             {
                 "command": "timing.isoRfcToEpoch",
-                "title": "Timing: Convert ISO 8601 or RFC 2822 time to epoch format"
+                "category": "Timing",
+                "title": "Convert ISO 8601 or RFC 2822 time to epoch format"
+            },
+            {
+                "command": "timing.nowAsEpoch",
+                "category": "Timing",
+                "title": "Get current time as epoch format"
+            },
+            {
+                "command": "timing.nowAsIsoUtc",
+                "category": "Timing",
+                "title": "Get current time as ISO UTC format"
+            },
+            {
+                "command": "timing.nowAsIsoLocal",
+                "category": "Timing",
+                "title": "Get current time as ISO Local format"
             }
         ]
     },

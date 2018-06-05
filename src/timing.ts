@@ -5,6 +5,9 @@ import * as vscode from 'vscode';
 import { EpochToIsoLocalCommand } from './commands/epochToIsoLocalCommand';
 import { EpochToIsoUtcCommand } from './commands/epochToIsoUtcCommand';
 import { IsoRfcToEpochCommand } from './commands/isoRfcToEpochCommand';
+import { NowAsEpochCommand } from './commands/nowAsEpochCommand';
+import { NowAsIsoLocalCommand } from './commands/nowAsIsoLocalCommand';
+import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
 
 import { DialogHandler } from './dialogHandler';
 import { TimeConverter } from './timeConverter';
@@ -20,6 +23,9 @@ export function activate(context: vscode.ExtensionContext) {
     const isoRfcToEpochCommand = new IsoRfcToEpochCommand(timeConverter, dialogHandler);
     const epochToIsoLocalCommand = new EpochToIsoLocalCommand(timeConverter, dialogHandler);
     const epochToIsoUtcCommand = new EpochToIsoUtcCommand(timeConverter, dialogHandler);
+    const nowAsEpochCommand = new NowAsEpochCommand(timeConverter, dialogHandler);
+    const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(timeConverter, dialogHandler);
+    const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(timeConverter, dialogHandler);
 
     context.subscriptions.push(
         // Register Commands
@@ -39,6 +45,18 @@ export function activate(context: vscode.ExtensionContext) {
             'timing.isoRfcToEpoch',
             isoRfcToEpochCommand.execute,
             isoRfcToEpochCommand),
+        vscode.commands.registerCommand(
+            'timing.nowAsEpoch',
+            nowAsEpochCommand.execute,
+            nowAsEpochCommand),
+        vscode.commands.registerCommand(
+            'timing.nowAsIsoLocal',
+            nowAsIsoLocalCommand.execute,
+            nowAsIsoLocalCommand),
+        vscode.commands.registerCommand(
+            'timing.nowAsIsoUtc',
+            nowAsIsoUtcCommand.execute,
+            nowAsIsoUtcCommand),
 
         // Register Hover Provider
         vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeConverter))

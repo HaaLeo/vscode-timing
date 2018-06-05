@@ -26,7 +26,7 @@ class InputDefinition {
         this._originalUnit = undefined;
         this._inputAsMs = undefined;
 
-        if (!isNaN(Number(userInput))) {
+        if (userInput && !isNaN(Number(userInput))) {
             if (userInput.length <= 11) {
                 this._inputAsMs = Number(userInput) * 1000;
                 this._originalUnit = 's';

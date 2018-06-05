@@ -44,6 +44,34 @@ class TimeConverter {
         }
         return result;
     }
+
+public getNowAsEpoch(notEvaluated: string, targetFormat?: string): string {
+        let result: number;
+        switch (targetFormat) {
+            case 's':
+                result = moment().unix();
+                break;
+            case 'ms':
+                result = moment().valueOf();
+                break;
+            case 'ns':
+                result = moment().valueOf() * 1000000;
+                break;
+            default:
+                throw new Error('Unknown option="' + targetFormat + '" detected.');
+        }
+        return result.toString();
+    }
+
+public getNowAsIsoUtc(notEvaluated: string, targetFormat?: string): string {
+        const result = moment().toISOString(false);
+        return result;
+    }
+
+public getNowAsIsoLocal(notEvaluated: string, targetFormat?: string): string {
+        const result = moment().toISOString(true);
+        return result;
+    }
 }
 
 export { TimeConverter };

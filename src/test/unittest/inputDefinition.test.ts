@@ -41,5 +41,13 @@ describe('InputDefinition', () => {
             assert.equal(result.originalInput, '1973-11-29T21:33:09.123Z');
         });
 
+        it('Should initialize with undefined.', () => {
+            const result = new InputDefinition(undefined);
+
+            assert.equal(result.inputAsMs, undefined);
+            assert.equal(result.originalUnit, undefined);
+            assert.equal(result.originalInput, undefined);
+        });
+
     });
 });

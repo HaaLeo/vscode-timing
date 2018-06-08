@@ -14,7 +14,7 @@ class TimeConverter {
         return result;
     }
 
-    public isoRfcToEpoch(date: string, targetFormat?: string): string {
+    public isoRfcToEpoch(date: string, targetFormat: string): string {
         let result: number;
         switch (targetFormat) {
             case 's':
@@ -32,6 +32,24 @@ class TimeConverter {
         return result.toString();
     }
 
+    public customToEpoch(time: string, customFormat: string, epochFormat: string): string {
+        let result: number;
+        switch (epochFormat) {
+            case 's':
+                result = moment(time, customFormat, true).unix();
+                break;
+            case 'ms':
+                result = moment(time, customFormat, true).valueOf();
+                break;
+            case 'ns':
+                result = moment(time, customFormat, true).valueOf() * 1000000;
+                break;
+            default:
+                throw new Error('Unknown option="' + epochFormat + '" detected.');
+        }
+        return result.toString();
+    }
+
     public isValidEpoch(epoch: string): boolean {
         const result = moment(Number(epoch)).isValid();
         return result;
@@ -45,7 +63,17 @@ class TimeConverter {
         return result;
     }
 
-public getNowAsEpoch(targetFormat: string): string {
+    public isValidCustom(time: string, customFormat): boolean {
+        let result: boolean;
+        try {
+            result = moment(time, customFormat, true).isValid();
+        } catch (e) {
+            result = false;
+        }
+        return result;
+    }
+
+    public getNowAsEpoch(targetFormat: string): string {
         let result: number;
         switch (targetFormat) {
             case 's':
@@ -63,12 +91,12 @@ public getNowAsEpoch(targetFormat: string): string {
         return result.toString();
     }
 
-public getNowAsIsoUtc(): string {
+    public getNowAsIsoUtc(): string {
         const result = moment().toISOString(false);
         return result;
     }
 
-public getNowAsIsoLocal(): string {
+    public getNowAsIsoLocal(): string {
         const result = moment().toISOString(true);
         return result;
     }

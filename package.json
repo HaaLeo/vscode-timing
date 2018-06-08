@@ -77,8 +77,46 @@
                 "command": "timing.nowAsIsoLocal",
                 "category": "Timing",
                 "title": "Get current time as ISO Local format"
+            },
+            {
+                "command": "timing.customToEpoch",
+                "category": "Timing",
+                "title": "Convert custom time to epoch format."
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "The timing configuration.",
+            "properties": {
+                "timing.customFormats": {
+                    "title": "Custom time formats.",
+                    "description": "An array of custom source/target formats used to convert from/to.",
+                    "type": [
+                        "array"
+                    ],
+                    "items": {
+                        "title": "Custom time formats.",
+                        "description": "Custom time format to convert from/to.",
+                        "type": "object",
+                        "properties": {
+                            "format": {
+                                "type": "string",
+                                "title": "The custom time format.",
+                                "description": "A custom momentjs format to convert a time from/to."
+                            },
+                            "description": {
+                                "type": "string",
+                                "title": "The description.",
+                                "description": "The description of the format. Used as quick pick description."
+                            }
+                        },
+                        "required": [
+                            "format"
+                        ]
+                    }
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

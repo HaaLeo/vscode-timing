@@ -4,12 +4,12 @@ import * as moment from 'moment';
 
 class TimeConverter {
 
-    public epochToIsoUtc(ms: string, targetFormat?: string): string {
+    public epochToIsoUtc(ms: string): string {
         const result = moment(ms, 'x').toISOString(false);
         return result;
     }
 
-    public epochToIsoLocal(ms: string, targetFormat?: string): string {
+    public epochToIsoLocal(ms: string): string {
         const result = moment(ms, 'x').toISOString(true);
         return result;
     }
@@ -45,7 +45,7 @@ class TimeConverter {
         return result;
     }
 
-public getNowAsEpoch(notEvaluated: string, targetFormat?: string): string {
+public getNowAsEpoch(targetFormat: string): string {
         let result: number;
         switch (targetFormat) {
             case 's':
@@ -63,12 +63,12 @@ public getNowAsEpoch(notEvaluated: string, targetFormat?: string): string {
         return result.toString();
     }
 
-public getNowAsIsoUtc(notEvaluated: string, targetFormat?: string): string {
+public getNowAsIsoUtc(): string {
         const result = moment().toISOString(false);
         return result;
     }
 
-public getNowAsIsoLocal(notEvaluated: string, targetFormat?: string): string {
+public getNowAsIsoLocal(): string {
         const result = moment().toISOString(true);
         return result;
     }

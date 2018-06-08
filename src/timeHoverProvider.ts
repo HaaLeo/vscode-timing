@@ -21,7 +21,7 @@ class TimeHoverProvider implements vscode.HoverProvider {
             const hoveredWord = document.getText(timeRange);
             if (this._timeConverter.isValidEpoch(hoveredWord)) {
                 const input = new InputDefinition(hoveredWord);
-                const utc = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString(), input.originalUnit);
+                const utc = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
                 result = new vscode.Hover(
                     '*Epoch Unit*: `' + input.originalUnit + '`  \n*UTC*: `' + utc + '`',
                     timeRange);

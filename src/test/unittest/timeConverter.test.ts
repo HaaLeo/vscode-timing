@@ -96,21 +96,21 @@ describe('TimeConverter', () => {
 
         it('Should return current epoch time as seconds.', () => {
             const now = moment().unix();
-            const result = testObject.getNowAsEpoch('not evaluated', 's');
+            const result = testObject.getNowAsEpoch('s');
             assert.equal(isNaN(Number(result)), false);
             assert.equal(now <= Number(result), true);
         });
 
         it('Should return current epoch time as milliseconds.', () => {
             const now = moment().valueOf();
-            const result = testObject.getNowAsEpoch('not evaluated', 'ms');
+            const result = testObject.getNowAsEpoch('ms');
             assert.equal(isNaN(Number(result)), false);
             assert.equal(now <= Number(result), true);
         });
 
         it('Should return current epoch time as milliseconds.', () => {
             const now = moment().valueOf() * 1000000;
-            const result = testObject.getNowAsEpoch('not evaluated', 'ns');
+            const result = testObject.getNowAsEpoch('ns');
             assert.equal(isNaN(Number(result)), false);
             assert.equal(now <= Number(result), true);
         });
@@ -121,7 +121,7 @@ describe('TimeConverter', () => {
         it('Should return current time in ISO UTC format.', () => {
             const testObject = new TimeConverter();
             const now = moment();
-            const result = testObject.getNowAsIsoUtc('not evaluated', 'not evaluated');
+            const result = testObject.getNowAsIsoUtc();
 
             // TODO: Fix me
             // assert.equal(moment(result).isUTC(), true);
@@ -131,7 +131,7 @@ describe('TimeConverter', () => {
         it('Should return current time in ISO Local format.', () => {
             const testObject = new TimeConverter();
             const now = moment();
-            const result = testObject.getNowAsIsoLocal('not evaluated', 'not evaluated');
+            const result = testObject.getNowAsIsoLocal();
 
             assert.equal(moment(result).isLocal(), true);
             assert.equal(moment(result).isSameOrAfter(now), true);

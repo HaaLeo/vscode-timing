@@ -6,7 +6,7 @@ import { CommandBase } from './commandBase';
 
 class IsoRfcToEpochCommand extends CommandBase {
 
-    public execute(): void {
+    public async execute() {
         const options: vscode.QuickPickItem[] = [
             {
                 label: 's',
@@ -22,21 +22,27 @@ class IsoRfcToEpochCommand extends CommandBase {
             }
         ];
 
-        this._dialogHandler.configure(
-            this._timeConverter.isValidIsoRfc,
-            'Ensure the inserted time is valid.',
-            this._timeConverter.isoRfcToEpoch,
-            '1970-01-01T00:00:00.000Z',
-            'Insert a ISO 8601 or RFC 2282 time.',
-            options
-        );
+        let userInput = this.isInputSelected();
 
-        const userInput = this.isInputSelected(this._timeConverter.isValidIsoRfc);
-        if (userInput === undefined) {
-            this._dialogHandler.showInputDialog();
-        } else {
-            this._dialogHandler.showOptionsDialog(new InputDefinition(userInput));
-        }
+        do {
+            if (!this._timeConverter.isValidIsoRfc(userInput)) {
+                userInput = await this._dialogHandler.showInputDialog(
+                    '1970-01-01T00:00:00.000Z',
+                    'Insert a ISO 8601 or RFC 2282 time.',
+                    this._timeConverter.isValidIsoRfc,
+                    'Ensure the time is valid.'
+                );
+            }
+            if (userInput !== undefined) {
+                const option = await this._dialogHandler.showOptionsDialog(options);
+                const result = this._timeConverter.isoRfcToEpoch(userInput, option.label);
+                userInput = await this._dialogHandler.showResultDialog(
+                    '1970-01-01T00:00:00.000Z',
+                    'Result: ' + result + ' (' + new InputDefinition(result).originalUnit + ')',
+                    ['Result: '.length, 'Result: '.length + result.length],
+                    'Input: ' + userInput);
+            }
+        } while (userInput);
     }
 }
 export { IsoRfcToEpochCommand };

@@ -14,22 +14,18 @@ abstract class CommandBase {
     }
     public abstract execute(): void;
 
-    protected isInputSelected(isValidTime: (date: string) => boolean): string | undefined {
+    protected isInputSelected(): string | undefined {
         let result: string;
         const activeEditor = vscode.window.activeTextEditor;
         if (activeEditor !== undefined) {
             const activeSelection = activeEditor.selection;
             if (!activeSelection.isEmpty) {
-                const selectedExpression = activeEditor.document.getText(activeSelection);
-                if (isValidTime(selectedExpression)) {
-                    result = selectedExpression;
-                }
+                result = activeEditor.document.getText(activeSelection);
             }
         }
 
         return result;
     }
-
 }
 
 export { CommandBase };

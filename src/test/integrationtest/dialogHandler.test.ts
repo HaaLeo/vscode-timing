@@ -22,13 +22,6 @@ suite('DialogHandler', () => {
     const convertTimeMock = (time: string, option?: string) => 'testTime';
     setup(async () => {
         testObject = new DialogHandler();
-        testObject.configure(
-            validateTimeMock,
-            'testDiagnoseMessage',
-            convertTimeMock,
-            'testPlaceHolder',
-            'testPrompt');
-
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -40,7 +33,7 @@ suite('DialogHandler', () => {
         test('should show input box with correct placeHolder, prompt.', async () => {
             const spy = sinon.spy(vscode.window, 'showInputBox');
 
-            testObject.showInputDialog();
+            testObject.showInputDialog('testPlaceHolder', 'testPrompt', (input: string) => true, 'not evaluated');
 
             assert.equal(spy.calledOnce, true);
             assert.equal(spy.args[0][0].placeHolder, 'testPlaceHolder');
@@ -53,21 +46,12 @@ suite('DialogHandler', () => {
     suite('showOptionsDialog', () => {
         test('should show options dialog when options are set.', async () => {
             const spy = sinon.spy(vscode.window, 'showQuickPick');
-            const testUserInput = new InputDefinition('testInput');
             const testOptions = [{
                 description: 'testDescription',
                 label: 'testLabel'
             }];
-            testObject.configure(
-                validateTimeMock,
-                'testDiagnoseMessage',
-                convertTimeMock,
-                'testPlaceHolder',
-                'testPrompt',
-                testOptions
-            );
 
-            testObject.showOptionsDialog(testUserInput);
+            testObject.showOptionsDialog(testOptions);
 
             assert.equal(spy.calledOnce, true);
             assert.equal(spy.args[0][0], testOptions);
@@ -83,28 +67,14 @@ suite('DialogHandler', () => {
 
             spy.restore();
         });
-
-        test('should directly call result dialog when no options are set.', async () => {
-            const spy = sinon.spy(testObject, 'showResultDialog');
-            const testUserInput = new InputDefinition('testInput');
-
-            testObject.showOptionsDialog(testUserInput);
-
-            assert.equal(spy.calledOnce, true);
-            assert.equal(spy.args[0][0], testUserInput);
-            assert.equal(spy.args[0][1], 'testTime');
-            assert.equal(spy.args[0][2], undefined);
-
-            spy.restore();
-        });
     });
 
     suite('showResultDialog', () => {
-        test('should show unit at result and no unit at input.', async () => {
+        test('should call showInputBox with correct args.', () => {
             const spy = sinon.spy(vscode.window, 'showInputBox');
             const testUserInput = new InputDefinition('testInput');
 
-            testObject.showResultDialog(testUserInput, 'testResult', 'testTargetUnit');
+            testObject.showResultDialog('testPlaceHolder', 'testValue', [1, 1], 'testPrompt');
 
             assert.equal(spy.calledOnce, true);
             assert.equal(
@@ -112,33 +82,12 @@ suite('DialogHandler', () => {
                 JSON.stringify(
                     {
                         placeHolder: 'testPlaceHolder',
-                        value: 'Result: testResult (testTargetUnit)',
-                        valueSelection: ['Result: '.length, 'Result: '.length + 'testResult'.toString().length],
-                        prompt: 'Input: testInput'
+                        value: 'testValue',
+                        valueSelection: [1, 1],
+                        prompt: 'testPrompt'
                     }));
 
             spy.restore();
         });
-
-        test('should show no unit at result and unit at input.', async () => {
-            const spy = sinon.spy(vscode.window, 'showInputBox');
-            const testUserInput = new InputDefinition('123456789');
-
-            testObject.showResultDialog(testUserInput, 'testResult', undefined);
-
-            assert.equal(spy.calledOnce, true);
-            assert.equal(
-                JSON.stringify(spy.args[0][0]),
-                JSON.stringify(
-                    {
-                        placeHolder: 'testPlaceHolder',
-                        value: 'Result: testResult',
-                        valueSelection: ['Result: '.length, 'Result: '.length + 'testResult'.toString().length],
-                        prompt: 'Input: 123456789 (' + testUserInput.originalUnit + ')'
-                    }));
-
-            spy.restore();
-        });
-
     });
 });

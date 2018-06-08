@@ -3,8 +3,6 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { EpochToIsoUtcCommand } from '../../../commands/epochToIsoUtcCommand';
-import { TimeConverter } from '../../../timeConverter';
 
 suite('epochToIsoUtc', () => {
 
@@ -22,10 +20,10 @@ suite('epochToIsoUtc', () => {
         }
     });
 
-    test('should calculate result directly and show result view.', async () => {
+    test('should calculate result directly and show result view.', () => {
         testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
         const spy = sinon.spy(vscode.window, 'showInputBox');
-        await vscode.commands.executeCommand('timing.epochToIsoUtc');
+        vscode.commands.executeCommand('timing.epochToIsoUtc');
         assert.equal(true, spy.calledOnce);
         assert.equal(
             JSON.stringify({

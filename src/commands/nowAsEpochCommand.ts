@@ -6,7 +6,7 @@ import { InputDefinition } from '../inputDefinition';
 import { CommandBase } from './commandBase';
 
 class NowAsEpochCommand extends CommandBase {
-    public execute(): void {
+    public async execute() {
         const options: vscode.QuickPickItem[] = [
             {
                 label: 's',
@@ -22,17 +22,17 @@ class NowAsEpochCommand extends CommandBase {
             }
         ];
 
-        this._dialogHandler.configure(
-            (userInput: string) => userInput !== undefined ? true : false,
-            'Press enter to get current epoch time',
-            this._timeConverter.getNowAsEpoch,
-            'not evaluated',
-            'not evaluated',
-            options
-        );
+        let userInput: string;
+        do {
+            const epochFormat = await this._dialogHandler.showOptionsDialog(options);
+            const result = this._timeConverter.getNowAsEpoch(epochFormat.label);
+            userInput = await this._dialogHandler.showResultDialog(
+                'Press enter to get current time',
+                'Current Time: ' + result,
+                ['Current Time: '.length, 'Current Time: '.length + result.length],
+                'Press enter to update.');
 
-        this._dialogHandler.showOptionsDialog(new InputDefinition('Current Time'));
-
+        } while (userInput !== undefined);
     }
 }
 

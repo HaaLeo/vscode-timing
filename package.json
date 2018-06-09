@@ -1,7 +1,7 @@
 {
     "name": "timing",
-    "displayName": "Timing",
-    "description": "Converts and visualizes timestamps in different formats.",
+    "displayName": "Time Converter",
+    "description": "Converts and visualizes timestamps in various formats.",
     "version": "0.3.0",
     "publisher": "HaaLeo",
     "engines": {
@@ -108,6 +108,11 @@
                                 "type": "string",
                                 "title": "The description.",
                                 "description": "The description of the format. Used as quick pick description."
+                            },
+                            "detail": {
+                                "type": "string",
+                                "title": "The detail.",
+                                "description": "The detail of the format. Used as quick pick detail."
                             }
                         },
                         "required": [

@@ -63,12 +63,12 @@ class TimeConverter {
         return result;
     }
 
-    public isValidCustom(time: string, customFormat): boolean {
-        let result: boolean;
-        try {
-            result = moment(time, customFormat, true).isValid();
-        } catch (e) {
-            result = false;
+    public isValidCustom(time: string, customFormat: string): boolean {
+        let result: boolean = false;
+        if (time && customFormat) {
+            try {
+                result = moment(time, customFormat, true).isValid();
+            } catch (e) { }
         }
         return result;
     }

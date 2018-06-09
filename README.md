@@ -1,9 +1,11 @@
-# Timing
+# Time Converter &#8212; `timing`
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/HaaLeo/vscode-timing/master/LICENSE) [![Version](https://vsmarketplacebadge.apphb.com/version/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Build Status](https://travis-ci.org/HaaLeo/vscode-timing.svg?branch=master)](https://travis-ci.org/HaaLeo/vscode-timing) [![Installs](https://vsmarketplacebadge.apphb.com/installs/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Ratings](https://vsmarketplacebadge.apphb.com/rating/HaaLeo.Timing.svg)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing)
+[![Version](https://vsmarketplacebadge.apphb.com/version/HaaLeo.Timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Installs](https://vsmarketplacebadge.apphb.com/installs/HaaLeo.Timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Ratings](https://vsmarketplacebadge.apphb.com/rating/HaaLeo.Timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing)  
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://raw.githubusercontent.com/HaaLeo/vscode-timing/master/LICENSE) [![Build Status](https://img.shields.io/travis/HaaLeo/vscode-timing/master.svg?style=flat-square)](https://travis-ci.org/HaaLeo/vscode-timing) [![David](https://img.shields.io/david/HaaLeo/vscode-timing.svg?style=flat-square)](https://david-dm.org/HaaLeo/vscode-timing) [![David](https://img.shields.io/david/dev/HaaLeo/vscode-timing.svg?style=flat-square)](https://david-dm.org/HaaLeo/vscode-timing?type=dev)  
+[![Donate](https://img.shields.io/badge/-Donate-blue.svg?logo=paypal&style=flat-square)](https://www.paypal.me/LeoHanisch)
 
 ## Description
-The *Timing* extension converts and visualizes a given time to various formats.  
+The *timing* extension converts and visualizes a given time to various formats.  
 This extension was inspired by 
 [zodiac403's  epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
@@ -34,6 +36,7 @@ When the *epoch time is the **source*** format of the conversion its unit is det
 When the *epoch time is the **target*** format of the conversion its unit can be selected by the user during the conversion process.  
 
 ### Conversion via Command Palette
+
 In order to convert a time via the command palette there exist several commands. Each command will show up an input box where you can enter the time. After pressing <kbd>Enter</kbd> it will display the converted time in the input box again, ready to be copied.
 
 ![Convert Sample](doc/Convert_Sample.gif)
@@ -42,17 +45,19 @@ If a valid time string is pre-selected, the command will directly convert the us
 
 ![Convert Selection Sample](doc/Convert_Selection_Sample.gif)
 
-If required, the command will ask you to select the target format of the epoch time (s, ms, ns).
+If required, the command will ask you to select the **target format** of the epoch time (s, ms, ns).
 
 ![Convert Selection Option Sample](doc/Convert_Selection_Option_Sample.gif)
 
-In addition, you can also get the current time.
+### Current Time
+
+In addition, you can also get the current time as **epoch** or **ISO 8601** format.
 
 ![Now as ISO 8601 Local](doc/Get_Now_Local_Sample.gif)
 
 ### Hover Preview
 
-When you hover over a number the extension shows you the **converted UTC time** of that number and which unit was used for the conversion.
+When you hover over a number the extension shows you the converted **UTC time** of that number and which **unit** was used for the conversion.
 
 ![Hover Sample](doc/Hover_Sample.gif)
 

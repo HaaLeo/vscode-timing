@@ -11,7 +11,7 @@ class CustomToEpochCommand extends CommandBase implements vscode.Disposable {
 
     private _disposables: vscode.Disposable[];
     private _customTimeFormatOptions: vscode.QuickPickItem[];
-
+    private readonly _selectOtherFormat = 'Other Format...';
     public constructor(timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         super(timeConverter, dialogHandler);
         this.updateCustomFormats();
@@ -42,36 +42,47 @@ class CustomToEpochCommand extends CommandBase implements vscode.Disposable {
         let userInput = this.isInputSelected();
 
         do {
-            let currentFormat: vscode.QuickPickItem;
-            // Todo avoid changing of default label
+            let formatFromOptions: vscode.QuickPickItem = { label: this._selectOtherFormat };
+            let currentFormat: string;
+
             if (this._customTimeFormatOptions.length > 1) {
-                currentFormat = await this._dialogHandler.showOptionsDialog(this._customTimeFormatOptions);
+                formatFromOptions = await this._dialogHandler.showOptionsDialog(this._customTimeFormatOptions);
             }
-            if (currentFormat && currentFormat.label === 'Other Format...') {
-                currentFormat.label = await this._dialogHandler.showInputDialog(
+
+            if (!formatFromOptions) {
+                break;
+            } else if (formatFromOptions.label === this._selectOtherFormat) {
+                currentFormat = await this._dialogHandler.showInputDialog(
                     'E.g.: YYYY/MM/DD',
                     'Insert custom format.',
                     (input) => input ? true : false,
                     'Ensure you enter a custom momentjs format.'
                 );
+            } else {
+                currentFormat = formatFromOptions.label;
             }
 
             if (!this._timeConverter.isValidCustom(userInput, currentFormat)) {
                 userInput = await this._dialogHandler.showInputDialog(
-                    currentFormat.label,
-                    'Insert time of format: ' + currentFormat.label,
-                    (input) => this._timeConverter.isValidCustom(input, currentFormat.label),
-                    'Ensure time and format are valid. (Format: ' + currentFormat.label + ')'
+                    currentFormat,
+                    'Insert time of format: ' + currentFormat,
+                    (input) => this._timeConverter.isValidCustom(input, currentFormat),
+                    'Ensure time and format are valid. (Format: ' + currentFormat + ')'
                 );
             }
+
             if (userInput !== undefined) {
                 const option = await this._dialogHandler.showOptionsDialog(targetOptions);
-                const result = this._timeConverter.customToEpoch(userInput, currentFormat.label, option.label);
+                if (!option) {
+                    break;
+                }
+                const result = this._timeConverter.customToEpoch(userInput, currentFormat, option.label);
                 userInput = await this._dialogHandler.showResultDialog(
                     'Press enter to pick new format',
                     'Result: ' + result + ' (' + new InputDefinition(result).originalUnit + ')',
                     ['Result: '.length, 'Result: '.length + result.length],
                     'Input: ' + userInput);
+
             }
         } while (userInput);
     }
@@ -84,15 +95,19 @@ class CustomToEpochCommand extends CommandBase implements vscode.Disposable {
 
     private updateCustomFormats(): void {
         const config = vscode.workspace.getConfiguration('timing')
-            .get('customFormats') as Array<{ format: string, description?: string }>;
+            .get('customFormats') as Array<{ format: string, description?: string, detail?: string }>;
 
         this._customTimeFormatOptions = [];
         config.forEach((newFormat) => {
             if (newFormat.format) {
-                this._customTimeFormatOptions.push({ label: newFormat.format, detail: newFormat.description });
+                this._customTimeFormatOptions.push({
+                    label: newFormat.format,
+                    description: newFormat.description,
+                    detail: newFormat.detail
+                });
             }
         });
-        this._customTimeFormatOptions.push({ label: 'Other Format...' });
+        this._customTimeFormatOptions.push({ label: this._selectOtherFormat });
     }
 
 }

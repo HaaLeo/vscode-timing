@@ -1,7 +1,5 @@
 'use strict';
 
-import { InputDefinition } from '../inputDefinition';
-
 import { CommandBase } from './commandBase';
 
 class NowAsIsoLocalCommand extends CommandBase {

@@ -1,28 +1,10 @@
 'use strict';
 
-import {QuickPickItem} from 'vscode';
-import { InputDefinition } from '../inputDefinition';
-
 import { CustomCommandBase } from './customCommandBase';
 
-class CustomToEpochCommand extends CustomCommandBase {
+class CustomToIsoLocalCommand extends CustomCommandBase {
 
     public async execute() {
-        const targetOptions: QuickPickItem[] = [
-            {
-                label: 's',
-                detail: 'seconds'
-            },
-            {
-                label: 'ms',
-                detail: 'milliseconds'
-            },
-            {
-                label: 'ns',
-                detail: 'nanoseconds'
-            }
-        ];
-
         let userInput = this.isInputSelected();
 
         do {
@@ -41,16 +23,10 @@ class CustomToEpochCommand extends CustomCommandBase {
             }
 
             if (userInput !== undefined) {
-                const epochTargetFormat = await this._dialogHandler.showOptionsDialog(
-                    targetOptions,
-                    'Select epoch target format.');
-                if (!epochTargetFormat) {
-                    break;
-                }
-                const result = this._timeConverter.customToEpoch(userInput, currentFormat, epochTargetFormat.label);
+                const result = this._timeConverter.customToIsoLocal(userInput, currentFormat);
                 userInput = await this._dialogHandler.showResultDialog(
                     'Press enter to pick new format',
-                    'Result: ' + result + ' (' + new InputDefinition(result).originalUnit + ')',
+                    'Result: ' + result,
                     ['Result: '.length, 'Result: '.length + result.length],
                     'Time: ' + userInput + ' | Format: ' + currentFormat);
 
@@ -59,4 +35,4 @@ class CustomToEpochCommand extends CustomCommandBase {
     }
 }
 
-export { CustomToEpochCommand };
+export { CustomToIsoLocalCommand };

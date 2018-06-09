@@ -3,6 +3,25 @@
 import * as moment from 'moment';
 
 class TimeConverter {
+    public isoRfcToCustom(date: string, targetFormat: string): any {
+        const result = moment(date).format(targetFormat);
+        return result;
+    }
+
+    public epochToCustom(ms: string, targetFormat: string): any {
+        const result = moment(ms, 'x').format(targetFormat);
+        return result;
+    }
+
+    public customToIsoUtc(time: string, targetFormat: string): string {
+        const result = moment(time, targetFormat, true).toISOString(false);
+        return result;
+    }
+
+    public customToIsoLocal(time: string, targetFormat: string): string {
+        const result = moment(time, targetFormat, true).toISOString(true);
+        return result;
+    }
 
     public epochToIsoUtc(ms: string): string {
         const result = moment(ms, 'x').toISOString(false);
@@ -70,6 +89,11 @@ class TimeConverter {
                 result = moment(time, customFormat, true).isValid();
             } catch (e) { }
         }
+        return result;
+    }
+
+    public getNowAsCustom(targetFormat: string): string {
+        const result = moment().format(targetFormat);
         return result;
     }
 

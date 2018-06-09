@@ -1,7 +1,6 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { InputDefinition } from '../inputDefinition';
 
 import { CommandBase } from './commandBase';
 
@@ -24,7 +23,12 @@ class NowAsEpochCommand extends CommandBase {
 
         let userInput: string;
         do {
-            const epochFormat = await this._dialogHandler.showOptionsDialog(options);
+            const epochFormat = await this._dialogHandler.showOptionsDialog(
+                options,
+                'Select epoch target format.');
+            if (!epochFormat) {
+                break;
+            }
             const result = this._timeConverter.getNowAsEpoch(epochFormat.label);
             userInput = await this._dialogHandler.showResultDialog(
                 'Press enter to get current time',

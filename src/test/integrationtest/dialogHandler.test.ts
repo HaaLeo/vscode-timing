@@ -50,8 +50,9 @@ suite('DialogHandler', () => {
                 description: 'testDescription',
                 label: 'testLabel'
             }];
+            const testPlaceHolder = 'testPlaceHolder';
 
-            testObject.showOptionsDialog(testOptions);
+            testObject.showOptionsDialog(testOptions, testPlaceHolder);
 
             assert.equal(spy.calledOnce, true);
             assert.equal(spy.args[0][0], testOptions);
@@ -60,7 +61,7 @@ suite('DialogHandler', () => {
                 JSON.stringify(
                     {
                         canPickMany: false,
-                        placeHolder: testOptions[0].label,
+                        placeHolder: testPlaceHolder,
                         matchOnDescription: true,
                         matchOnDetail: true
                     }));

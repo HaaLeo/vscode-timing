@@ -3,9 +3,14 @@
 import * as vscode from 'vscode';
 
 import { CustomToEpochCommand } from './commands/customToEpochCommand';
+import { CustomToIsoLocalCommand } from './commands/customToIsoLocalCommand';
+import { CustomToIsoUtcCommand } from './commands/customToIsoUtcCommand';
+import { EpochToCustomCommand } from './commands/epochToCustomCommand';
 import { EpochToIsoLocalCommand } from './commands/epochToIsoLocalCommand';
 import { EpochToIsoUtcCommand } from './commands/epochToIsoUtcCommand';
+import { IsoRfcToCustomCommand } from './commands/isoRfcToCustomCommand';
 import { IsoRfcToEpochCommand } from './commands/isoRfcToEpochCommand';
+import { NowAsCustomCommand } from './commands/nowAsCustomCommand';
 import { NowAsEpochCommand } from './commands/nowAsEpochCommand';
 import { NowAsIsoLocalCommand } from './commands/nowAsIsoLocalCommand';
 import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
@@ -21,53 +26,46 @@ export function activate(context: vscode.ExtensionContext) {
     const dialogHandler = new DialogHandler();
 
     // Create commands
-    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(timeConverter, dialogHandler);
+    const customToEpochCommand = new CustomToEpochCommand(timeConverter, dialogHandler);
+    const customToIsoUtcCommand = new CustomToIsoUtcCommand(timeConverter, dialogHandler);
+    const customToIsoLocalCommand = new CustomToIsoLocalCommand(timeConverter, dialogHandler);
+    const epochToCustomCommand = new EpochToCustomCommand(timeConverter, dialogHandler);
     const epochToIsoLocalCommand = new EpochToIsoLocalCommand(timeConverter, dialogHandler);
     const epochToIsoUtcCommand = new EpochToIsoUtcCommand(timeConverter, dialogHandler);
     const nowAsEpochCommand = new NowAsEpochCommand(timeConverter, dialogHandler);
+    const nowAsCustomCommand = new NowAsCustomCommand(timeConverter, dialogHandler);
     const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(timeConverter, dialogHandler);
     const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(timeConverter, dialogHandler);
-    const customToEpochCommand = new CustomToEpochCommand(timeConverter, dialogHandler);
+    const isoRfcToCustomCommand = new IsoRfcToCustomCommand(timeConverter, dialogHandler);
+    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(timeConverter, dialogHandler);
+
+    /* tslint:disable:max-line-length */
 
     context.subscriptions.push(
         // Register Commands
-        vscode.commands.registerCommand(
-            'timing.convertTime',
-            epochToIsoUtcCommand.execute,
-            epochToIsoUtcCommand),
-        vscode.commands.registerCommand(
-            'timing.epochToIsoUtc',
-            epochToIsoUtcCommand.execute,
-            epochToIsoUtcCommand),
-        vscode.commands.registerCommand(
-            'timing.epochToIsoLocal',
-            epochToIsoLocalCommand.execute,
-            epochToIsoLocalCommand),
-        vscode.commands.registerCommand(
-            'timing.isoRfcToEpoch',
-            isoRfcToEpochCommand.execute,
-            isoRfcToEpochCommand),
-        vscode.commands.registerCommand(
-            'timing.nowAsEpoch',
-            nowAsEpochCommand.execute,
-            nowAsEpochCommand),
-        vscode.commands.registerCommand(
-            'timing.nowAsIsoLocal',
-            nowAsIsoLocalCommand.execute,
-            nowAsIsoLocalCommand),
-        vscode.commands.registerCommand(
-            'timing.nowAsIsoUtc',
-            nowAsIsoUtcCommand.execute,
-            nowAsIsoUtcCommand),
+        vscode.commands.registerCommand('timing.convertTime', epochToIsoUtcCommand.execute, epochToIsoUtcCommand),
         customToEpochCommand,
-        vscode.commands.registerCommand(
-            'timing.customToEpoch',
-            customToEpochCommand.execute,
-            customToEpochCommand),
-
-        // Register Hover Provider
-        vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeConverter))
+        vscode.commands.registerCommand('timing.customToEpoch', customToEpochCommand.execute, customToEpochCommand),
+        customToIsoLocalCommand,
+        vscode.commands.registerCommand('timing.customToIsoLocal', customToIsoLocalCommand.execute, customToIsoLocalCommand),
+        customToIsoUtcCommand,
+        vscode.commands.registerCommand('timing.customToIsoUtc', customToIsoUtcCommand.execute, customToIsoUtcCommand),
+        epochToCustomCommand,
+        vscode.commands.registerCommand('timing.epochToCustom', epochToCustomCommand.execute, epochToCustomCommand),
+        vscode.commands.registerCommand('timing.epochToIsoLocal', epochToIsoLocalCommand.execute, epochToIsoLocalCommand),
+        vscode.commands.registerCommand('timing.epochToIsoUtc', epochToIsoUtcCommand.execute, epochToIsoUtcCommand),
+        isoRfcToCustomCommand,
+        vscode.commands.registerCommand('timing.isoRfcToCustom', isoRfcToCustomCommand.execute, isoRfcToCustomCommand),
+        vscode.commands.registerCommand('timing.isoRfcToEpoch', isoRfcToEpochCommand.execute, isoRfcToEpochCommand),
+        nowAsCustomCommand,
+        vscode.commands.registerCommand('timing.nowAsCustom', nowAsCustomCommand.execute, nowAsCustomCommand),
+        vscode.commands.registerCommand('timing.nowAsEpoch', nowAsEpochCommand.execute, nowAsEpochCommand),
+        vscode.commands.registerCommand('timing.nowAsIsoLocal', nowAsIsoLocalCommand.execute, nowAsIsoLocalCommand),
+        vscode.commands.registerCommand('timing.nowAsIsoUtc', nowAsIsoUtcCommand.execute, nowAsIsoUtcCommand),
+    // Register Hover Provider
+    vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeConverter))
     );
+    /* tslint:enable:max-line-length */
 }
 
 // this method is called when your extension is deactivated

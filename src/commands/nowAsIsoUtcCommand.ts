@@ -1,7 +1,5 @@
 'use strict';
 
-import { InputDefinition } from '../inputDefinition';
-
 import { CommandBase } from './commandBase';
 
 class NowAsIsoUtcCommand extends CommandBase {
@@ -16,7 +14,6 @@ class NowAsIsoUtcCommand extends CommandBase {
                 'Press enter to update.');
 
         } while (userInput !== undefined);
-
     }
 }
 

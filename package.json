@@ -51,37 +51,62 @@
             {
                 "command": "timing.epochToIsoUtc",
                 "category": "Timing",
-                "title": "Convert epoch time to ISO 8601 format (UTC)"
+                "title": "Epoch ⟶ ISO 8601 UTC"
             },
             {
                 "command": "timing.epochToIsoLocal",
                 "category": "Timing",
-                "title": "Convert epoch time to ISO 8601 format (Local)"
+                "title": "Epoch ⟶ ISO 8601 Local"
+            },
+            {
+                "command": "timing.epochToCustom",
+                "category": "Timing",
+                "title": "Epoch ⟶ Custom"
             },
             {
                 "command": "timing.isoRfcToEpoch",
                 "category": "Timing",
-                "title": "Convert ISO 8601 or RFC 2822 time to epoch format"
+                "title": "ISO 8601 / RFC 2822 ⟶ Epoch"
+            },
+            {
+                "command": "timing.isoRfcToCustom",
+                "category": "Timing",
+                "title": "ISO 8601 / RFC 2822 ⟶ Custom"
             },
             {
                 "command": "timing.nowAsEpoch",
                 "category": "Timing",
-                "title": "Get current time as epoch format"
+                "title": "Now ⟶ Epoch"
             },
             {
                 "command": "timing.nowAsIsoUtc",
                 "category": "Timing",
-                "title": "Get current time as ISO UTC format"
+                "title": "Now ⟶ ISO 8601 UTC"
             },
             {
                 "command": "timing.nowAsIsoLocal",
                 "category": "Timing",
-                "title": "Get current time as ISO Local format"
+                "title": "Now ⟶ ISO 8601 Local"
+            },
+            {
+                "command": "timing.nowAsCustom",
+                "category": "Timing",
+                "title": "Now ⟶ Custom"
             },
             {
                 "command": "timing.customToEpoch",
                 "category": "Timing",
-                "title": "Convert custom time to epoch format."
+                "title": "Custom ⟶ Epoch"
+            },
+            {
+                "command": "timing.customToIsoUtc",
+                "category": "Timing",
+                "title": "Custom ⟶ ISO 8601 UTC"
+            },
+            {
+                "command": "timing.customToIsoLocal",
+                "category": "Timing",
+                "title": "Custom ⟶ ISO 8601 Local"
             }
         ],
         "configuration": {

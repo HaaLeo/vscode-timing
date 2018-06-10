@@ -8,11 +8,13 @@ import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
 
 describe('CustomToIsoUtcCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
+    let timeConverter: TimeConverter;
     let testObject: CustomToIsoUtcCommand;
     let testEditor: vscode.TextEditor;
 
     before(async () => {
         dialogHandlerMock = new DialogHandlerMock();
+        timeConverter = new TimeConverter();
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -26,7 +28,7 @@ describe('CustomToIsoUtcCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             dialogHandlerMock.showInputDialog.returns('YYYY');
-            testObject = new CustomToIsoUtcCommand(new TimeConverter(), dialogHandlerMock);
+            testObject = new CustomToIsoUtcCommand(timeConverter, dialogHandlerMock);
         });
 
         it('Should stop if selected custom format is invalid.', async () => {
@@ -67,7 +69,9 @@ describe('CustomToIsoUtcCommand', () => {
             assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-            assert.equal(dialogHandlerMock.showResultDialog.args[0][1], 'Result: 2017-12-31T23:00:00.000Z');
+            assert.equal(
+                dialogHandlerMock.showResultDialog.args[0][1],
+                'Result: ' + timeConverter.customToIsoUtc('2018', 'YYYY'));
         });
     });
 });

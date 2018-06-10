@@ -8,11 +8,13 @@ import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
 
 describe('CustomToIsoLocalCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
+    let timeConverter: TimeConverter;
     let testObject: CustomToIsoLocalCommand;
     let testEditor: vscode.TextEditor;
 
     before(async () => {
         dialogHandlerMock = new DialogHandlerMock();
+        timeConverter = new TimeConverter();
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -26,7 +28,7 @@ describe('CustomToIsoLocalCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             dialogHandlerMock.showInputDialog.returns('YYYY');
-            testObject = new CustomToIsoLocalCommand(new TimeConverter(), dialogHandlerMock);
+            testObject = new CustomToIsoLocalCommand(timeConverter, dialogHandlerMock);
         });
 
         it('Should stop if selected custom format is invalid.', async () => {
@@ -67,7 +69,9 @@ describe('CustomToIsoLocalCommand', () => {
             assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-            assert.equal(dialogHandlerMock.showResultDialog.args[0][1], 'Result: 2018-01-01T00:00:00.000+01:00');
+            assert.equal(
+                dialogHandlerMock.showResultDialog.args[0][1],
+                'Result: ' + timeConverter.customToIsoLocal('2018', 'YYYY'));
         });
     });
 });

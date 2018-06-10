@@ -1,15 +1,12 @@
 'use strict';
 
 import * as assert from 'assert';
-import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { TimeConverter } from '../../timeConverter';
-import { TimeHoverProvider } from '../../timeHoverProvider';
 
-suite('TimeHoverProvider', () => {
+describe('TimeHoverProvider', () => {
 
     let testEditor: vscode.TextEditor;
-    suiteSetup(async () => {
+    before(async () => {
         const ext = vscode.extensions.getExtension('HaaLeo.timing');
         if (!ext.isActive) {
             await ext.activate();
@@ -20,9 +17,10 @@ suite('TimeHoverProvider', () => {
             const file = await vscode.workspace.openTextDocument(uris[0]);
             testEditor = await vscode.window.showTextDocument(file);
         }
+        return;
     });
 
-    test('should provide correct hover message.', async () => {
+    it('should provide correct hover message.', async () => {
         const results = await vscode.commands.executeCommand(
             'vscode.executeHoverProvider',
             testEditor.document.uri,
@@ -31,5 +29,6 @@ suite('TimeHoverProvider', () => {
         assert.equal(
             (results[0].contents[0] as { language: string; value: string }).value,
             '*Epoch Unit*: `s`  \n*UTC*: `1973-11-29T21:33:09.000Z`');
+        return;
     });
 });

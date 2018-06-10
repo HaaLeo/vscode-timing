@@ -6,12 +6,12 @@ import * as vscode from 'vscode';
 import { DialogHandler } from '../../dialogHandler';
 import { InputDefinition } from '../../inputDefinition';
 
-suite('DialogHandler', () => {
+describe('DialogHandler', () => {
 
     let testEditor: vscode.TextEditor;
     let testObject: DialogHandler;
 
-    suiteSetup(async () => {
+    before(async () => {
         const ext = vscode.extensions.getExtension('HaaLeo.timing');
         if (!ext.isActive) {
             await ext.activate();
@@ -20,7 +20,7 @@ suite('DialogHandler', () => {
 
     const validateTimeMock = (date: string) => true;
     const convertTimeMock = (time: string, option?: string) => 'testTime';
-    setup(async () => {
+    beforeEach(async () => {
         testObject = new DialogHandler();
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
@@ -29,8 +29,8 @@ suite('DialogHandler', () => {
         }
     });
 
-    suite('showInputDialog', () => {
-        test('should show input box with correct placeHolder, prompt.', async () => {
+    describe('showInputDialog', () => {
+        it('should show input box with correct placeHolder, prompt.', async () => {
             const spy = sinon.spy(vscode.window, 'showInputBox');
 
             testObject.showInputDialog('testPlaceHolder', 'testPrompt', (input: string) => true, 'not evaluated');
@@ -43,8 +43,8 @@ suite('DialogHandler', () => {
         });
     });
 
-    suite('showOptionsDialog', () => {
-        test('should show options dialog when options are set.', async () => {
+    describe('showOptionsDialog', () => {
+        it('should show options dialog when options are set.', async () => {
             const spy = sinon.spy(vscode.window, 'showQuickPick');
             const testOptions = [{
                 description: 'testDescription',
@@ -70,8 +70,8 @@ suite('DialogHandler', () => {
         });
     });
 
-    suite('showResultDialog', () => {
-        test('should call showInputBox with correct args.', () => {
+    describe('showResultDialog', () => {
+        it('should call showInputBox with correct args.', () => {
             const spy = sinon.spy(vscode.window, 'showInputBox');
             const testUserInput = new InputDefinition('testInput');
 

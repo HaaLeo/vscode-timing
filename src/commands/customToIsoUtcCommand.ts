@@ -28,7 +28,7 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
                     'Press enter to pick new format',
                     'Result: ' + result,
                     ['Result: '.length, 'Result: '.length + result.length],
-                    'Time: ' + userInput + ' | Format: ' + currentFormat);
+                    'Time: ' + userInput);
 
             }
         } while (userInput !== undefined);

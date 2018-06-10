@@ -1,6 +1,6 @@
 'use strict';
 
-import {QuickPickItem} from 'vscode';
+import { QuickPickItem } from 'vscode';
 import { InputDefinition } from '../inputDefinition';
 
 import { CustomCommandBase } from './customCommandBase';
@@ -27,7 +27,7 @@ class CustomToEpochCommand extends CustomCommandBase {
 
         do {
             const currentFormat = await this.getCustomFormat();
-            if (! currentFormat) {
+            if (!currentFormat) {
                 break;
             }
 
@@ -52,7 +52,7 @@ class CustomToEpochCommand extends CustomCommandBase {
                     'Press enter to pick new format',
                     'Result: ' + result + ' (' + new InputDefinition(result).originalUnit + ')',
                     ['Result: '.length, 'Result: '.length + result.length],
-                    'Time: ' + userInput + ' | Format: ' + currentFormat);
+                    'Time: ' + userInput);
 
             }
         } while (userInput !== undefined);

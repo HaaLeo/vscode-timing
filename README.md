@@ -1,4 +1,4 @@
-# Time Converter &#8212; `timing`
+# VS Code Time Converter &#8212; `timing`
 
 [![Version](https://vsmarketplacebadge.apphb.com/version/HaaLeo.Timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Installs](https://vsmarketplacebadge.apphb.com/installs/HaaLeo.Timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing) [![Ratings](https://vsmarketplacebadge.apphb.com/rating/HaaLeo.Timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing#review-details) [![Stars](https://img.shields.io/github/stars/HaaLeo/vscode-timing.svg?label=Stars&logo=github&style=flat-square)](https://github.com/HaaLeo/vscode-timing/stargazers)  
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://raw.githubusercontent.com/HaaLeo/vscode-timing/master/LICENSE) [![Build Status](https://img.shields.io/travis/HaaLeo/vscode-timing/master.svg?style=flat-square)](https://travis-ci.org/HaaLeo/vscode-timing) [![David](https://img.shields.io/david/HaaLeo/vscode-timing.svg?style=flat-square)](https://david-dm.org/HaaLeo/vscode-timing) [![David](https://img.shields.io/david/dev/HaaLeo/vscode-timing.svg?style=flat-square)](https://david-dm.org/HaaLeo/vscode-timing?type=dev) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)  
@@ -66,18 +66,20 @@ Optionally you can specify **custom formats** of the following shape in the user
 Example:
 
 ```JSON
+{
     "timing.customFormats": [
         {
-            "format": "MM/DD/YYYY",
+            "format": "LLLL",
             "description": "US",
             "detail": "Often used in the US"
         },
         {
-            "format": "DD.MM.YYYY",
+            "format": "DD.MM.YYYY HH:mm:ss",
             "description": "GER",
             "detail": "Often used in Germany"
         }
     ]
+}
 ```
 
 ### Hover Preview

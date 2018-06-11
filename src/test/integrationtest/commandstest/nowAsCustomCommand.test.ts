@@ -2,23 +2,22 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { EpochToIsoUtcCommand } from '../../../commands/epochToIsoUtcCommand';
-import { TimeConverter } from '../../../timeConverter';
+import { NowAsCustomCommand } from '../../../commands/nowAsCustomCommand';
 import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
+import { TimeConverterMock } from '../../mock/TimeConverterMock';
 
-describe('EpochToIsoUtcCommand', () => {
+describe('NowAsCustomCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
-    let timeConverter: TimeConverter;
-    let testObject: EpochToIsoUtcCommand;
-    let testEditor: vscode.TextEditor;
+    let timeConverterMock: TimeConverterMock;
+    let testObject: NowAsCustomCommand;
 
     before(async () => {
         dialogHandlerMock = new DialogHandlerMock();
-        timeConverter = new TimeConverter();
+        timeConverterMock = new TimeConverterMock();
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
-            testEditor = await vscode.window.showTextDocument(file);
+            await vscode.window.showTextDocument(file);
         }
         const config = vscode.workspace.getConfiguration('timing');
         await config.update('customFormats', []);
@@ -27,21 +26,14 @@ describe('EpochToIsoUtcCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToIsoUtcCommand(timeConverter, dialogHandlerMock);
-            testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
+            timeConverterMock.reset();
+            testObject = new NowAsCustomCommand(timeConverterMock, dialogHandlerMock);
+            dialogHandlerMock.showOptionsDialog.returns({ label: 'ms' });
+            timeConverterMock.getNowAsCustom.returns('2018');
         });
 
-        it('Should not ask for user input if pre selection is valid epoch date', async () => {
-            await testObject.execute();
-
-            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-        });
-
-        it('Should ask for user input if pre selection is invalid epoch', async () => {
-            testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            dialogHandlerMock.showInputDialog.returns('2018000');
+        it('Should ask user to choose custom format', async () => {
+            dialogHandlerMock.showInputDialog.returns('YYYY');
 
             await testObject.execute();
 
@@ -50,8 +42,7 @@ describe('EpochToIsoUtcCommand', () => {
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
         });
 
-        it('Should stop if user canceled during epoch time insertion', async () => {
-            testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
+        it('Should stop if user canceled during custom format selection', async () => {
             dialogHandlerMock.showInputDialog.returns(undefined);
 
             await testObject.execute();
@@ -62,14 +53,14 @@ describe('EpochToIsoUtcCommand', () => {
         });
 
         it('Should show result after calculation', async () => {
+            dialogHandlerMock.showInputDialog.returns('YYYY');
+
             await testObject.execute();
 
-            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-            assert.equal(
-                dialogHandlerMock.showResultDialog.args[0][1],
-                'Result: ' + timeConverter.epochToIsoUtc('123456789000'));
+            assert.equal(timeConverterMock.getNowAsCustom.calledOnce, true);
         });
     });
 });

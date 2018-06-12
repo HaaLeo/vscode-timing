@@ -162,7 +162,7 @@
         "@types/node": "^10.3.2",
         "@types/sinon": "^5.0.1",
         "mocha": "^5.2.0",
-        "sinon": "^5.1.1",
+        "sinon": "^6.0.0",
         "tslint": "^5.10.0",
         "typescript": "^2.9.1",
         "vscode": "^1.1.18"

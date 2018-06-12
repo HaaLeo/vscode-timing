@@ -62,6 +62,9 @@ In addition, you can also get the current time as **epoch** or **ISO 8601** form
 
 ### Custom Formats
 To convert different times from/to custom formats you need to insert a **valid [momentjs format](https://momentjs.com/docs/#/displaying/format/)** after you invoke a corresponding command.  
+
+![Convert To CustomSample](doc/Convert_To_Custom_Sample.gif)
+
 Optionally you can specify **custom formats** of the following shape in the user settings. Those will be shown as possible choices.  
 Example:
 

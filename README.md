@@ -11,7 +11,7 @@ This extension was inspired by
 
 ## Features
 
-Currently this extension is capable to do the following conversions, where the epoch time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and **custom** stands for a custom date-time format the, that you can specify in the settings or select during the conversion:  
+Currently this extension is capable to do the following conversions, where the epoch time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and **custom** stands for a custom date-time format the, that you can specify in the settings or insert during the conversion:  
 
 | Source Format| ⟶ | Target Format|
 |:--|:--:|:-- |

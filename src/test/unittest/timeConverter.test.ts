@@ -81,19 +81,19 @@ describe('TimeConverter', () => {
         it('Should convert to epoch correctly as s.', () => {
             const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 's');
 
-            assert.equal(result, '1530914400');
+            assert.equal(result, moment('2018/07/07', 'YYYY/MM/DD').unix());
         });
 
         it('Should convert to epoch correctly as ms.', () => {
             const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 'ms');
 
-            assert.equal(result, '1530914400000');
+            assert.equal(result, moment('2018/07/07', 'YYYY/MM/DD').valueOf());
         });
 
         it('Should convert to epoch correctly as ns.', () => {
             const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 'ns');
 
-            assert.equal(result, '1530914400000000000');
+            assert.equal(result, moment('2018/07/07', 'YYYY/MM/DD').valueOf() * 1000000);
         });
 
         it('Should throw an error if option is unknown.', () => {

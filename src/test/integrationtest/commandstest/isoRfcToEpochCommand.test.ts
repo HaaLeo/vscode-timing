@@ -2,14 +2,14 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { EpochToIsoUtcCommand } from '../../../commands/epochToIsoUtcCommand';
+import { IsoRfcToEpochCommand } from '../../../commands/isoRfcToEpochCommand';
 import { TimeConverter } from '../../../timeConverter';
 import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
 
-describe('EpochToIsoUtcCommand', () => {
+describe('IsoRfcToEpochCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
     let timeConverter: TimeConverter;
-    let testObject: EpochToIsoUtcCommand;
+    let testObject: IsoRfcToEpochCommand;
     let testEditor: vscode.TextEditor;
 
     before(async () => {
@@ -27,30 +27,32 @@ describe('EpochToIsoUtcCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToIsoUtcCommand(timeConverter, dialogHandlerMock);
-            testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
+            testObject = new IsoRfcToEpochCommand(timeConverter, dialogHandlerMock);
+            testEditor.selection = new vscode.Selection(new vscode.Position(4, 31), new vscode.Position(4, 55));
+            dialogHandlerMock.showOptionsDialog.returns({ label: 'ms' });
         });
 
-        it('Should not ask for user input if pre selection is valid epoch date', async () => {
+        it('Should not ask for user input if pre selection is valid iso date', async () => {
+
             await testObject.execute();
 
             assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
         });
 
         it('Should ask for user input if pre selection is invalid epoch', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            dialogHandlerMock.showInputDialog.returns('2018000');
+            dialogHandlerMock.showInputDialog.returns('2018-05-03');
 
             await testObject.execute();
 
             assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
         });
 
-        it('Should stop if user canceled during epoch time insertion', async () => {
+        it('Should stop if user canceled during iso time insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
             dialogHandlerMock.showInputDialog.returns(undefined);
 
@@ -61,15 +63,25 @@ describe('EpochToIsoUtcCommand', () => {
             assert.equal(dialogHandlerMock.showResultDialog.notCalled, true);
         });
 
+        it('Should stop if canceled during epoch format selection.', async () => {
+            dialogHandlerMock.showOptionsDialog.returns(undefined);
+
+            await testObject.execute();
+
+            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.calledOnce, true);
+            assert.equal(dialogHandlerMock.showResultDialog.notCalled, true);
+        });
+
         it('Should show result after calculation', async () => {
             await testObject.execute();
 
             assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
             assert.equal(
                 dialogHandlerMock.showResultDialog.args[0][1],
-                'Result: ' + timeConverter.epochToIsoUtc('123456789000'));
+                'Result: ' + timeConverter.isoRfcToEpoch('2018-06-03T10:32:57.000Z', 'ms') + ' (ms)');
         });
     });
 });

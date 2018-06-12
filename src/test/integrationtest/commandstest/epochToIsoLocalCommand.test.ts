@@ -2,14 +2,14 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { EpochToIsoUtcCommand } from '../../../commands/epochToIsoUtcCommand';
+import { EpochToIsoLocalCommand } from '../../../commands/epochToIsoLocalCommand';
 import { TimeConverter } from '../../../timeConverter';
 import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
 
-describe('EpochToIsoUtcCommand', () => {
+describe('EpochToIsoLocalCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
     let timeConverter: TimeConverter;
-    let testObject: EpochToIsoUtcCommand;
+    let testObject: EpochToIsoLocalCommand;
     let testEditor: vscode.TextEditor;
 
     before(async () => {
@@ -27,7 +27,7 @@ describe('EpochToIsoUtcCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToIsoUtcCommand(timeConverter, dialogHandlerMock);
+            testObject = new EpochToIsoLocalCommand(timeConverter, dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
         });
 
@@ -69,7 +69,7 @@ describe('EpochToIsoUtcCommand', () => {
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
             assert.equal(
                 dialogHandlerMock.showResultDialog.args[0][1],
-                'Result: ' + timeConverter.epochToIsoUtc('123456789000'));
+                'Result: ' + timeConverter.epochToIsoLocal('123456789000'));
         });
     });
 });

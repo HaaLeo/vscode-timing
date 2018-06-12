@@ -12,6 +12,7 @@ abstract class CommandBase {
         this._dialogHandler = dialogHandler;
         this._timeConverter = timeConverter;
     }
+
     public abstract execute(): void;
 
     protected isInputSelected(): string | undefined {

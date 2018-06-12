@@ -2,14 +2,14 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { EpochToIsoUtcCommand } from '../../../commands/epochToIsoUtcCommand';
+import { CustomToIsoLocalCommand } from '../../../commands/customToIsoLocalCommand';
 import { TimeConverter } from '../../../timeConverter';
 import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
 
-describe('EpochToIsoUtcCommand', () => {
+describe('CustomToIsoLocalCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
     let timeConverter: TimeConverter;
-    let testObject: EpochToIsoUtcCommand;
+    let testObject: CustomToIsoLocalCommand;
     let testEditor: vscode.TextEditor;
 
     before(async () => {
@@ -27,31 +27,11 @@ describe('EpochToIsoUtcCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToIsoUtcCommand(timeConverter, dialogHandlerMock);
-            testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
+            dialogHandlerMock.showInputDialog.returns('YYYY');
+            testObject = new CustomToIsoLocalCommand(timeConverter, dialogHandlerMock);
         });
 
-        it('Should not ask for user input if pre selection is valid epoch date', async () => {
-            await testObject.execute();
-
-            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-        });
-
-        it('Should ask for user input if pre selection is invalid epoch', async () => {
-            testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            dialogHandlerMock.showInputDialog.returns('2018000');
-
-            await testObject.execute();
-
-            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-        });
-
-        it('Should stop if user canceled during epoch time insertion', async () => {
-            testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
+        it('Should stop if selected custom format is invalid.', async () => {
             dialogHandlerMock.showInputDialog.returns(undefined);
 
             await testObject.execute();
@@ -61,15 +41,37 @@ describe('EpochToIsoUtcCommand', () => {
             assert.equal(dialogHandlerMock.showResultDialog.notCalled, true);
         });
 
-        it('Should show result after calculation', async () => {
+        it('Should not ask for user input if pre selection is valid custom date', async () => {
+            testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
+
             await testObject.execute();
 
-            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
+        });
+
+        it('Should ask for user input if pre selection is invalid custom date', async () => {
+            testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
+
+            await testObject.execute();
+
+            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
+        });
+
+        it('Should show result after calculation', async () => {
+            testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
+
+            await testObject.execute();
+
+            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
             assert.equal(
                 dialogHandlerMock.showResultDialog.args[0][1],
-                'Result: ' + timeConverter.epochToIsoUtc('123456789000'));
+                'Result: ' + timeConverter.customToIsoLocal('2018', 'YYYY'));
         });
     });
 });

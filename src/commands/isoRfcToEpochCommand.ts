@@ -34,7 +34,12 @@ class IsoRfcToEpochCommand extends CommandBase {
                 );
             }
             if (userInput !== undefined) {
-                const option = await this._dialogHandler.showOptionsDialog(options);
+                const option = await this._dialogHandler.showOptionsDialog(
+                    options,
+                    'Select epoch target format.');
+                if (!option) {
+                    break;
+                }
                 const result = this._timeConverter.isoRfcToEpoch(userInput, option.label);
                 userInput = await this._dialogHandler.showResultDialog(
                     '1970-01-01T00:00:00.000Z',

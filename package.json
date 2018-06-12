@@ -1,7 +1,7 @@
 {
     "name": "timing",
-    "displayName": "Timing",
-    "description": "Converts and visualizes timestamps in different formats.",
+    "displayName": "Time Converter",
+    "description": "Converts and visualizes timestamps in various formats.",
     "version": "0.3.0",
     "publisher": "HaaLeo",
     "engines": {
@@ -51,34 +51,102 @@
             {
                 "command": "timing.epochToIsoUtc",
                 "category": "Timing",
-                "title": "Convert epoch time to ISO 8601 format (UTC)"
+                "title": "Epoch ⟶ ISO 8601 UTC"
             },
             {
                 "command": "timing.epochToIsoLocal",
                 "category": "Timing",
-                "title": "Convert epoch time to ISO 8601 format (Local)"
+                "title": "Epoch ⟶ ISO 8601 Local"
+            },
+            {
+                "command": "timing.epochToCustom",
+                "category": "Timing",
+                "title": "Epoch ⟶ Custom"
             },
             {
                 "command": "timing.isoRfcToEpoch",
                 "category": "Timing",
-                "title": "Convert ISO 8601 or RFC 2822 time to epoch format"
+                "title": "ISO 8601 / RFC 2822 ⟶ Epoch"
+            },
+            {
+                "command": "timing.isoRfcToCustom",
+                "category": "Timing",
+                "title": "ISO 8601 / RFC 2822 ⟶ Custom"
             },
             {
                 "command": "timing.nowAsEpoch",
                 "category": "Timing",
-                "title": "Get current time as epoch format"
+                "title": "Now ⟶ Epoch"
             },
             {
                 "command": "timing.nowAsIsoUtc",
                 "category": "Timing",
-                "title": "Get current time as ISO UTC format"
+                "title": "Now ⟶ ISO 8601 UTC"
             },
             {
                 "command": "timing.nowAsIsoLocal",
                 "category": "Timing",
-                "title": "Get current time as ISO Local format"
+                "title": "Now ⟶ ISO 8601 Local"
+            },
+            {
+                "command": "timing.nowAsCustom",
+                "category": "Timing",
+                "title": "Now ⟶ Custom"
+            },
+            {
+                "command": "timing.customToEpoch",
+                "category": "Timing",
+                "title": "Custom ⟶ Epoch"
+            },
+            {
+                "command": "timing.customToIsoUtc",
+                "category": "Timing",
+                "title": "Custom ⟶ ISO 8601 UTC"
+            },
+            {
+                "command": "timing.customToIsoLocal",
+                "category": "Timing",
+                "title": "Custom ⟶ ISO 8601 Local"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "The timing configuration.",
+            "properties": {
+                "timing.customFormats": {
+                    "title": "Custom time formats.",
+                    "description": "An array of custom source/target formats used to convert from/to.",
+                    "type": [
+                        "array"
+                    ],
+                    "items": {
+                        "title": "Custom time formats.",
+                        "description": "Custom time format to convert from/to.",
+                        "type": "object",
+                        "properties": {
+                            "format": {
+                                "type": "string",
+                                "title": "The custom time format.",
+                                "description": "A custom momentjs format to convert a time from/to."
+                            },
+                            "description": {
+                                "type": "string",
+                                "title": "The description.",
+                                "description": "The description of the format. Used as quick pick description."
+                            },
+                            "detail": {
+                                "type": "string",
+                                "title": "The detail.",
+                                "description": "The detail of the format. Used as quick pick detail."
+                            }
+                        },
+                        "required": [
+                            "format"
+                        ]
+                    }
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -90,13 +158,13 @@
         "tslint": "tslint --project ./"
     },
     "devDependencies": {
-        "@types/mocha": "^5.2.0",
-        "@types/node": "^10.1.3",
+        "@types/mocha": "^5.2.1",
+        "@types/node": "^10.3.2",
         "@types/sinon": "^5.0.1",
         "mocha": "^5.2.0",
-        "sinon": "^5.0.10",
+        "sinon": "^6.0.0",
         "tslint": "^5.10.0",
-        "typescript": "^2.8.3",
+        "typescript": "^2.9.1",
         "vscode": "^1.1.18"
     },
     "dependencies": {

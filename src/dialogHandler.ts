@@ -30,12 +30,12 @@ class DialogHandler {
         );
     }
 
-    public showOptionsDialog(options: vscode.QuickPickItem[]): Thenable<vscode.QuickPickItem> {
+    public showOptionsDialog(options: vscode.QuickPickItem[], placeHolder: string): Thenable<vscode.QuickPickItem> {
         return vscode.window.showQuickPick(
             options,
             {
                 canPickMany: false,
-                placeHolder: options[0].label,
+                placeHolder,
                 matchOnDescription: true,
                 matchOnDetail: true
             });

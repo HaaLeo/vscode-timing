@@ -3,6 +3,7 @@ All notable changes to the "timing" extension will be documented in this file.
 
 ## 2018-06-13 - v0.4.1
 * **Fixed** layout of the Readme and Changelog
+* **Added** support for [code coverage](https://codecov.io/gh/HaaLeo/vscode-timing)
 
 ## 2018-06-12 - v0.4.0
 * **Added** commands that enable conversion from/to custom formats:

@@ -154,13 +154,14 @@
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "integrationtest": "node ./node_modules/vscode/bin/test",
-        "unittest": "mocha out/test/unittest/**/*.js",
+        "unittest": "istanbul cover ./node_modules/mocha/bin/_mocha out/test/unittest/**/*.js",
         "tslint": "tslint --project ./"
     },
     "devDependencies": {
         "@types/mocha": "^5.2.2",
         "@types/node": "^10.3.2",
         "@types/sinon": "^5.0.1",
+        "codecov": "^3.0.2",
         "decache": "^4.4.0",
         "istanbul": "^0.4.5",
         "mocha": "^5.2.0",

@@ -9,3 +9,4 @@ tsconfig.json
 tslint.json
 .travis.yml
 coverconfig.json
+coverage/**

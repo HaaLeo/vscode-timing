@@ -16,7 +16,7 @@
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": [
-            "src/test/integrationtest/testfiles/*"
+            "src/test/testfiles/*"
         ]
     }
 }

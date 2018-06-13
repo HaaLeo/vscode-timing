@@ -2,9 +2,9 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { NowAsIsoLocalCommand } from '../../../commands/nowAsIsoLocalCommand';
-import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
-import { TimeConverterMock } from '../../mock/TimeConverterMock';
+import { NowAsIsoLocalCommand } from '../../commands/nowAsIsoLocalCommand';
+import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { TimeConverterMock } from '../mock/TimeConverterMock';
 
 describe('NowAsIsoLocalCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;

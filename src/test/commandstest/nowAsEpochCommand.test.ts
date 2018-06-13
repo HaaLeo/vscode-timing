@@ -2,9 +2,9 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { NowAsEpochCommand } from '../../../commands/nowAsEpochCommand';
-import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
-import { TimeConverterMock } from '../../mock/TimeConverterMock';
+import { NowAsEpochCommand } from '../../commands/nowAsEpochCommand';
+import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { TimeConverterMock } from '../mock/TimeConverterMock';
 
 describe('NowAsEpochCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;

@@ -1,7 +1,10 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
-# 2018-06-12 - v0.4.0
+## 2018-06-13 - v0.4.1
+* **Fixed** layout of the Readme and Changelog
+
+## 2018-06-12 - v0.4.0
 * **Added** commands that enable conversion from/to custom formats:
   * `timing.epochToCustom`: Converts an epoch time to a custom format
   * `timing.isoRfcToCustom`: Converts an ISO 8601 or RFC 2283 to a custom format
@@ -13,7 +16,7 @@ All notable changes to the "timing" extension will be documented in this file.
 * **Changed** command description: Simplified the command description
 * **Changed** display name on the marketplace from *Timing* to *Time Converter*
 
-# 2018-06-05 - v0.3.0
+## 2018-06-05 - v0.3.0
 * **Added** command `timing.nowAsIsoUtc` to get current time as ISO 8601 UTC format
 * **Added** command `timing.nowAsIsoLocal` to get current time as ISO 8601 Local format
 * **Added** command `timing.nowAsEpoch` to get current time as epoch format

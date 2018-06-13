@@ -2,9 +2,9 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { EpochToIsoLocalCommand } from '../../../commands/epochToIsoLocalCommand';
-import { TimeConverter } from '../../../timeConverter';
-import { DialogHandlerMock } from '../../mock/DialogHandlerMock';
+import { EpochToIsoLocalCommand } from '../../commands/epochToIsoLocalCommand';
+import { TimeConverter } from '../../timeConverter';
+import { DialogHandlerMock } from '../mock/DialogHandlerMock';
 
 describe('EpochToIsoLocalCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;

@@ -15,18 +15,18 @@ Currently this extension is capable to do the following conversions, where the e
 
 | Source Format| ⟶ | Target Format|
 |:--|:--:|:-- |
-| Epoch (s, ms, ns) | | ISO 8601 Local|
-| Epoch (s, ms, ns) | | ISO 8601 UTC|
-| Epoch (s, ms, ns) | | Custom|
-| ISO 8601 / RFC 2282 | | Epoch (s, ms, ns)|
-| ISO 8601 / RFC 2282 | | Custom|
-| - | | Now as Epoch (s, ms, ns)|
-| - | | Now as ISO 8601 Local|
-| - | | Now as ISO 8601 UTC|
-| - | | Now as Custom|
-| Custom | | Epoch (s, ms, ns)|
-| Custom | | ISO 8601 Local|
-| Custom | | ISO 8601 Utc|
+| Epoch (s, ms, ns) | ⟶ | ISO 8601 Local|
+| Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC|
+| Epoch (s, ms, ns) | ⟶ | Custom|
+| ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)|
+| ISO 8601 / RFC 2282 | ⟶ | Custom|
+| - | ⟶ | Now as Epoch (s, ms, ns)|
+| - | ⟶ | Now as ISO 8601 Local|
+| - | ⟶ | Now as ISO 8601 UTC|
+| - | ⟶ | Now as Custom|
+| Custom | ⟶ | Epoch (s, ms, ns)|
+| Custom | ⟶ | ISO 8601 Local|
+| Custom | ⟶ | ISO 8601 Utc|
 
 When the *epoch time is the **source*** format of the conversion its unit is determined by its **digit count**:
 

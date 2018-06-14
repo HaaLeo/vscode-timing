@@ -8,7 +8,7 @@ stages:
   - build
   - test
   - name: deploy
-      if: tag =~ ^v\.[:digit:]+\.[:digit:]+\.[:digit:]+ AND repo = HaaLeo/vscode-timing
+    if: tag =~ ^v\.[:digit:]+\.[:digit:]+\.[:digit:]+ AND repo = HaaLeo/vscode-timing
 
 
 node_js:

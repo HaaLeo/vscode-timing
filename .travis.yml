@@ -41,6 +41,7 @@ jobs:
         provider: releases
         file_glob: true
         file: "${RELEASE_PKG_FILE}"
+        api_key: ${Travis_CD}
         skip_cleanup: true
         on:
           all_branches: true

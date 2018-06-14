@@ -37,7 +37,7 @@ jobs:
         - git tag "insider"
         - vsce package
         - export RELEASE_PKG_FILE=$(ls *.vsix)
-      deploy: GitHub
+      deploy:
         provider: releases
         file_glob: true
         file: "${RELEASE_PKG_FILE}"

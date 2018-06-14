@@ -5,8 +5,9 @@ env:
  - CODE_TESTS_PATH=$TRAVIS_BUILD_DIR/out/test CODE_TESTS_WORKSPACE=$TRAVIS_BUILD_DIR/src/test/testfiles
 
 stages:
-  - build
-  - test
+  #- build
+  #- test
+  - deploy
 
 node_js:
   - "node"
@@ -24,13 +25,23 @@ install:
 
 jobs:
   include:
-    - stage: build
+    # - stage: build
+    #   script:
+    #     - npm run compile
+    #     - npm run tslint
+    # - stage: test
+    #   script:
+    #     - npm run test
+    - stage: deploy
       script:
-        - npm run compile
-        - npm run tslint
-    - stage: test
-      script:
-        - npm run test
+        - git tag "insider"
+        - vsce package
+        - export RELEASE_PKG_FILE=$(ls *.vsix)
+      deploy: GitHub
+        provider: releases
+        file_glob: true
+        file: "${RELEASE_PKG_FILE}"
+
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

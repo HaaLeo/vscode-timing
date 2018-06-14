@@ -213,6 +213,10 @@ describe('TimeConverter', () => {
             assert.equal(isNaN(Number(result)), false);
             assert.equal(now <= Number(result), true);
         });
+
+        it('Should throw an exception if epoch format is not known.', () => {
+            assert.throws(() => testObject.getNowAsEpoch('invalid Format'));
+        });
     });
 
     describe('getNowAsIsoUtc', () => {

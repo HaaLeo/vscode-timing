@@ -24,6 +24,7 @@ class DialogHandler {
                         isValid = validateUserInput(input.originalInput);
                     }
 
+                    // test change TODO: remove
                     return isValid ? null : diagnoseMessage;
                 }
             }

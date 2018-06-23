@@ -8,7 +8,7 @@ stages:
   - build
   - test
   - name: deploy
-    if: tag =~ ^v\.[:digit:]+\.[:digit:]+\.[:digit:]+ AND repo = HaaLeo/vscode-timing
+    if: tag =~ /^v\d+\.\d+\.\d+$/ AND repo = HaaLeo/vscode-timing
 
 
 node_js:
@@ -36,9 +36,9 @@ jobs:
         - npm run test
     - stage: deploy
       before_deploy:
+        - vsce publish -p ${VSC_PUBLISH_TOKEN}
         - vsce package
         - export RELEASE_PKG_FILE=$(ls *.vsix)
-        - vsce publish -p ${VSC_PUBLISH_TOKEN}
       script: skip
       deploy:
         provider: releases
@@ -46,6 +46,8 @@ jobs:
         file: "${RELEASE_PKG_FILE}"
         api_key: ${Travis_CD}
         skip_cleanup: true
+        on:
+          tags: true
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

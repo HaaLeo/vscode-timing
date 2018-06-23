@@ -18,8 +18,6 @@ describe('DialogHandler', () => {
         }
     });
 
-    const validateTimeMock = (date: string) => true;
-    const convertTimeMock = (time: string, option?: string) => 'testTime';
     beforeEach(async () => {
         testObject = new DialogHandler();
         if (vscode.workspace.workspaceFolders !== undefined) {
@@ -40,6 +38,42 @@ describe('DialogHandler', () => {
             assert.equal(spy.args[0][0].prompt, 'testPrompt');
 
             spy.restore();
+        });
+
+        describe('validateInput callback', () => {
+            it('should return null if input is valid.', async () => {
+                const spy = sinon.spy(vscode.window, 'showInputBox');
+                testObject.showInputDialog(
+                    'testPlaceHolder',
+                    'testPrompt',
+                    () => true,
+                    'test diagnose message');
+                const callback = spy.args[0][0].validateInput;
+                assert.equal(typeof (callback), 'function');
+
+                const result = callback('18:00');
+
+                assert.equal(spy.calledOnce, true);
+                assert.equal(result, null);
+                spy.restore();
+            });
+
+            it('should return diagnose message if input is invalid.', async () => {
+                const spy = sinon.spy(vscode.window, 'showInputBox');
+                testObject.showInputDialog(
+                    'testPlaceHolder',
+                    'testPrompt',
+                    () => false,
+                    'test diagnose message');
+                const callback = spy.args[0][0].validateInput;
+                assert.equal(typeof (callback), 'function');
+
+                const result = callback('123');
+
+                assert.equal(spy.calledOnce, true);
+                assert.equal(result, 'test diagnose message');
+                spy.restore();
+            });
         });
     });
 

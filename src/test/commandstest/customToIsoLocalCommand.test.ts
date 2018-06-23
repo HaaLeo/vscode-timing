@@ -52,11 +52,13 @@ describe('CustomToIsoLocalCommand', () => {
         });
 
         it('Should ask for user input if pre selection is invalid custom date', async () => {
-            testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
+            testEditor.selection = new vscode.Selection(new vscode.Position(6, 0), new vscode.Position(6, 0));
+            dialogHandlerMock.showInputDialog.onFirstCall().returns('YYYY');
+            dialogHandlerMock.showInputDialog.onSecondCall().returns('2018');
 
             await testObject.execute();
 
-            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
+            assert.equal(dialogHandlerMock.showInputDialog.callCount, 2);
             assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
         });

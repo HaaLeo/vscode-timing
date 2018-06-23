@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## 2018-06-23 - v0.4.2
+* **Fixed** layout of Readme for vscode's extension explorer ([#51859](https://github.com/Microsoft/vscode/issues/51859)).
+
 ## 2018-06-13 - v0.4.1
 * **Fixed** layout of the Readme and Changelog
 * **Added** support for [code coverage](https://codecov.io/gh/HaaLeo/vscode-timing)
@@ -37,7 +40,7 @@ All notable changes to the "timing" extension will be documented in this file.
 
 ## 2018-05-28 - v0.1.1
 * **Fixed** layout of table in the readme
-* **Update** gif animations
+* **Updated** gif animations
 
 ## 2018-05-28 - v0.1.0
 * **Added** a feature that shows the converted time, when the mouse hovers over a number

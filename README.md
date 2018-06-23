@@ -12,7 +12,7 @@ This extension was inspired by
 
 ## Features
 
-Currently this extension is capable to do the following conversions, where the epoch time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and **custom** stands for a custom date-time format the, that you can specify in the settings or insert during the conversion:  
+Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion:  
 
 | Source Format| ⟶ | Target Format|
 |:--|:--:|:-- |
@@ -29,7 +29,7 @@ Currently this extension is capable to do the following conversions, where the e
 | Custom | ⟶ | ISO 8601 Local|
 | Custom | ⟶ | ISO 8601 Utc|
 
-When the *epoch time is the **source*** format of the conversion its unit is determined by its **digit count**:
+When the _epoch time is the **source**_ format of the conversion its unit is determined by its **digit count**:
 
 | Minimum Length| Maximum Length| Used Unit |
 |:--:|:--:|:--:|
@@ -39,7 +39,7 @@ When the *epoch time is the **source*** format of the conversion its unit is det
 
 >**Note**: Currently those boundaries are fixed and cannot be changed.
 
-When the *epoch time is the **target*** format of the conversion you can select its unit during the conversion process.  
+When the _epoch time is the **target**_ format of the conversion you can select its unit during the conversion process.  
 
 ### Conversion via Command Palette
 
@@ -57,7 +57,7 @@ If required, the command will ask you to select the **target format** of the epo
 
 ### Current Time
 
-In addition, you can also get the current time as **epoch** or **ISO 8601** format.
+In addition, you can also get the current time as **epoch**, **ISO 8601**, or **custom** format.
 
 ![Now as ISO 8601 Local](doc/Get_Now_Local_Sample.gif)
 

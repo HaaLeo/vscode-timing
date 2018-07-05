@@ -7,10 +7,17 @@ import { TimeConverter } from '../timeConverter';
 abstract class CommandBase {
     protected _dialogHandler: DialogHandler;
     protected _timeConverter: TimeConverter;
+    protected _insertConvertedTime: boolean;
 
     public constructor(timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;
         this._timeConverter = timeConverter;
+        this.updateInsertConvertedTime();
+        vscode.workspace.onDidChangeConfiguration(changedEvent => {
+            if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
+                this.updateInsertConvertedTime();
+            }
+        });
     }
 
     public abstract execute(): void;
@@ -26,6 +33,26 @@ abstract class CommandBase {
         }
 
         return result;
+    }
+
+    protected insert(insertion: string): Thenable<boolean> {
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor !== undefined) {
+            return activeEditor.edit((editBuilder) => {
+                editBuilder.replace(activeEditor.selection, insertion);
+            });
+        }
+    }
+
+    private updateInsertConvertedTime(): void {
+        const config = vscode.workspace.getConfiguration('timing')
+            .get('insertConvertedTime');
+
+        if (config === undefined) {
+            this._insertConvertedTime = false;
+        } else if (typeof (config) == 'boolean') {
+            this._insertConvertedTime = config;
+        }
     }
 }
 

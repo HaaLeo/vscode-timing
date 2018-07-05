@@ -48,10 +48,16 @@ class CustomToEpochCommand extends CustomCommandBase {
                     break;
                 }
                 const result = this._timeConverter.customToEpoch(userInput, currentFormat, epochTargetFormat.label);
+                let inserted: boolean = false;
+                if (this._insertConvertedTime) {
+                    inserted = await this.insert(result);
+                }
+                const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+
                 userInput = await this._dialogHandler.showResultDialog(
                     'Press enter to pick new format',
-                    'Result: ' + result + ' (' + new InputDefinition(result).originalUnit + ')',
-                    ['Result: '.length, 'Result: '.length + result.length],
+                    resultPrefix + result + ' (' + new InputDefinition(result).originalUnit + ')',
+                    [resultPrefix.length, resultPrefix.length + result.length],
                     'Time: ' + userInput);
 
             }

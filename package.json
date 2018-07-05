@@ -144,6 +144,13 @@
                             "format"
                         ]
                     }
+                },
+                "timing.insertConvertedTime": {
+                    "title": "Insert the converted time.",
+                    "description": "Indicates whether a converted time is inserted at the cursor's current position after conversion.",
+                    "type": "boolean",
+                    "default": false,
+                    "pattern": "(true|false)"
                 }
             }
         }

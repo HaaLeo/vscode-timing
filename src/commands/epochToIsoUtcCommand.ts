@@ -22,10 +22,16 @@ class EpochToIsoUtcCommand extends CommandBase {
             if (userInput !== undefined) {
                 input = new InputDefinition(userInput);
                 const result = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
+                let inserted: boolean = false;
+                if (this._insertConvertedTime) {
+                    inserted = await this.insert(result);
+                }
+                const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+
                 userInput = await this._dialogHandler.showResultDialog(
                     '123456789',
-                    'Result: ' + result,
-                    ['Result: '.length, 'Result: '.length + result.length],
+                    resultPrefix + result,
+                    [resultPrefix.length, resultPrefix.length + result.length],
                     'Input: ' + userInput + ' (' + new InputDefinition(userInput).originalUnit + ')');
             }
         } while (userInput);

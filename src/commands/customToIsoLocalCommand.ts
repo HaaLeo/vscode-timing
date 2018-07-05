@@ -24,10 +24,16 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
 
             if (userInput !== undefined) {
                 const result = this._timeConverter.customToIsoLocal(userInput, currentFormat);
+                let inserted: boolean = false;
+                if (this._insertConvertedTime) {
+                    inserted = await this.insert(result);
+                }
+                const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+
                 userInput = await this._dialogHandler.showResultDialog(
                     'Press enter to pick new format',
-                    'Result: ' + result,
-                    ['Result: '.length, 'Result: '.length + result.length],
+                    resultPrefix + result,
+                    [resultPrefix.length, resultPrefix.length + result.length],
                     'Time: ' + userInput);
 
             }

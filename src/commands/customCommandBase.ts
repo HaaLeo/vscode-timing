@@ -9,7 +9,6 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
 
     private _customTimeFormatOptions: vscode.QuickPickItem[];
     private readonly _selectOtherFormat = 'Other Format...';
-    private _disposables: vscode.Disposable[];
 
     public constructor(timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         super(timeConverter, dialogHandler);
@@ -20,12 +19,6 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
             }
 
         }, this, this._disposables);
-    }
-
-    public dispose() {
-        this._disposables.forEach((disposable) => {
-            disposable.dispose();
-        });
     }
 
     protected async getCustomFormat(): Promise<string> {

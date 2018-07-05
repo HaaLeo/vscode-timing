@@ -8,6 +8,7 @@ abstract class CommandBase {
     protected _dialogHandler: DialogHandler;
     protected _timeConverter: TimeConverter;
     protected _insertConvertedTime: boolean;
+    protected _disposables: vscode.Disposable[];
 
     public constructor(timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;
@@ -17,10 +18,16 @@ abstract class CommandBase {
             if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
                 this.updateInsertConvertedTime();
             }
-        });
+        }, this, this._disposables);
     }
 
     public abstract execute(): void;
+
+    public dispose() {
+        this._disposables.forEach((disposable) => {
+            disposable.dispose();
+        });
+    }
 
     protected isInputSelected(): string | undefined {
         let result: string;

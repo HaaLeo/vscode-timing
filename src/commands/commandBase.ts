@@ -14,7 +14,7 @@ abstract class CommandBase {
         this._dialogHandler = dialogHandler;
         this._timeConverter = timeConverter;
         this.updateInsertConvertedTime();
-        vscode.workspace.onDidChangeConfiguration(changedEvent => {
+        vscode.workspace.onDidChangeConfiguration((changedEvent) => {
             if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
                 this.updateInsertConvertedTime();
             }
@@ -57,7 +57,7 @@ abstract class CommandBase {
 
         if (config === undefined) {
             this._insertConvertedTime = false;
-        } else if (typeof (config) == 'boolean') {
+        } else if (typeof (config) === 'boolean') {
             this._insertConvertedTime = config;
         }
     }

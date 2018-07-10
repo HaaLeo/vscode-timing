@@ -107,6 +107,11 @@
                 "command": "timing.customToIsoLocal",
                 "category": "Timing",
                 "title": "Custom ⟶ ISO 8601 Local"
+            },
+            {
+                "command": "timing.toggleInsertConvertedTimeUserLevel",
+                "category": "Timing",
+                "title": "Toggle Insert Converted Time (User Level)"
             }
         ],
         "configuration": {

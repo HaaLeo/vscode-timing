@@ -14,6 +14,7 @@ import { NowAsCustomCommand } from './commands/nowAsCustomCommand';
 import { NowAsEpochCommand } from './commands/nowAsEpochCommand';
 import { NowAsIsoLocalCommand } from './commands/nowAsIsoLocalCommand';
 import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
+import { ToggleInsertConvertedTimeUserLevelCommand } from './commands/toggleInsertConvertedTimeUserLevelCommand';
 
 import { DialogHandler } from './dialogHandler';
 import { TimeConverter } from './timeConverter';
@@ -39,6 +40,8 @@ export function activate(context: vscode.ExtensionContext) {
     const isoRfcToCustomCommand = new IsoRfcToCustomCommand(timeConverter, dialogHandler);
     const isoRfcToEpochCommand = new IsoRfcToEpochCommand(timeConverter, dialogHandler);
 
+    const toggleInsertConvertedTimeUserLevelCommand = new ToggleInsertConvertedTimeUserLevelCommand();
+
     /* tslint:disable:max-line-length */
 
     context.subscriptions.push(
@@ -56,6 +59,8 @@ export function activate(context: vscode.ExtensionContext) {
         nowAsEpochCommand, vscode.commands.registerCommand('timing.nowAsEpoch', nowAsEpochCommand.execute, nowAsEpochCommand),
         nowAsIsoLocalCommand, vscode.commands.registerCommand('timing.nowAsIsoLocal', nowAsIsoLocalCommand.execute, nowAsIsoLocalCommand),
         nowAsIsoUtcCommand, vscode.commands.registerCommand('timing.nowAsIsoUtc', nowAsIsoUtcCommand.execute, nowAsIsoUtcCommand),
+
+        vscode.commands.registerCommand('timing.toggleInsertConvertedTimeUserLevel', toggleInsertConvertedTimeUserLevelCommand.execute, toggleInsertConvertedTimeUserLevelCommand),
         // Register Hover Provider
         vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeConverter))
     );

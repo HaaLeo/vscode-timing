@@ -59,7 +59,6 @@ describe('CommandBase', () => {
         });
     });
 
-
     describe('config', () => {
         it('should should update insert option when configuration is updated.', async () => {
             const config = vscode.workspace.getConfiguration('timing');
@@ -97,8 +96,7 @@ describe('CommandBase', () => {
             const priorText = testObject.execute();
 
             let success = await testObject.insert('test arg');
-            const insertedText =testEditor.document.getText(testEditor.selection);
-
+            const insertedText = testEditor.document.getText(testEditor.selection);
 
             assert.equal(success, true);
             assert.equal(insertedText, 'test arg');

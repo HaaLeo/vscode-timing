@@ -118,7 +118,7 @@ describe('CustomToEpochCommand', () => {
                 editBuilder.replace(testEditor.selection, priorText);
             });
             assert.equal(success, true);
-            spy.restore()
+            spy.restore();
         });
     });
 });

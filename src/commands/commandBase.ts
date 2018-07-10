@@ -55,9 +55,7 @@ abstract class CommandBase {
         const config = vscode.workspace.getConfiguration('timing')
             .get('insertConvertedTime');
 
-        if (config === undefined) {
-            this._insertConvertedTime = false;
-        } else if (typeof (config) === 'boolean') {
+        if (typeof (config) === 'boolean') {
             this._insertConvertedTime = config;
         }
     }

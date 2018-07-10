@@ -1,6 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
+import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { EpochToIsoLocalCommand } from '../../commands/epochToIsoLocalCommand';
 import { TimeConverter } from '../../timeConverter';
@@ -22,6 +23,12 @@ describe('EpochToIsoLocalCommand', () => {
         }
         const config = vscode.workspace.getConfiguration('timing');
         await config.update('customFormats', []);
+    });
+
+    after(async () => {
+        const config = vscode.workspace.getConfiguration('timing');
+        await config.update('customFormats', undefined);
+        await config.update('insertConvertedTime', undefined);
     });
 
     describe('execute', () => {
@@ -70,6 +77,28 @@ describe('EpochToIsoLocalCommand', () => {
             assert.equal(
                 dialogHandlerMock.showResultDialog.args[0][1],
                 'Result: ' + timeConverter.epochToIsoLocal('123456789000'));
+        });
+
+        it('Should insert the converted time.', async () => {
+            const config = vscode.workspace.getConfiguration('timing');
+            await config.update('insertConvertedTime', true);
+            const priorText = testEditor.document.getText(testEditor.selection);
+
+            const spy = sinon.spy(testEditor, 'edit');
+
+            await testObject.execute();
+
+            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
+            assert.equal(spy.calledOnce, true);
+
+            // Restore
+            const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
+                editBuilder.replace(testEditor.selection, priorText);
+            });
+            assert.equal(success, true);
+            spy.restore();
         });
     });
 });

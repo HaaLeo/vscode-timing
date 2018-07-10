@@ -1,6 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
+import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { EpochToCustomCommand } from '../../commands/epochToCustomCommand';
 import { TimeConverter } from '../../timeConverter';
@@ -20,6 +21,12 @@ describe('EpochToCustomCommand', () => {
         }
         const config = vscode.workspace.getConfiguration('timing');
         await config.update('customFormats', []);
+    });
+
+    after(async () => {
+        const config = vscode.workspace.getConfiguration('timing');
+        await config.update('customFormats', undefined);
+        await config.update('insertConvertedTime', undefined);
     });
 
     describe('execute', () => {
@@ -80,6 +87,29 @@ describe('EpochToCustomCommand', () => {
             assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
             assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
             assert.equal(dialogHandlerMock.showResultDialog.args[0][1], 'Result: 1973/11/29');
+        });
+
+        it('Should insert the converted time.', async () => {
+            dialogHandlerMock.showInputDialog.returns('YYYY/MM/DD');
+            const config = vscode.workspace.getConfiguration('timing');
+            await config.update('insertConvertedTime', true);
+            const priorText = testEditor.document.getText(testEditor.selection);
+
+            const spy = sinon.spy(testEditor, 'edit');
+
+            await testObject.execute();
+
+            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
+            assert.equal(spy.calledOnce, true);
+
+            // Restore
+            const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
+                editBuilder.replace(testEditor.selection, priorText);
+            });
+            assert.equal(success, true);
+            spy.restore();
         });
     });
 });

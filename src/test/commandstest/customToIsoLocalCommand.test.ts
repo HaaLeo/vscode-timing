@@ -1,6 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
+import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { CustomToIsoLocalCommand } from '../../commands/customToIsoLocalCommand';
 import { TimeConverter } from '../../timeConverter';
@@ -22,6 +23,12 @@ describe('CustomToIsoLocalCommand', () => {
         }
         const config = vscode.workspace.getConfiguration('timing');
         await config.update('customFormats', []);
+    });
+
+    after (async () => {
+        const config = vscode.workspace.getConfiguration('timing');
+        await config.update('customFormats', undefined);
+        await config.update('insertConvertedTime', undefined);
     });
 
     describe('execute', () => {
@@ -74,6 +81,29 @@ describe('CustomToIsoLocalCommand', () => {
             assert.equal(
                 dialogHandlerMock.showResultDialog.args[0][1],
                 'Result: ' + timeConverter.customToIsoLocal('2018', 'YYYY'));
+        });
+
+        it('Should insert the converted time.', async () => {
+            const config = vscode.workspace.getConfiguration('timing');
+            await config.update('insertConvertedTime', true);
+            testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
+            const priorText = testEditor.document.getText(testEditor.selection);
+
+            const spy = sinon.spy(testEditor, 'edit');
+
+            await testObject.execute();
+
+            assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
+            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
+            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
+            assert.equal(spy.calledOnce, true);
+
+            // Restore
+            const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
+                editBuilder.replace(testEditor.selection, priorText);
+            });
+            assert.equal(success, true);
+            spy.restore();
         });
     });
 });

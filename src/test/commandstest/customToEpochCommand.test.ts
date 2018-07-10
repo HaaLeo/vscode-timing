@@ -102,7 +102,6 @@ describe('CustomToEpochCommand', () => {
             await config.update('insertConvertedTime', true);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
             const priorText = testEditor.document.getText(testEditor.selection);
-
             dialogHandlerMock.showOptionsDialog.returns({ label: 'ms' });
             const spy = sinon.spy(testEditor, 'edit');
 

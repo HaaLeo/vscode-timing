@@ -83,7 +83,6 @@ describe('EpochToIsoLocalCommand', () => {
             const config = vscode.workspace.getConfiguration('timing');
             await config.update('insertConvertedTime', true);
             const priorText = testEditor.document.getText(testEditor.selection);
-
             const spy = sinon.spy(testEditor, 'edit');
 
             await testObject.execute();

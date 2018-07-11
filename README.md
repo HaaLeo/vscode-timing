@@ -9,6 +9,18 @@
 The *timing* extension converts and visualizes a given time to various formats.  
 This extension was inspired by [zodiac403's epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
+## Installation
+
+### Via Visual Studio Code
+
+1. Press <kbd>Ctrl</kbd> + <kbd>P</kbd> to open the _Go to File..._ view
+2. Type `ext install HaaLeo.timing` and press <kbd>Enter</kbd>
+
+### From VSIX
+
+1. Download the `.vsix` file of the latest [release from GitHub](https://github.com/HaaLeo/vscode-timing/releases)
+2. Run `code --install-extension timing-x.x.x.vsix` in the command line ([reference](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix))
+
 ## Features
 
 Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion:  

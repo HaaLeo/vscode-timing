@@ -25,10 +25,16 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
                 }
 
                 const result = this._timeConverter.isoRfcToCustom(userInput, currentFormat);
+                let inserted: boolean = false;
+                if (this._insertConvertedTime) {
+                    inserted = await this.insert(result);
+                }
+                const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+
                 userInput = await this._dialogHandler.showResultDialog(
                     '123456789',
-                    'Result: ' + result,
-                    ['Result: '.length, 'Result: '.length + result.length],
+                    resultPrefix + result,
+                    [resultPrefix.length, resultPrefix.length + result.length],
                     'Input: ' + userInput);
             }
         } while (userInput !== undefined);

@@ -41,10 +41,16 @@ class IsoRfcToEpochCommand extends CommandBase {
                     break;
                 }
                 const result = this._timeConverter.isoRfcToEpoch(userInput, option.label);
+                let inserted: boolean = false;
+                if (this._insertConvertedTime) {
+                    inserted = await this.insert(result);
+                }
+                const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+
                 userInput = await this._dialogHandler.showResultDialog(
                     '1970-01-01T00:00:00.000Z',
-                    'Result: ' + result + ' (' + new InputDefinition(result).originalUnit + ')',
-                    ['Result: '.length, 'Result: '.length + result.length],
+                    resultPrefix + result + ' (' + new InputDefinition(result).originalUnit + ')',
+                    [resultPrefix.length, resultPrefix.length + result.length],
                     'Input: ' + userInput);
             }
         } while (userInput);

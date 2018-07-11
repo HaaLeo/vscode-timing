@@ -7,8 +7,7 @@
 
 ## Description
 The *timing* extension converts and visualizes a given time to various formats.  
-This extension was inspired by 
-[zodiac403's  epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
+This extension was inspired by [zodiac403's epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
 ## Features
 
@@ -29,6 +28,8 @@ Currently this extension is capable to do the following conversions, where the _
 | Custom | ⟶ | ISO 8601 Local|
 | Custom | ⟶ | ISO 8601 Utc|
 
+Whether the current selection is replaced with the converted time, is indicated by the `timing.insertConvertedTime` setting.  
+
 When the _epoch time is the **source**_ format of the conversion its unit is determined by its **digit count**:
 
 | Minimum Length| Maximum Length| Used Unit |
@@ -43,15 +44,21 @@ When the _epoch time is the **target**_ format of the conversion you can select 
 
 ### Conversion via Command Palette
 
+#### Simple Conversion
+
 In order to convert a time via the command palette there exist several commands. Each command will show up an input box where you can enter the time. After pressing <kbd>Enter</kbd> it will display the converted time in the input box again, ready to be copied.
 
 ![Convert Sample](doc/Convert_Sample.gif)
+
+#### Pre-selection
 
 If a valid time string is pre-selected, the command will directly convert the selection and show the corresponding result.
 
 ![Convert Selection Sample](doc/Convert_Selection_Sample.gif)
 
-If required, the command will ask you to select the **target format** of the epoch time (s, ms, ns).
+#### Options
+
+If required, the command will ask you to select the **target format** of the time.
 
 ![Convert Selection Option Sample](doc/Convert_Selection_Option_Sample.gif)
 
@@ -62,11 +69,12 @@ In addition, you can also get the current time as **epoch**, **ISO 8601**, or **
 ![Now as ISO 8601 Local](doc/Get_Now_Local_Sample.gif)
 
 ### Custom Formats
+
 To convert different times from/to custom formats you need to insert a **valid [momentjs format](https://momentjs.com/docs/#/displaying/format/)** after you invoke a corresponding command.  
 
 ![Convert To CustomSample](doc/Convert_To_Custom_Sample.gif)
 
-Optionally you can specify **custom formats** of the following shape in the user settings. Those will be shown as possible choices.  
+Optionally you can specify **custom formats** of the following shape in the user settings. Those will be shown as possible options.  
 Example:
 
 ```JSON
@@ -92,6 +100,12 @@ When you hover over a number the extension shows you the converted **UTC time** 
 
 ![Hover Sample](doc/Hover_Sample.gif)
 
+### Insert Converted Time
+
+You can add the setting `"timing.insertConvertedTime": true` in order to automatically replace the cursor's selection with the converted time. In addition there exists the command `timing.toggleInsertConvertedTimeUserLevel` to toggle this setting (on User Level).
+
+![Insert Sample](doc/Insert_Sample.gif)
+
 ## Command Overview
 
 * `timing.customToEpoch`: Custom ⟶ Epoch
@@ -106,6 +120,7 @@ When you hover over a number the extension shows you the converted **UTC time** 
 * `timing.nowAsEpoch`: Now ⟶ Epoch
 * `timing.nowAsIsoLocal`: Now ⟶ Epoch
 * `timing.nowAsIsoUtc`: Now ⟶ Epoch
+* `timing.toggleInsertConvertedTimeUserLevel`: toggle the `timing.insertConvertedTime` user setting
 * `timing.convertTime`: **DEPRECATED**, use `timing.epochToIsoUtc` instead
 
 ## Contribution

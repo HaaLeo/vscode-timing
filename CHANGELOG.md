@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## 2018-07-11 - v0.5.0
+* **Added** setting `timing.insertConvertedTime` that indicates whether the current selection is replaced with the converted time
+* **Added** command `timing.toggleInsertConvertedTimeUserLevel` to toggle the `timing.insertConvertedTime` setting on user level
+
 ## 2018-06-23 - v0.4.2
 * **Fixed** layout of Readme for vscode's extension explorer ([#51859](https://github.com/Microsoft/vscode/issues/51859)).
 

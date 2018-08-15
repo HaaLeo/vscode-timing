@@ -6,5 +6,7 @@
         "out": true
     },
     "files.trimFinalNewlines": true,
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

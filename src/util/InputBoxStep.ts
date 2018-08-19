@@ -6,9 +6,11 @@ import { IStep } from './IStep';
 import { MultiStepHandler } from './MultiStepHandler';
 import { StepResult } from './StepResult';
 
+/**
+ * The input box step. Used to show a input box to the user.
+ */
 class InputBoxStep implements IStep {
 
-    private _buttons: QuickInputButton[];
     private _inputBox: InputBox;
     private _disposables: Disposable[] = [];
     private _validate: (string) => boolean;
@@ -16,12 +18,20 @@ class InputBoxStep implements IStep {
     private _unregisterOnBack: boolean;
     private _isRunning: boolean;
 
+    /**
+     * Creates an InputBoxStep.
+     * @param placeholder The input box's placeholder.
+     * @param prompt The input box's prompt.
+     * @param title The input box's title.
+     * @param validationMessage The input box's validation message.
+     * @param validationFn Function that validates the user's input.
+     * @param unregisterOnBack Indicates whether this step is unregistered when the user navigates _Back_.
+     */
     public constructor(
         placeholder: string,
         prompt: string,
         title: string,
         validationMessage: string,
-        buttons: QuickInputButton[],
         validationFn: (input: string) => boolean,
         unregisterOnBack?: boolean) {
 
@@ -32,7 +42,6 @@ class InputBoxStep implements IStep {
         this._inputBox.ignoreFocusOut = true;
         this._inputBox.validationMessage = '';
 
-        this._buttons = buttons;
         this._validate = validationFn;
         this._validationMessage = validationMessage;
 
@@ -42,20 +51,23 @@ class InputBoxStep implements IStep {
         this._disposables.push(this._inputBox);
     }
 
+    /**
+     * Execute this step.
+     * @param handler The handler of the step.
+     * @param step The step's number.
+     * @param totalSteps The amount of overall steps.
+     */
     public execute(handler: MultiStepHandler, step: number, totalSteps: number): Thenable<StepResult> {
         this._isRunning = true;
         this._inputBox.step = step;
         this._inputBox.totalSteps = totalSteps;
         if (step > 1) {
-            this._inputBox.buttons = [QuickInputButtons.Back, ...this._buttons];
-        } else {
-            this._inputBox.buttons = this._buttons;
+            this._inputBox.buttons = [QuickInputButtons.Back];
         }
 
         return new Promise<StepResult>((resolve, reject) => {
             this._inputBox.onDidAccept(() => {
                 if (this._validate(this._inputBox.value)) {
-                    this._inputBox.hide();
                     this._isRunning = false;
                     this._inputBox.hide();
                     resolve(new StepResult(InputFlowAction.Continue, this._inputBox.value));
@@ -95,6 +107,9 @@ class InputBoxStep implements IStep {
         });
     }
 
+    /**
+     * Dispose this object.
+     */
     public dispose() {
         this._disposables.forEach((disposable) => disposable.dispose());
     }

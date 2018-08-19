@@ -4,10 +4,25 @@ import { Disposable } from 'vscode';
 import { InputFlowAction } from './InputFlowAction';
 import { IStep } from './IStep';
 
+/**
+ * The handles the execution of multiple steps.
+ */
 class MultiStepHandler implements Disposable {
+    /**
+     * List of steps to be executed.
+     */
     private _steps: IStep[] = [];
-    private _results: string[];
 
+    /**
+     * The results of each step.
+     */
+    private _stepResults: string[];
+
+    /**
+     * Registers a given step if it was not registered before.
+     * @param {IStep} step The step to register
+     * @param {number} index zero based index indicating at which position the step is registered.
+     */
     public registerStep(step: IStep, index?: number): void {
         if (this._steps.indexOf(step, 0) === -1) {
             if (index) {
@@ -18,6 +33,10 @@ class MultiStepHandler implements Disposable {
         }
     }
 
+    /**
+     * Un-registers the given step if it was registered before.
+     * @param step The step to unregister.
+     */
     public unregisterStep(step: IStep): void {
         const index = this._steps.indexOf(step, 0);
         if (index !== -1) {
@@ -25,16 +44,35 @@ class MultiStepHandler implements Disposable {
         }
     }
 
-    public async run(): Promise<string[]> {
-        this._results = [];
-        await this.executeStep(this._steps[0]);
-        return this._results.filter(Boolean);
+    /**
+     * Runs all registered steps.
+     * @param startIndex zero based index indicating which step is used for start.
+     * If `-1` the last step will be used.
+     * @returns A promise to the _ordered_ array containing each step's result
+     */
+    public async run(startIndex: number = 0): Promise<string[]> {
+        this._stepResults = [];
+        if (startIndex === -1) {
+            startIndex = this._steps.length - 1;
+        }
+        await this.executeStep(this._steps[startIndex]);
+
+        // Filter results when sub steps were used
+        return this._stepResults.filter(Boolean);
     }
 
+    /**
+     * Dispose this object.
+     */
     public dispose(): void {
         this._steps.forEach((step) => step.dispose());
     }
 
+    /**
+     * Executes the given `step` and add result to the `_stepResults`.
+     * @param step The step to execute.
+     * @returns a promise.
+     */
     private async executeStep(step: IStep): Promise<void> {
         const stepIndex = this._steps.indexOf(step);
         const totalSteps = this._steps.length;
@@ -44,7 +82,7 @@ class MultiStepHandler implements Disposable {
         switch (result.action) {
 
             case InputFlowAction.Continue: {
-                this._results[stepIndex] = result.value;
+                this._stepResults[stepIndex] = result.value;
                 if (stepIndex < this._steps.length - 1) {
                     await this.executeStep(this._steps[stepIndex + 1]);
                 }
@@ -55,7 +93,7 @@ class MultiStepHandler implements Disposable {
                 break;
             }
             case InputFlowAction.Cancel:
-                this._results = [];
+                this._stepResults = [];
                 break;
             default:
                 throw Error('Unknown input flow action!');

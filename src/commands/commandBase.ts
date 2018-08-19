@@ -3,12 +3,16 @@
 import * as vscode from 'vscode';
 import { DialogHandler } from '../dialogHandler';
 import { TimeConverter } from '../timeConverter';
+import { InputBoxStep } from '../util/InputBoxStep';
+import { MultiStepHandler } from '../util/MultiStepHandler';
 
 abstract class CommandBase {
     protected _dialogHandler: DialogHandler;
     protected _timeConverter: TimeConverter;
     protected _insertConvertedTime: boolean;
     protected _disposables: vscode.Disposable[];
+    protected _stepHandler: MultiStepHandler;
+    protected _showResultStep: InputBoxStep;
 
     public constructor(timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;

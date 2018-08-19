@@ -1,4 +1,4 @@
-# VS Code Time Converter &#8212; `timing`
+# VS Code Time Converter &#8212; timing
 
 [![Version](https://vsmarketplacebadge.apphb.com/version/HaaLeo.timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing) [![Installs](https://vsmarketplacebadge.apphb.com/installs/HaaLeo.timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing) [![Ratings](https://vsmarketplacebadge.apphb.com/rating/HaaLeo.timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing#review-details) [![Stars](https://img.shields.io/github/stars/HaaLeo/vscode-timing.svg?label=Stars&logo=github&style=flat-square)](https://github.com/HaaLeo/vscode-timing/stargazers)  
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://raw.githubusercontent.com/HaaLeo/vscode-timing/master/LICENSE) [![Build Status](https://img.shields.io/travis/HaaLeo/vscode-timing/master.svg?style=flat-square)](https://travis-ci.org/HaaLeo/vscode-timing) [![Codecov](https://img.shields.io/codecov/c/github/HaaLeo/vscode-timing.svg?style=flat-square)](https://codecov.io/gh/HaaLeo/vscode-timing)  
@@ -141,5 +141,5 @@ If you found a bug or are missing a feature do not hesitate to [file an issue](h
 Pull Requests are welcome!
 
 ## Support
-When you like this extension make sure to [star the repo](https://github.com/HaaLeo/vscode-timing/stargazers) and [write a review](https://marketplace.visualstudio.com/items?itemName=HaaLeo.Timing#review-details). I am always looking for new ideas and feedback.  
+When you like this extension make sure to [star the repo](https://github.com/HaaLeo/vscode-timing/stargazers) and [write a review](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing#review-details). I am always looking for new ideas and feedback.  
 In addition, it is possible to [donate via paypal](https://www.paypal.me/LeoHanisch).

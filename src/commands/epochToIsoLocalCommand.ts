@@ -4,91 +4,74 @@ import { InputDefinition } from '../inputDefinition';
 
 import { QuickInputButton, QuickInputButtons } from 'vscode';
 import { InputBoxStep } from '../util/InputBoxStep';
+import { InputFlowAction } from '../util/InputFlowAction';
 import { MultiStepHandler } from '../util/MultiStepHandler';
 import { QuickPickStep } from '../util/QuickPickStep';
+import { ResultBox } from '../util/ResultBox';
+import { StepResult } from '../util/StepResult';
 import { CommandBase } from './commandBase';
 
+/**
+ * Command to convert epoch time to ISO 8601 local time.
+ */
 class EpochToIsoLocalCommand extends CommandBase {
+
+    /**
+     * Execute the command.
+     */
     public async execute() {
 
-        // let userInput = this.isInputSelected();
-        const inputStep1 = new InputBoxStep(
+        const preSelection = this.isInputSelected();
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        do {
+            let rawInput = loopResult.value;
+            if (!rawInput || !this._timeConverter.isValidEpoch(rawInput)) {
+                if (!this._stepHandler) {
+                    this.initialize();
+                }
+
+                if (loopResult.action === InputFlowAction.Back) {
+                    [rawInput] = await this._stepHandler.run(-1);
+                } else {
+                    [rawInput] = await this._stepHandler.run();
+                }
+            }
+            this._stepHandler.reg
+            if (!rawInput) {
+                break;
+            }
+
+            const input = new InputDefinition(rawInput);
+            const result = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
+
+            let inserted: boolean = false;
+            if (this._insertConvertedTime) {
+                inserted = await this.insert(result);
+            }
+            const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+
+            const resultBox = new ResultBox();
+            loopResult = await resultBox.show(
+                'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
+                'Epoch → Iso 8601 Local: Result',
+                result);
+        } while (loopResult.action !== InputFlowAction.Cancel);
+    }
+
+    /**
+     * Initialize all members.
+     */
+    private initialize(): void {
+        const insertEpochTime = new InputBoxStep(
             '123456789',
-            'Insert epoch time 1.',
-            'Epoch to Iso Local Command',
+            'Insert the epoch time.',
+            'Epoch → Iso 8601 Local',
             'Ensure the epoch time is valid.',
             [],
             this._timeConverter.isValidEpoch);
-        const alternative = new InputBoxStep(
-            '123456789',
-            'Insert epoch time alternative.',
-            'Epoch to Iso Local Command',
-            'Ensure the epoch time is valid.',
-            [],
-            this._timeConverter.isValidEpoch,
-            true);
-        const quickPick1 = new QuickPickStep(
-            'ms',
-            'Epoch to Iso Local Command',
-            [],
-            [
-                {
-                    label: 's',
-                    detail: 'seconds'
-                },
-                {
-                    label: 'ms',
-                    detail: 'milliseconds'
-                },
-                {
-                    label: 'ns',
-                    detail: 'nanoseconds'
-                }
-            ],
-            { label: 'Something else...' },
-            alternative);
-        const inputStep2 = new InputBoxStep(
-            '123456789',
-            'Insert epoch time 2.',
-            'Epoch to Iso Local Command',
-            'Ensure the epoch time is valid.',
-            [],
-            this._timeConverter.isValidEpoch,
-            false);
 
-        const stepHandler = new MultiStepHandler();
-        stepHandler.registerStep(inputStep1);
-        stepHandler.registerStep(quickPick1);
-        stepHandler.registerStep(inputStep2);
-
-        const result = await stepHandler.run();
-        console.log(result);
-        //     do {
-        //         let input = new InputDefinition(userInput);
-        //         if (!input.inputAsMs || !this._timeConverter.isValidEpoch(input.inputAsMs.toString())) {
-        //             userInput = await this._dialogHandler.showInputDialog(
-        //                 '123456789',
-        //                 'Insert epoch time.',
-        //                 this._timeConverter.isValidEpoch,
-        //                 'Ensure the epoch time is valid.',
-        //             );
-        //         }
-        //         if (userInput !== undefined) {
-        //             input = new InputDefinition(userInput);
-        //             const result = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
-        //             let inserted: boolean = false;
-        //             if (this._insertConvertedTime) {
-        //                 inserted = await this.insert(result);
-        //             }
-        //             const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
-
-        //             userInput = await this._dialogHandler.showResultDialog(
-        //                 '123456789',
-        //                 resultPrefix + result,
-        //                 [resultPrefix.length, resultPrefix.length + result.length],
-        //                 'Input: ' + userInput + ' (' + new InputDefinition(userInput).originalUnit + ')');
-        //         }
-        //     } while (userInput);
+        this._stepHandler = new MultiStepHandler();
+        this._stepHandler.registerStep(insertEpochTime);
     }
 }
 

@@ -12,12 +12,21 @@ class EpochToIsoLocalCommand extends CommandBase {
     public async execute() {
 
         // let userInput = this.isInputSelected();
-        const inputStep1 = new InputBoxStep('123456789',
+        const inputStep1 = new InputBoxStep(
+            '123456789',
             'Insert epoch time 1.',
             'Epoch to Iso Local Command',
             'Ensure the epoch time is valid.',
-            [{ iconPath: '$(light-bulb)', tooltip: 'my tool tip.' }],
+            [],
             this._timeConverter.isValidEpoch);
+        const alternative = new InputBoxStep(
+            '123456789',
+            'Insert epoch time alternative.',
+            'Epoch to Iso Local Command',
+            'Ensure the epoch time is valid.',
+            [],
+            this._timeConverter.isValidEpoch,
+            true);
         const quickPick1 = new QuickPickStep(
             'ms',
             'Epoch to Iso Local Command',
@@ -35,13 +44,17 @@ class EpochToIsoLocalCommand extends CommandBase {
                     label: 'ns',
                     detail: 'nanoseconds'
                 }
-            ]);
-        const inputStep2 = new InputBoxStep('123456789',
+            ],
+            { label: 'Something else...' },
+            alternative);
+        const inputStep2 = new InputBoxStep(
+            '123456789',
             'Insert epoch time 2.',
             'Epoch to Iso Local Command',
             'Ensure the epoch time is valid.',
-            [{ iconPath: '$(light-bulb)', tooltip: 'my tool tip.' }],
-            this._timeConverter.isValidEpoch);
+            [],
+            this._timeConverter.isValidEpoch,
+            false);
 
         const stepHandler = new MultiStepHandler();
         stepHandler.registerStep(inputStep1);
@@ -76,7 +89,7 @@ class EpochToIsoLocalCommand extends CommandBase {
         //                 'Input: ' + userInput + ' (' + new InputDefinition(userInput).originalUnit + ')');
         //         }
         //     } while (userInput);
-        }
     }
+}
 
 export { EpochToIsoLocalCommand };

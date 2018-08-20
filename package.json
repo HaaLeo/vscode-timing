@@ -182,8 +182,8 @@
         "sinon": "^6.1.5",
         "tslint": "^5.11.0",
         "typescript": "^3.0.1",
-        "vscode": "^1.1.21",
-        "vsce": "^1.46.0"
+        "vsce": "^1.46.0",
+        "vscode": "^1.1.21"
     },
     "dependencies": {
         "moment": "^2.22.2"

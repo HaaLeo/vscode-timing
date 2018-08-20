@@ -9,7 +9,7 @@ import * as Mocha from 'mocha';
 import * as remapIstanbul from 'remap-istanbul';
 
 // Linux: prevent a weird NPE when mocha on Linux requires the window size from the TTY
-// Since we are not running in a tty environment, we just implementt he method statically
+// Since we are not running in a tty environment, we just implement he method statically
 // tslint:disable:no-var-requires
 const tty = require('tty');
 // tslint:enable:no-var-requires

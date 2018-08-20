@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 
-import { InputDefinition } from './inputDefinition';
+import { InputDefinition } from './util/inputDefinition';
 
 class DialogHandler {
 

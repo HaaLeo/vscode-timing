@@ -1,7 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { InputDefinition } from '../inputDefinition';
+import { InputDefinition } from '../util/inputDefinition';
 import { CommandBase } from './commandBase';
 
 class IsoRfcToEpochCommand extends CommandBase {

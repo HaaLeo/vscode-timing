@@ -4,7 +4,7 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 
 import { CustomCommandBase } from '../../commands/customCommandBase';
-import { TimeConverter } from '../../timeConverter';
+import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
 
 describe('CustomCommandBase', () => {

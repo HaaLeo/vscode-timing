@@ -1,7 +1,7 @@
 'use strict';
 
 import { Disposable } from 'vscode';
-import { InputFlowAction } from './InputFlowAction';
+import { InputFlowAction } from '../util/InputFlowAction';
 import { IStep } from './IStep';
 
 /**

@@ -3,8 +3,8 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { TimeConverter } from '../timeConverter';
-import { TimeHoverProvider } from '../timeHoverProvider';
+import { TimeConverter } from '../util/timeConverter';
+import { TimeHoverProvider } from '../util/timeHoverProvider';
 
 describe('TimeHoverProvider', () => {
 

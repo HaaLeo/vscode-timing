@@ -17,8 +17,8 @@ import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
 import { ToggleInsertConvertedTimeUserLevelCommand } from './commands/toggleInsertConvertedTimeUserLevelCommand';
 
 import { DialogHandler } from './dialogHandler';
-import { TimeConverter } from './timeConverter';
-import { TimeHoverProvider } from './timeHoverProvider';
+import { TimeConverter } from './util/timeConverter';
+import { TimeHoverProvider } from './util/timeHoverProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 

@@ -4,7 +4,7 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { CustomToEpochCommand } from '../../commands/customToEpochCommand';
-import { TimeConverter } from '../../timeConverter';
+import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
 
 describe('CustomToEpochCommand', () => {

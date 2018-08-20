@@ -1,14 +1,14 @@
 'use strict';
 
-import { InputDefinition } from '../inputDefinition';
+import { InputDefinition } from '../util/inputDefinition';
 
 import { QuickInputButton, QuickInputButtons } from 'vscode';
-import { InputBoxStep } from '../util/InputBoxStep';
+import { InputBoxStep } from '../step/InputBoxStep';
+import { MultiStepHandler } from '../step/MultiStepHandler';
+import { QuickPickStep } from '../step/QuickPickStep';
+import { StepResult } from '../step/StepResult';
 import { InputFlowAction } from '../util/InputFlowAction';
-import { MultiStepHandler } from '../util/MultiStepHandler';
-import { QuickPickStep } from '../util/QuickPickStep';
 import { ResultBox } from '../util/ResultBox';
-import { StepResult } from '../util/StepResult';
 import { CommandBase } from './commandBase';
 
 /**
@@ -36,7 +36,7 @@ class EpochToIsoLocalCommand extends CommandBase {
                     [rawInput] = await this._stepHandler.run();
                 }
             }
-            this._stepHandler.reg
+
             if (!rawInput) {
                 break;
             }
@@ -67,7 +67,6 @@ class EpochToIsoLocalCommand extends CommandBase {
             'Insert the epoch time.',
             'Epoch → Iso 8601 Local',
             'Ensure the epoch time is valid.',
-            [],
             this._timeConverter.isValidEpoch);
 
         this._stepHandler = new MultiStepHandler();

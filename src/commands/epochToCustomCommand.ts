@@ -1,8 +1,8 @@
 'use strict';
 
-import { InputDefinition } from '../inputDefinition';
-
 import { CustomCommandBase } from './customCommandBase';
+
+import { InputDefinition } from '../util/inputDefinition';
 
 class EpochToCustomCommand extends CustomCommandBase {
 

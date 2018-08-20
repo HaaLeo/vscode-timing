@@ -2,9 +2,9 @@
 
 import * as vscode from 'vscode';
 import { DialogHandler } from '../dialogHandler';
-import { TimeConverter } from '../timeConverter';
-import { InputBoxStep } from '../util/InputBoxStep';
-import { MultiStepHandler } from '../util/MultiStepHandler';
+import { InputBoxStep } from '../step/InputBoxStep';
+import { MultiStepHandler } from '../step/MultiStepHandler';
+import { TimeConverter } from '../util/timeConverter';
 
 abstract class CommandBase {
     protected _dialogHandler: DialogHandler;

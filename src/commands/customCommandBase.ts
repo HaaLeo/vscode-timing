@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 import { DialogHandler } from '../dialogHandler';
-import { TimeConverter } from '../timeConverter';
+import { TimeConverter } from '../util/timeConverter';
 import { CommandBase } from './commandBase';
 
 abstract class CustomCommandBase extends CommandBase implements vscode.Disposable {

@@ -1,6 +1,6 @@
 'use strict';
 
-import { InputDefinition } from '../inputDefinition';
+import { InputDefinition } from '../util/inputDefinition';
 
 import { CommandBase } from './commandBase';
 

@@ -1,8 +1,8 @@
 'use strict';
 
 import { Disposable, InputBox, QuickInputButton, QuickInputButtons, window } from 'vscode';
+import { StepResult } from '../step/StepResult';
 import { InputFlowAction } from './InputFlowAction';
-import { StepResult } from './StepResult';
 
 /**
  * The ResultBox. Used to show conversion results.

@@ -1,8 +1,8 @@
 'use strict';
 
 import { QuickPickItem } from 'vscode';
-import { InputDefinition } from '../inputDefinition';
 
+import { InputDefinition } from '../util/inputDefinition';
 import { CustomCommandBase } from './customCommandBase';
 
 class CustomToEpochCommand extends CustomCommandBase {

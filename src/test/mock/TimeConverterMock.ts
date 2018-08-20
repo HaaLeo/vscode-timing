@@ -1,7 +1,7 @@
 'use strict';
 
 import * as sinon from 'sinon';
-import { TimeConverter } from '../../timeConverter';
+import { TimeConverter } from '../../util/timeConverter';
 
 class TimeConverterMock implements TimeConverter {
     public isoRfcToCustom = sinon.stub();

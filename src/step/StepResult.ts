@@ -1,6 +1,6 @@
 'use strict';
 
-import { InputFlowAction } from './InputFlowAction';
+import { InputFlowAction } from '../util/InputFlowAction';
 
 /**
  * The result of a step.

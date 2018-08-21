@@ -74,7 +74,7 @@ class InputBoxStep implements IStep {
                 } else {
                     this._inputBox.validationMessage = this._validationMessage;
                 }
-            });
+            }, this, this._disposables);
 
             this._inputBox.onDidChangeValue((current) => {
                 if (this._validate(current)) {
@@ -82,7 +82,7 @@ class InputBoxStep implements IStep {
                 } else {
                     this._inputBox.validationMessage = this._validationMessage;
                 }
-            });
+            }, this, this._disposables);
 
             this._inputBox.onDidTriggerButton((button) => {
                 if (button === QuickInputButtons.Back) {
@@ -96,7 +96,7 @@ class InputBoxStep implements IStep {
                     this._inputBox.hide();
                     resolve(new StepResult(InputFlowAction.Back, undefined));
                 }
-            });
+            }, this, this._disposables);
 
             this._inputBox.onDidHide(() => {
                 resolve(new StepResult(InputFlowAction.Cancel, undefined));

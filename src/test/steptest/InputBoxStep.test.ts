@@ -159,7 +159,8 @@ describe('InputBoxStep', () => {
                     'test-prompt',
                     'test-title',
                     'test-validation-message',
-                    () => false);
+                    () => false,
+                    true);
                 assert.equal(spy.calledOnce, true);
                 const inputBox: vscode.InputBox = spy.returnValues[0];
                 inputBoxStub = sinon.stub(inputBox);
@@ -189,6 +190,24 @@ describe('InputBoxStep', () => {
                 listener('not evaluated');
 
                 assert.strictEqual(inputBoxStub.validationMessage, 'test-validation-message');
+            });
+
+            it('onDidTriggerBackButton should unregister and resolve back action.', async () => {
+                sinon.reset();
+                const handler = new MultiStepHandler();
+                const unregisterSpy = sinon.spy(handler, 'unregisterStep');
+                const resultPromise = testObject.execute(handler, 0, 0);
+
+                assert.strictEqual(inputBoxStub.onDidTriggerButton.calledOnce, true);
+                listener = inputBoxStub.onDidTriggerButton.firstCall.args[0];
+
+                listener(vscode.QuickInputButtons.Back);
+                const result = await resultPromise;
+
+                assert.strictEqual(result.value, undefined);
+                assert.strictEqual(result.action, InputFlowAction.Back);
+                assert.strictEqual(unregisterSpy.calledOnce, true);
+                assert.strictEqual(unregisterSpy.firstCall.args[0], testObject);
             });
         });
     });

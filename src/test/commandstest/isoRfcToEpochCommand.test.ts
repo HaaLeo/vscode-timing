@@ -34,7 +34,7 @@ describe('IsoRfcToEpochCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new IsoRfcToEpochCommand(timeConverter, dialogHandlerMock);
+            testObject = new IsoRfcToEpochCommand(undefined, timeConverter, dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(4, 31), new vscode.Position(4, 55));
             dialogHandlerMock.showOptionsDialog.returns({ label: 'ms' });
         });

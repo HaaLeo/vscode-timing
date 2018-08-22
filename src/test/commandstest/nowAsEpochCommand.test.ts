@@ -35,7 +35,7 @@ describe('NowAsEpochCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             timeConverterMock.reset();
-            testObject = new NowAsEpochCommand(timeConverterMock, dialogHandlerMock);
+            testObject = new NowAsEpochCommand(undefined, timeConverterMock, dialogHandlerMock);
             dialogHandlerMock.showOptionsDialog.returns({ label: 'ms' });
             timeConverterMock.getNowAsEpoch.returns('1111');
         });

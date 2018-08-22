@@ -32,7 +32,7 @@ describe('IsoRfcToCustomCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new IsoRfcToCustomCommand(new TimeConverter(), dialogHandlerMock);
+            testObject = new IsoRfcToCustomCommand(undefined, new TimeConverter(), dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(4, 31), new vscode.Position(4, 55));
         });
 

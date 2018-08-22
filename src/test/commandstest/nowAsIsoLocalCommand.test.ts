@@ -35,7 +35,7 @@ describe('NowAsIsoLocalCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             timeConverterMock.reset();
-            testObject = new NowAsIsoLocalCommand(timeConverterMock, dialogHandlerMock);
+            testObject = new NowAsIsoLocalCommand(undefined, timeConverterMock, dialogHandlerMock);
             timeConverterMock.getNowAsIsoLocal.returns('1111');
         });
 

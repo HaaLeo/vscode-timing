@@ -35,7 +35,7 @@ describe('NowAsCustomCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             timeConverterMock.reset();
-            testObject = new NowAsCustomCommand(timeConverterMock, dialogHandlerMock);
+            testObject = new NowAsCustomCommand(undefined, timeConverterMock, dialogHandlerMock);
             timeConverterMock.getNowAsCustom.returns('2018');
         });
 

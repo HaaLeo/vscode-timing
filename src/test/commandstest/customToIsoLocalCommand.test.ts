@@ -35,7 +35,7 @@ describe('CustomToIsoLocalCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             dialogHandlerMock.showInputDialog.returns('YYYY');
-            testObject = new CustomToIsoLocalCommand(timeConverter, dialogHandlerMock);
+            testObject = new CustomToIsoLocalCommand(undefined, timeConverter, dialogHandlerMock);
         });
 
         it('Should stop if selected custom format is invalid.', async () => {

@@ -34,7 +34,7 @@ describe('CustomCommandBase', () => {
         const config = vscode.workspace.getConfiguration('timing');
         const dialogHandlerMock = new DialogHandlerMock();
         dialogHandlerMock.showInputDialog.returns(undefined);
-        const testObject = new TestObject(new TimeConverter(), dialogHandlerMock);
+        const testObject = new TestObject(undefined, new TimeConverter(), dialogHandlerMock);
         await config.update('customFormats', []);
 
         const result = await testObject.execute();
@@ -48,7 +48,7 @@ describe('CustomCommandBase', () => {
         const config = vscode.workspace.getConfiguration('timing');
         const dialogHandlerMock = new DialogHandlerMock();
         dialogHandlerMock.showInputDialog.returns('Test Format');
-        const testObject = new TestObject(new TimeConverter(), dialogHandlerMock);
+        const testObject = new TestObject(undefined, new TimeConverter(), dialogHandlerMock);
         await config.update('customFormats', []);
 
         const result = await testObject.execute();
@@ -62,7 +62,7 @@ describe('CustomCommandBase', () => {
         const config = vscode.workspace.getConfiguration('timing');
         const dialogHandlerMock = new DialogHandlerMock();
         dialogHandlerMock.showOptionsDialog.returns({label: 'Test Format'});
-        const testObject = new TestObject(new TimeConverter(), dialogHandlerMock);
+        const testObject = new TestObject(undefined, new TimeConverter(), dialogHandlerMock);
         await config.update('customFormats', [{format: 'not evaluated'}]);
 
         const result = await testObject.execute();
@@ -76,7 +76,7 @@ describe('CustomCommandBase', () => {
         const config = vscode.workspace.getConfiguration('timing');
         const dialogHandlerMock = new DialogHandlerMock();
         dialogHandlerMock.showOptionsDialog.returns(undefined);
-        const testObject = new TestObject(new TimeConverter(), dialogHandlerMock);
+        const testObject = new TestObject(undefined, new TimeConverter(), dialogHandlerMock);
         await config.update('customFormats', [{format: 'first'}, {format: 'second'}]);
 
         await testObject.execute();

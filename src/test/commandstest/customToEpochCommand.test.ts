@@ -36,7 +36,7 @@ describe('CustomToEpochCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             dialogHandlerMock.showInputDialog.returns('YYYY');
-            testObject = new CustomToEpochCommand(timeConverter, dialogHandlerMock);
+            testObject = new CustomToEpochCommand(undefined, timeConverter, dialogHandlerMock);
         });
 
         it('Should stop if selected custom format is invalid.', async () => {

@@ -35,7 +35,7 @@ describe('CustomToIsoUtcCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             dialogHandlerMock.showInputDialog.returns('YYYY');
-            testObject = new CustomToIsoUtcCommand(timeConverter, dialogHandlerMock);
+            testObject = new CustomToIsoUtcCommand(undefined, timeConverter, dialogHandlerMock);
         });
 
         it('Should stop if selected custom format is invalid.', async () => {

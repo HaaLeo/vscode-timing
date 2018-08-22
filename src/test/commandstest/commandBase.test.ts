@@ -42,7 +42,7 @@ describe('CommandBase', () => {
     describe('isInputSelected', () => {
         it('should get the correct preselected time.', () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
-            const testObject = new TestObject(new TimeConverter(), new DialogHandler());
+            const testObject = new TestObject(undefined, new TimeConverter(), new DialogHandler());
 
             const result = testObject.execute();
 
@@ -51,7 +51,7 @@ describe('CommandBase', () => {
 
         it('should return selection no matter whether it is a time.', () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 2), new vscode.Position(3, 4));
-            const testObject = new TestObject(new TimeConverter(), new DialogHandler());
+            const testObject = new TestObject(undefined, new TimeConverter(), new DialogHandler());
 
             const result = testObject.execute();
 
@@ -63,7 +63,7 @@ describe('CommandBase', () => {
         it('should should update insert option when configuration is updated.', async () => {
             const config = vscode.workspace.getConfiguration('timing');
             const dialogHandlerMock = new DialogHandlerMock();
-            const testObject = new TestObject(new TimeConverter(), dialogHandlerMock);
+            const testObject = new TestObject(undefined, new TimeConverter(), dialogHandlerMock);
 
             await config.update('insertConvertedTime', true);
 
@@ -73,7 +73,7 @@ describe('CommandBase', () => {
         it('should should set insert option to false when configuration is undefined.', async () => {
             const config = vscode.workspace.getConfiguration('timing');
             const dialogHandlerMock = new DialogHandlerMock();
-            const testObject = new TestObject(new TimeConverter(), dialogHandlerMock);
+            const testObject = new TestObject(undefined, new TimeConverter(), dialogHandlerMock);
 
             await config.update('insertConvertedTime', undefined);
 
@@ -88,7 +88,7 @@ describe('CommandBase', () => {
             const config = vscode.workspace.getConfiguration('timing');
             await config.update('insertConvertedTime', true);
 
-            testObject = new TestObject(new TimeConverter(), new DialogHandler());
+            testObject = new TestObject(undefined, new TimeConverter(), new DialogHandler());
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 2), new vscode.Position(3, 4));
         });
 

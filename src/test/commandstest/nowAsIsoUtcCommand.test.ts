@@ -35,7 +35,7 @@ describe('NowAsIsoUtcCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             timeConverterMock.reset();
-            testObject = new NowAsIsoUtcCommand(timeConverterMock, dialogHandlerMock);
+            testObject = new NowAsIsoUtcCommand(undefined, timeConverterMock, dialogHandlerMock);
             timeConverterMock.getNowAsIsoUtc.returns('1111');
         });
 

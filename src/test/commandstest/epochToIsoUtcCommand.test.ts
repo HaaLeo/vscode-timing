@@ -34,7 +34,7 @@ describe('EpochToIsoUtcCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToIsoUtcCommand(timeConverter, dialogHandlerMock);
+            testObject = new EpochToIsoUtcCommand(undefined, timeConverter, dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
         });
 

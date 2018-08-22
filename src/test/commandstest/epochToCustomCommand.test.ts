@@ -32,7 +32,7 @@ describe('EpochToCustomCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToCustomCommand(new TimeConverter(), dialogHandlerMock);
+            testObject = new EpochToCustomCommand(undefined, new TimeConverter(), dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
         });
 

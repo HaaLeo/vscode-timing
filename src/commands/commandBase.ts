@@ -13,10 +13,12 @@ abstract class CommandBase {
     protected _disposables: vscode.Disposable[];
     protected _stepHandler: MultiStepHandler;
     protected _showResultStep: InputBoxStep;
+    protected _context: vscode.ExtensionContext;
 
-    public constructor(timeConverter: TimeConverter, dialogHandler: DialogHandler) {
+    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;
         this._timeConverter = timeConverter;
+        this._context = context;
         this.updateInsertConvertedTime();
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
             if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {

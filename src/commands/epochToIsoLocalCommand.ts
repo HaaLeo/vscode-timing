@@ -50,7 +50,7 @@ class EpochToIsoLocalCommand extends CommandBase {
             }
             const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
 
-            const resultBox = new ResultBox();
+            const resultBox = new ResultBox(this._context, this.insert);
             loopResult = await resultBox.show(
                 'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                 'Epoch → Iso 8601 Local: Result',

@@ -10,8 +10,8 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
     private _customTimeFormatOptions: vscode.QuickPickItem[];
     private readonly _selectOtherFormat = 'Other Format...';
 
-    public constructor(timeConverter: TimeConverter, dialogHandler: DialogHandler) {
-        super(timeConverter, dialogHandler);
+    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
+        super(context, timeConverter, dialogHandler);
         this.updateCustomFormats();
         vscode.workspace.onDidChangeConfiguration((e) => {
             if (e.affectsConfiguration('timing.customFormats')) {

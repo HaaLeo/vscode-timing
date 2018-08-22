@@ -27,18 +27,18 @@ export function activate(context: vscode.ExtensionContext) {
     const dialogHandler = new DialogHandler();
 
     // Create commands
-    const customToEpochCommand = new CustomToEpochCommand(timeConverter, dialogHandler);
-    const customToIsoUtcCommand = new CustomToIsoUtcCommand(timeConverter, dialogHandler);
-    const customToIsoLocalCommand = new CustomToIsoLocalCommand(timeConverter, dialogHandler);
-    const epochToCustomCommand = new EpochToCustomCommand(timeConverter, dialogHandler);
-    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(timeConverter, dialogHandler);
-    const epochToIsoUtcCommand = new EpochToIsoUtcCommand(timeConverter, dialogHandler);
-    const nowAsEpochCommand = new NowAsEpochCommand(timeConverter, dialogHandler);
-    const nowAsCustomCommand = new NowAsCustomCommand(timeConverter, dialogHandler);
-    const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(timeConverter, dialogHandler);
-    const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(timeConverter, dialogHandler);
-    const isoRfcToCustomCommand = new IsoRfcToCustomCommand(timeConverter, dialogHandler);
-    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(timeConverter, dialogHandler);
+    const customToEpochCommand = new CustomToEpochCommand(context, timeConverter, dialogHandler);
+    const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter, dialogHandler);
+    const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter, dialogHandler);
+    const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter, dialogHandler);
+    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter, dialogHandler);
+    const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter, dialogHandler);
+    const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter, dialogHandler);
+    const nowAsCustomCommand = new NowAsCustomCommand(context, timeConverter, dialogHandler);
+    const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(context, timeConverter, dialogHandler);
+    const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(context, timeConverter, dialogHandler);
+    const isoRfcToCustomCommand = new IsoRfcToCustomCommand(context, timeConverter, dialogHandler);
+    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(context, timeConverter, dialogHandler);
 
     const toggleInsertConvertedTimeUserLevelCommand = new ToggleInsertConvertedTimeUserLevelCommand();
 

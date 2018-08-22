@@ -1,6 +1,6 @@
 'use strict';
 
-import { Disposable, InputBox, QuickInputButton, QuickInputButtons, window } from 'vscode';
+import { Disposable, ExtensionContext, InputBox, QuickInputButton, QuickInputButtons, Uri, window } from 'vscode';
 import { StepResult } from '../step/StepResult';
 import { InputFlowAction } from './InputFlowAction';
 
@@ -9,8 +9,24 @@ import { InputFlowAction } from './InputFlowAction';
  */
 class ResultBox {
 
-    private _resultBox: InputBox = window.createInputBox();
-    private _disposables: Disposable[] = [];
+    private _resultBox: InputBox;
+    private _disposables: Disposable[];
+    private _insertButton: QuickInputButton;
+    private _insert: (insertion: string) => Thenable<boolean>;
+
+    constructor(context: ExtensionContext, insert: (insertion: string) => Thenable<boolean>) {
+        this._insertButton = {
+            iconPath: {
+                dark: Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
+                light: Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
+            },
+            tooltip: 'Insert result'
+        };
+        this._insert = insert;
+        this._resultBox = window.createInputBox();
+        this._resultBox.ignoreFocusOut = true;
+        this._disposables = [this._resultBox];
+    }
 
     /**
      * Show the result box to the user.
@@ -20,7 +36,7 @@ class ResultBox {
      * @returns The result of the user's interaction.
      */
     public show(prompt: string, title: string, value: string): Thenable<StepResult> {
-        this._resultBox.buttons = [QuickInputButtons.Back]; // use insert button
+        this._resultBox.buttons = [QuickInputButtons.Back, this._insertButton]; // use insert button
         this._resultBox.prompt = prompt;
         this._resultBox.title = title;
         this._resultBox.value = value;
@@ -32,7 +48,7 @@ class ResultBox {
                 } else {
                     this._resultBox.validationMessage = 'The input box must not be empty.';
                 }
-            });
+            }, this, this._disposables);
 
             this._resultBox.onDidChangeValue((current) => {
                 if (current) {
@@ -40,18 +56,20 @@ class ResultBox {
                 } else {
                     this._resultBox.validationMessage = 'The input box must not be empty.';
                 }
-            });
+            }, this, this._disposables);
 
-            this._resultBox.onDidTriggerButton((button) => {
+            this._resultBox.onDidTriggerButton(async (button) => {
                 if (button === QuickInputButtons.Back) {
                     this._resultBox.hide();
                     resolve(new StepResult(InputFlowAction.Back, undefined));
+                } else if (button === this._insertButton) {
+                    await this._insert(this._resultBox.value);
                 }
-            });
+            }, this, this._disposables);
 
             this._resultBox.onDidHide(() => {
                 resolve(new StepResult(InputFlowAction.Cancel, undefined));
-            });
+            }, this, this._disposables);
 
             this._resultBox.show();
         });

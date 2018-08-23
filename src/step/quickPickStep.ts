@@ -4,7 +4,7 @@ import { Disposable, QuickInputButton, QuickInputButtons, QuickPick, QuickPickIt
 import { InputFlowAction } from '../util/InputFlowAction';
 import { IStep } from './IStep';
 import { MultiStepHandler } from './multiStepHandler';
-import { StepResult } from './StepResult';
+import { StepResult } from './stepResult';
 
 /**
  * the QuickPickStep. Used to show the user a quick pick form.

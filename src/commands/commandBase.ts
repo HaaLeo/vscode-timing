@@ -2,8 +2,8 @@
 
 import * as vscode from 'vscode';
 import { DialogHandler } from '../dialogHandler';
-import { InputBoxStep } from '../step/InputBoxStep';
-import { MultiStepHandler } from '../step/MultiStepHandler';
+import { InputBoxStep } from '../step/inputBoxStep';
+import { MultiStepHandler } from '../step/multiStepHandler';
 import { TimeConverter } from '../util/timeConverter';
 
 abstract class CommandBase {
@@ -13,12 +13,18 @@ abstract class CommandBase {
     protected _disposables: vscode.Disposable[];
     protected _stepHandler: MultiStepHandler;
     protected _showResultStep: InputBoxStep;
-    protected _context: vscode.ExtensionContext;
+    protected _insertResultButton: vscode.QuickInputButton;
 
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;
         this._timeConverter = timeConverter;
-        this._context = context;
+        this._insertResultButton = {
+            iconPath: {
+                dark: vscode.Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
+                light: vscode.Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
+            },
+            tooltip: 'Insert Result'
+        };
         this.updateInsertConvertedTime();
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
             if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {

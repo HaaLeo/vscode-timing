@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import { IsoRfcToEpochCommand } from '../../commands/isoRfcToEpochCommand';
 import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('IsoRfcToEpochCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
@@ -34,7 +35,7 @@ describe('IsoRfcToEpochCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new IsoRfcToEpochCommand(undefined, timeConverter, dialogHandlerMock);
+            testObject = new IsoRfcToEpochCommand(new ExtensionContextMock(), timeConverter, dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(4, 31), new vscode.Position(4, 55));
             dialogHandlerMock.showOptionsDialog.returns({ label: 'ms' });
         });

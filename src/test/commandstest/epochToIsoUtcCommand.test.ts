@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import { EpochToIsoUtcCommand } from '../../commands/epochToIsoUtcCommand';
 import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('EpochToIsoUtcCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
@@ -34,7 +35,7 @@ describe('EpochToIsoUtcCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToIsoUtcCommand(undefined, timeConverter, dialogHandlerMock);
+            testObject = new EpochToIsoUtcCommand(new ExtensionContextMock(), timeConverter, dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
         });
 

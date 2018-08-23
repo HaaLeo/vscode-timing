@@ -3,12 +3,12 @@
 import { InputDefinition } from '../util/inputDefinition';
 
 import { QuickInputButton, QuickInputButtons } from 'vscode';
-import { InputBoxStep } from '../step/InputBoxStep';
-import { MultiStepHandler } from '../step/MultiStepHandler';
-import { QuickPickStep } from '../step/QuickPickStep';
-import { StepResult } from '../step/StepResult';
+import { InputBoxStep } from '../step/inputBoxStep';
+import { MultiStepHandler } from '../step/multiStepHandler';
+import { QuickPickStep } from '../step/quickPickStep';
+import { StepResult } from '../step/stepResult';
 import { InputFlowAction } from '../util/InputFlowAction';
-import { ResultBox } from '../util/ResultBox';
+import { ResultBox } from '../util/resultBox';
 import { CommandBase } from './commandBase';
 
 /**
@@ -48,12 +48,12 @@ class EpochToIsoLocalCommand extends CommandBase {
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+            const resultPostfix = inserted ? 'Inserted Result' : 'Result';
 
-            const resultBox = new ResultBox(this._context, this.insert);
+            const resultBox = new ResultBox(this._insertResultButton, this.insert);
             loopResult = await resultBox.show(
                 'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
-                'Epoch → Iso 8601 Local: Result',
+                'Epoch → Iso 8601 Local: ' + resultPostfix,
                 result);
         } while (loopResult.action !== InputFlowAction.Cancel);
     }

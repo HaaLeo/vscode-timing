@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import { CustomToIsoLocalCommand } from '../../commands/customToIsoLocalCommand';
 import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('CustomToIsoLocalCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
@@ -35,7 +36,7 @@ describe('CustomToIsoLocalCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             dialogHandlerMock.showInputDialog.returns('YYYY');
-            testObject = new CustomToIsoLocalCommand(undefined, timeConverter, dialogHandlerMock);
+            testObject = new CustomToIsoLocalCommand(new ExtensionContextMock(), timeConverter, dialogHandlerMock);
         });
 
         it('Should stop if selected custom format is invalid.', async () => {

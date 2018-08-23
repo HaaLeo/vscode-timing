@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import { CustomToEpochCommand } from '../../commands/customToEpochCommand';
 import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('CustomToEpochCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
@@ -36,7 +37,7 @@ describe('CustomToEpochCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             dialogHandlerMock.showInputDialog.returns('YYYY');
-            testObject = new CustomToEpochCommand(undefined, timeConverter, dialogHandlerMock);
+            testObject = new CustomToEpochCommand(new ExtensionContextMock(), timeConverter, dialogHandlerMock);
         });
 
         it('Should stop if selected custom format is invalid.', async () => {

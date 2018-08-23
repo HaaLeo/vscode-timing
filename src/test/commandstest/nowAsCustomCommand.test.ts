@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { NowAsCustomCommand } from '../../commands/nowAsCustomCommand';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { TimeConverterMock } from '../mock/TimeConverterMock';
 
 describe('NowAsCustomCommand', () => {
@@ -35,7 +36,7 @@ describe('NowAsCustomCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             timeConverterMock.reset();
-            testObject = new NowAsCustomCommand(undefined, timeConverterMock, dialogHandlerMock);
+            testObject = new NowAsCustomCommand(new ExtensionContextMock(), timeConverterMock, dialogHandlerMock);
             timeConverterMock.getNowAsCustom.returns('2018');
         });
 

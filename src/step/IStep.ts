@@ -1,8 +1,8 @@
 'use strict';
 
 import { Disposable } from 'vscode';
-import { MultiStepHandler } from './MultiStepHandler';
-import { StepResult } from './StepResult';
+import { MultiStepHandler } from './multiStepHandler';
+import { StepResult } from './stepResult';
 
 /**
  * The Step interface.

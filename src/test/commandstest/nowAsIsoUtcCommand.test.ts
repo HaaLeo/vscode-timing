@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { NowAsIsoUtcCommand } from '../../commands/nowAsIsoUtcCommand';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { TimeConverterMock } from '../mock/TimeConverterMock';
 
 describe('NowAsIsoUtcCommand', () => {
@@ -35,7 +36,7 @@ describe('NowAsIsoUtcCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             timeConverterMock.reset();
-            testObject = new NowAsIsoUtcCommand(undefined, timeConverterMock, dialogHandlerMock);
+            testObject = new NowAsIsoUtcCommand(new ExtensionContextMock(), timeConverterMock, dialogHandlerMock);
             timeConverterMock.getNowAsIsoUtc.returns('1111');
         });
 

@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import { IsoRfcToCustomCommand } from '../../commands/isoRfcToCustomCommand';
 import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('IsoRfcToCustomCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
@@ -32,7 +33,7 @@ describe('IsoRfcToCustomCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new IsoRfcToCustomCommand(undefined, new TimeConverter(), dialogHandlerMock);
+            testObject = new IsoRfcToCustomCommand(new ExtensionContextMock(), new TimeConverter(), dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(4, 31), new vscode.Position(4, 55));
         });
 

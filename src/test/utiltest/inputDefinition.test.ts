@@ -1,7 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import { InputDefinition } from '../util/inputDefinition';
+import { InputDefinition } from '../../util/inputDefinition';
 
 describe('InputDefinition', () => {
     describe('constructor', () => {

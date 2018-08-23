@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { NowAsEpochCommand } from '../../commands/nowAsEpochCommand';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { TimeConverterMock } from '../mock/TimeConverterMock';
 
 describe('NowAsEpochCommand', () => {
@@ -35,7 +36,7 @@ describe('NowAsEpochCommand', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
             timeConverterMock.reset();
-            testObject = new NowAsEpochCommand(undefined, timeConverterMock, dialogHandlerMock);
+            testObject = new NowAsEpochCommand(new ExtensionContextMock(), timeConverterMock, dialogHandlerMock);
             dialogHandlerMock.showOptionsDialog.returns({ label: 'ms' });
             timeConverterMock.getNowAsEpoch.returns('1111');
         });

@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import { EpochToCustomCommand } from '../../commands/epochToCustomCommand';
 import { TimeConverter } from '../../util/timeConverter';
 import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('EpochToCustomCommand', () => {
     let dialogHandlerMock: DialogHandlerMock;
@@ -32,7 +33,7 @@ describe('EpochToCustomCommand', () => {
     describe('execute', () => {
         beforeEach('Reset', () => {
             dialogHandlerMock.reset();
-            testObject = new EpochToCustomCommand(undefined, new TimeConverter(), dialogHandlerMock);
+            testObject = new EpochToCustomCommand(new ExtensionContextMock(), new TimeConverter(), dialogHandlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
         });
 

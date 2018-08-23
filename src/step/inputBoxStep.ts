@@ -3,8 +3,8 @@
 import { Disposable, InputBox, QuickInputButton, QuickInputButtons, window } from 'vscode';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { IStep } from './IStep';
-import { MultiStepHandler } from './MultiStepHandler';
-import { StepResult } from './StepResult';
+import { MultiStepHandler } from './multiStepHandler';
+import { StepResult } from './stepResult';
 
 /**
  * The input box step. Used to show a input box to the user.

@@ -1,7 +1,7 @@
 'use strict';
 
 import { Disposable, ExtensionContext, InputBox, QuickInputButton, QuickInputButtons, Uri, window } from 'vscode';
-import { StepResult } from '../step/StepResult';
+import { StepResult } from '../step/stepResult';
 import { InputFlowAction } from './InputFlowAction';
 
 /**
@@ -14,17 +14,12 @@ class ResultBox {
     private _insertButton: QuickInputButton;
     private _insert: (insertion: string) => Thenable<boolean>;
 
-    constructor(context: ExtensionContext, insert: (insertion: string) => Thenable<boolean>) {
-        this._insertButton = {
-            iconPath: {
-                dark: Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
-                light: Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
-            },
-            tooltip: 'Insert result'
-        };
-        this._insert = insert;
+    constructor(insertButton: QuickInputButton, insertFn: (insertion: string) => Thenable<boolean>) {
+        this._insertButton = insertButton;
+        this._insert = insertFn;
         this._resultBox = window.createInputBox();
         this._resultBox.ignoreFocusOut = true;
+        this._resultBox.validationMessage = '';
         this._disposables = [this._resultBox];
     }
 
@@ -36,26 +31,14 @@ class ResultBox {
      * @returns The result of the user's interaction.
      */
     public show(prompt: string, title: string, value: string): Thenable<StepResult> {
-        this._resultBox.buttons = [QuickInputButtons.Back, this._insertButton]; // use insert button
+        this._resultBox.buttons = [QuickInputButtons.Back, this._insertButton];
         this._resultBox.prompt = prompt;
         this._resultBox.title = title;
         this._resultBox.value = value;
         return new Promise<StepResult>((resolve, reject) => {
             this._resultBox.onDidAccept(() => {
-                if (this._resultBox.value) {
-                    this._resultBox.hide();
-                    resolve(new StepResult(InputFlowAction.Continue, this._resultBox.value));
-                } else {
-                    this._resultBox.validationMessage = 'The input box must not be empty.';
-                }
-            }, this, this._disposables);
-
-            this._resultBox.onDidChangeValue((current) => {
-                if (current) {
-                    this._resultBox.validationMessage = '';
-                } else {
-                    this._resultBox.validationMessage = 'The input box must not be empty.';
-                }
+                this._resultBox.hide();
+                resolve(new StepResult(InputFlowAction.Continue, this._resultBox.value));
             }, this, this._disposables);
 
             this._resultBox.onDidTriggerButton(async (button) => {

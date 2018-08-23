@@ -3,10 +3,10 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { InputBoxStep } from '../../step/InputBoxStep';
-import { MultiStepHandler } from '../../step/MultiStepHandler';
-import { QuickPickStep } from '../../step/QuickPickStep';
-import { StepResult } from '../../step/StepResult';
+import { InputBoxStep } from '../../step/inputBoxStep';
+import { MultiStepHandler } from '../../step/multiStepHandler';
+import { QuickPickStep } from '../../step/quickPickStep';
+import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
 
 describe('QuickPickStep', () => {
@@ -134,25 +134,23 @@ describe('QuickPickStep', () => {
                 sinon.reset();
             });
 
-            // it('onDidAccept should resolve and return pick.', async () => {
-            //     quickPickStub.selectedItems = [{ label: '555555' }];
-            //     quickPickStub.activeItems = [{ label: '555555' }];
-            //     listener = quickPickStub.onDidAccept.firstCall.args[0];
-            //     assert.strictEqual(quickPickStub.onDidAccept.calledOnce, true);
+            it('onDidAccept should resolve and return pick.', async () => {
+                listener = quickPickStub.onDidAccept.firstCall.args[0];
+                assert.strictEqual(quickPickStub.onDidAccept.calledOnce, true);
 
-            //     listener(undefined);
-            //     assert.strictEqual(quickPick.selectedItems.length, 1);
-            //     assert.strictEqual(registerStepSpy.notCalled, true);
-            //     assert.strictEqual(quickPickStub.hide.calledOnce, true);
-            //     const result = await resultPromise;
+                listener(undefined);
+                assert.strictEqual(quickPickStub.selectedItems.length, 1);
+                assert.strictEqual(registerStepSpy.notCalled, true);
+                assert.strictEqual(quickPickStub.hide.calledOnce, true);
+                const result = await resultPromise;
 
-            //     assert.strictEqual(result.value, '555555');
-            //     assert.strictEqual(result.action, InputFlowAction.Continue);
-            // });
+                assert.strictEqual(result.value, 'test-label');
+                assert.strictEqual(result.action, InputFlowAction.Continue);
+            });
 
             // it('onDidAccept should register step.', async () => {
-            //     quickPick.selectedItems = [{ label: 'other-item-label' }];
             //     listener = quickPickStub.onDidAccept.firstCall.args[0];
+            //     quickPickStub.selectedItems = [{ label: 'other-item-label' }];
             //     assert.strictEqual(quickPickStub.onDidAccept.calledOnce, true);
             //     const dummy: void = undefined;
 
@@ -165,6 +163,17 @@ describe('QuickPickStep', () => {
             //     assert.strictEqual(quickPickStub.hide.calledOnce, true);
             //     assert.strictEqual(result.action, InputFlowAction.Continue);
             // });
+
+            it('onDidTriggerBackButton should unregister and resolve back action.', async () => {
+                assert.strictEqual(quickPickStub.onDidTriggerButton.calledOnce, true);
+                listener = quickPickStub.onDidTriggerButton.firstCall.args[0];
+
+                listener(vscode.QuickInputButtons.Back);
+                const result = await resultPromise;
+
+                assert.strictEqual(result.value, undefined);
+                assert.strictEqual(result.action, InputFlowAction.Back);
+            });
 
             it('onDidHide should resolve to cancel action.', async () => {
                 listener = quickPickStub.onDidHide.firstCall.args[0];

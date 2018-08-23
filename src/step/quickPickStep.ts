@@ -3,7 +3,7 @@
 import { Disposable, QuickInputButton, QuickInputButtons, QuickPick, QuickPickItem, window } from 'vscode';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { IStep } from './IStep';
-import { MultiStepHandler } from './MultiStepHandler';
+import { MultiStepHandler } from './multiStepHandler';
 import { StepResult } from './StepResult';
 
 /**
@@ -76,6 +76,7 @@ class QuickPickStep implements IStep {
         this._quickPick.step = step;
         this._quickPick.totalSteps = totalSteps;
         this._quickPick.items = this._allowOtherItem ? [...this._items, this._allowOtherItem] : this._items;
+        this._quickPick.selectedItems = [this._items[0]];
         if (step > 1) {
             this._quickPick.buttons = [QuickInputButtons.Back];
         }

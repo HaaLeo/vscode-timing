@@ -47,7 +47,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         // Register Commands
-        vscode.commands.registerCommand('timing.convertTime', epochToIsoUtcCommand.execute, epochToIsoUtcCommand),
         customToEpochCommand, vscode.commands.registerCommand('timing.customToEpoch', customToEpochCommand.execute, customToEpochCommand),
         customToIsoLocalCommand, vscode.commands.registerCommand('timing.customToIsoLocal', customToIsoLocalCommand.execute, customToIsoLocalCommand),
         customToIsoUtcCommand, vscode.commands.registerCommand('timing.customToIsoUtc', customToIsoUtcCommand.execute, customToIsoUtcCommand),

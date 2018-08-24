@@ -109,11 +109,6 @@
                 "command": "timing.toggleInsertConvertedTimeUserLevel",
                 "category": "Timing",
                 "title": "Toggle Insert Converted Time (User Level)"
-            },
-            {
-                "command": "timing.convertTime",
-                "category": "Timing",
-                "title": "Convert time to UTC (DEPRECATED. Use timing.epochToIsoUtc instead)"
             }
         ],
         "configuration": {

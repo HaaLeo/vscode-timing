@@ -24,6 +24,14 @@ describe('CommandBase', () => {
             return this._insertConvertedTime;
         }
 
+        public get ignoreFocusOut(): boolean {
+            return this._ignoreFocusOut;
+        }
+
+        public get hideResultViewOnEnter(): boolean {
+            return this._hideResultViewOnEnter;
+        }
+
     }
 
     let testEditor: vscode.TextEditor;
@@ -71,14 +79,24 @@ describe('CommandBase', () => {
             assert.equal(testObject.insertConvertedTime, true);
         });
 
-        it('should should set insert option to false when configuration is undefined.', async () => {
+        it('should should update ignoreFocusOut option when configuration is updated.', async () => {
             const config = vscode.workspace.getConfiguration('timing');
             const dialogHandlerMock = new DialogHandlerMock();
             const testObject = new TestObject(new ExtensionContextMock(), new TimeConverter(), dialogHandlerMock);
 
-            await config.update('insertConvertedTime', undefined);
+            await config.update('ignoreFocusOut', true);
 
-            assert.equal(testObject.insertConvertedTime, false);
+            assert.equal(testObject.ignoreFocusOut, true);
+        });
+
+        it('should should update hideResultViewOnEnter option when configuration is updated.', async () => {
+            const config = vscode.workspace.getConfiguration('timing');
+            const dialogHandlerMock = new DialogHandlerMock();
+            const testObject = new TestObject(new ExtensionContextMock(), new TimeConverter(), dialogHandlerMock);
+
+            await config.update('hideResultViewOnEnter', true);
+
+            assert.equal(testObject.hideResultViewOnEnter, true);
         });
     });
 

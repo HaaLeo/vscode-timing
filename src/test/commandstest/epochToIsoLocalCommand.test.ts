@@ -41,7 +41,7 @@ describe('EpochToIsoLocalCommand', () => {
         beforeEach('Reset', () => {
             testObject = new EpochToIsoLocalCommand(new ExtensionContextMock(), timeConverter, handlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
-            handlerMock.run.returns(['1']);
+            handlerMock.run.returns(['1000']);
             handlerMock.showResult.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -54,60 +54,60 @@ describe('EpochToIsoLocalCommand', () => {
 
             assert.strictEqual(handlerMock.registerStep.notCalled, true);
             assert.strictEqual(handlerMock.run.notCalled, true);
+            assert.strictEqual(handlerMock.showResult.calledOnce, true);
         });
 
-        // it('Should ask for user input if pre selection is invalid epoch', async () => {
-        //     testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-        //     dialogHandlerMock.showInputDialog.returns('2018000');
+        it('Should ask for user input if pre selection is invalid epoch', async () => {
+            testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
 
-        //     await testObject.execute();
+            await testObject.execute();
 
-        //     assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
-        //     assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-        // });
+            assert.strictEqual(handlerMock.registerStep.calledOnce, true);
+            assert.strictEqual(handlerMock.run.calledOnce, true);
+            assert.strictEqual(handlerMock.showResult.calledOnce, true);
+        });
 
-        // it('Should stop if user canceled during epoch time insertion', async () => {
-        //     testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-        //     dialogHandlerMock.showInputDialog.returns(undefined);
+        it('Should stop if user canceled during epoch time insertion', async () => {
+            testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
+            handlerMock.run.returns([]);
 
-        //     await testObject.execute();
+            await testObject.execute();
 
-        //     assert.equal(dialogHandlerMock.showInputDialog.calledOnce, true);
-        //     assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showResultDialog.notCalled, true);
-        // });
+            assert.strictEqual(handlerMock.run.calledOnce, true);
+            assert.strictEqual(handlerMock.registerStep.calledOnce, true);
+            assert.strictEqual(handlerMock.showResult.notCalled, true);
+        });
 
-        // it('Should show result after calculation', async () => {
-        //     await testObject.execute();
+        it('Should show result after calculation', async () => {
+            await testObject.execute();
 
-        //     assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-        //     assert.equal(
-        //         dialogHandlerMock.showResultDialog.args[0][1],
-        //         'Result: ' + timeConverter.epochToIsoLocal('123456789000'));
-        // });
+            assert.strictEqual(handlerMock.run.notCalled, true);
+            assert.strictEqual(handlerMock.registerStep.notCalled, true);
+            assert.strictEqual(handlerMock.showResult.calledOnce, true);
+            assert.strictEqual(
+                handlerMock.showResult.args[0][2],
+                timeConverter.epochToIsoLocal('123456789000'));
+        });
 
-        // it('Should insert the converted time.', async () => {
-        //     const config = vscode.workspace.getConfiguration('timing');
-        //     await config.update('insertConvertedTime', true);
-        //     const priorText = testEditor.document.getText(testEditor.selection);
-        //     const spy = sinon.spy(testEditor, 'edit');
+        it('Should insert the converted time.', async () => {
+            const config = vscode.workspace.getConfiguration('timing');
+            await config.update('insertConvertedTime', true);
+            const priorText = testEditor.document.getText(testEditor.selection);
+            const spy = sinon.spy(testEditor, 'edit');
 
-        //     await testObject.execute();
+            await testObject.execute();
 
-        //     assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-        //     assert.equal(spy.calledOnce, true);
+            assert.strictEqual(handlerMock.run.notCalled, true);
+            assert.strictEqual(handlerMock.registerStep.notCalled, true);
+            assert.strictEqual(handlerMock.showResult.calledOnce, true);
+            assert.strictEqual(spy.calledOnce, true);
 
-        //     // Restore
-        //     const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
-        //         editBuilder.replace(testEditor.selection, priorText);
-        //     });
-        //     assert.equal(success, true);
-        //     spy.restore();
-        // });
+            // Restore
+            const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
+                editBuilder.replace(testEditor.selection, priorText);
+            });
+            assert.strictEqual(success, true);
+            spy.restore();
+        });
     });
 });

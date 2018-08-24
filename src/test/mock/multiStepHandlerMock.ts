@@ -22,6 +22,7 @@ class MultiStepHandlerMock extends MultiStepHandler {
         this.unregisterStep.restore();
         this.dispose.restore();
         this.executeStep.restore();
+        this.showResult.restore();
     }
 
     public reset() {
@@ -30,6 +31,7 @@ class MultiStepHandlerMock extends MultiStepHandler {
         this.unregisterStep.reset();
         this.executeStep.reset();
         this.dispose.reset();
+        this.showResult.reset();
     }
 }
 

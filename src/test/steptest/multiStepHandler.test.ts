@@ -34,7 +34,7 @@ describe('MultiStepHandler', () => {
         it('should register steps properly.', async () => {
             testObject.registerStep(firstStepStub);
             testObject.registerStep(secondStepStub);
-            const result = await testObject.run();
+            const result = await testObject.run(true);
 
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'first-result');
@@ -44,7 +44,7 @@ describe('MultiStepHandler', () => {
         it('should register steps properly by index.', async () => {
             testObject.registerStep(secondStepStub, 0);
             testObject.registerStep(firstStepStub, 0);
-            const result = await testObject.run();
+            const result = await testObject.run(true);
 
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'first-result');
@@ -57,7 +57,7 @@ describe('MultiStepHandler', () => {
             testObject.registerStep(firstStepStub);
             testObject.registerStep(secondStepStub);
             testObject.unregisterStep(firstStepStub);
-            const result = await testObject.run();
+            const result = await testObject.run(true);
 
             assert.strictEqual(result.length, 1);
             assert.strictEqual(result[0], 'second-result');
@@ -71,7 +71,7 @@ describe('MultiStepHandler', () => {
         });
 
         it('should execute all steps an return results', async () => {
-            const result = await testObject.run();
+            const result = await testObject.run(true);
 
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'first-result');
@@ -79,7 +79,7 @@ describe('MultiStepHandler', () => {
         });
 
         it('should execute all steps from given index.', async () => {
-            const result = await testObject.run(1);
+            const result = await testObject.run(true, 1);
 
             assert.strictEqual(result.length, 1);
             assert.strictEqual(firstStepStub.execute.notCalled, true);
@@ -87,7 +87,7 @@ describe('MultiStepHandler', () => {
         });
 
         it('should execute last step when index = -1.', async () => {
-            const result = await testObject.run(-1);
+            const result = await testObject.run(true, -1);
 
             assert.strictEqual(result.length, 1);
             assert.strictEqual(result[0], 'second-result');
@@ -104,7 +104,7 @@ describe('MultiStepHandler', () => {
             secondStepStub.execute.onSecondCall().returns(
                 new StepResult(InputFlowAction.Continue, 'second-result-of-second-step'));
 
-            const result = await testObject.run();
+            const result = await testObject.run(true);
 
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'second-result-of-first-step');
@@ -114,7 +114,7 @@ describe('MultiStepHandler', () => {
         it('should return empty result when canceled.', async () => {
             firstStepStub.execute.returns(
                 new StepResult(InputFlowAction.Cancel, 'input user wants to edit'));
-            const result = await testObject.run();
+            const result = await testObject.run(true);
 
             assert.strictEqual(result.length, 0);
             assert.strictEqual(secondStepStub.execute.notCalled, true);

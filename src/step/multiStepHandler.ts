@@ -46,16 +46,17 @@ class MultiStepHandler implements Disposable {
 
     /**
      * Runs all registered steps.
+     * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      * @param startIndex zero based index indicating which step is used for start.
      * If `-1` the last step will be used.
      * @returns A promise to the _ordered_ array containing each step's result
      */
-    public async run(startIndex: number = 0): Promise<string[]> {
+    public async run(ignoreFocusOut: boolean, startIndex: number = 0): Promise<string[]> {
         this._stepResults = [];
         if (startIndex === -1) {
             startIndex = this._steps.length - 1;
         }
-        await this.executeStep(this._steps[startIndex]);
+        await this.executeStep(this._steps[startIndex], ignoreFocusOut);
 
         // Filter results when sub steps were used
         return this._stepResults.filter(Boolean);
@@ -71,25 +72,26 @@ class MultiStepHandler implements Disposable {
     /**
      * Executes the given `step` and add result to the `_stepResults`.
      * @param step The step to execute.
+     * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      * @returns a promise.
      */
-    private async executeStep(step: IStep): Promise<void> {
+    private async executeStep(step: IStep, ignoreFocusOut: boolean): Promise<void> {
         const stepIndex = this._steps.indexOf(step);
         const totalSteps = this._steps.length;
 
-        const result = await step.execute(this, stepIndex + 1, totalSteps);
+        const result = await step.execute(this, stepIndex + 1, totalSteps, ignoreFocusOut);
 
         switch (result.action) {
 
             case InputFlowAction.Continue: {
                 this._stepResults[stepIndex] = result.value;
                 if (stepIndex < this._steps.length - 1) {
-                    await this.executeStep(this._steps[stepIndex + 1]);
+                    await this.executeStep(this._steps[stepIndex + 1], ignoreFocusOut);
                 }
                 break;
             }
             case InputFlowAction.Back: {
-                await this.executeStep(this._steps[stepIndex - 1]);
+                await this.executeStep(this._steps[stepIndex - 1], ignoreFocusOut);
                 break;
             }
             case InputFlowAction.Cancel:

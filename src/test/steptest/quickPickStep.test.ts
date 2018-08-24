@@ -53,7 +53,6 @@ describe('QuickPickStep', () => {
             assert.strictEqual(result.title, 'test-title');
             assert.strictEqual(result.matchOnDescription, true);
             assert.strictEqual(result.matchOnDetail, true);
-            assert.strictEqual(result.ignoreFocusOut, true);
 
             spy.restore();
         });
@@ -83,20 +82,20 @@ describe('QuickPickStep', () => {
         });
 
         it('should add back button when step greater 1', () => {
-            testObject.execute(new MultiStepHandler(), 2, 2);
+            testObject.execute(new MultiStepHandler(), 2, 2, true);
 
             assert.strictEqual(quickPickStub.buttons.length, 1);
             assert.strictEqual(quickPickStub.buttons[0], vscode.QuickInputButtons.Back);
         });
 
         it('should not add back button when step is 1', () => {
-            testObject.execute(new MultiStepHandler(), 1, 2);
+            testObject.execute(new MultiStepHandler(), 1, 2, true);
 
             assert.strictEqual(quickPickStub.buttons.length, 0);
         });
 
         it('should add items', () => {
-            testObject.execute(new MultiStepHandler(), 0, 0);
+            testObject.execute(new MultiStepHandler(), 0, 0, true);
 
             assert.strictEqual(quickPickStub.items.length, 2);
             assert.strictEqual(quickPickStub.items[0].label, 'test-label');
@@ -104,7 +103,7 @@ describe('QuickPickStep', () => {
         });
 
         it('should register event listener and show the quick pick.', () => {
-            testObject.execute(new MultiStepHandler(), 0, 0);
+            testObject.execute(new MultiStepHandler(), 0, 0, true);
 
             assert.strictEqual(quickPickStub.onDidAccept.calledOnce, true);
             assert.strictEqual(quickPickStub.onDidHide.calledOnce, true);
@@ -113,10 +112,11 @@ describe('QuickPickStep', () => {
         });
 
         it('should set input box step member.', () => {
-            testObject.execute(new MultiStepHandler(), 4, 10);
+            testObject.execute(new MultiStepHandler(), 4, 10, true);
 
             assert.strictEqual(quickPickStub.step, 4);
             assert.strictEqual(quickPickStub.totalSteps, 10);
+            assert.strictEqual(quickPickStub.ignoreFocusOut, true);
         });
 
         describe('events', () => {
@@ -127,7 +127,7 @@ describe('QuickPickStep', () => {
             beforeEach(() => {
                 const handler = new MultiStepHandler();
                 registerStepSpy = sinon.spy(handler, 'registerStep');
-                resultPromise = testObject.execute(handler, 0, 0);
+                resultPromise = testObject.execute(handler, 0, 0, true);
             });
 
             afterEach(() => {

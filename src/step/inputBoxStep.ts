@@ -39,7 +39,6 @@ class InputBoxStep implements IStep {
         this._inputBox.placeholder = placeholder;
         this._inputBox.prompt = prompt;
         this._inputBox.title = title;
-        this._inputBox.ignoreFocusOut = true;
         this._inputBox.validationMessage = '';
 
         this._validate = validationFn;
@@ -56,11 +55,18 @@ class InputBoxStep implements IStep {
      * @param handler The handler of the step.
      * @param step The step's number.
      * @param totalSteps The amount of overall steps.
+     * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      */
-    public execute(handler: MultiStepHandler, step: number, totalSteps: number): Thenable<StepResult> {
+    public execute(
+        handler: MultiStepHandler,
+        step: number,
+        totalSteps: number,
+        ignoreFocusOut: boolean): Thenable<StepResult> {
+
         this._isRunning = true;
         this._inputBox.step = step;
         this._inputBox.totalSteps = totalSteps;
+        this._inputBox.ignoreFocusOut = ignoreFocusOut;
         if (step > 1) {
             this._inputBox.buttons = [QuickInputButtons.Back];
         }

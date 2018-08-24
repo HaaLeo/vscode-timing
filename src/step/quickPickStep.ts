@@ -54,7 +54,6 @@ class QuickPickStep implements IStep {
         this._quickPick = window.createQuickPick();
         this._quickPick.placeholder = placeholder;
         this._quickPick.title = title;
-        this._quickPick.ignoreFocusOut = true;
         this._quickPick.matchOnDescription = true;
         this._quickPick.matchOnDetail = true;
 
@@ -71,10 +70,17 @@ class QuickPickStep implements IStep {
      * @param handler The handler of the step.
      * @param step The step's number.
      * @param totalSteps The amount of overall steps.
+     * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      */
-    public execute(handler: MultiStepHandler, step: number, totalSteps: number): Thenable<StepResult> {
+    public execute(
+        handler: MultiStepHandler,
+        step: number,
+        totalSteps: number,
+        ignoreFocusOut: boolean): Thenable<StepResult> {
+
         this._quickPick.step = step;
         this._quickPick.totalSteps = totalSteps;
+        this._quickPick.ignoreFocusOut = ignoreFocusOut;
         this._quickPick.items = this._allowOtherItem ? [...this._items, this._allowOtherItem] : this._items;
         this._quickPick.selectedItems = [this._items[0]];
         if (step > 1) {

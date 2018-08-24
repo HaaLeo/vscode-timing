@@ -31,9 +31,9 @@ class EpochToIsoLocalCommand extends CommandBase {
                 }
 
                 if (loopResult.action === InputFlowAction.Back) {
-                    [rawInput] = await this._stepHandler.run(-1);
+                    [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, -1);
                 } else {
-                    [rawInput] = await this._stepHandler.run();
+                    [rawInput] = await this._stepHandler.run(this._ignoreFocusOut);
                 }
             }
 
@@ -55,7 +55,7 @@ class EpochToIsoLocalCommand extends CommandBase {
                 'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                 'Epoch → Iso 8601 Local: ' + resultPostfix,
                 result);
-        } while (loopResult.action !== InputFlowAction.Cancel);
+        } while (loopResult.action !== InputFlowAction.Cancel && !this._hideResultViewOnEnter);
     }
 
     /**

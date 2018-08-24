@@ -7,13 +7,17 @@ import { MultiStepHandler } from '../step/multiStepHandler';
 import { TimeConverter } from '../util/timeConverter';
 
 abstract class CommandBase {
+
     protected _dialogHandler: DialogHandler;
     protected _timeConverter: TimeConverter;
-    protected _insertConvertedTime: boolean;
     protected _disposables: vscode.Disposable[];
     protected _stepHandler: MultiStepHandler;
     protected _showResultStep: InputBoxStep;
     protected _insertResultButton: vscode.QuickInputButton;
+
+    protected _insertConvertedTime: boolean;
+    protected _hideResultViewOnEnter: boolean;
+    protected _ignoreFocusOut: boolean;
 
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;
@@ -25,10 +29,17 @@ abstract class CommandBase {
             },
             tooltip: 'Insert Result'
         };
+
         this.updateInsertConvertedTime();
+        this.updateIgnoreFocusOut();
+        this.updateHideResultViewOnEnter();
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
             if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
                 this.updateInsertConvertedTime();
+            } else if (changedEvent.affectsConfiguration('timing.ignoreFocusOut')) {
+                this.updateIgnoreFocusOut();
+            } else if (changedEvent.affectsConfiguration('timing.hideResultViewOnEnter')) {
+                this.updateHideResultViewOnEnter();
             }
         }, this, this._disposables);
     }
@@ -69,6 +80,24 @@ abstract class CommandBase {
 
         if (typeof (config) === 'boolean') {
             this._insertConvertedTime = config;
+        }
+    }
+
+    private updateHideResultViewOnEnter(): void {
+        const config = vscode.workspace.getConfiguration('timing')
+            .get('hideResultViewOnEnter');
+
+        if (typeof (config) === 'boolean') {
+            this._hideResultViewOnEnter = config;
+        }
+    }
+
+    private updateIgnoreFocusOut(): void {
+        const config = vscode.workspace.getConfiguration('timing')
+            .get('ignoreFocusOut');
+
+        if (typeof (config) === 'boolean') {
+            this._ignoreFocusOut = config;
         }
     }
 }

@@ -158,6 +158,20 @@
                     "type": "boolean",
                     "default": false,
                     "pattern": "(true|false)"
+                },
+                "timing.ignoreFocusOut": {
+                    "title": "Ignore when input box loses focus",
+                    "description": "Indicates whether the input boxes remain visible when the focus is lost.",
+                    "type": "boolean",
+                    "default": true,
+                    "pattern": "(true|false)"
+                },
+                "timing.hideResultViewOnEnter": {
+                    "title": "Hide the result view when enter is pressed.",
+                    "description": "Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart.",
+                    "type": "boolean",
+                    "default": true,
+                    "pattern": "(true|false)"
                 }
             }
         }

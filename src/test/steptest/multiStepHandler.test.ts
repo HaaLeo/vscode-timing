@@ -78,6 +78,22 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result[1], 'second-result');
         });
 
+        it('should execute all steps from given index.', async () => {
+            const result = await testObject.run(1);
+
+            assert.strictEqual(result.length, 1);
+            assert.strictEqual(firstStepStub.execute.notCalled, true);
+            assert.strictEqual(result[0], 'second-result');
+        });
+
+        it('should execute last step when index = -1.', async () => {
+            const result = await testObject.run(-1);
+
+            assert.strictEqual(result.length, 1);
+            assert.strictEqual(result[0], 'second-result');
+            assert.strictEqual(firstStepStub.execute.notCalled, true);
+        });
+
         it('should go back once.', async () => {
             firstStepStub.execute.onFirstCall().returns(
                 new StepResult(InputFlowAction.Continue, 'input user wants to edit'));
@@ -93,6 +109,15 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'second-result-of-first-step');
             assert.strictEqual(result[1], 'second-result-of-second-step');
+        });
+
+        it('should return empty result when canceled.', async () => {
+            firstStepStub.execute.returns(
+                new StepResult(InputFlowAction.Cancel, 'input user wants to edit'));
+            const result = await testObject.run();
+
+            assert.strictEqual(result.length, 0);
+            assert.strictEqual(secondStepStub.execute.notCalled, true);
         });
 
     });

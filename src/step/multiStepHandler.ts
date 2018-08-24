@@ -25,7 +25,7 @@ class MultiStepHandler implements Disposable {
      */
     public registerStep(step: IStep, index?: number): void {
         if (this._steps.indexOf(step, 0) === -1) {
-            if (index) {
+            if (index === 0 || index) {
                 this._steps.splice(index, 0, step);
             } else {
                 this._steps.push(step);

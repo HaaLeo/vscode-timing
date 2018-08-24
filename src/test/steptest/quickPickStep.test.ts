@@ -8,20 +8,25 @@ import { MultiStepHandler } from '../../step/multiStepHandler';
 import { QuickPickStep } from '../../step/quickPickStep';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
+import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
 describe('QuickPickStep', () => {
     let testObject: QuickPickStep;
     let testEditor: vscode.TextEditor;
     let inputBoxStepStub: sinon.SinonStubbedInstance<InputBoxStep>;
     let quickPick: vscode.QuickPick<vscode.QuickPickItem>;
+    let handlerMock: MultiStepHandlerMock;
 
     beforeEach(async () => {
+        handlerMock = new MultiStepHandlerMock(new ExtensionContextMock());
         const inputBoxStep = new InputBoxStep(
             'test-placeholder',
             'test prompt',
             'test-title',
             'test-validation-message',
-            (input: string) => true);
+            (input: string) => true,
+            true);
 
         inputBoxStepStub = sinon.stub(inputBoxStep);
         testObject = new QuickPickStep(
@@ -82,20 +87,20 @@ describe('QuickPickStep', () => {
         });
 
         it('should add back button when step greater 1', () => {
-            testObject.execute(new MultiStepHandler(), 2, 2, true);
+            testObject.execute(handlerMock, 2, 2, true);
 
             assert.strictEqual(quickPickStub.buttons.length, 1);
             assert.strictEqual(quickPickStub.buttons[0], vscode.QuickInputButtons.Back);
         });
 
         it('should not add back button when step is 1', () => {
-            testObject.execute(new MultiStepHandler(), 1, 2, true);
+            testObject.execute(handlerMock, 1, 2, true);
 
             assert.strictEqual(quickPickStub.buttons.length, 0);
         });
 
         it('should add items', () => {
-            testObject.execute(new MultiStepHandler(), 0, 0, true);
+            testObject.execute(handlerMock, 0, 0, true);
 
             assert.strictEqual(quickPickStub.items.length, 2);
             assert.strictEqual(quickPickStub.items[0].label, 'test-label');
@@ -103,7 +108,7 @@ describe('QuickPickStep', () => {
         });
 
         it('should register event listener and show the quick pick.', () => {
-            testObject.execute(new MultiStepHandler(), 0, 0, true);
+            testObject.execute(handlerMock, 0, 0, true);
 
             assert.strictEqual(quickPickStub.onDidAccept.calledOnce, true);
             assert.strictEqual(quickPickStub.onDidHide.calledOnce, true);
@@ -112,7 +117,7 @@ describe('QuickPickStep', () => {
         });
 
         it('should set input box step member.', () => {
-            testObject.execute(new MultiStepHandler(), 4, 10, true);
+            testObject.execute(handlerMock, 4, 10, true);
 
             assert.strictEqual(quickPickStub.step, 4);
             assert.strictEqual(quickPickStub.totalSteps, 10);
@@ -123,11 +128,8 @@ describe('QuickPickStep', () => {
 
             let listener: (e: any) => any;
             let resultPromise: Thenable<StepResult>;
-            let registerStepSpy: sinon.SinonSpy;
             beforeEach(() => {
-                const handler = new MultiStepHandler();
-                registerStepSpy = sinon.spy(handler, 'registerStep');
-                resultPromise = testObject.execute(handler, 0, 0, true);
+                resultPromise = testObject.execute(handlerMock, 0, 0, true);
             });
 
             afterEach(() => {
@@ -140,7 +142,7 @@ describe('QuickPickStep', () => {
 
                 listener(undefined);
                 assert.strictEqual(quickPickStub.selectedItems.length, 1);
-                assert.strictEqual(registerStepSpy.notCalled, true);
+                assert.strictEqual(handlerMock.registerStep.notCalled, true);
                 assert.strictEqual(quickPickStub.hide.calledOnce, true);
                 const result = await resultPromise;
 
@@ -164,7 +166,7 @@ describe('QuickPickStep', () => {
             //     assert.strictEqual(result.action, InputFlowAction.Continue);
             // });
 
-            it('onDidTriggerBackButton should unregister and resolve back action.', async () => {
+            it('onDidTriggerBackButton resolve back action.', async () => {
                 assert.strictEqual(quickPickStub.onDidTriggerButton.calledOnce, true);
                 listener = quickPickStub.onDidTriggerButton.firstCall.args[0];
 

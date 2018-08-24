@@ -6,6 +6,7 @@ import { IStep } from '../../step/IStep';
 import { MultiStepHandler } from '../../step/multiStepHandler';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('MultiStepHandler', () => {
     let testObject: MultiStepHandler;
@@ -13,7 +14,7 @@ describe('MultiStepHandler', () => {
     let secondStepStub: sinon.SinonStubbedInstance<IStep>;
 
     beforeEach(() => {
-        testObject = new MultiStepHandler();
+        testObject = new MultiStepHandler(new ExtensionContextMock());
         const firstStep: IStep = {
             dispose: () => undefined,
             execute: (handler: MultiStepHandler, step: number, totalSteps: number) => undefined

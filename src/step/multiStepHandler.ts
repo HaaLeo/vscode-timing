@@ -1,8 +1,10 @@
 'use strict';
 
-import { Disposable } from 'vscode';
+import { Disposable, ExtensionContext, Uri } from 'vscode';
 import { InputFlowAction } from '../util/InputFlowAction';
+import { ResultBox } from '../util/resultBox';
 import { IStep } from './IStep';
+import { StepResult } from './stepResult';
 
 /**
  * The handles the execution of multiple steps.
@@ -11,13 +13,39 @@ class MultiStepHandler implements Disposable {
     /**
      * List of steps to be executed.
      */
-    private _steps: IStep[] = [];
+    protected _steps: IStep[] = []; // protected for easy testing
 
     /**
      * The results of each step.
      */
-    private _stepResults: string[];
+    protected _stepResults: string[]; // protected for easy testing
 
+    private _resultBox: ResultBox; // protected because of testing
+
+    public constructor(context: ExtensionContext) {
+        this._resultBox = new ResultBox({
+            iconPath: {
+                dark: Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
+                light: Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
+            },
+            tooltip: 'Insert Result'
+        });
+    }
+
+    /**
+     * Indicates whether steps were added
+     */
+    public get initialized(): boolean {
+        return this._steps.length === 0 ? false : true;
+    }
+
+    public showResult(
+        prompt: string,
+        title: string,
+        value: string,
+        insertAction: (insertion: string) => Thenable<boolean>): Thenable<StepResult> {
+        return this._resultBox.show(prompt, title, value, insertAction);
+    }
     /**
      * Registers a given step if it was not registered before.
      * @param {IStep} step The step to register
@@ -75,7 +103,8 @@ class MultiStepHandler implements Disposable {
      * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      * @returns a promise.
      */
-    private async executeStep(step: IStep, ignoreFocusOut: boolean): Promise<void> {
+    // protected for easy testing
+    protected async executeStep(step: IStep, ignoreFocusOut: boolean): Promise<void> {
         const stepIndex = this._steps.indexOf(step);
         const totalSteps = this._steps.length;
 

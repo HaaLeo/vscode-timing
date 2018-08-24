@@ -17,7 +17,7 @@ describe('ResultBox', () => {
     const insertMock = sinon.stub();
 
     beforeEach(async () => {
-        testObject = new ResultBox(insertButtonMock, sinon.stub());
+        testObject = new ResultBox(insertButtonMock);
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -29,7 +29,7 @@ describe('ResultBox', () => {
         it('should create an InputBox', () => {
             const spy = sinon.spy(vscode.window, 'createInputBox');
 
-            testObject = new ResultBox(insertButtonMock, insertMock);
+            testObject = new ResultBox(insertButtonMock);
             const result: vscode.InputBox = spy.returnValues[0];
 
             assert.strictEqual(spy.calledOnce, true);
@@ -46,7 +46,7 @@ describe('ResultBox', () => {
 
         beforeEach(() => {
             spy = sinon.spy(vscode.window, 'createInputBox');
-            testObject = new ResultBox(insertButtonMock, insertMock);
+            testObject = new ResultBox(insertButtonMock);
             assert.equal(spy.calledOnce, true);
 
             const resultBox: vscode.InputBox = spy.returnValues[0];
@@ -59,14 +59,14 @@ describe('ResultBox', () => {
         });
 
         it('should add back button and insert button', () => {
-            testObject.show('', '', '');
+            testObject.show('', '', '', insertMock);
 
             assert.strictEqual(resultBoxStub.buttons.length, 2);
             assert.strictEqual(resultBoxStub.buttons[0], vscode.QuickInputButtons.Back);
         });
 
         it('should set title, value and prompt', () => {
-            testObject.show('test-prompt', 'test-title', 'test-value');
+            testObject.show('test-prompt', 'test-title', 'test-value', insertMock);
 
             assert.strictEqual(resultBoxStub.prompt, 'test-prompt');
             assert.strictEqual(resultBoxStub.title, 'test-title');
@@ -74,7 +74,7 @@ describe('ResultBox', () => {
         });
 
         it('should register event listener and show the input box.', () => {
-            testObject.show('', '', '');
+            testObject.show('', '', '', insertMock);
 
             assert.strictEqual(resultBoxStub.onDidAccept.calledOnce, true);
             assert.strictEqual(resultBoxStub.onDidHide.calledOnce, true);
@@ -87,7 +87,7 @@ describe('ResultBox', () => {
             let listener: (e: any) => any;
             let resultPromise: Thenable<StepResult>;
             beforeEach(() => {
-                resultPromise = testObject.show('test-prompt', 'test-title', 'test-value');
+                resultPromise = testObject.show('test-prompt', 'test-title', 'test-value', insertMock);
             });
 
             afterEach(() => {

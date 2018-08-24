@@ -1,20 +1,28 @@
 'use strict';
 
+import * as vscode from 'vscode';
 import { InputDefinition } from '../util/inputDefinition';
 
-import { QuickInputButton, QuickInputButtons } from 'vscode';
+import { DialogHandler } from '../dialogHandler';
 import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
-import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { ResultBox } from '../util/resultBox';
+import { TimeConverter } from '../util/timeConverter';
 import { CommandBase } from './commandBase';
 
 /**
  * Command to convert epoch time to ISO 8601 local time.
  */
 class EpochToIsoLocalCommand extends CommandBase {
+
+    // TODO move to base
+    public constructor(
+        context: vscode.ExtensionContext, timeConverter: TimeConverter, multiStepHandler: MultiStepHandler) {
+        super(context, timeConverter, undefined);
+        this._stepHandler = multiStepHandler;
+    }
 
     /**
      * Execute the command.
@@ -26,7 +34,7 @@ class EpochToIsoLocalCommand extends CommandBase {
         do {
             let rawInput = loopResult.value;
             if (!rawInput || !this._timeConverter.isValidEpoch(rawInput)) {
-                if (!this._stepHandler) {
+                if (!this._stepHandler.initialized) {
                     this.initialize();
                 }
 
@@ -50,11 +58,11 @@ class EpochToIsoLocalCommand extends CommandBase {
             }
             const resultPostfix = inserted ? 'Inserted Result' : 'Result';
 
-            const resultBox = new ResultBox(this._insertResultButton, this.insert);
-            loopResult = await resultBox.show(
+            loopResult = await this._stepHandler.showResult(
                 'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                 'Epoch → Iso 8601 Local: ' + resultPostfix,
-                result);
+                result,
+                this.insert);
         } while (loopResult.action !== InputFlowAction.Cancel && !this._hideResultViewOnEnter);
     }
 
@@ -69,7 +77,6 @@ class EpochToIsoLocalCommand extends CommandBase {
             'Ensure the epoch time is valid.',
             this._timeConverter.isValidEpoch);
 
-        this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(insertEpochTime);
     }
 }

@@ -2,33 +2,25 @@
 
 import * as vscode from 'vscode';
 import { DialogHandler } from '../dialogHandler';
-import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
+import { ResultBox } from '../util/resultBox';
 import { TimeConverter } from '../util/timeConverter';
 
 abstract class CommandBase {
 
-    protected _dialogHandler: DialogHandler;
+    protected _dialogHandler: DialogHandler; // TODO Remove
     protected _timeConverter: TimeConverter;
     protected _disposables: vscode.Disposable[];
     protected _stepHandler: MultiStepHandler;
-    protected _showResultStep: InputBoxStep;
-    protected _insertResultButton: vscode.QuickInputButton;
 
     protected _insertConvertedTime: boolean;
     protected _hideResultViewOnEnter: boolean;
     protected _ignoreFocusOut: boolean;
 
+    // TODO remove context
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;
         this._timeConverter = timeConverter;
-        this._insertResultButton = {
-            iconPath: {
-                dark: vscode.Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
-                light: vscode.Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
-            },
-            tooltip: 'Insert Result'
-        };
 
         this.updateInsertConvertedTime();
         this.updateIgnoreFocusOut();

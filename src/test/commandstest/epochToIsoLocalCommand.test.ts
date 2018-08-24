@@ -1,20 +1,25 @@
 'use strict';
 
 import * as assert from 'assert';
+import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { EpochToIsoLocalCommand } from '../../commands/epochToIsoLocalCommand';
+import { MultiStepHandler } from '../../step/multiStepHandler';
+import { StepResult } from '../../step/stepResult';
+import { InputFlowAction } from '../../util/InputFlowAction';
 import { TimeConverter } from '../../util/timeConverter';
-import { DialogHandlerMock } from '../mock/DialogHandlerMock';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
+import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
 describe('EpochToIsoLocalCommand', () => {
-    let dialogHandlerMock: DialogHandlerMock;
     let timeConverter: TimeConverter;
     let testObject: EpochToIsoLocalCommand;
     let testEditor: vscode.TextEditor;
+    let handlerMock: MultiStepHandlerMock;
 
     before(async () => {
-        dialogHandlerMock = new DialogHandlerMock();
+        handlerMock = new MultiStepHandlerMock(new ExtensionContextMock());
         timeConverter = new TimeConverter();
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
@@ -29,22 +34,28 @@ describe('EpochToIsoLocalCommand', () => {
         const config = vscode.workspace.getConfiguration('timing');
         await config.update('customFormats', undefined);
         await config.update('insertConvertedTime', undefined);
+        await config.update('ignoreFocusOut', undefined);
+        await config.update('hideResultViewOnEnter', undefined);
     });
 
     describe('execute', () => {
         beforeEach('Reset', () => {
-            dialogHandlerMock.reset();
-            testObject = new EpochToIsoLocalCommand(undefined, timeConverter, dialogHandlerMock);
+            testObject = new EpochToIsoLocalCommand(new ExtensionContextMock(), timeConverter, handlerMock);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
+            handlerMock.run.returns(['1']);
+            handlerMock.showResult.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
-        // it('Should not ask for user input if pre selection is valid epoch date', async () => {
-        //     await testObject.execute();
+        afterEach(() => {
+            handlerMock.reset();
+        });
 
-        //     assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-        //     assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-        // });
+        it('Should not ask for user input if pre selection is valid epoch date', async () => {
+            await testObject.execute();
+
+            assert.strictEqual(handlerMock.registerStep.notCalled, true);
+            assert.strictEqual(handlerMock.run.notCalled, true);
+        });
 
         // it('Should ask for user input if pre selection is invalid epoch', async () => {
         //     testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));

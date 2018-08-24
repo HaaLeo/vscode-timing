@@ -12,11 +12,9 @@ class ResultBox {
     private _resultBox: InputBox;
     private _disposables: Disposable[];
     private _insertButton: QuickInputButton;
-    private _insert: (insertion: string) => Thenable<boolean>;
 
-    constructor(insertButton: QuickInputButton, insertFn: (insertion: string) => Thenable<boolean>) {
+    constructor(insertButton: QuickInputButton) {
         this._insertButton = insertButton;
-        this._insert = insertFn;
         this._resultBox = window.createInputBox();
         this._resultBox.ignoreFocusOut = true;
         this._resultBox.validationMessage = '';
@@ -28,9 +26,15 @@ class ResultBox {
      * @param prompt The box's prompt.
      * @param title The box's title.
      * @param value The box's value.
+     * @param insertAction The action to invoke when the insert button was clicked.
      * @returns The result of the user's interaction.
      */
-    public show(prompt: string, title: string, value: string): Thenable<StepResult> {
+    public show(
+        prompt: string,
+        title: string,
+        value: string,
+        insertAction: (insertion: string) => Thenable<boolean>): Thenable<StepResult> {
+
         this._resultBox.buttons = [QuickInputButtons.Back, this._insertButton];
         this._resultBox.prompt = prompt;
         this._resultBox.title = title;
@@ -46,7 +50,7 @@ class ResultBox {
                     this._resultBox.hide();
                     resolve(new StepResult(InputFlowAction.Back, undefined));
                 } else if (button === this._insertButton) {
-                    await this._insert(this._resultBox.value);
+                    await insertAction(this._resultBox.value);
                 }
             }, this, this._disposables);
 

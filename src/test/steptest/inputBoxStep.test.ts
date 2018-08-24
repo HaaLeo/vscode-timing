@@ -7,12 +7,16 @@ import { InputBoxStep } from '../../step/inputBoxStep';
 import { MultiStepHandler } from '../../step/multiStepHandler';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
+import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
 describe('InputBoxStep', () => {
     let testObject: InputBoxStep;
     let testEditor: vscode.TextEditor;
+    let handlerMock: MultiStepHandlerMock;
 
     beforeEach(async () => {
+        handlerMock = new MultiStepHandlerMock(new ExtensionContextMock());
         testObject = new InputBoxStep(
             'test-placeholder',
             'test prompt',
@@ -73,20 +77,20 @@ describe('InputBoxStep', () => {
         });
 
         it('should add back button when step greater 1', () => {
-            testObject.execute(new MultiStepHandler(), 2, 2, true);
+            testObject.execute(handlerMock, 2, 2, true);
 
             assert.strictEqual(inputBoxStub.buttons.length, 1);
             assert.strictEqual(inputBoxStub.buttons[0], vscode.QuickInputButtons.Back);
         });
 
         it('should not add back button when step is 1', () => {
-            testObject.execute(new MultiStepHandler(), 1, 2, true);
+            testObject.execute(handlerMock, 1, 2, true);
 
             assert.strictEqual(inputBoxStub.buttons.length, 0);
         });
 
         it('should register event listener and show the input box.', () => {
-            testObject.execute(new MultiStepHandler(), 0, 0, true);
+            testObject.execute(handlerMock, 0, 0, true);
 
             assert.strictEqual(inputBoxStub.onDidAccept.calledOnce, true);
             assert.strictEqual(inputBoxStub.onDidChangeValue.calledOnce, true);
@@ -96,7 +100,7 @@ describe('InputBoxStep', () => {
         });
 
         it('should set input box step member.', () => {
-            testObject.execute(new MultiStepHandler(), 4, 10, true);
+            testObject.execute(handlerMock, 4, 10, true);
 
             assert.strictEqual(inputBoxStub.step, 4);
             assert.strictEqual(inputBoxStub.totalSteps, 10);
@@ -107,7 +111,7 @@ describe('InputBoxStep', () => {
             let listener: (e: any) => any;
             let resultPromise: Thenable<StepResult>;
             beforeEach(() => {
-                resultPromise = testObject.execute(new MultiStepHandler(), 0, 0, true);
+                resultPromise = testObject.execute(handlerMock, 0, 0, true);
             });
 
             afterEach(() => {
@@ -164,7 +168,7 @@ describe('InputBoxStep', () => {
                 assert.equal(spy.calledOnce, true);
                 const inputBox: vscode.InputBox = spy.returnValues[0];
                 inputBoxStub = sinon.stub(inputBox);
-                testObject.execute(new MultiStepHandler(), 0, 0, true);
+                testObject.execute(handlerMock, 0, 0, true);
                 assert.strictEqual(inputBoxStub.onDidAccept.calledOnce, true);
                 assert.strictEqual(inputBoxStub.ignoreFocusOut, true);
                 listener = inputBoxStub.onDidAccept.firstCall.args[0];
@@ -195,9 +199,7 @@ describe('InputBoxStep', () => {
 
             it('onDidTriggerBackButton should unregister and resolve back action.', async () => {
                 sinon.reset();
-                const handler = new MultiStepHandler();
-                const unregisterSpy = sinon.spy(handler, 'unregisterStep');
-                const resultPromise = testObject.execute(handler, 0, 0, true);
+                const resultPromise = testObject.execute(handlerMock, 0, 0, true);
 
                 assert.strictEqual(inputBoxStub.onDidTriggerButton.calledOnce, true);
                 listener = inputBoxStub.onDidTriggerButton.firstCall.args[0];
@@ -207,8 +209,8 @@ describe('InputBoxStep', () => {
 
                 assert.strictEqual(result.value, undefined);
                 assert.strictEqual(result.action, InputFlowAction.Back);
-                assert.strictEqual(unregisterSpy.calledOnce, true);
-                assert.strictEqual(unregisterSpy.firstCall.args[0], testObject);
+                assert.strictEqual(handlerMock.unregisterStep.calledOnce, true);
+                assert.strictEqual(handlerMock.unregisterStep.firstCall.args[0], testObject);
             });
         });
     });

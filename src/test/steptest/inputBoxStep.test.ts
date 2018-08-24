@@ -14,15 +14,23 @@ describe('InputBoxStep', () => {
     let testObject: InputBoxStep;
     let testEditor: vscode.TextEditor;
     let handlerMock: MultiStepHandlerMock;
+    let spy: sinon.SinonSpy;
+    let inputBoxStub: sinon.SinonStubbedInstance<vscode.InputBox>;
 
     beforeEach(async () => {
         handlerMock = new MultiStepHandlerMock(new ExtensionContextMock());
+        spy = sinon.spy(vscode.window, 'createInputBox');
         testObject = new InputBoxStep(
             'test-placeholder',
-            'test prompt',
+            'test-prompt',
             'test-title',
             'test-validation-message',
-            (input: string) => true);
+            () => true);
+        assert.equal(spy.calledOnce, true);
+
+        const inputBox: vscode.InputBox = spy.returnValues[0];
+        inputBoxStub = sinon.stub(inputBox);
+
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -30,16 +38,14 @@ describe('InputBoxStep', () => {
         }
     });
 
+    afterEach(() => {
+        spy.restore();
+        sinon.reset();
+    });
+
     describe('ctor', () => {
         it('should create an InputBox', () => {
-            const spy = sinon.spy(vscode.window, 'createInputBox');
 
-            testObject = new InputBoxStep(
-                'test-placeholder',
-                'test-prompt',
-                'test-title',
-                'test-validation-message',
-                () => true);
             const result: vscode.InputBox = spy.returnValues[0];
 
             assert.strictEqual(spy.calledOnce, true);
@@ -54,28 +60,6 @@ describe('InputBoxStep', () => {
     });
 
     describe('execute', () => {
-        let spy: sinon.SinonSpy;
-        let inputBoxStub: sinon.SinonStubbedInstance<vscode.InputBox>;
-
-        beforeEach(() => {
-            spy = sinon.spy(vscode.window, 'createInputBox');
-            testObject = new InputBoxStep(
-                'test-placeholder',
-                'test-prompt',
-                'test-title',
-                'test-validation-message',
-                () => true);
-            assert.equal(spy.calledOnce, true);
-
-            const inputBox: vscode.InputBox = spy.returnValues[0];
-            inputBoxStub = sinon.stub(inputBox);
-        });
-
-        afterEach(() => {
-            spy.restore();
-            sinon.reset();
-        });
-
         it('should add back button when step greater 1', () => {
             testObject.execute(handlerMock, 2, 2, true);
 
@@ -212,6 +196,13 @@ describe('InputBoxStep', () => {
                 assert.strictEqual(handlerMock.unregisterStep.calledOnce, true);
                 assert.strictEqual(handlerMock.unregisterStep.firstCall.args[0], testObject);
             });
+        });
+    });
+
+    describe('dispose', () => {
+        it('should dispose the input box.', () => {
+            testObject.dispose();
+            assert.strictEqual(inputBoxStub.dispose.calledOnce, true);
         });
     });
 });

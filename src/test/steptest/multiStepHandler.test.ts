@@ -6,6 +6,7 @@ import { IStep } from '../../step/IStep';
 import { MultiStepHandler } from '../../step/multiStepHandler';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
+import { ResultBox } from '../../util/resultBox';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('MultiStepHandler', () => {
@@ -112,6 +113,16 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result[1], 'second-result-of-second-step');
         });
 
+        it('should throw on unknown input flow action.', async () => {
+            firstStepStub.execute.returns(
+                new StepResult(6, 'input user wants to edit'));
+
+            try {
+                await testObject.run(true);
+                assert.strictEqual(1, 2);
+            } catch (e) { }
+        });
+
         it('should return empty result when canceled.', async () => {
             firstStepStub.execute.returns(
                 new StepResult(InputFlowAction.Cancel, 'input user wants to edit'));
@@ -120,6 +131,32 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result.length, 0);
             assert.strictEqual(secondStepStub.execute.notCalled, true);
         });
+    });
 
+    describe('showResult', () => {
+        it('should show the result box.', async () => {
+            const showStub = sinon.stub(ResultBox.prototype, 'show');
+            showStub.resolves(true);
+
+            await testObject.showResult('test-prompt', 'test-title', 'test-value', sinon.stub().returns(true));
+
+            assert.strictEqual(showStub.calledOnce, true);
+            assert.strictEqual(showStub.firstCall.args[0], 'test-prompt');
+            assert.strictEqual(showStub.firstCall.args[1], 'test-title');
+            assert.strictEqual(showStub.firstCall.args[2], 'test-value');
+            showStub.restore();
+        });
+    });
+
+    describe('dispose', () => {
+        it('should dispose all steps.', () => {
+            testObject.registerStep(firstStepStub);
+            testObject.registerStep(secondStepStub);
+
+            testObject.dispose();
+
+            assert.strictEqual(firstStepStub.dispose.calledOnce, true);
+            assert.strictEqual(secondStepStub.dispose.calledOnce, true);
+        });
     });
 });

@@ -4,7 +4,6 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { InputBoxStep } from '../../step/inputBoxStep';
-import { MultiStepHandler } from '../../step/multiStepHandler';
 import { QuickPickStep } from '../../step/quickPickStep';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
@@ -17,6 +16,8 @@ describe('QuickPickStep', () => {
     let inputBoxStepStub: sinon.SinonStubbedInstance<InputBoxStep>;
     let quickPick: vscode.QuickPick<vscode.QuickPickItem>;
     let handlerMock: MultiStepHandlerMock;
+    let spy: sinon.SinonSpy;
+    let quickPickStub: sinon.SinonStubbedInstance<vscode.QuickPick<vscode.QuickPickItem>>;
 
     beforeEach(async () => {
         handlerMock = new MultiStepHandlerMock(new ExtensionContextMock());
@@ -29,12 +30,19 @@ describe('QuickPickStep', () => {
             true);
 
         inputBoxStepStub = sinon.stub(inputBoxStep);
+        spy = sinon.spy(vscode.window, 'createQuickPick');
+
         testObject = new QuickPickStep(
             'test-placeholder',
             'test-title',
             [{ label: 'test-label' }],
             { label: 'other-item-label' },
             inputBoxStepStub);
+        assert.equal(spy.calledOnce, true);
+
+        quickPick = spy.returnValues[0];
+        quickPickStub = sinon.stub(quickPick);
+
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -42,15 +50,13 @@ describe('QuickPickStep', () => {
         }
     });
 
+    afterEach(() => {
+        spy.restore();
+        sinon.reset();
+    });
+
     describe('ctor', () => {
         it('should create an InputBox', () => {
-            const spy = sinon.spy(vscode.window, 'createQuickPick');
-            testObject = new QuickPickStep(
-                'test-placeholder',
-                'test-title',
-                [{ label: 'test-label' }],
-                { label: 'other-item-label' },
-                inputBoxStepStub);
             const result: vscode.QuickPick<vscode.QuickPickItem> = spy.returnValues[0];
 
             assert.strictEqual(spy.calledOnce, true);
@@ -64,28 +70,6 @@ describe('QuickPickStep', () => {
     });
 
     describe('execute', () => {
-        let spy: sinon.SinonSpy;
-        let quickPickStub: sinon.SinonStubbedInstance<vscode.QuickPick<vscode.QuickPickItem>>;
-
-        beforeEach(() => {
-            spy = sinon.spy(vscode.window, 'createQuickPick');
-            testObject = new QuickPickStep(
-                'test-placeholder',
-                'test-title',
-                [{ label: 'test-label' }],
-                { label: 'other-item-label' },
-                inputBoxStepStub);
-            assert.equal(spy.calledOnce, true);
-
-            quickPick = spy.returnValues[0];
-            quickPickStub = sinon.stub(quickPick);
-        });
-
-        afterEach(() => {
-            spy.restore();
-            sinon.reset();
-        });
-
         it('should add back button when step greater 1', () => {
             testObject.execute(handlerMock, 2, 2, true);
 
@@ -188,6 +172,13 @@ describe('QuickPickStep', () => {
                 assert.strictEqual(result.value, undefined);
                 assert.strictEqual(result.action, InputFlowAction.Cancel);
             });
+        });
+    });
+
+    describe('dispose', () => {
+        it('should dispose the quick pick.', () => {
+            testObject.dispose();
+            assert.strictEqual(quickPickStub.dispose.calledOnce, true);
         });
     });
 });

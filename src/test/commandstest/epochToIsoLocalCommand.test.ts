@@ -4,9 +4,9 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { EpochToIsoLocalCommand } from '../../commands/epochToIsoLocalCommand';
-import { MultiStepHandler } from '../../step/multiStepHandler';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
+import { ResultBox } from '../../util/resultBox';
 import { TimeConverter } from '../../util/timeConverter';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
@@ -16,10 +16,13 @@ describe('EpochToIsoLocalCommand', () => {
     let testObject: EpochToIsoLocalCommand;
     let testEditor: vscode.TextEditor;
     let handlerMock: MultiStepHandlerMock;
+    let showResultStub: sinon.SinonStub;
 
     before(async () => {
-        handlerMock = new MultiStepHandlerMock(new ExtensionContextMock());
+        handlerMock = new MultiStepHandlerMock();
         timeConverter = new TimeConverter();
+        showResultStub = sinon.stub(ResultBox.prototype, 'show');
+
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -35,18 +38,22 @@ describe('EpochToIsoLocalCommand', () => {
         await config.update('insertConvertedTime', undefined);
         await config.update('ignoreFocusOut', undefined);
         await config.update('hideResultViewOnEnter', undefined);
+        showResultStub.restore();
+        handlerMock.restore();
     });
 
     describe('execute', () => {
+
         beforeEach('Reset', () => {
-            testObject = new EpochToIsoLocalCommand(new ExtensionContextMock(), timeConverter, handlerMock);
+            testObject = new EpochToIsoLocalCommand(new ExtensionContextMock(), timeConverter, undefined);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
             handlerMock.run.returns(['1000']);
-            handlerMock.showResult.returns(new StepResult(InputFlowAction.Cancel, undefined));
+            showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
         afterEach(() => {
             handlerMock.reset();
+            showResultStub.resetHistory();
         });
 
         it('Should not ask for user input if pre selection is valid epoch date', async () => {
@@ -54,7 +61,7 @@ describe('EpochToIsoLocalCommand', () => {
 
             assert.strictEqual(handlerMock.registerStep.notCalled, true);
             assert.strictEqual(handlerMock.run.notCalled, true);
-            assert.strictEqual(handlerMock.showResult.calledOnce, true);
+            assert.strictEqual(showResultStub.calledOnce, true);
         });
 
         it('Should ask for user input if pre selection is invalid epoch', async () => {
@@ -64,7 +71,7 @@ describe('EpochToIsoLocalCommand', () => {
 
             assert.strictEqual(handlerMock.registerStep.calledOnce, true);
             assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(handlerMock.showResult.calledOnce, true);
+            assert.strictEqual(showResultStub.calledOnce, true);
         });
 
         it('Should stop if user canceled during epoch time insertion', async () => {
@@ -75,7 +82,7 @@ describe('EpochToIsoLocalCommand', () => {
 
             assert.strictEqual(handlerMock.run.calledOnce, true);
             assert.strictEqual(handlerMock.registerStep.calledOnce, true);
-            assert.strictEqual(handlerMock.showResult.notCalled, true);
+            assert.strictEqual(showResultStub.notCalled, true);
         });
 
         it('Should show result after calculation', async () => {
@@ -83,9 +90,9 @@ describe('EpochToIsoLocalCommand', () => {
 
             assert.strictEqual(handlerMock.run.notCalled, true);
             assert.strictEqual(handlerMock.registerStep.notCalled, true);
-            assert.strictEqual(handlerMock.showResult.calledOnce, true);
+            assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
-                handlerMock.showResult.args[0][2],
+                showResultStub.args[0][2],
                 timeConverter.epochToIsoLocal('123456789000'));
         });
 
@@ -99,7 +106,7 @@ describe('EpochToIsoLocalCommand', () => {
 
             assert.strictEqual(handlerMock.run.notCalled, true);
             assert.strictEqual(handlerMock.registerStep.notCalled, true);
-            assert.strictEqual(handlerMock.showResult.calledOnce, true);
+            assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(spy.calledOnce, true);
 
             // Restore

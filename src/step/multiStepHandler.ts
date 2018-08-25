@@ -13,39 +13,16 @@ class MultiStepHandler implements Disposable {
     /**
      * List of steps to be executed.
      */
-    protected _steps: IStep[] = []; // protected for easy testing
+    private _steps: IStep[] = [];
 
     /**
      * The results of each step.
      */
-    protected _stepResults: string[]; // protected for easy testing
+    private _stepResults: string[];
 
-    private _resultBox: ResultBox; // protected because of testing
-
-    public constructor(context: ExtensionContext) {
-        this._resultBox = new ResultBox({
-            iconPath: {
-                dark: Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
-                light: Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
-            },
-            tooltip: 'Insert Result'
-        });
+    public constructor() {
     }
 
-    /**
-     * Indicates whether steps were added
-     */
-    public get initialized(): boolean {
-        return this._steps.length === 0 ? false : true;
-    }
-
-    public showResult(
-        prompt: string,
-        title: string,
-        value: string,
-        insertAction: (insertion: string) => Thenable<boolean>): Thenable<StepResult> {
-        return this._resultBox.show(prompt, title, value, insertAction);
-    }
     /**
      * Registers a given step if it was not registered before.
      * @param {IStep} step The step to register

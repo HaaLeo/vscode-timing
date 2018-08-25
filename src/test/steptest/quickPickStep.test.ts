@@ -4,10 +4,10 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { InputBoxStep } from '../../step/inputBoxStep';
+import { MultiStepHandler } from '../../step/multiStepHandler';
 import { QuickPickStep } from '../../step/quickPickStep';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
-import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
 describe('QuickPickStep', () => {
@@ -19,8 +19,15 @@ describe('QuickPickStep', () => {
     let spy: sinon.SinonSpy;
     let quickPickStub: sinon.SinonStubbedInstance<vscode.QuickPick<vscode.QuickPickItem>>;
 
+    before(() => {
+        handlerMock = new MultiStepHandlerMock();
+    });
+
+    after(() => {
+        handlerMock.restore();
+    });
+
     beforeEach(async () => {
-        handlerMock = new MultiStepHandlerMock(new ExtensionContextMock());
         const inputBoxStep = new InputBoxStep(
             'test-placeholder',
             'test prompt',
@@ -71,20 +78,20 @@ describe('QuickPickStep', () => {
 
     describe('execute', () => {
         it('should add back button when step greater 1', () => {
-            testObject.execute(handlerMock, 2, 2, true);
+            testObject.execute(new MultiStepHandler(), 2, 2, true);
 
             assert.strictEqual(quickPickStub.buttons.length, 1);
             assert.strictEqual(quickPickStub.buttons[0], vscode.QuickInputButtons.Back);
         });
 
         it('should not add back button when step is 1', () => {
-            testObject.execute(handlerMock, 1, 2, true);
+            testObject.execute(new MultiStepHandler(), 1, 2, true);
 
             assert.strictEqual(quickPickStub.buttons.length, 0);
         });
 
         it('should add items', () => {
-            testObject.execute(handlerMock, 0, 0, true);
+            testObject.execute(new MultiStepHandler(), 0, 0, true);
 
             assert.strictEqual(quickPickStub.items.length, 2);
             assert.strictEqual(quickPickStub.items[0].label, 'test-label');
@@ -92,7 +99,7 @@ describe('QuickPickStep', () => {
         });
 
         it('should register event listener and show the quick pick.', () => {
-            testObject.execute(handlerMock, 0, 0, true);
+            testObject.execute(new MultiStepHandler(), 0, 0, true);
 
             assert.strictEqual(quickPickStub.onDidAccept.calledOnce, true);
             assert.strictEqual(quickPickStub.onDidHide.calledOnce, true);
@@ -101,7 +108,7 @@ describe('QuickPickStep', () => {
         });
 
         it('should set input box step member.', () => {
-            testObject.execute(handlerMock, 4, 10, true);
+            testObject.execute(new MultiStepHandler(), 4, 10, true);
 
             assert.strictEqual(quickPickStub.step, 4);
             assert.strictEqual(quickPickStub.totalSteps, 10);
@@ -113,7 +120,7 @@ describe('QuickPickStep', () => {
             let listener: (e: any) => any;
             let resultPromise: Thenable<StepResult>;
             beforeEach(() => {
-                resultPromise = testObject.execute(handlerMock, 0, 0, true);
+                resultPromise = testObject.execute(new MultiStepHandler(), 0, 0, true);
             });
 
             afterEach(() => {

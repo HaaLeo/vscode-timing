@@ -12,15 +12,23 @@ abstract class CommandBase {
     protected _timeConverter: TimeConverter;
     protected _disposables: vscode.Disposable[];
     protected _stepHandler: MultiStepHandler;
+    protected _resultBox: ResultBox;
 
     protected _insertConvertedTime: boolean;
     protected _hideResultViewOnEnter: boolean;
     protected _ignoreFocusOut: boolean;
 
-    // TODO remove context
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         this._dialogHandler = dialogHandler;
         this._timeConverter = timeConverter;
+
+        this._resultBox = new ResultBox({
+            iconPath: {
+                dark: vscode.Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
+                light: vscode.Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
+            },
+            tooltip: 'Insert Result'
+        });
 
         this.updateInsertConvertedTime();
         this.updateIgnoreFocusOut();

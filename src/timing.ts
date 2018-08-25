@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
     const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter, dialogHandler);
     const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter, dialogHandler);
     const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter, dialogHandler);
-    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter, new MultiStepHandler(context));
+    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter, undefined);
     const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter, dialogHandler);
     const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter, dialogHandler);
     const nowAsCustomCommand = new NowAsCustomCommand(context, timeConverter, dialogHandler);

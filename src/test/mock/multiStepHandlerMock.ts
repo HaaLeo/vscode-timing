@@ -1,37 +1,27 @@
 'use strict';
 
 import * as sinon from 'sinon';
-import { IStep } from '../../step/IStep';
 import { MultiStepHandler } from '../../step/multiStepHandler';
 
-class MultiStepHandlerMock extends MultiStepHandler {
+class MultiStepHandlerMock {
 
-    public run = sinon.stub();
-    public registerStep = sinon.stub();
-    public unregisterStep = sinon.stub();
-    public dispose = sinon.stub();
-    public showResult = sinon.stub();
-    protected executeStep = sinon.stub();
-
-    protected _steps: IStep[];
-    protected _stepResults: string[];
+    public run = sinon.stub(MultiStepHandler.prototype, 'run');
+    public registerStep = sinon.stub(MultiStepHandler.prototype, 'registerStep');
+    public unregisterStep = sinon.stub(MultiStepHandler.prototype, 'unregisterStep');
+    public dispose = sinon.stub(MultiStepHandler.prototype, 'dispose');
 
     public restore() {
         this.run.restore();
         this.registerStep.restore();
         this.unregisterStep.restore();
         this.dispose.restore();
-        this.executeStep.restore();
-        this.showResult.restore();
     }
 
     public reset() {
         this.run.reset();
         this.registerStep.reset();
         this.unregisterStep.reset();
-        this.executeStep.reset();
         this.dispose.reset();
-        this.showResult.reset();
     }
 }
 

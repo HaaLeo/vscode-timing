@@ -17,13 +17,6 @@ import { CommandBase } from './commandBase';
  */
 class EpochToIsoLocalCommand extends CommandBase {
 
-    // TODO move to base
-    public constructor(
-        context: vscode.ExtensionContext, timeConverter: TimeConverter, multiStepHandler: MultiStepHandler) {
-        super(context, timeConverter, undefined);
-        this._stepHandler = multiStepHandler;
-    }
-
     /**
      * Execute the command.
      */
@@ -34,7 +27,7 @@ class EpochToIsoLocalCommand extends CommandBase {
         do {
             let rawInput = loopResult.value;
             if (!rawInput || !this._timeConverter.isValidEpoch(rawInput)) {
-                if (!this._stepHandler.initialized) {
+                if (!this._stepHandler) {
                     this.initialize();
                 }
 
@@ -58,7 +51,7 @@ class EpochToIsoLocalCommand extends CommandBase {
             }
             const resultPostfix = inserted ? 'Inserted Result' : 'Result';
 
-            loopResult = await this._stepHandler.showResult(
+            loopResult = await this._resultBox.show(
                 'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                 'Epoch → Iso 8601 Local: ' + resultPostfix,
                 result,
@@ -77,6 +70,7 @@ class EpochToIsoLocalCommand extends CommandBase {
             'Ensure the epoch time is valid.',
             this._timeConverter.isValidEpoch);
 
+        this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(insertEpochTime);
     }
 }

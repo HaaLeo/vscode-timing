@@ -6,8 +6,6 @@ import { IStep } from '../../step/IStep';
 import { MultiStepHandler } from '../../step/multiStepHandler';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
-import { ResultBox } from '../../util/resultBox';
-import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('MultiStepHandler', () => {
     let testObject: MultiStepHandler;
@@ -15,7 +13,7 @@ describe('MultiStepHandler', () => {
     let secondStepStub: sinon.SinonStubbedInstance<IStep>;
 
     beforeEach(() => {
-        testObject = new MultiStepHandler(new ExtensionContextMock());
+        testObject = new MultiStepHandler();
         const firstStep: IStep = {
             dispose: () => undefined,
             execute: (handler: MultiStepHandler, step: number, totalSteps: number) => undefined
@@ -130,21 +128,6 @@ describe('MultiStepHandler', () => {
 
             assert.strictEqual(result.length, 0);
             assert.strictEqual(secondStepStub.execute.notCalled, true);
-        });
-    });
-
-    describe('showResult', () => {
-        it('should show the result box.', async () => {
-            const showStub = sinon.stub(ResultBox.prototype, 'show');
-            showStub.resolves(true);
-
-            await testObject.showResult('test-prompt', 'test-title', 'test-value', sinon.stub().returns(true));
-
-            assert.strictEqual(showStub.calledOnce, true);
-            assert.strictEqual(showStub.firstCall.args[0], 'test-prompt');
-            assert.strictEqual(showStub.firstCall.args[1], 'test-title');
-            assert.strictEqual(showStub.firstCall.args[2], 'test-value');
-            showStub.restore();
         });
     });
 

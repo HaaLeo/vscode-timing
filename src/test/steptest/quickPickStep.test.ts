@@ -34,6 +34,7 @@ describe('QuickPickStep', () => {
             'test-title',
             'test-validation-message',
             (input: string) => true,
+            false,
             true);
 
         inputBoxStepStub = sinon.stub(inputBoxStep);
@@ -44,7 +45,8 @@ describe('QuickPickStep', () => {
             'test-title',
             [{ label: 'test-label' }],
             { label: 'other-item-label' },
-            inputBoxStepStub);
+            inputBoxStepStub,
+            true);
         assert.equal(spy.calledOnce, true);
 
         quickPick = spy.returnValues[0];
@@ -186,6 +188,12 @@ describe('QuickPickStep', () => {
         it('should dispose the quick pick.', () => {
             testObject.dispose();
             assert.strictEqual(quickPickStub.dispose.calledOnce, true);
+        });
+    });
+
+    describe('skip', () => {
+        it('should return correct property value.', () => {
+            assert.strictEqual(testObject.skip, true);
         });
     });
 });

@@ -15,19 +15,21 @@ describe('MultiStepHandler', () => {
     beforeEach(() => {
         testObject = new MultiStepHandler();
         const firstStep: IStep = {
+
             dispose: () => undefined,
-            execute: (handler: MultiStepHandler, step: number, totalSteps: number) => undefined,
+            execute: () => undefined,
             validation: () => true,
-            skip: false
+            get skip(): boolean { return false; }
+
         };
         firstStepStub = sinon.stub(firstStep);
         firstStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'first-result'));
 
         const secondStep: IStep = {
             dispose: () => undefined,
-            execute: (handler: MultiStepHandler, step: number, totalSteps: number) => undefined,
+            execute: () => undefined,
             validation: () => true,
-            skip: false
+            get skip(): boolean { return false; }
         };
         secondStepStub = sinon.stub(secondStep);
         secondStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'second-result'));
@@ -73,7 +75,7 @@ describe('MultiStepHandler', () => {
             testObject.registerStep(secondStepStub);
         });
 
-        it('should execute all steps an return results', async () => {
+        it('should execute all steps and return results', async () => {
             const result = await testObject.run(true, '');
 
             assert.strictEqual(result.length, 2);
@@ -95,6 +97,25 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result.length, 1);
             assert.strictEqual(result[0], 'second-result');
             assert.strictEqual(firstStepStub.execute.notCalled, true);
+        });
+
+        it('should skip step if flag is set.', async () => {
+            const firstStep: IStep = {
+                dispose: () => undefined,
+                execute: () => undefined,
+                get validation(): () => boolean { return () => true; },
+                get skip(): boolean { return true; }
+            };
+            firstStepStub = sinon.stub(firstStep);
+            firstStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'first-result'));
+            testObject = new MultiStepHandler();
+            testObject.registerStep(firstStepStub);
+
+            const result = await testObject.run(true, 'test-selection');
+
+            assert.strictEqual(firstStepStub.execute.notCalled, true);
+            assert.strictEqual(secondStepStub.execute.notCalled, true);
+            assert.strictEqual(result[0], 'test-selection');
         });
 
         it('should go back once.', async () => {

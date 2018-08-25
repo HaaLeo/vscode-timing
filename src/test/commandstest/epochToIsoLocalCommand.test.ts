@@ -56,24 +56,6 @@ describe('EpochToIsoLocalCommand', () => {
             showResultStub.resetHistory();
         });
 
-        it('Should not ask for user input if pre selection is valid epoch date', async () => {
-            await testObject.execute();
-
-            assert.strictEqual(handlerMock.registerStep.calledOnce, true);
-            assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(showResultStub.calledOnce, true);
-        });
-
-        it('Should ask for user input if pre selection is invalid epoch', async () => {
-            testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-
-            await testObject.execute();
-
-            assert.strictEqual(handlerMock.registerStep.calledOnce, true);
-            assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(showResultStub.calledOnce, true);
-        });
-
         it('Should stop if user canceled during epoch time insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
             handlerMock.run.returns([]);
@@ -94,6 +76,17 @@ describe('EpochToIsoLocalCommand', () => {
             assert.strictEqual(
                 showResultStub.args[0][2],
                 timeConverter.epochToIsoLocal('1000000'));
+        });
+
+        it('Should start with last step if input flow action is Back.', async () => {
+            showResultStub.onFirstCall().returns(new StepResult(InputFlowAction.Back, undefined));
+            showResultStub.onSecondCall().returns(new StepResult(InputFlowAction.Cancel, undefined));
+
+            await testObject.execute();
+
+            assert.strictEqual(handlerMock.run.calledTwice, true);
+            assert.strictEqual(handlerMock.run.secondCall.args[2], -1);
+            showResultStub.resetBehavior();
         });
 
         it('Should insert the converted time.', async () => {

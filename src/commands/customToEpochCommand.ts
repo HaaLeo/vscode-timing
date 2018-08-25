@@ -23,15 +23,11 @@ class CustomToEpochCommand extends CustomCommandBase {
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [customFormat, rawInput, epochTargetFormat] = await this._stepHandler.run(
-                    this._ignoreFocusOut,
-                    -1,
-                    { userSelection: rawInput, stepToSkip: 1 });
+                [customFormat, rawInput, epochTargetFormat] =
+                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [customFormat, rawInput, epochTargetFormat] = await this._stepHandler.run(
-                    this._ignoreFocusOut,
-                    0,
-                    { userSelection: undefined, stepToSkip: 1 });
+                [customFormat, rawInput, epochTargetFormat] =
+                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
@@ -117,6 +113,7 @@ class CustomToEpochCommand extends CustomCommandBase {
             this.title,
             'Ensure you enter a custom momentjs format.',
             (input) => input ? true : false,
+            false,
             true);
 
         const getCustomFormatStep = new QuickPickStep(
@@ -130,7 +127,8 @@ class CustomToEpochCommand extends CustomCommandBase {
             'Insert time of format: $(prior-result)',
             this.title,
             'Ensure the inserted time has format: $(prior-result)',
-            this._timeConverter.isValidCustom);
+            this._timeConverter.isValidCustom,
+            true);
         const getEpochTargetFormat = new QuickPickStep(
             'Select epoch target format',
             this.title,

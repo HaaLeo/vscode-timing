@@ -12,6 +12,11 @@ import { StepResult } from './stepResult';
 class QuickPickStep implements IStep {
 
     /**
+     * Indicates whether this step is skipped when the user's pre-selection is valid.
+     */
+    private _skip: boolean;
+
+    /**
      * The quick-pick that is shown to the user.
      */
     private _quickPick: QuickPick<QuickPickItem>;
@@ -49,7 +54,8 @@ class QuickPickStep implements IStep {
         title: string,
         items: QuickPickItem[],
         allowOtherItem?: QuickPickItem,
-        alternativeStep?: IStep) {
+        alternativeStep?: IStep,
+        skip: boolean = false) {
 
         this._quickPick = window.createQuickPick();
         this._quickPick.placeholder = placeholder;
@@ -60,8 +66,9 @@ class QuickPickStep implements IStep {
         this._items = items;
 
         this._allowOtherItem = allowOtherItem;
-
         this._alternativeStep = alternativeStep;
+
+        this._skip = skip;
         this._disposables.push(this._quickPick);
     }
 
@@ -118,6 +125,16 @@ class QuickPickStep implements IStep {
         });
     }
 
+    /**
+     * Gets skip, indicating whether this step shall be skipped when the user selection is valid.
+     */
+    public get skip(): boolean {
+        return this._skip;
+    }
+
+    /**
+     * Gets the validation function used for this step.
+     */
     public get validation(): (input: string, ...args: string[]) => boolean {
         return () => true;
     }

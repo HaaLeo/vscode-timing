@@ -20,6 +20,7 @@ class InputBoxStep implements IStep {
     private _prompt: string;
     private _unregisterOnBack: boolean;
     private _isRunning: boolean;
+    private _skip: boolean;
 
     /**
      * Creates an InputBoxStep.
@@ -28,6 +29,7 @@ class InputBoxStep implements IStep {
      * @param title The input box's title.
      * @param validationMessage The input box's validation message.
      * @param validationFn Function that validates the user's input.
+     * @param skip Indicates whether this step shall be skipped when user input is valid.
      * @param unregisterOnBack Indicates whether this step is unregistered when the user navigates _Back_.
      */
     public constructor(
@@ -36,6 +38,7 @@ class InputBoxStep implements IStep {
         title: string,
         validationMessage: string,
         validationFn: (input: string, ...args: string[]) => boolean,
+        skip: boolean = false,
         unregisterOnBack: boolean = false) {
 
         this._inputBox = window.createInputBox();
@@ -47,15 +50,12 @@ class InputBoxStep implements IStep {
         this._validationMessage = validationMessage;
 
         this._validate = validationFn;
+        this._skip = skip;
 
         this._unregisterOnBack = unregisterOnBack;
         this._isRunning = false;
 
         this._disposables.push(this._inputBox);
-    }
-
-    public get validation(): (input: string, ...args: string[]) => boolean {
-        return this._validate;
     }
 
     /**
@@ -71,8 +71,7 @@ class InputBoxStep implements IStep {
         totalSteps: number,
         ignoreFocusOut: boolean): Thenable<StepResult> {
 
-        // -1 because one based -> zero based, -1 because prior step, hence -2
-        const previousResult = handler.steResults[step - 2];
+        let previousResult = handler.stepResults[handler.indexOf(this) - 1];
 
         this._isRunning = true;
 
@@ -82,6 +81,9 @@ class InputBoxStep implements IStep {
         this._inputBox.title = this.parse(this._title, previousResult);
         this._inputBox.prompt = this.parse(this._prompt, previousResult);
         this._inputBox.placeholder = this.parse(this._placeholder, previousResult);
+        this._inputBox.validationMessage = '';
+        this._inputBox.busy = false;
+        this._inputBox.enabled = true;
 
         if (step > 1) {
             this._inputBox.buttons = [QuickInputButtons.Back];
@@ -89,25 +91,43 @@ class InputBoxStep implements IStep {
 
         return new Promise<StepResult>((resolve, reject) => {
             this._inputBox.onDidAccept(() => {
+                this._inputBox.busy = true;
+                this._inputBox.enabled = false;
+
+                // Update
+                previousResult = handler.stepResults[handler.indexOf(this) - 1];
+
                 if (this._validate(this._inputBox.value, previousResult)) {
                     this._isRunning = false;
                     this._inputBox.hide();
                     resolve(new StepResult(InputFlowAction.Continue, this._inputBox.value));
                 } else {
                     this._inputBox.validationMessage = this.parse(this._validationMessage, previousResult);
+                    this._inputBox.busy = false;
+                    this._inputBox.enabled = true;
                 }
             }, this, this._disposables);
 
             this._inputBox.onDidChangeValue((current) => {
+                this._inputBox.busy = true;
+                this._inputBox.enabled = false;
+
+                // Update
+                previousResult = handler.stepResults[handler.indexOf(this) - 1];
+
                 if (this._validate(current, previousResult)) {
                     this._inputBox.validationMessage = '';
                 } else {
                     this._inputBox.validationMessage = this.parse(this._validationMessage, previousResult);
                 }
+                this._inputBox.busy = false;
+                this._inputBox.enabled = true;
             }, this, this._disposables);
 
             this._inputBox.onDidTriggerButton((button) => {
                 if (button === QuickInputButtons.Back) {
+                    this._inputBox.busy = true;
+                    this._inputBox.enabled = false;
 
                     // Check whether this input box is running,
                     // because event fires when button on any input box is pressed
@@ -121,12 +141,23 @@ class InputBoxStep implements IStep {
             }, this, this._disposables);
 
             this._inputBox.onDidHide(() => {
+                this._inputBox.busy = true;
+                this._inputBox.enabled = false;
+
                 resolve(new StepResult(InputFlowAction.Cancel, undefined));
                 this._isRunning = false;
             });
 
             this._inputBox.show();
         });
+    }
+
+    public get skip(): boolean {
+        return this._skip;
+    }
+
+    public get validation(): (input: string, ...args: string[]) => boolean {
+        return this._validate;
     }
 
     /**

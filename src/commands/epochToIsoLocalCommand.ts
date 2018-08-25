@@ -32,15 +32,9 @@ class EpochToIsoLocalCommand extends CommandBase {
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput] = await this._stepHandler.run(
-                    this._ignoreFocusOut,
-                    -1,
-                    { userSelection: rawInput, stepToSkip: 0 });
+                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput] = await this._stepHandler.run(
-                    this._ignoreFocusOut,
-                    0,
-                    { userSelection: rawInput, stepToSkip: 0 });
+                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
@@ -69,15 +63,16 @@ class EpochToIsoLocalCommand extends CommandBase {
      * Initialize all members.
      */
     private initialize(): void {
-        const insertEpochTime = new InputBoxStep(
+        const getEpochTimeStep = new InputBoxStep(
             '123456789',
             'Insert the epoch time.',
             'Epoch → Iso 8601 Local',
             'Ensure the epoch time is valid.',
-            this._timeConverter.isValidEpoch);
+            this._timeConverter.isValidEpoch,
+            true);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(insertEpochTime);
+        this._stepHandler.registerStep(getEpochTimeStep);
     }
 }
 

@@ -20,9 +20,16 @@ class MultiStepHandler implements Disposable {
      */
     private _stepResults: string[] = [];
 
-    private _skipOptions: { userSelection: string, stepToSkip: number };
+    /**
+     * The user's selection in the editor
+     */
+    private _userSelection: string;
 
-    public get steResults(): string[] {
+    public indexOf(step: IStep): Readonly<number> {
+        return this._steps.indexOf(step);
+    }
+
+    public get stepResults(): ReadonlyArray<string> {
         return this._stepResults;
     }
 
@@ -31,21 +38,12 @@ class MultiStepHandler implements Disposable {
      * @param {IStep} step The step to register
      * @param {number} index zero based index indicating at which position the step is registered.
      */
-    public registerStep(step: IStep, index?: number): void {
+    public registerStep(step: IStep, index?: number, skipIfUserSelectionValid: boolean = false): void {
         if (this._steps.indexOf(step, 0) === -1) {
             if (index === 0 || index) {
                 this._steps.splice(index, 0, step);
             } else {
                 this._steps.push(step);
-            }
-
-            // Update skip options
-            if (this._skipOptions) {
-                if (index <= this._skipOptions.stepToSkip) {
-                    this._skipOptions.stepToSkip++;
-                } else {
-                    this._skipOptions.stepToSkip--;
-                }
             }
         }
     }
@@ -58,31 +56,25 @@ class MultiStepHandler implements Disposable {
         const index = this._steps.indexOf(step, 0);
         if (index !== -1) {
             this._steps.splice(index, 1);
-
-            // Update skip options
-            if (this._skipOptions) {
-                if (index <= this._skipOptions.stepToSkip) {
-                    this._skipOptions.stepToSkip--;
-                } else {
-                    this._skipOptions.stepToSkip++;
-                }
-            }
         }
     }
 
     /**
      * Runs all registered steps.
      * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
+     * @param userSelection The user's selection before he/she invoked the command.
      * @param startIndex zero based index indicating which step is used for start.
      * If `-1` the last step will be used.
      * @returns A promise to the _ordered_ array containing each step's result
      */
     public async run(
         ignoreFocusOut: boolean,
+        userSelection: string,
         startIndex: number = 0,
-        skipOptions: { userSelection: string, stepToSkip: number }): Promise<string[]> {
+    ): Promise<string[]> {
 
-        this._skipOptions = skipOptions;
+        this._userSelection = userSelection;
+
         if (startIndex === -1) {
             startIndex = this._steps.length - 1;
         }
@@ -105,17 +97,16 @@ class MultiStepHandler implements Disposable {
      * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      * @returns a promise.
      */
-    // protected for easy testing
-    protected async executeStep(step: IStep, ignoreFocusOut: boolean): Promise<void> {
+    private async executeStep(step: IStep, ignoreFocusOut: boolean): Promise<void> {
         const stepIndex = this._steps.indexOf(step);
         const totalSteps = this._steps.length;
 
         let result: StepResult;
 
         // Check whether this step should be skipped
-        if (stepIndex === this._skipOptions.stepToSkip
-            && step.validation(this._skipOptions.userSelection, this._stepResults[stepIndex - 1])) {
-            result = new StepResult(InputFlowAction.Continue, this._skipOptions.userSelection);
+        if (step.skip
+            && step.validation(this._userSelection, this._stepResults[stepIndex - 1])) {
+            result = new StepResult(InputFlowAction.Continue, this._userSelection);
         } else {
             result = await step.execute(this, stepIndex + 1, totalSteps, ignoreFocusOut);
         }

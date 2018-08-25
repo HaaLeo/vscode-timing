@@ -61,7 +61,6 @@ describe('EpochToIsoLocalCommand', () => {
 
             assert.strictEqual(handlerMock.registerStep.calledOnce, true);
             assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(handlerMock.run.firstCall.args[2].stepToSkip, 0);
             assert.strictEqual(showResultStub.calledOnce, true);
         });
 

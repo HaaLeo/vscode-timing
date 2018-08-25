@@ -155,6 +155,7 @@ describe('InputBoxStep', () => {
                     'test-title',
                     'test-validation-message',
                     () => false,
+                    false,
                     true);
                 assert.equal(spy.calledOnce, true);
                 const inputBox: vscode.InputBox = spy.returnValues[0];

@@ -9,7 +9,15 @@ import { StepResult } from './stepResult';
  */
 interface IStep extends Disposable {
 
+    /**
+     * Gets the validation function fo this step.
+     */
     validation: (input: string, ...args: string[]) => boolean;
+
+    /**
+     * Indicates whether this step is skipped when user selection is valid
+     */
+    skip: boolean;
 
     /**
      * Execute this step.

@@ -2,7 +2,6 @@
 
 import { Disposable, ExtensionContext, Uri } from 'vscode';
 import { InputFlowAction } from '../util/InputFlowAction';
-import { ResultBox } from '../util/resultBox';
 import { IStep } from './IStep';
 import { StepResult } from './stepResult';
 

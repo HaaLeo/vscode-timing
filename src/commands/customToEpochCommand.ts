@@ -41,11 +41,11 @@ class CustomToEpochCommand extends CustomCommandBase {
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const resultPostfix = inserted ? 'Inserted Result' : 'Result';
+            const titlePostfix = (inserted ? ': Inserted Result' : ': Result') + ' (' + epochTargetFormat + ')';
 
             loopResult = await this._resultBox.show(
                 'Input: ' + rawInput + ' (Format: ' + customFormat + ')',
-                this.title + ': ' + resultPostfix,
+                this.title +  titlePostfix,
                 result,
                 this.insert);
         } while (loopResult.action === InputFlowAction.Back

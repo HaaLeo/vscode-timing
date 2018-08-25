@@ -17,6 +17,8 @@ import { CommandBase } from './commandBase';
  */
 class EpochToIsoLocalCommand extends CommandBase {
 
+    private readonly title: string = 'Epoch → ISO 8601 Local';
+
     /**
      * Execute the command.
      */
@@ -48,11 +50,11 @@ class EpochToIsoLocalCommand extends CommandBase {
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const resultPostfix = inserted ? 'Inserted Result' : 'Result';
+            const titlePostfix = inserted ? ': Inserted Result' : ': Result';
 
             loopResult = await this._resultBox.show(
                 'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
-                'Epoch → Iso 8601 Local: ' + resultPostfix,
+                this.title + titlePostfix,
                 result,
                 this.insert);
         } while (loopResult.action === InputFlowAction.Back
@@ -66,7 +68,7 @@ class EpochToIsoLocalCommand extends CommandBase {
         const getEpochTimeStep = new InputBoxStep(
             '123456789',
             'Insert the epoch time.',
-            'Epoch → Iso 8601 Local',
+            this.title,
             'Ensure the epoch time is valid.',
             this._timeConverter.isValidEpoch,
             true);

@@ -8,7 +8,7 @@ import { CommandBase } from './commandBase';
 abstract class CustomCommandBase extends CommandBase implements vscode.Disposable {
 
     protected _customTimeFormatOptions: vscode.QuickPickItem[];
-    private readonly _selectOtherFormat = 'Other Format...';
+    private readonly _selectOtherFormat = 'Other Format...'; // TODO Remove
 
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
         super(context, timeConverter, dialogHandler);
@@ -21,6 +21,7 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
         }, this, this._disposables);
     }
 
+    // TODO remove
     protected async getCustomFormat(): Promise<string> {
         let formatFromOptions: vscode.QuickPickItem = { label: this._selectOtherFormat };
         let result;
@@ -60,7 +61,7 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
                 });
             }
         });
-        this._customTimeFormatOptions.push({ label: this._selectOtherFormat });
+        this._customTimeFormatOptions.push({ label: this._selectOtherFormat }); // TODO Remove
     }
 }
 

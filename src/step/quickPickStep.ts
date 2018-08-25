@@ -118,6 +118,10 @@ class QuickPickStep implements IStep {
         });
     }
 
+    public get validation(): (input: string, ...args: string[]) => boolean {
+        return () => true;
+    }
+
     /**
      * Dispose this object.
      */

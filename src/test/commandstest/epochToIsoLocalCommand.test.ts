@@ -59,8 +59,9 @@ describe('EpochToIsoLocalCommand', () => {
         it('Should not ask for user input if pre selection is valid epoch date', async () => {
             await testObject.execute();
 
-            assert.strictEqual(handlerMock.registerStep.notCalled, true);
-            assert.strictEqual(handlerMock.run.notCalled, true);
+            assert.strictEqual(handlerMock.registerStep.calledOnce, true);
+            assert.strictEqual(handlerMock.run.calledOnce, true);
+            assert.strictEqual(handlerMock.run.firstCall.args[2].stepToSkip, 0);
             assert.strictEqual(showResultStub.calledOnce, true);
         });
 
@@ -88,12 +89,12 @@ describe('EpochToIsoLocalCommand', () => {
         it('Should show result after calculation', async () => {
             await testObject.execute();
 
-            assert.strictEqual(handlerMock.run.notCalled, true);
-            assert.strictEqual(handlerMock.registerStep.notCalled, true);
+            assert.strictEqual(handlerMock.run.calledOnce, true);
+            assert.strictEqual(handlerMock.registerStep.calledOnce, true);
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.epochToIsoLocal('123456789000'));
+                timeConverter.epochToIsoLocal('1000000'));
         });
 
         it('Should insert the converted time.', async () => {
@@ -104,8 +105,8 @@ describe('EpochToIsoLocalCommand', () => {
 
             await testObject.execute();
 
-            assert.strictEqual(handlerMock.run.notCalled, true);
-            assert.strictEqual(handlerMock.registerStep.notCalled, true);
+            assert.strictEqual(handlerMock.run.calledOnce, true);
+            assert.strictEqual(handlerMock.registerStep.calledOnce, true);
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(spy.calledOnce, true);
 

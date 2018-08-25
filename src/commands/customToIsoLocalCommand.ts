@@ -9,7 +9,7 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
 
         do {
             const currentFormat = await this.getCustomFormat();
-            if (! currentFormat) {
+            if (!currentFormat) {
                 break;
             }
 

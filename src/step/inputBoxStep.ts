@@ -13,8 +13,11 @@ class InputBoxStep implements IStep {
 
     private _inputBox: InputBox;
     private _disposables: Disposable[] = [];
-    private _validate: (string) => boolean;
+    private _validate: (input: string, ...args: string[]) => boolean;
     private _validationMessage: string;
+    private _placeholder: string;
+    private _title: string;
+    private _prompt: string;
     private _unregisterOnBack: boolean;
     private _isRunning: boolean;
 
@@ -32,22 +35,27 @@ class InputBoxStep implements IStep {
         prompt: string,
         title: string,
         validationMessage: string,
-        validationFn: (input: string) => boolean,
-        unregisterOnBack?: boolean) {
+        validationFn: (input: string, ...args: string[]) => boolean,
+        unregisterOnBack: boolean = false) {
 
         this._inputBox = window.createInputBox();
-        this._inputBox.placeholder = placeholder;
-        this._inputBox.prompt = prompt;
-        this._inputBox.title = title;
         this._inputBox.validationMessage = '';
 
-        this._validate = validationFn;
+        this._placeholder = placeholder;
+        this._prompt = prompt;
+        this._title = title;
         this._validationMessage = validationMessage;
+
+        this._validate = validationFn;
 
         this._unregisterOnBack = unregisterOnBack;
         this._isRunning = false;
 
         this._disposables.push(this._inputBox);
+    }
+
+    public get validation(): (input: string, ...args: string[]) => boolean {
+        return this._validate;
     }
 
     /**
@@ -63,30 +71,38 @@ class InputBoxStep implements IStep {
         totalSteps: number,
         ignoreFocusOut: boolean): Thenable<StepResult> {
 
+        // -1 because one based -> zero based, -1 because prior step, hence -2
+        const previousResult = handler.steResults[step - 2];
+
         this._isRunning = true;
+
         this._inputBox.step = step;
         this._inputBox.totalSteps = totalSteps;
         this._inputBox.ignoreFocusOut = ignoreFocusOut;
+        this._inputBox.title = this.parse(this._title, previousResult);
+        this._inputBox.prompt = this.parse(this._prompt, previousResult);
+        this._inputBox.placeholder = this.parse(this._placeholder, previousResult);
+
         if (step > 1) {
             this._inputBox.buttons = [QuickInputButtons.Back];
         }
 
         return new Promise<StepResult>((resolve, reject) => {
             this._inputBox.onDidAccept(() => {
-                if (this._validate(this._inputBox.value)) {
+                if (this._validate(this._inputBox.value, previousResult)) {
                     this._isRunning = false;
                     this._inputBox.hide();
                     resolve(new StepResult(InputFlowAction.Continue, this._inputBox.value));
                 } else {
-                    this._inputBox.validationMessage = this._validationMessage;
+                    this._inputBox.validationMessage = this.parse(this._validationMessage, previousResult);
                 }
             }, this, this._disposables);
 
             this._inputBox.onDidChangeValue((current) => {
-                if (this._validate(current)) {
+                if (this._validate(current, previousResult)) {
                     this._inputBox.validationMessage = '';
                 } else {
-                    this._inputBox.validationMessage = this._validationMessage;
+                    this._inputBox.validationMessage = this.parse(this._validationMessage, previousResult);
                 }
             }, this, this._disposables);
 
@@ -118,6 +134,16 @@ class InputBoxStep implements IStep {
      */
     public dispose() {
         this._disposables.forEach((disposable) => disposable.dispose());
+    }
+
+    /**
+     * Replaces the `$(prior-result)` keyword of the @param input with the @param replaceValue.
+     * @param input The input string.
+     * @param replaceValue The inserted value
+     */
+    private parse(input: string, replaceValue: string): string {
+        const result = input.replace('$(prior-result)', replaceValue);
+        return result;
     }
 }
 

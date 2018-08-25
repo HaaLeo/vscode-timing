@@ -26,16 +26,21 @@ class EpochToIsoLocalCommand extends CommandBase {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            if (!rawInput || !this._timeConverter.isValidEpoch(rawInput)) {
-                if (!this._stepHandler) {
-                    this.initialize();
-                }
 
-                if (loopResult.action === InputFlowAction.Back) {
-                    [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, -1);
-                } else {
-                    [rawInput] = await this._stepHandler.run(this._ignoreFocusOut);
-                }
+            if (!this._stepHandler) {
+                this.initialize();
+            }
+
+            if (loopResult.action === InputFlowAction.Back) {
+                [rawInput] = await this._stepHandler.run(
+                    this._ignoreFocusOut,
+                    -1,
+                    { userSelection: rawInput, stepToSkip: 0 });
+            } else {
+                [rawInput] = await this._stepHandler.run(
+                    this._ignoreFocusOut,
+                    0,
+                    { userSelection: rawInput, stepToSkip: 0 });
             }
 
             if (!rawInput) {
@@ -56,7 +61,8 @@ class EpochToIsoLocalCommand extends CommandBase {
                 'Epoch → Iso 8601 Local: ' + resultPostfix,
                 result,
                 this.insert);
-        } while (loopResult.action !== InputFlowAction.Cancel && !this._hideResultViewOnEnter);
+        } while (loopResult.action === InputFlowAction.Back
+            || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
     /**

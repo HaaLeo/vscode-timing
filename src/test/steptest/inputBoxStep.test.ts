@@ -56,9 +56,6 @@ describe('InputBoxStep', () => {
             const result: vscode.InputBox = spy.returnValues[0];
 
             assert.strictEqual(spy.calledOnce, true);
-            assert.strictEqual(result.placeholder, 'test-placeholder');
-            assert.strictEqual(result.prompt, 'test-prompt');
-            assert.strictEqual(result.title, 'test-title');
             assert.strictEqual(result.validationMessage, '');
             assert.strictEqual(result.ignoreFocusOut, true);
 
@@ -95,6 +92,9 @@ describe('InputBoxStep', () => {
 
             assert.strictEqual(inputBoxStub.step, 4);
             assert.strictEqual(inputBoxStub.totalSteps, 10);
+            assert.strictEqual(inputBoxStub.placeholder, 'test-placeholder');
+            assert.strictEqual(inputBoxStub.prompt, 'test-prompt');
+            assert.strictEqual(inputBoxStub.title, 'test-title');
         });
 
         describe('validation succeeds', () => {

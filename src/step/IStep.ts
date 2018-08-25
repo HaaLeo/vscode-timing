@@ -9,6 +9,8 @@ import { StepResult } from './stepResult';
  */
 interface IStep extends Disposable {
 
+    validation: (input: string, ...args: string[]) => boolean;
+
     /**
      * Execute this step.
      * @param handler The handler of the step.

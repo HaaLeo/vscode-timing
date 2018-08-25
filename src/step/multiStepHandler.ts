@@ -18,9 +18,12 @@ class MultiStepHandler implements Disposable {
     /**
      * The results of each step.
      */
-    private _stepResults: string[];
+    private _stepResults: string[] = [];
 
-    public constructor() {
+    private _skipOptions: { userSelection: string, stepToSkip: number };
+
+    public get steResults(): string[] {
+        return this._stepResults;
     }
 
     /**
@@ -35,6 +38,15 @@ class MultiStepHandler implements Disposable {
             } else {
                 this._steps.push(step);
             }
+
+            // Update skip options
+            if (this._skipOptions) {
+                if (index <= this._skipOptions.stepToSkip) {
+                    this._skipOptions.stepToSkip++;
+                } else {
+                    this._skipOptions.stepToSkip--;
+                }
+            }
         }
     }
 
@@ -46,6 +58,15 @@ class MultiStepHandler implements Disposable {
         const index = this._steps.indexOf(step, 0);
         if (index !== -1) {
             this._steps.splice(index, 1);
+
+            // Update skip options
+            if (this._skipOptions) {
+                if (index <= this._skipOptions.stepToSkip) {
+                    this._skipOptions.stepToSkip--;
+                } else {
+                    this._skipOptions.stepToSkip++;
+                }
+            }
         }
     }
 
@@ -56,8 +77,12 @@ class MultiStepHandler implements Disposable {
      * If `-1` the last step will be used.
      * @returns A promise to the _ordered_ array containing each step's result
      */
-    public async run(ignoreFocusOut: boolean, startIndex: number = 0): Promise<string[]> {
-        this._stepResults = [];
+    public async run(
+        ignoreFocusOut: boolean,
+        startIndex: number = 0,
+        skipOptions: { userSelection: string, stepToSkip: number }): Promise<string[]> {
+
+        this._skipOptions = skipOptions;
         if (startIndex === -1) {
             startIndex = this._steps.length - 1;
         }
@@ -85,7 +110,15 @@ class MultiStepHandler implements Disposable {
         const stepIndex = this._steps.indexOf(step);
         const totalSteps = this._steps.length;
 
-        const result = await step.execute(this, stepIndex + 1, totalSteps, ignoreFocusOut);
+        let result: StepResult;
+
+        // Check whether this step should be skipped
+        if (stepIndex === this._skipOptions.stepToSkip
+            && step.validation(this._skipOptions.userSelection, this._stepResults[stepIndex - 1])) {
+            result = new StepResult(InputFlowAction.Continue, this._skipOptions.userSelection);
+        } else {
+            result = await step.execute(this, stepIndex + 1, totalSteps, ignoreFocusOut);
+        }
 
         switch (result.action) {
 

@@ -7,7 +7,7 @@ import { CommandBase } from './commandBase';
 
 abstract class CustomCommandBase extends CommandBase implements vscode.Disposable {
 
-    private _customTimeFormatOptions: vscode.QuickPickItem[];
+    protected _customTimeFormatOptions: vscode.QuickPickItem[];
     private readonly _selectOtherFormat = 'Other Format...';
 
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {

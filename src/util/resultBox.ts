@@ -27,15 +27,17 @@ class ResultBox {
      * @param title The box's title.
      * @param value The box's value.
      * @param insertAction The action to invoke when the insert button was clicked.
+     * @param backButton Indicates whether a back button is added or not.
      * @returns The result of the user's interaction.
      */
     public show(
         prompt: string,
         title: string,
         value: string,
-        insertAction: (insertion: string) => Thenable<boolean>): Thenable<StepResult> {
+        insertAction: (insertion: string) => Thenable<boolean>,
+        backButton: boolean = true): Thenable<StepResult> {
 
-        this._resultBox.buttons = [QuickInputButtons.Back, this._insertButton];
+        this._resultBox.buttons = backButton ? [QuickInputButtons.Back, this._insertButton] : [this._insertButton];
         this._resultBox.prompt = prompt;
         this._resultBox.title = title;
         this._resultBox.value = value;

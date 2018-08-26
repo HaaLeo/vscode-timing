@@ -1,48 +1,75 @@
 'use strict';
 
-import * as vscode from 'vscode';
+import { InputBoxStep } from '../step/inputBoxStep';
+import { MultiStepHandler } from '../step/multiStepHandler';
+import { QuickPickStep } from '../step/quickPickStep';
+import { StepResult } from '../step/stepResult';
+import { InputFlowAction } from '../util/InputFlowAction';
+import { CustomCommandBase } from './customCommandBase';
 
-import { CommandBase } from './commandBase';
+class NowAsEpochCommand extends CustomCommandBase {
 
-class NowAsEpochCommand extends CommandBase {
+    private readonly title: string = 'Custom → ISO 8601 Local';
+
     public async execute() {
-        const options: vscode.QuickPickItem[] = [
-            {
-                label: 's',
-                detail: 'seconds'
-            },
-            {
-                label: 'ms',
-                detail: 'milliseconds'
-            },
-            {
-                label: 'ns',
-                detail: 'nanoseconds'
-            }
-        ];
-
-        let userInput: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
         do {
-            const epochFormat = await this._dialogHandler.showOptionsDialog(
-                options,
-                'Select epoch target format.');
-            if (!epochFormat) {
+            let epochTargetFormat: string;
+
+            if (!this._stepHandler) {
+                this.initialize();
+            }
+
+            if (loopResult.action === InputFlowAction.Back) {
+                [epochTargetFormat] =
+                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);
+            } else {
+                [epochTargetFormat] =
+                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated');
+            }
+
+            if (!epochTargetFormat) {
                 break;
             }
-            const result = this._timeConverter.getNowAsEpoch(epochFormat.label);
+
+            const result = this._timeConverter.getNowAsEpoch(epochTargetFormat);
+
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const resultPrefix = inserted ? 'Inserted Current Time: ' : 'Current Time: ';
+            const titlePostfix = inserted ? ': Inserted Result' : ': Result';
 
-            userInput = await this._dialogHandler.showResultDialog(
-                'Press enter to get current time',
-                resultPrefix + result,
-                [resultPrefix.length, resultPrefix.length + result.length],
-                'Press enter to update.');
+            loopResult = await this._resultBox.show(
+                'Format: ' + epochTargetFormat,
+                this.title + titlePostfix,
+                result,
+                this.insert);
+        } while (loopResult.action === InputFlowAction.Back
+            || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
+    }
 
-        } while (userInput !== undefined);
+    private initialize(): void {
+        const getEpochTargetFormat = new QuickPickStep(
+            'Select epoch target format',
+            this.title,
+            [
+                {
+                    label: 's',
+                    detail: 'seconds'
+                },
+                {
+                    label: 'ms',
+                    detail: 'milliseconds'
+                },
+                {
+                    label: 'ns',
+                    detail: 'nanoseconds'
+                }
+            ]);
+
+        this._stepHandler = new MultiStepHandler();
+        this._stepHandler.registerStep(getEpochTargetFormat);
     }
 }
 

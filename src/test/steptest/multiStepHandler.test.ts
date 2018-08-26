@@ -19,8 +19,8 @@ describe('MultiStepHandler', () => {
             dispose: () => undefined,
             execute: () => undefined,
             validation: () => true,
-            get skip(): boolean { return false; }
-
+            get skip(): boolean { return false; },
+            reset: () => undefined
         };
         firstStepStub = sinon.stub(firstStep);
         firstStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'first-result'));
@@ -29,7 +29,8 @@ describe('MultiStepHandler', () => {
             dispose: () => undefined,
             execute: () => undefined,
             validation: () => true,
-            get skip(): boolean { return false; }
+            get skip(): boolean { return false; },
+            reset: () => undefined
         };
         secondStepStub = sinon.stub(secondStep);
         secondStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'second-result'));
@@ -81,6 +82,8 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'first-result');
             assert.strictEqual(result[1], 'second-result');
+            assert.strictEqual(firstStepStub.reset.calledOnce, true);
+            assert.strictEqual(secondStepStub.reset.calledOnce, true);
         });
 
         it('should execute all steps from given index.', async () => {
@@ -97,6 +100,8 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result.length, 1);
             assert.strictEqual(result[0], 'second-result');
             assert.strictEqual(firstStepStub.execute.notCalled, true);
+            assert.strictEqual(firstStepStub.reset.notCalled, true);
+            assert.strictEqual(secondStepStub.reset.notCalled, true);
         });
 
         it('should skip step if flag is set.', async () => {
@@ -104,7 +109,8 @@ describe('MultiStepHandler', () => {
                 dispose: () => undefined,
                 execute: () => undefined,
                 get validation(): () => boolean { return () => true; },
-                get skip(): boolean { return true; }
+                get skip(): boolean { return true; },
+                reset: () => undefined
             };
             firstStepStub = sinon.stub(firstStep);
             firstStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'first-result'));

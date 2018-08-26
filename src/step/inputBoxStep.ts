@@ -161,6 +161,13 @@ class InputBoxStep implements IStep {
     }
 
     /**
+     * Resets the step's current value
+     */
+    public reset(): void {
+        this._inputBox.value = '';
+    }
+
+    /**
      * Dispose this object.
      */
     public dispose() {

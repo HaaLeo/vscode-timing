@@ -94,7 +94,7 @@ describe('ResultBox', () => {
                 sinon.reset();
             });
 
-            it('onDidAccept should resolve.', async () => {
+            it('onDidAccept should resolve to continue action.', async () => {
                 resultBoxStub.value = '5555';
                 listener = resultBoxStub.onDidAccept.firstCall.args[0];
                 assert.strictEqual(resultBoxStub.onDidAccept.calledOnce, true);
@@ -103,7 +103,7 @@ describe('ResultBox', () => {
                 listener(dummy);
                 const result = await resultPromise;
 
-                assert.strictEqual(result.value, '5555');
+                assert.strictEqual(result.value, undefined);
                 assert.strictEqual(result.action, InputFlowAction.Continue);
             });
 

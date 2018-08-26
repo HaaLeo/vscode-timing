@@ -207,6 +207,13 @@ describe('InputBoxStep', () => {
         });
     });
 
+    describe('reset', () => {
+        it('should reset the input box\'s value', () => {
+            testObject.reset();
+            assert.strictEqual(inputBoxStub.value, '');
+        });
+    });
+
     describe('dispose', () => {
         it('should dispose the input box.', () => {
             testObject.dispose();

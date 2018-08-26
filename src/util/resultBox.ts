@@ -44,7 +44,7 @@ class ResultBox {
         return new Promise<StepResult>((resolve, reject) => {
             this._resultBox.onDidAccept(() => {
                 this._resultBox.hide();
-                resolve(new StepResult(InputFlowAction.Continue, this._resultBox.value));
+                resolve(new StepResult(InputFlowAction.Continue, undefined));
             }, this, this._disposables);
 
             this._resultBox.onDidTriggerButton(async (button) => {

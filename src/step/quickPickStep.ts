@@ -42,6 +42,11 @@ class QuickPickStep implements IStep {
     private _items: QuickPickItem[];
 
     /**
+     * The selected item of the current call. Saved to display again initially until command was exited.
+     */
+    private _preSelectedItem: QuickPickItem;
+
+    /**
      * Creates a `QuickPickStep`.
      * @param placeholder The quick-pick's placeholder.
      * @param title The quick-pick's title.
@@ -85,6 +90,7 @@ class QuickPickStep implements IStep {
         totalSteps: number,
         ignoreFocusOut: boolean): Thenable<StepResult> {
 
+        this._quickPick.value = '';
         this._quickPick.step = step;
         this._quickPick.totalSteps = totalSteps;
         this._quickPick.ignoreFocusOut = ignoreFocusOut;
@@ -93,17 +99,26 @@ class QuickPickStep implements IStep {
         if (step > 1) {
             this._quickPick.buttons = [QuickInputButtons.Back];
         }
+
+        // Display chosen item (if for instance back was triggered.)
+        this._quickPick.activeItems = [this._preSelectedItem];
+
+        // The alternative step could still be registered from previous command call
+        handler.unregisterStep(this._alternativeStep);
+
         return new Promise<StepResult>((resolve, reject) => {
 
             this._quickPick.onDidAccept(() => {
                 if (this._quickPick.selectedItems.length === 1) {
                     let resultValue: string;
-                    const picked = this._quickPick.selectedItems[0].label;
-                    if (this._allowOtherItem && (picked === this._allowOtherItem.label)) {
+                    const picked = this._quickPick.selectedItems[0];
+                    if (this._allowOtherItem && (picked.label === this._allowOtherItem.label)) {
                         handler.registerStep(this._alternativeStep, step);
                         resultValue = undefined;
+                        this._preSelectedItem = this._allowOtherItem;
                     } else {
-                        resultValue = picked;
+                        resultValue = picked.label;
+                        this._preSelectedItem = picked;
                     }
                     this._quickPick.hide();
                     resolve(new StepResult(InputFlowAction.Continue, resultValue));
@@ -137,6 +152,16 @@ class QuickPickStep implements IStep {
      */
     public get validation(): (input: string, ...args: string[]) => boolean {
         return () => true;
+    }
+
+    public reset(): void {
+        this._quickPick.value = '';
+        this._quickPick.items = this._items;
+        this._preSelectedItem = this._quickPick.items[0];
+
+        if (this._alternativeStep) {
+            this._alternativeStep.reset();
+        }
     }
 
     /**

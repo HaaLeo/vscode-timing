@@ -76,6 +76,8 @@ class MultiStepHandler implements Disposable {
 
         if (startIndex === -1) {
             startIndex = this._steps.length - 1;
+        } else {
+            this._steps.forEach((step) => step.reset());
         }
         await this.executeStep(this._steps[startIndex], ignoreFocusOut);
 

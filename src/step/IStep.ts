@@ -27,6 +27,11 @@ interface IStep extends Disposable {
      * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      */
     execute(handler: MultiStepHandler, step: number, totalSteps: number, ignoreFocusOut: boolean): Thenable<StepResult>;
+
+    /**
+     * Resets the step's current value
+     */
+    reset(): void;
 }
 
 export { IStep };

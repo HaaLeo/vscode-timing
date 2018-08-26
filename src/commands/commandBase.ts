@@ -1,7 +1,6 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { DialogHandler } from '../dialogHandler';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { ResultBox } from '../util/resultBox';
 import { TimeConverter } from '../util/timeConverter';

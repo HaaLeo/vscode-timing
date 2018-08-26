@@ -4,7 +4,6 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 
 import { CommandBase } from '../../commands/commandBase';
-import { DialogHandler } from '../../dialogHandler';
 import { TimeConverter } from '../../util/timeConverter';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
 

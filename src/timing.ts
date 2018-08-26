@@ -16,30 +16,27 @@ import { NowAsIsoLocalCommand } from './commands/nowAsIsoLocalCommand';
 import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
 import { ToggleInsertConvertedTimeUserLevelCommand } from './commands/toggleInsertConvertedTimeUserLevelCommand';
 
-import { DialogHandler } from './dialogHandler';
-import { MultiStepHandler } from './step/multiStepHandler';
 import { TimeConverter } from './util/timeConverter';
 import { TimeHoverProvider } from './util/timeHoverProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 
-    // Create converter and dialog handler
+    // Create converter
     const timeConverter = new TimeConverter();
-    const dialogHandler = new DialogHandler();
 
     // Create commands
-    const customToEpochCommand = new CustomToEpochCommand(context, timeConverter, dialogHandler);
-    const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter, dialogHandler);
-    const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter, dialogHandler);
-    const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter, dialogHandler);
-    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter, undefined);
-    const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter, dialogHandler);
-    const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter, dialogHandler);
-    const nowAsCustomCommand = new NowAsCustomCommand(context, timeConverter, dialogHandler);
-    const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(context, timeConverter, dialogHandler);
-    const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(context, timeConverter, dialogHandler);
-    const isoRfcToCustomCommand = new IsoRfcToCustomCommand(context, timeConverter, dialogHandler);
-    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(context, timeConverter, dialogHandler);
+    const customToEpochCommand = new CustomToEpochCommand(context, timeConverter);
+    const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter);
+    const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter);
+    const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter);
+    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter);
+    const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter);
+    const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter);
+    const nowAsCustomCommand = new NowAsCustomCommand(context, timeConverter);
+    const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(context, timeConverter);
+    const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(context, timeConverter);
+    const isoRfcToCustomCommand = new IsoRfcToCustomCommand(context, timeConverter);
+    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(context, timeConverter);
 
     const toggleInsertConvertedTimeUserLevelCommand = new ToggleInsertConvertedTimeUserLevelCommand();
 

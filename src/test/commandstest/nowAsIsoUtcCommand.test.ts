@@ -41,7 +41,7 @@ describe('NowAsIsoUtcCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new NowAsIsoUtcCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new NowAsIsoUtcCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });

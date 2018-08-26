@@ -8,7 +8,6 @@ import { TimeConverter } from '../util/timeConverter';
 
 abstract class CommandBase {
 
-    protected _dialogHandler: DialogHandler; // TODO Remove
     protected _timeConverter: TimeConverter;
     protected _disposables: vscode.Disposable[];
     protected _stepHandler: MultiStepHandler;
@@ -18,8 +17,7 @@ abstract class CommandBase {
     protected _hideResultViewOnEnter: boolean;
     protected _ignoreFocusOut: boolean;
 
-    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
-        this._dialogHandler = dialogHandler;
+    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter) {
         this._timeConverter = timeConverter;
 
         this._resultBox = new ResultBox({

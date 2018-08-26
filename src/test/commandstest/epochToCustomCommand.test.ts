@@ -45,7 +45,7 @@ describe('EpochToCustomCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new EpochToCustomCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new EpochToCustomCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
             handlerMock.run.returns(['123456789', 'YYYY']);
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

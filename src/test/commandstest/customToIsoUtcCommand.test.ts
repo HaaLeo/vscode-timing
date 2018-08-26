@@ -45,7 +45,7 @@ describe('CustomToIsoUtc', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new CustomToIsoUtcCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new CustomToIsoUtcCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
             handlerMock.run.returns(['YYYY', '2018']);
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

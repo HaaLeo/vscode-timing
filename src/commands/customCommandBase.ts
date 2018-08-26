@@ -1,17 +1,15 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { DialogHandler } from '../dialogHandler';
 import { TimeConverter } from '../util/timeConverter';
 import { CommandBase } from './commandBase';
 
 abstract class CustomCommandBase extends CommandBase implements vscode.Disposable {
 
     protected _customTimeFormatOptions: vscode.QuickPickItem[];
-    private readonly _selectOtherFormat = 'Other Format...'; // TODO Remove
 
-    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, dialogHandler: DialogHandler) {
-        super(context, timeConverter, dialogHandler);
+    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter) {
+        super(context, timeConverter);
         this.updateCustomFormats();
         vscode.workspace.onDidChangeConfiguration((e) => {
             if (e.affectsConfiguration('timing.customFormats')) {
@@ -19,32 +17,6 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
             }
 
         }, this, this._disposables);
-    }
-
-    // TODO remove
-    protected async getCustomFormat(): Promise<string> {
-        let formatFromOptions: vscode.QuickPickItem = { label: this._selectOtherFormat };
-        let result;
-        if (this._customTimeFormatOptions.length > 1) {
-            formatFromOptions = await this._dialogHandler.showOptionsDialog(
-                this._customTimeFormatOptions,
-                'Select custom source format.');
-        }
-
-        if (formatFromOptions) {
-            if (formatFromOptions.label === this._selectOtherFormat) {
-                result = this._dialogHandler.showInputDialog(
-                    'E.g.: YYYY/MM/DD',
-                    'Insert custom format.',
-                    (input) => input ? true : false,
-                    'Ensure you enter a custom momentjs format.'
-                );
-            } else {
-                result =  formatFromOptions.label;
-            }
-        }
-
-        return result;
     }
 
     private updateCustomFormats(): void {
@@ -61,7 +33,6 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
                 });
             }
         });
-        this._customTimeFormatOptions.push({ label: this._selectOtherFormat }); // TODO Remove
     }
 }
 

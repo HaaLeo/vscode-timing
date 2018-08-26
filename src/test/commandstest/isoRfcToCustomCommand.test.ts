@@ -45,7 +45,7 @@ describe('IsoRfcToCustomCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new IsoRfcToCustomCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new IsoRfcToCustomCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
             handlerMock.run.returns(['1975-01-01T00:00:00.000Z', 'YYYY']);
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

@@ -45,7 +45,7 @@ describe('IsoRfcToEpochCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new IsoRfcToEpochCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new IsoRfcToEpochCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
             handlerMock.run.returns(['1975-01-01T00:00:00.000Z', 'ms']);
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

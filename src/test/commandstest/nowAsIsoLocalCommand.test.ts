@@ -41,7 +41,7 @@ describe('NowAsIsoLocalCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new NowAsIsoLocalCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new NowAsIsoLocalCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });

@@ -45,7 +45,7 @@ describe('NowAsCustomCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new NowAsCustomCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new NowAsCustomCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
             handlerMock.run.returns(['YYYY']);
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

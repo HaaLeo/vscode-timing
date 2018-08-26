@@ -45,7 +45,7 @@ describe('NowAsEpochCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new NowAsEpochCommand(new ExtensionContextMock(), timeConverter, undefined);
+            testObject = new NowAsEpochCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
             handlerMock.run.returns(['s']);
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

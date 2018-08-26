@@ -1,19 +1,15 @@
 'use strict';
 
-import * as vscode from 'vscode';
 import { InputDefinition } from '../util/inputDefinition';
 
-import { DialogHandler } from '../dialogHandler';
 import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { StepResult } from '../step/stepResult';
 import { InputFlowAction } from '../util/InputFlowAction';
-import { ResultBox } from '../util/resultBox';
-import { TimeConverter } from '../util/timeConverter';
 import { CommandBase } from './commandBase';
 
 /**
- * Command to convert epoch time to ISO 8601 local time.
+ * Command to convert epoch time to ISO 8601 Local time.
  */
 class EpochToIsoLocalCommand extends CommandBase {
 

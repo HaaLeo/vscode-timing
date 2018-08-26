@@ -2,39 +2,75 @@
 
 import { InputDefinition } from '../util/inputDefinition';
 
+import { InputBoxStep } from '../step/inputBoxStep';
+import { MultiStepHandler } from '../step/multiStepHandler';
+import { StepResult } from '../step/stepResult';
+import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
 
+/**
+ * Command to convert epoch time to ISO 8601 Utc time.
+ */
 class EpochToIsoUtcCommand extends CommandBase {
+
+    private readonly title: string = 'Epoch → ISO 8601 UTC';
+
+    /**
+     * Execute the command.
+     */
     public async execute() {
 
-        let userInput = this.isInputSelected();
-
+        const preSelection = this.isInputSelected();
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
-            let input = new InputDefinition(userInput);
-            if (!input.inputAsMs || !this._timeConverter.isValidEpoch(input.inputAsMs.toString())) {
-                userInput = await this._dialogHandler.showInputDialog(
-                    '123456789',
-                    'Insert epoch time.',
-                    this._timeConverter.isValidEpoch,
-                    'Ensure the epoch time is valid.'
-                );
-            }
-            if (userInput !== undefined) {
-                input = new InputDefinition(userInput);
-                const result = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
-                let inserted: boolean = false;
-                if (this._insertConvertedTime) {
-                    inserted = await this.insert(result);
-                }
-                const resultPrefix = inserted ? 'Inserted Result: ' : 'Result: ';
+            let rawInput = loopResult.value;
 
-                userInput = await this._dialogHandler.showResultDialog(
-                    '123456789',
-                    resultPrefix + result,
-                    [resultPrefix.length, resultPrefix.length + result.length],
-                    'Input: ' + userInput + ' (' + new InputDefinition(userInput).originalUnit + ')');
+            if (!this._stepHandler) {
+                this.initialize();
             }
-        } while (userInput);
+
+            if (loopResult.action === InputFlowAction.Back) {
+                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+            } else {
+                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+            }
+
+            if (!rawInput) {
+                break;
+            }
+
+            const input = new InputDefinition(rawInput);
+            const result = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
+
+            let inserted: boolean = false;
+            if (this._insertConvertedTime) {
+                inserted = await this.insert(result);
+            }
+            const titlePostfix = inserted ? ': Inserted Result' : ': Result';
+
+            loopResult = await this._resultBox.show(
+                'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
+                this.title + titlePostfix,
+                result,
+                this.insert);
+        } while (loopResult.action === InputFlowAction.Back
+            || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
+    }
+
+    /**
+     * Initialize all members.
+     */
+    private initialize(): void {
+        const getEpochTimeStep = new InputBoxStep(
+            '123456789',
+            'Insert the epoch time.',
+            this.title,
+            'Ensure the epoch time is valid.',
+            this._timeConverter.isValidEpoch,
+            true);
+
+        this._stepHandler = new MultiStepHandler();
+        this._stepHandler.registerStep(getEpochTimeStep);
     }
 }
 

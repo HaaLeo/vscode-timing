@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## Unreleased - v1.0.0
+* **BREAKING CHANGES**:
+  * The extension now requires minimum VS Code version **1.26.0**
+  * Removed command `timing.convertTime`
+* **Added** a feature that allows to navigate back during a command. Either press the back button located in the top left corner of a step or press the hotkey <kbd>Alt</kbd> + <kbd>&larr;</kbd>
+* **Added** a title bar that shows permanently which command was invoked, the current step's number and the total step count.
+* **Added** setting `timing.ignoreFocusOut` (default: `true`) that indicates whether the input box should remain visible when it loses focus.
+* **Added** setting `timing.hideResultViewOnEnter` (default: `true`) that indicates whether the result view should be hidden when <kbd>Enter</kbd> was pressed or whether the command shall restart again.
+* **Added** a button to the result view that replaces the current selection in the editor with the result when it is clicked.
+
 ## 2018-07-11 - v0.5.0
 * **Added** setting `timing.insertConvertedTime` that indicates whether the current selection is replaced with the converted time
 * **Added** command `timing.toggleInsertConvertedTimeUserLevel` to toggle the `timing.insertConvertedTime` setting on user level

@@ -2,7 +2,7 @@
 
 import * as assert from 'assert';
 import * as moment from 'moment';
-import { TimeConverter } from '../timeConverter';
+import { TimeConverter } from '../../util/timeConverter';
 
 describe('TimeConverter', () => {
     describe('epochToIsoUtc', () => {

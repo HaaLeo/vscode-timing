@@ -13,13 +13,13 @@ class TimeConverter {
         return result;
     }
 
-    public customToIsoUtc(time: string, targetFormat: string): string {
-        const result = moment(time, targetFormat, true).toISOString(false);
+    public customToIsoUtc(time: string, format: string): string {
+        const result = moment(time, format, true).toISOString(false);
         return result;
     }
 
-    public customToIsoLocal(time: string, targetFormat: string): string {
-        const result = moment(time, targetFormat, true).toISOString(true);
+    public customToIsoLocal(time: string, format: string): string {
+        const result = moment(time, format, true).toISOString(true);
         return result;
     }
 

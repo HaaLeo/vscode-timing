@@ -1,25 +1,31 @@
 'use strict';
 
-import { CommandBase } from './commandBase';
+import { StepResult } from '../step/stepResult';
+import { InputFlowAction } from '../util/InputFlowAction';
+import { CustomCommandBase } from './customCommandBase';
 
-class NowAsIsoLocalCommand extends CommandBase {
+class NowAsIsoLocalCommand extends CustomCommandBase {
+
+    private readonly title: string = 'Now → ISO 8601 Local';
+
     public async execute() {
-        let userInput: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
         do {
             const result = this._timeConverter.getNowAsIsoLocal();
+
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const resultPrefix = inserted ? 'Inserted Current Time: ' : 'Current Time: ';
+            const titlePostfix = inserted ? ': Inserted Result' : ': Result';
 
-            userInput = await this._dialogHandler.showResultDialog(
-                'Press enter to get current time',
-                resultPrefix + result,
-                [resultPrefix.length, resultPrefix.length + result.length],
-                'Press enter to update.');
-
-        } while (userInput !== undefined);
+            loopResult = await this._resultBox.show(
+                '',
+                this.title + titlePostfix,
+                result,
+                this.insert,
+                false);
+        } while (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue);
     }
 }
 

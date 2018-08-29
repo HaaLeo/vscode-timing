@@ -8,7 +8,7 @@
         "quotemark": [true, "single"],
         "variable-name": [true, "check-format", "allow-leading-underscore"],
         "indent": [true, "spaces", 4],
-        "no-console": [false],
+        "no-console": [true],
         "trailing-comma": [false],
         "no-empty": [false],
         "object-literal-sort-keys": [false]
@@ -16,7 +16,8 @@
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": [
-            "src/test/testfiles/*"
+            "src/test/testfiles/*",
+            "src/test/index.ts"
         ]
     }
 }

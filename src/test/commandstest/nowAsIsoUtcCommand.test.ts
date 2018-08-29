@@ -4,18 +4,22 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { NowAsIsoUtcCommand } from '../../commands/nowAsIsoUtcCommand';
-import { DialogHandlerMock } from '../mock/DialogHandlerMock';
-import { TimeConverterMock } from '../mock/TimeConverterMock';
+import { StepResult } from '../../step/stepResult';
+import { InputFlowAction } from '../../util/InputFlowAction';
+import { ResultBox } from '../../util/resultBox';
+import { TimeConverter } from '../../util/timeConverter';
+import { ExtensionContextMock } from '../mock/extensionContextMock';
 
 describe('NowAsIsoUtcCommand', () => {
-    let dialogHandlerMock: DialogHandlerMock;
-    let timeConverterMock: TimeConverterMock;
+    let timeConverter: TimeConverter;
     let testObject: NowAsIsoUtcCommand;
     let testEditor: vscode.TextEditor;
+    let showResultStub: sinon.SinonStub;
 
     before(async () => {
-        dialogHandlerMock = new DialogHandlerMock();
-        timeConverterMock = new TimeConverterMock();
+        timeConverter = new TimeConverter();
+        showResultStub = sinon.stub(ResultBox.prototype, 'show');
+
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
@@ -29,34 +33,27 @@ describe('NowAsIsoUtcCommand', () => {
         const config = vscode.workspace.getConfiguration('timing');
         await config.update('customFormats', undefined);
         await config.update('insertConvertedTime', undefined);
+        await config.update('ignoreFocusOut', undefined);
+        await config.update('hideResultViewOnEnter', undefined);
+        showResultStub.restore();
     });
 
     describe('execute', () => {
+
         beforeEach('Reset', () => {
-            dialogHandlerMock.reset();
-            timeConverterMock.reset();
-            testObject = new NowAsIsoUtcCommand(timeConverterMock, dialogHandlerMock);
-            timeConverterMock.getNowAsIsoUtc.returns('1111');
+            testObject = new NowAsIsoUtcCommand(new ExtensionContextMock(), timeConverter);
+            testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
+            showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
+        });
+
+        afterEach(() => {
+            showResultStub.resetHistory();
         });
 
         it('Should show result after calculation', async () => {
             await testObject.execute();
 
-            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-            assert.equal(timeConverterMock.getNowAsIsoUtc.calledOnce, true);
-        });
-
-        it('Should update the time when hit enter again', async () => {
-            dialogHandlerMock.showResultDialog.onFirstCall().returns('1');
-            dialogHandlerMock.showResultDialog.onSecondCall().returns(undefined);
-            await testObject.execute();
-
-            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showResultDialog.callCount, 2);
-            assert.equal(timeConverterMock.getNowAsIsoUtc.callCount, 2);
+            assert.strictEqual(showResultStub.calledOnce, true);
         });
 
         it('Should insert the converted time.', async () => {
@@ -67,16 +64,14 @@ describe('NowAsIsoUtcCommand', () => {
 
             await testObject.execute();
 
-            assert.equal(dialogHandlerMock.showInputDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showOptionsDialog.notCalled, true);
-            assert.equal(dialogHandlerMock.showResultDialog.calledOnce, true);
-            assert.equal(spy.calledOnce, true);
+            assert.strictEqual(showResultStub.calledOnce, true);
+            assert.strictEqual(spy.calledOnce, true);
 
             // Restore
             const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
                 editBuilder.replace(testEditor.selection, priorText);
             });
-            assert.equal(success, true);
+            assert.strictEqual(success, true);
             spy.restore();
         });
     });

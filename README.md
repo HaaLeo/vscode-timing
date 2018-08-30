@@ -117,7 +117,8 @@ When you hover over a number the extension shows you the converted **UTC time** 
 
 ### Insert Converted Time
 
-You can add the setting `"timing.insertConvertedTime": true` in order to automatically replace the cursor's selection with the converted time. In addition there exists the command `timing.toggleInsertConvertedTimeUserLevel` to toggle this setting (on User Level).
+You can add the setting `"timing.insertConvertedTime": true` in order to automatically replace the cursor's selection with the converted time. To enable that behavior there exists the command `timing.toggleInsertConvertedTimeUserLevel` to toggle this setting (on User Level).  
+Alternatively, you can press the ![Pencil Button](resources/pencil_dark.svg) button.
 
 ![Insert Sample](doc/Insert_Sample.gif)
 
@@ -136,7 +137,13 @@ You can add the setting `"timing.insertConvertedTime": true` in order to automat
 * `timing.nowAsIsoLocal`: Now ⟶ Epoch
 * `timing.nowAsIsoUtc`: Now ⟶ Epoch
 * `timing.toggleInsertConvertedTimeUserLevel`: toggle the `timing.insertConvertedTime` user setting
-* `timing.convertTime`: **DEPRECATED**, use `timing.epochToIsoUtc` instead
+
+## Settings Overview
+
+* `timing.customFormats`: An array of custom source/target formats used to convert from/to
+* `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
+* `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
+* `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
 
 ## Contribution
 

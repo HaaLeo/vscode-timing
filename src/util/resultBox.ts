@@ -12,12 +12,15 @@ class ResultBox {
     private _resultBox: InputBox;
     private _disposables: Disposable[];
     private _insertButton: QuickInputButton;
+    private _isRunning: boolean;
 
     constructor(insertButton: QuickInputButton) {
-        this._insertButton = insertButton;
         this._resultBox = window.createInputBox();
         this._resultBox.ignoreFocusOut = true;
         this._resultBox.validationMessage = '';
+
+        this._insertButton = insertButton;
+        this._isRunning = false;
         this._disposables = [this._resultBox];
     }
 
@@ -41,8 +44,10 @@ class ResultBox {
         this._resultBox.prompt = prompt;
         this._resultBox.title = title;
         this._resultBox.value = value;
+        this._isRunning = true;
         return new Promise<StepResult>((resolve, reject) => {
             this._resultBox.onDidAccept(() => {
+                this._isRunning = false;
                 this._resultBox.hide();
                 resolve(new StepResult(InputFlowAction.Continue, undefined));
             }, this, this._disposables);
@@ -57,7 +62,10 @@ class ResultBox {
             }, this, this._disposables);
 
             this._resultBox.onDidHide(() => {
-                resolve(new StepResult(InputFlowAction.Cancel, undefined));
+                if (this._isRunning) {
+                    this._isRunning = false;
+                    resolve(new StepResult(InputFlowAction.Cancel, undefined));
+                }
             }, this, this._disposables);
 
             this._resultBox.show();

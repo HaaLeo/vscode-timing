@@ -122,6 +122,13 @@ Alternatively, you can press the ![Pencil Button](resources/pencil_dark.svg) but
 
 ![Insert Sample](doc/Insert_Sample.gif)
 
+## Settings Overview
+
+* `timing.customFormats`: An array of custom source/target formats used to convert from/to
+* `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
+* `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
+* `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
+
 ## Command Overview
 
 * `timing.customToEpoch`: Custom ⟶ Epoch
@@ -138,12 +145,18 @@ Alternatively, you can press the ![Pencil Button](resources/pencil_dark.svg) but
 * `timing.nowAsIsoUtc`: Now ⟶ Epoch
 * `timing.toggleInsertConvertedTimeUserLevel`: toggle the `timing.insertConvertedTime` user setting
 
-## Settings Overview
+## Keyboard Shortcuts
 
-* `timing.customFormats`: An array of custom source/target formats used to convert from/to
-* `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
-* `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
-* `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
+Any of the above commands can be bound to its own keyboard shortcut. For that just open the _Keyboard Shortcuts_ view by pressing <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>S</kbd>. Now search for the corresponding command and assign it to a shortcut.  
+Alternatively, you can edit the `keybindings.json` directly. For example you can add the following entry to the `keybindings.json` to bind the `timing.epochToIsoUtc` to the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>Z</kbd>.  
+For further information check out the [docs](https://code.visualstudio.com/docs/getstarted/keybindings).
+
+```JSON
+    {
+        "key": "ctrl+k ctrl+z",
+        "command": "timing.epochToIsoUtc"
+    }
+```
 
 ## Contribution
 

@@ -152,10 +152,10 @@ Alternatively, you can edit the `keybindings.json` directly. For example you can
 For further information check out the [docs](https://code.visualstudio.com/docs/getstarted/keybindings).
 
 ```JSON
-    {
-        "key": "ctrl+k ctrl+z",
-        "command": "timing.epochToIsoUtc"
-    }
+{
+    "key": "ctrl+k ctrl+z",
+    "command": "timing.epochToIsoUtc"
+}
 ```
 
 ## Contribution

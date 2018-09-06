@@ -52,7 +52,8 @@ class EpochToIsoLocalCommand extends CommandBase {
                 'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                 this.title + titlePostfix,
                 result,
-                this.insert);
+                this.insert,
+                this._ignoreFocusOut);
         } while (loopResult.action === InputFlowAction.Back
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }

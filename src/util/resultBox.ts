@@ -30,20 +30,23 @@ class ResultBox {
      * @param title The box's title.
      * @param value The box's value.
      * @param insertAction The action to invoke when the insert button was clicked.
+     * @param ignoreFocusOut Indicates whether the box remains visible when focus is lost.
      * @param backButton Indicates whether a back button is added or not.
-     * @returns The result of the user's interaction.
+     * @returns undefined.
      */
     public show(
         prompt: string,
         title: string,
         value: string,
         insertAction: (insertion: string) => Thenable<boolean>,
+        ignoreFocusOut: boolean,
         backButton: boolean = true): Thenable<StepResult> {
 
         this._resultBox.buttons = backButton ? [QuickInputButtons.Back, this._insertButton] : [this._insertButton];
         this._resultBox.prompt = prompt;
         this._resultBox.title = title;
         this._resultBox.value = value;
+        this._resultBox.ignoreFocusOut = ignoreFocusOut;
         this._isRunning = true;
         return new Promise<StepResult>((resolve, reject) => {
             this._resultBox.onDidAccept(() => {

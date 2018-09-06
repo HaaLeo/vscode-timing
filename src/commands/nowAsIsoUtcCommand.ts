@@ -24,6 +24,7 @@ class NowAsIsoUtcCommand extends CustomCommandBase {
                 this.title + titlePostfix,
                 result,
                 this.insert,
+                this._ignoreFocusOut,
                 false);
         } while (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue);
     }

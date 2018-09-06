@@ -46,7 +46,8 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
                 'Input: ' + rawInput + ' (Format: ' + customFormat + ')',
                 this.title + titlePostfix,
                 result,
-                this.insert);
+                this.insert,
+                this._ignoreFocusOut);
         } while (loopResult.action === InputFlowAction.Back
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }

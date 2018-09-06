@@ -1,8 +1,8 @@
 {
     "name": "timing",
     "displayName": "Time Converter",
-    "description": "Converts and visualizes timestamps in various formats.",
-    "version": "0.5.0",
+    "description": "Converts timestamps from/to various formats and inserts them on demand.",
+    "version": "1.0.0",
     "publisher": "HaaLeo",
     "engines": {
         "vscode": "^1.26.0"

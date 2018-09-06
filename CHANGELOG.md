@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
-## Unreleased - v1.0.0
+## 2018-09-06 - v1.0.0
 * **BREAKING CHANGES**:
   * The extension now requires minimum VS Code version **1.26.0**
   * Removed command `timing.convertTime`

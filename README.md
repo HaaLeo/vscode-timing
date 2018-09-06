@@ -118,7 +118,7 @@ When you hover over a number the extension shows you the converted **UTC time** 
 ### Insert Converted Time
 
 You can add the setting `"timing.insertConvertedTime": true` in order to automatically replace the cursor's selection with the converted time. To enable that behavior there exists the command `timing.toggleInsertConvertedTimeUserLevel` to toggle this setting (on User Level).  
-Alternatively, you can press the ![Pencil Button](resources/pencil_dark.svg) button.
+Alternatively, you can press the pencil button in the top right corner.
 
 ![Insert Sample](doc/Insert_Sample.gif)
 

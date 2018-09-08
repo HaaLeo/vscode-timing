@@ -5,13 +5,41 @@
     ],
     "jsRules": {},
     "rules": {
-        "quotemark": [true, "single"],
-        "variable-name": [true, "check-format", "allow-leading-underscore"],
-        "indent": [true, "spaces", 4],
-        "no-console": [true],
-        "trailing-comma": [false],
-        "no-empty": [false],
-        "object-literal-sort-keys": [false]
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "variable-name": [
+            true,
+            "check-format",
+            "allow-leading-underscore"
+        ],
+        "indent": [
+            true,
+            "spaces",
+            4
+        ],
+        "no-console": [
+            true
+        ],
+        "trailing-comma": [
+            false
+        ],
+        "no-empty": [
+            false
+        ],
+        "object-literal-sort-keys": [
+            false
+        ],
+        "file-header": [
+            true,
+            "^!\n \\* ---------------------------------------------------------------------------------------------\n \\*  Copyright \\(c\\) Leo Hanisch. All rights reserved.\n \\*  Licensed under the MIT License. See LICENSE.txt in the project root for license information.\n \\* --------------------------------------------------------------------------------------------\n $",
+            "---------------------------------------------------------------------------------------------\n Copyright (c) Leo Hanisch. All rights reserved.\n Licensed under the MIT License. See LICENSE.txt in the project root for license information.\n--------------------------------------------------------------------------------------------"
+        ],
+        "linebreak-style": [
+            true,
+            "LF"
+        ]
     },
     "rulesDirectory": [],
     "linterOptions": {

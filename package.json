@@ -7,7 +7,7 @@
     "engines": {
         "vscode": "^1.26.0"
     },
-    "license": "MIT",
+    "license": "SEE LICENSE IN LICENSE.txt",
     "repository": {
         "type": "git",
         "url": "https://github.com/HaaLeo/vscode-timing"
@@ -33,10 +33,7 @@
         "time",
         "epoch",
         "ISO 8601",
-        "insert",
-        "date",
-        "datetime",
-        "unix"
+        "insert"
     ],
     "activationEvents": [
         "*"

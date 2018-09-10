@@ -33,7 +33,7 @@ describe('TimeHoverProvider', () => {
             testEditor = await vscode.window.showTextDocument(file);
         }
         const config = vscode.workspace.getConfiguration('timing');
-        await config.update('hoverTargetFormat', 'UTC');
+        await config.update('hoverTargetFormat', 'utc');
     });
 
     beforeEach(() => {

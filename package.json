@@ -166,9 +166,9 @@
                 },
                 "timing.hoverTargetFormat": {
                     "title": "The target format of the hover preview.",
-                    "description": "Indicates the target format of the hover preview. It can be either \"UTC\", \"Local\", a custom format or \"Disable\" to disable the hover preview.",
+                    "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\", a custom format or \"disable\" to disable the hover preview.",
                     "type": "string",
-                    "default": "UTC"
+                    "default": "utc"
                 }
             }
         }

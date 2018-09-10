@@ -41,19 +41,21 @@ class TimeHoverProvider implements vscode.HoverProvider, vscode.Disposable {
                 const input = new InputDefinition(hoveredWord);
                 const prefix = '*Epoch Unit*: `' + input.originalUnit + '`  \n';
 
-                if (this._hoverTargetFormat === 'UTC') {
+                if (this._hoverTargetFormat === 'utc') {
                     const utc = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
                     result = new vscode.Hover(prefix + '*UTC*: `' + utc + '`');
-                } else if (this._hoverTargetFormat === 'Local') {
+                } else if (this._hoverTargetFormat === 'local') {
                     const local = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
                     result = new vscode.Hover(prefix + '*Local*: `' + local + '`');
-                } else if (this._hoverTargetFormat === 'Disable') {
+                } else if (this._hoverTargetFormat === 'disable') {
                     result = undefined;
                 } else if (this._hoverTargetFormat) {
                     const custom = this._timeConverter.epochToCustom(
                         input.inputAsMs.toString(),
                         this._hoverTargetFormat);
                     result = new vscode.Hover(prefix + '*Custom*: `' + custom + '`', timeRange);
+                } else {
+                    result = undefined;
                 }
             }
         }
@@ -67,7 +69,7 @@ class TimeHoverProvider implements vscode.HoverProvider, vscode.Disposable {
 
     private updateHoverTargetFormat(): void {
         const config = vscode.workspace.getConfiguration('timing')
-            .get('hoverTargetFormat', 'UTC');
+            .get('hoverTargetFormat', 'utc');
 
         if (typeof (config) === 'string') {
             this._hoverTargetFormat = config;

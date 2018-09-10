@@ -34,7 +34,7 @@ class TimeHoverProvider implements vscode.HoverProvider, vscode.Disposable {
         document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken):
         vscode.ProviderResult<vscode.Hover> {
         const timeRange = document.getWordRangeAtPosition(position, new RegExp('\\d+'));
-        let result: vscode.MarkdownString;
+        let result: vscode.Hover;
         if (timeRange !== undefined) {
             const hoveredWord = document.getText(timeRange);
             if (this._timeConverter.isValidEpoch(hoveredWord)) {
@@ -43,22 +43,22 @@ class TimeHoverProvider implements vscode.HoverProvider, vscode.Disposable {
 
                 if (this._hoverTargetFormat === 'UTC') {
                     const utc = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
-                    result = new vscode.MarkdownString(prefix + '*UTC*: `' + utc + '`');
+                    result = new vscode.Hover(prefix + '*UTC*: `' + utc + '`');
                 } else if (this._hoverTargetFormat === 'Local') {
                     const local = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
-                    result = new vscode.MarkdownString(prefix + '*Local*: `' + local + '`');
+                    result = new vscode.Hover(prefix + '*Local*: `' + local + '`');
                 } else if (this._hoverTargetFormat === 'Disable') {
                     result = undefined;
                 } else if (this._hoverTargetFormat) {
                     const custom = this._timeConverter.epochToCustom(
                         input.inputAsMs.toString(),
                         this._hoverTargetFormat);
-                    result = new vscode.MarkdownString(prefix + '*Custom*: `' + custom + '`');
+                    result = new vscode.Hover(prefix + '*Custom*: `' + custom + '`', timeRange);
                 }
             }
         }
 
-        return new vscode.Hover(result, timeRange);
+        return result;
     }
 
     public dispose(): void {

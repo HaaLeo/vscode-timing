@@ -111,7 +111,7 @@ Example:
 
 ### Hover Preview
 
-When you hover over a number the extension shows you the converted **UTC time** of that number and which **unit** was used for the conversion.
+When you hover over a number the extension shows you the converted **UTC**, **Local**, or **Custom** time and which **unit** was used for the conversion. The target time is indicated by the `timing.hoverTargetFormat` setting. Its default value is `UTC`.
 
 ![Hover Sample](doc/Hover_Sample.gif)
 
@@ -128,6 +128,11 @@ Alternatively, you can press the pencil button in the top right corner.
 * `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
 * `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
 * `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
+* `timing.hoverTargetFormat`: indicates the target format of the hover preview. Possible values are:
+  * `UTC`: Show the hover preview in ISO 8601 UTC time. This is the default value.
+  * `Local`: Show the hover preview in ISO 8601 Local time.
+  * `Disable`: No hover preview is shown.
+  * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
 
 ## Command Overview
 

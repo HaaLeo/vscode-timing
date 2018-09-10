@@ -47,6 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     const toggleInsertConvertedTimeUserLevelCommand = new ToggleInsertConvertedTimeUserLevelCommand();
 
+    const timeHoverProvider = new TimeHoverProvider(timeConverter);
     /* tslint:disable:max-line-length */
 
     context.subscriptions.push(
@@ -66,7 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         vscode.commands.registerCommand('timing.toggleInsertConvertedTimeUserLevel', toggleInsertConvertedTimeUserLevelCommand.execute, toggleInsertConvertedTimeUserLevelCommand),
         // Register Hover Provider
-        vscode.languages.registerHoverProvider('*', new TimeHoverProvider(timeConverter))
+        timeHoverProvider, vscode.languages.registerHoverProvider('*', timeHoverProvider)
     );
     /* tslint:enable:max-line-length */
 }

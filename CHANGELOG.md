@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## Unreleased - v1.1.0
+* **Added** setting `timing.hoverTargetFormat` that indicates the target format of the hover preview. Possible values are:
+  * `UTC`: Show the hover preview in ISO 8601 UTC time. This is the default value.
+  * `Local`: Show the hover preview in ISO 8601 Local time.
+  * `Disable`: No hover preview is shown.
+  * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
+
 ## 2018-09-06 - v1.0.0
 * **BREAKING CHANGES**:
   * The extension now requires minimum VS Code version **1.26.0**

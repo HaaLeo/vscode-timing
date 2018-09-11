@@ -2,7 +2,7 @@
 All notable changes to the "timing" extension will be documented in this file.
 
 ## Unreleased - v1.1.0
-* **Added** setting `timing.hoverTargetFormat` that indicates the target format of the hover preview. Possible values are:
+* **Added** setting `timing.hoverTargetFormat` that indicates the target format of the hover preview ([#14](https://github.com/HaaLeo/vscode-timing/issues/14)). Possible values are:
   * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.
   * `local`: Show the hover preview in ISO 8601 Local time.
   * `disable`: No hover preview is shown.

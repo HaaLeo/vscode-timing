@@ -44,23 +44,5 @@ class TimeConverterMock implements TimeConverter {
         this.getNowAsIsoUtc.reset();
         this.getNowAsIsoLocal.reset();
     }
-
-    public restore() {
-        this.isoRfcToCustom.restore();
-        this.epochToCustom.restore();
-        this.customToIsoUtc.restore();
-        this.customToIsoLocal.restore();
-        this.epochToIsoUtc.restore();
-        this.epochToIsoLocal.restore();
-        this.isoRfcToEpoch.restore();
-        this.customToEpoch.restore();
-        this.isValidEpoch.restore();
-        this.isValidIsoRfc.restore();
-        this.isValidCustom.restore();
-        this.getNowAsCustom.restore();
-        this.getNowAsEpoch.restore();
-        this.getNowAsIsoUtc.restore();
-        this.getNowAsIsoLocal.restore();
-    }
 }
 export { TimeConverterMock };

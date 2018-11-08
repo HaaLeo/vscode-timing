@@ -2,7 +2,7 @@
     "name": "timing",
     "displayName": "Time Converter",
     "description": "Converts timestamps from/to various formats and inserts them on demand.",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "publisher": "HaaLeo",
     "engines": {
         "vscode": "^1.26.0"

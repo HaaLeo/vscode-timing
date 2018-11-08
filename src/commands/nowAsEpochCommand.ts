@@ -16,7 +16,7 @@ import { CustomCommandBase } from './customCommandBase';
 
 class NowAsEpochCommand extends CustomCommandBase {
 
-    private readonly title: string = 'Custom → ISO 8601 Local';
+    private readonly title: string = 'Now → Epoch';
 
     public async execute() {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
@@ -74,7 +74,11 @@ class NowAsEpochCommand extends CustomCommandBase {
                     label: 'ns',
                     detail: 'nanoseconds'
                 }
-            ]);
+            ],
+            undefined,
+            undefined,
+            undefined,
+            false);
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTargetFormat);

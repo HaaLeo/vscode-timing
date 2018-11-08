@@ -54,12 +54,19 @@ class QuickPickStep implements IStep {
     private _preSelectedItem: QuickPickItem;
 
     /**
+     * Indicates whether the `_items` are custom formats that have to be updated.
+     */
+    private _usesCustomFormats: boolean;
+
+    /**
      * Creates a `QuickPickStep`.
      * @param placeholder The quick-pick's placeholder.
      * @param title The quick-pick's title.
      * @param items The items to show the user.
      * @param allowOtherItem The item that triggers the `alternativeStep` when it is selected.
      * @param alternativeStep The alternative step to execute instead of this one.
+     * @param skip Indicates whether this step shall be skipped if user selection is valid.
+     * @param usesCustomFormats Indicates whether this step uses custom formats, that have to be updated.
      */
     public constructor(
         placeholder: string,
@@ -67,7 +74,8 @@ class QuickPickStep implements IStep {
         items: QuickPickItem[],
         allowOtherItem?: QuickPickItem,
         alternativeStep?: IStep,
-        skip: boolean = false) {
+        skip: boolean = false,
+        usesCustomFormats: boolean = true) {
 
         this._quickPick = window.createQuickPick();
         this._quickPick.placeholder = placeholder;
@@ -81,6 +89,7 @@ class QuickPickStep implements IStep {
         this._alternativeStep = alternativeStep;
 
         this._skip = skip;
+        this._usesCustomFormats = usesCustomFormats;
         this._disposables.push(this._quickPick);
     }
 
@@ -155,12 +164,29 @@ class QuickPickStep implements IStep {
     }
 
     /**
+     * Indicates whether this step is uses custom formats as items.
+     */
+    public get usesCustomFormats(): boolean {
+        return this._usesCustomFormats;
+    }
+
+    /**
+     * Set the possible items the user can pick of.
+     */
+    public set items(items: QuickPickItem[]) {
+        this._items = items;
+    }
+
+    /**
      * Gets the validation function used for this step.
      */
     public get validation(): (input: string, ...args: string[]) => boolean {
         return () => true;
     }
 
+    /**
+     * Reset the pre-selection of this step.
+     */
     public reset(): void {
         this._quickPick.value = '';
         this._quickPick.items = this._items;

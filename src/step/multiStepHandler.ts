@@ -7,9 +7,10 @@
 
 'use strict';
 
-import { Disposable, ExtensionContext, Uri } from 'vscode';
+import { Disposable, QuickPickItem } from 'vscode';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { IStep } from './IStep';
+import { QuickPickStep } from './quickPickStep';
 import { StepResult } from './stepResult';
 
 /**
@@ -31,10 +32,16 @@ class MultiStepHandler implements Disposable {
      */
     private _userSelection: string;
 
+    /**
+     * Returns the index of the first occurrence of the `step`.
+     */
     public indexOf(step: IStep): Readonly<number> {
         return this._steps.indexOf(step);
     }
 
+    /**
+     * Get the results of all steps. Ordered according to the steps.
+     */
     public get stepResults(): ReadonlyArray<string> {
         return this._stepResults;
     }
@@ -90,6 +97,19 @@ class MultiStepHandler implements Disposable {
 
         // Filter results when sub steps were used
         return this._stepResults.filter(Boolean);
+    }
+
+    /**
+     * Update the formats of all `QuickPickSteps` that use custom formats.
+     * @param formats The new formats to use.
+     */
+    public updateFormats(formats: QuickPickItem[]): void {
+        const quickPickSteps = this._steps.filter((step) => step instanceof QuickPickStep);
+        quickPickSteps.forEach((quickPickStep: QuickPickStep) => {
+            if (quickPickStep.usesCustomFormats) {
+                quickPickStep.items = formats;
+            }
+        });
     }
 
     /**

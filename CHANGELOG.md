@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "timing" extension will be documented in this file.
 
+## Unreleased - v1.1.1
+* **Fixed** [#16](https://github.com/HaaLeo/vscode-timing/issues/16): The custom format options of the quick pick step were not updated, after the command was invoked once.
+
 ## 2018-09-13 - v1.1.0
 * **Added** setting `timing.hoverTargetFormat` that indicates the target format of the hover preview ([#14](https://github.com/HaaLeo/vscode-timing/issues/14)). Possible values are:
   * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.

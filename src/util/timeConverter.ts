@@ -77,7 +77,10 @@ class TimeConverter {
     }
 
     public isValidEpoch(epoch: string): boolean {
-        const result = moment(Number(epoch)).isValid();
+        let result: boolean = false;
+        if (epoch) {
+            result = moment(Number(epoch)).isValid();
+        }
         return result;
     }
 

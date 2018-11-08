@@ -111,7 +111,7 @@ class QuickPickStep implements IStep {
         this._quickPick.totalSteps = totalSteps;
         this._quickPick.ignoreFocusOut = ignoreFocusOut;
         this._quickPick.items = this._allowOtherItem ? [...this._items, this._allowOtherItem] : this._items;
-        this._quickPick.selectedItems = [this._items[0]];
+        this._quickPick.selectedItems = [];
         if (step > 1) {
             this._quickPick.buttons = [QuickInputButtons.Back];
         }

@@ -10,7 +10,7 @@
 The *timing* extension converts and visualizes a given time to various formats.  
 This extension was inspired by [zodiac403's epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
-> All breaking changes of **v1.0.0** are listed in the [change log](CHANGELOG.md)
+> All breaking changes of **v1.0.0** are listed in the [changelog](CHANGELOG.md)
 
 ## Installation
 

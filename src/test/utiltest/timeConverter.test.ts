@@ -137,6 +137,7 @@ describe('TimeConverter', () => {
 
         it('Should return false if it is an invalid epoch time.', () => {
             assert.equal(false, testObject.isValidEpoch('1973-11-29T21:33:09.000Z'));
+            assert.equal(false, testObject.isValidEpoch(''));
         });
     });
 

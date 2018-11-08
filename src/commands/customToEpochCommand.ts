@@ -52,7 +52,7 @@ class CustomToEpochCommand extends CustomCommandBase {
 
             loopResult = await this._resultBox.show(
                 'Input: ' + rawInput + ' (Format: ' + customFormat + ')',
-                this.title +  titlePostfix,
+                this.title + titlePostfix,
                 result,
                 this.insert,
                 this._ignoreFocusOut);
@@ -99,7 +99,11 @@ class CustomToEpochCommand extends CustomCommandBase {
                     label: 'ns',
                     detail: 'nanoseconds'
                 }
-            ]);
+            ],
+            undefined,
+            undefined,
+            undefined,
+            false); // Does not use custom formats.
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getCustomFormatStep);

@@ -40,6 +40,10 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
                 });
             }
         });
+
+        if (this._stepHandler) {
+            this._stepHandler.updateFormats(this._customTimeFormatOptions);
+        }
     }
 }
 

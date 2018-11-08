@@ -92,7 +92,12 @@ class IsoRfcToEpochCommand extends CommandBase {
                     label: 'ns',
                     detail: 'nanoseconds'
                 }
-            ]);
+            ],
+            undefined,
+            undefined,
+            undefined,
+            false);
+
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getIsoRfcTimeStep);
         this._stepHandler.registerStep(getEpochTargetFormat);

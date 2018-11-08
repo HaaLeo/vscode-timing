@@ -16,7 +16,7 @@ import { CustomCommandBase } from './customCommandBase';
 
 class NowAsCustomCommand extends CustomCommandBase {
 
-    private readonly title: string = 'Custom → ISO 8601 Local';
+    private readonly title: string = 'Now → Custom';
 
     public async execute() {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');

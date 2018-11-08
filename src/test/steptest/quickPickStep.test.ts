@@ -138,6 +138,7 @@ describe('QuickPickStep', () => {
 
             it('onDidAccept should resolve and return pick.', async () => {
                 listener = quickPickStub.onDidAccept.firstCall.args[0];
+                quickPickStub.selectedItems = [quickPick.items[0]];
                 assert.strictEqual(quickPickStub.onDidAccept.calledOnce, true);
 
                 listener(undefined);

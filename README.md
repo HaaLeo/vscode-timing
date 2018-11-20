@@ -165,7 +165,7 @@ For further information check out the [docs](https://code.visualstudio.com/docs/
 
 ## Contribution
 
-If you found a bug or are missing a feature do not hesitate to [file an issue](https://github.com/HaaLeo/vscode-timing/issues/new).  
+If you found a bug or are missing a feature do not hesitate to [file an issue](https://github.com/HaaLeo/vscode-timing/issues/new/choose).  
 Pull Requests are welcome!
 
 ## Support

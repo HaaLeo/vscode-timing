@@ -5,6 +5,7 @@ out/**/*.map
 src/**
 doc/*.gif
 .gitignore
+.github/**
 tsconfig.json
 tslint.json
 .travis.yml

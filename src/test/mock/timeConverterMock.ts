@@ -11,6 +11,8 @@ import * as sinon from 'sinon';
 import { TimeConverter } from '../../util/timeConverter';
 
 class TimeConverterMock implements TimeConverter {
+    public epochToIsoDuration = sinon.stub();
+    public epochToHumanDuration = sinon.stub();
     public isoRfcToCustom = sinon.stub();
     public epochToCustom = sinon.stub();
     public customToIsoUtc = sinon.stub();

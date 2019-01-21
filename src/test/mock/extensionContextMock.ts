@@ -11,6 +11,7 @@ import * as sinon from 'sinon';
 import { ExtensionContext } from 'vscode';
 
 class ExtensionContextMock implements ExtensionContext {
+    public logPath = undefined;
     public subscriptions = undefined;
     public workspaceState = undefined;
     public globalState = undefined;

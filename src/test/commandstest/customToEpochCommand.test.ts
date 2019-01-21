@@ -54,7 +54,7 @@ describe('CustomToEpochCommand', () => {
         beforeEach('Reset', () => {
             testObject = new CustomToEpochCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
-            handlerMock.run.returns(['YYYY', '2018', 'ms']);
+            handlerMock.run.returns(new Promise(() => ['YYYY', '2018', 'ms']));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -65,7 +65,7 @@ describe('CustomToEpochCommand', () => {
 
         it('Should stop if user canceled during epoch time insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            handlerMock.run.returns([]);
+            handlerMock.run.returns(new Promise(() => []));
 
             await testObject.execute();
 

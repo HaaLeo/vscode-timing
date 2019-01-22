@@ -69,7 +69,7 @@ Further the extension shows a [hover preview](#Hover-Preview) of the converted _
 * `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
 * `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
 * `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
-* `timing.hoverTargetFormat`: DEPRECATED use the `timing.hoverTimestamp.*` settings instead.
+* `timing.hoverTargetFormat`: **DEPRECATED** use the `timing.hoverTimestamp.*` settings instead.
 * `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format. Possible values:
   * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.
   * `local`: Show the hover preview in ISO 8601 Local time.

@@ -96,14 +96,26 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
     }
 
     private updateTimestampTargetFormatDeprecated(): void {
-        const config = vscode.workspace.getConfiguration('timing')
-            .get<string>('hoverTargetFormat', 'utc');
+        // When the new config is already set(!= utc), prioritize the new config's values
+        // Otherwise use the old configurations values
+        const newTargetFormat = vscode.workspace.getConfiguration('timing.hoverTimestamp')
+            .get<string>('targetFormat', 'utc');
+        const newEnabled = vscode.workspace.getConfiguration('timing.hoverTimestamp')
+            .get<boolean>('enabled', true);
 
-        if (config === 'disable') {
-            this._enabled = false;
+        if (newTargetFormat === 'utc' && newEnabled) { // The default values
+            const config = vscode.workspace.getConfiguration('timing')
+                .get<string>('hoverTargetFormat', 'utc');
+
+            if (config === 'disable') {
+                this._enabled = false;
+            } else {
+                this._enabled = true;
+                this._targetFormat = config;
+            }
         } else {
-            this._enabled = true;
-            this._targetFormat = config;
+            this._enabled = newEnabled;
+            this._targetFormat = newTargetFormat;
         }
     }
 }

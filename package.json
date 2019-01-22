@@ -119,7 +119,7 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "Timing",
+            "title": "Time Converter",
             "properties": {
                 "timing.customFormats": {
                     "title": "Custom time formats.",
@@ -175,10 +175,11 @@
                     "pattern": "(true|false)"
                 },
                 "timing.hoverTargetFormat": {
-                    "title": "DEPRECATED: Use timing.hoverTimestamp.targetFormat instead.",
-                    "description": "DEPRECATED: Use timing.hoverTimestamp.targetFormat instead.",
+                    "title": "The target format of the hover preview.",
+                    "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\", a custom format or \"disable\" to disable the hover preview.",
                     "type": "string",
-                    "default": "utc"
+                    "default": "utc",
+                    "deprecationMessage": "DEPRECATED: This setting will be removed in the next major release. Use timing.hoverTimestamp.* settings instead."
                 },
                 "timing.hoverTimestamp.targetFormat": {
                     "title": "The target format of the hover preview.",
@@ -195,10 +196,20 @@
                 },
                 "timing.hoverDuration.sourceUnit": {
                     "title": "The epoch unit of the duration hover preview.",
-                    "description": "Indicates the source epoch unit for the duration hover preview. It can be either \"s\", \"ms\" or \"ns\".",
+                    "description": "Indicates the source epoch unit for the duration hover preview.",
                     "type": "string",
                     "default": "ms",
-                    "pattern": "(ms|s|ns)"
+                    "pattern": "(ms|s|ns)",
+                    "enum": [
+                        "s",
+                        "ms",
+                        "ns"
+                    ],
+                    "enumDescriptions": [
+                        "seconds",
+                        "milliseconds",
+                        "nanoseconds"
+                    ]
                 },
                 "timing.hoverDuration.enabled": {
                     "title": "En-/disable the duration hover.",

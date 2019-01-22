@@ -8,7 +8,6 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { showDeprecationMessage } from './helper';
 import { InputDefinition } from './inputDefinition';
 import { TimeConverter } from './timeConverter';
 
@@ -30,17 +29,10 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
         if (this._enabled && this._targetFormat === 'utc') {
             this.updateTimestampEnabled();
             this.updateTimestampTargetFormat();
-        } else {
-            showDeprecationMessage('DEPRECATION WARNING: \nThe setting "timing.hoverTargetFormat" is deprecated \
-            and will be removed in the next major release. Please use the settings \
-            "timing.hoverTimestamp.targetFormat" and "timing.hoverTimestamp.enabled" instead.');
         }
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
             if (changedEvent.affectsConfiguration('timing.hoverTargetFormat')) {
                 this.updateTimestampTargetFormatDeprecated();
-                showDeprecationMessage('DEPRECATION WARNING: \nThe setting "timing.hoverTargetFormat" is deprecated \
-                and will be removed in the next major release. Please use the settings \
-                "timing.hoverTimestamp.targetFormat" and "timing.hoverTimestamp.enabled" instead.');
             } else if (changedEvent.affectsConfiguration('timing.hoverTimestamp.targetFormat')) {
                 this.updateTimestampTargetFormat();
             } else if (changedEvent.affectsConfiguration('timing.hoverTimestamp.enabled')) {

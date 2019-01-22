@@ -54,7 +54,7 @@ describe('CustomToIsoLocal', () => {
         beforeEach('Reset', () => {
             testObject = new CustomToIsoLocalCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
-            handlerMock.run.returns(['YYYY', '2018']);
+            handlerMock.run.returns(new Promise((resolve) => resolve(['YYYY', '2018'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -65,7 +65,7 @@ describe('CustomToIsoLocal', () => {
 
         it('Should stop if user canceled during epoch time insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            handlerMock.run.returns([]);
+            handlerMock.run.returns(new Promise((resolve) => resolve([])));
 
             await testObject.execute();
 
@@ -82,7 +82,7 @@ describe('CustomToIsoLocal', () => {
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.customToIsoLocal('2018', 'YYYY'));
+                timeConverter.customToISOLocal('2018', 'YYYY'));
         });
 
         it('Should start with last step if input flow action is Back.', async () => {

@@ -10,7 +10,7 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { CustomToIsoUtcCommand } from '../../commands/customToIsoUtcCommand';
+import { EpochToReadableDurationCommand } from '../../commands/epochToReadableDurationCommand';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
 import { ResultBox } from '../../util/resultBox';
@@ -18,9 +18,9 @@ import { TimeConverter } from '../../util/timeConverter';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
-describe('CustomToIsoUtc', () => {
+describe('EpochToReadableDurationCommand', () => {
     let timeConverter: TimeConverter;
-    let testObject: CustomToIsoUtcCommand;
+    let testObject: EpochToReadableDurationCommand;
     let testEditor: vscode.TextEditor;
     let handlerMock: MultiStepHandlerMock;
     let showResultStub: sinon.SinonStub;
@@ -36,7 +36,7 @@ describe('CustomToIsoUtc', () => {
             testEditor = await vscode.window.showTextDocument(file);
         }
         const config = vscode.workspace.getConfiguration('timing');
-        await config.update('customFormats', []);
+        await config.update('customFormats', undefined);
     });
 
     after(async () => {
@@ -52,9 +52,9 @@ describe('CustomToIsoUtc', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new CustomToIsoUtcCommand(new ExtensionContextMock(), timeConverter);
-            testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
-            handlerMock.run.returns(new Promise((resolve) => resolve(['YYYY', '2018'])));
+            testObject = new EpochToReadableDurationCommand(new ExtensionContextMock(), timeConverter);
+            testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
+            handlerMock.run.returns(new Promise((resolve) => resolve(['1000', 'ms'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -82,7 +82,7 @@ describe('CustomToIsoUtc', () => {
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.customToISOUtc('2018', 'YYYY'));
+                timeConverter.epochToReadableDuration(1000));
         });
 
         it('Should start with last step if input flow action is Back.', async () => {

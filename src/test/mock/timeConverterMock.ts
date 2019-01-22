@@ -11,11 +11,13 @@ import * as sinon from 'sinon';
 import { TimeConverter } from '../../util/timeConverter';
 
 class TimeConverterMock implements TimeConverter {
+    public epochToISODuration = sinon.stub();
+    public epochToReadableDuration = sinon.stub();
     public isoRfcToCustom = sinon.stub();
     public epochToCustom = sinon.stub();
-    public customToIsoUtc = sinon.stub();
-    public customToIsoLocal = sinon.stub();
-    public epochToIsoUtc = sinon.stub();
+    public customToISOUtc = sinon.stub();
+    public customToISOLocal = sinon.stub();
+    public epochToISOUtc = sinon.stub();
     public epochToIsoLocal = sinon.stub();
     public isoRfcToEpoch = sinon.stub();
     public customToEpoch = sinon.stub();
@@ -30,9 +32,9 @@ class TimeConverterMock implements TimeConverter {
     public reset() {
         this.isoRfcToCustom.reset();
         this.epochToCustom.reset();
-        this.customToIsoUtc.reset();
-        this.customToIsoLocal.reset();
-        this.epochToIsoUtc.reset();
+        this.customToISOUtc.reset();
+        this.customToISOLocal.reset();
+        this.epochToISOUtc.reset();
         this.epochToIsoLocal.reset();
         this.isoRfcToEpoch.reset();
         this.customToEpoch.reset();

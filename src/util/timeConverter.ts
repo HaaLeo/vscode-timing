@@ -20,21 +20,57 @@ class TimeConverter {
         return result;
     }
 
-    public customToIsoUtc(time: string, format: string): string {
+    public customToISOUtc(time: string, format: string): string {
         const result = moment(time, format, true).toISOString(false);
         return result;
     }
 
-    public customToIsoLocal(time: string, format: string): string {
+    public customToISOLocal(time: string, format: string): string {
         const result = moment(time, format, true).toISOString(true);
         return result;
     }
 
-    public epochToIsoUtc(ms: string): string {
+    public epochToISOUtc(ms: string): string {
         const result = moment(ms, 'x').toISOString(false);
         return result;
     }
 
+    public epochToISODuration(ms: number): string {
+        const duration = moment.duration(ms).toISOString();
+        return duration;
+    }
+
+    public epochToReadableDuration(ms: number): string {
+        const duration = moment.duration(ms);
+
+        let text = '';
+
+        if (duration.asDays() >= 1) {
+            text += Math.floor(duration.asDays()) + 'd';
+        }
+        if (text !== '') {
+            text += ', ' + duration.hours() + 'h';
+        } else if (duration.hours() !== 0) {
+            text += duration.hours() + 'h';
+        }
+        if (text !== '') {
+            text += ', ' + duration.minutes() + 'min';
+        } else if (duration.minutes() !== 0) {
+            text += duration.minutes() + 'min';
+        }
+        if (text !== '') {
+            text += ', ' + duration.seconds() + 's';
+        } else if (duration.seconds() !== 0) {
+            text += duration.seconds() + 's';
+        }
+        if (text !== '') {
+            text += ', ' + duration.milliseconds() + 'ms';
+        } else {
+            text += duration.milliseconds() + 'ms';
+        }
+
+        return text;
+    }
     public epochToIsoLocal(ms: string): string {
         const result = moment(ms, 'x').toISOString(true);
         return result;

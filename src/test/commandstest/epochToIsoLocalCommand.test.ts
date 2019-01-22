@@ -54,7 +54,7 @@ describe('EpochToIsoLocalCommand', () => {
         beforeEach('Reset', () => {
             testObject = new EpochToIsoLocalCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
-            handlerMock.run.returns(['1000']);
+            handlerMock.run.returns(new Promise((resolve) => resolve(['1000'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -65,7 +65,7 @@ describe('EpochToIsoLocalCommand', () => {
 
         it('Should stop if user canceled during epoch time insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            handlerMock.run.returns([]);
+            handlerMock.run.returns(new Promise((resolve) => resolve([])));
 
             await testObject.execute();
 

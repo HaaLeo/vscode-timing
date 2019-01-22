@@ -54,7 +54,7 @@ describe('IsoRfcToCustomCommand', () => {
         beforeEach('Reset', () => {
             testObject = new IsoRfcToCustomCommand(new ExtensionContextMock(), timeConverter);
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
-            handlerMock.run.returns(['1975-01-01T00:00:00.000Z', 'YYYY']);
+            handlerMock.run.returns(new Promise((resolve) => resolve(['1975-01-01T00:00:00.000Z', 'YYYY'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -65,7 +65,7 @@ describe('IsoRfcToCustomCommand', () => {
 
         it('Should stop if user canceled during epoch time insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            handlerMock.run.returns([]);
+            handlerMock.run.returns(new Promise((resolve) => resolve([])));
 
             await testObject.execute();
 

@@ -57,6 +57,16 @@
                 "title": "Epoch ⟶ Custom"
             },
             {
+                "command": "timing.epochToReadableDuration",
+                "category": "Timing",
+                "title": "Epoch ⟶ Readable Duration"
+            },
+            {
+                "command": "timing.epochToIsoDuration",
+                "category": "Timing",
+                "title": "Epoch ⟶ ISO 8601 Duration"
+            },
+            {
                 "command": "timing.isoRfcToEpoch",
                 "category": "Timing",
                 "title": "ISO 8601 / RFC 2822 ⟶ Epoch"
@@ -109,7 +119,7 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "Timing",
+            "title": "Time Converter",
             "properties": {
                 "timing.customFormats": {
                     "title": "Custom time formats.",
@@ -168,7 +178,52 @@
                     "title": "The target format of the hover preview.",
                     "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\", a custom format or \"disable\" to disable the hover preview.",
                     "type": "string",
+                    "default": "utc",
+                    "deprecationMessage": "DEPRECATED: This setting will be removed in the next major release. Use timing.hoverTimestamp.* settings instead."
+                },
+                "timing.hoverTimestamp.targetFormat": {
+                    "title": "The target format of the hover preview.",
+                    "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\" or custom format.",
+                    "type": "string",
                     "default": "utc"
+                },
+                "timing.hoverTimestamp.enabled": {
+                    "title": "En-/disable the timestamp hover.",
+                    "description": "Controls whether the timestamp hover is enabled or disabled.",
+                    "type": "boolean",
+                    "default": true,
+                    "pattern": "(true|false)"
+                },
+                "timing.hoverDuration.sourceUnit": {
+                    "title": "The epoch unit of the duration hover preview.",
+                    "description": "Indicates the source epoch unit for the duration hover preview.",
+                    "type": "string",
+                    "default": "ms",
+                    "pattern": "(ms|s|ns)",
+                    "enum": [
+                        "s",
+                        "ms",
+                        "ns"
+                    ],
+                    "enumDescriptions": [
+                        "seconds",
+                        "milliseconds",
+                        "nanoseconds"
+                    ]
+                },
+                "timing.hoverDuration.enabled": {
+                    "title": "En-/disable the duration hover.",
+                    "description": "Controls whether the duration hover is enabled or disabled.",
+                    "type": "boolean",
+                    "default": true,
+                    "pattern": "(true|false)"
+                },
+                "timing.hoverDuration.useISOTargetFormat": {
+                    "title": "Use the ISO 8601 duration representation as target format.",
+                    "description": "Indicates whether the ISO 8601 duration definition is used as target format.",
+                    "type": "boolean",
+                    "default": false,
+                    "pattern": "(true|false)"
                 }
             }
         }
@@ -183,20 +238,20 @@
     },
     "devDependencies": {
         "@types/mocha": "^5.2.5",
-        "@types/node": "^10.12.3",
-        "@types/sinon": "^5.0.5",
+        "@types/node": "^10.12.18",
+        "@types/sinon": "^7.0.4",
         "codecov": "^3.1.0",
-        "decache": "^4.4.1",
+        "decache": "^4.5.1",
         "istanbul": "^0.4.5",
         "mocha": "^5.2.0",
-        "remap-istanbul": "^0.12.0",
-        "sinon": "^7.1.1",
-        "tslint": "^5.11.0",
-        "typescript": "^3.1.6",
-        "vsce": "^1.53.0",
-        "vscode": "^1.1.21"
+        "remap-istanbul": "^0.13.0",
+        "sinon": "^7.2.3",
+        "tslint": "^5.12.1",
+        "typescript": "^3.2.4",
+        "vsce": "^1.54.0",
+        "vscode": "^1.1.27"
     },
     "dependencies": {
-        "moment": "^2.22.2"
+        "moment": "^2.23.0"
     }
 }

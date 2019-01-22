@@ -7,20 +7,17 @@
 
 'use strict';
 
-import { InputDefinition } from '../util/inputDefinition';
-
 import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
+import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
 
-/**
- * Command to convert epoch time to ISO 8601 Utc time.
- */
-class EpochToIsoUtcCommand extends CommandBase {
+class EpochToReadableDurationCommand extends CommandBase {
 
-    private readonly title: string = 'Epoch → ISO 8601 UTC';
+    private readonly title: string = 'Epoch → Readable Duration';
 
     /**
      * Execute the command.
@@ -31,23 +28,24 @@ class EpochToIsoUtcCommand extends CommandBase {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
+            let epochFormat: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
                 break;
             }
 
-            const input = new InputDefinition(rawInput);
-            const result = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
+            const input = new InputDefinition(rawInput, epochFormat);
+            const result = this._timeConverter.epochToReadableDuration(input.inputAsMs);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -76,10 +74,32 @@ class EpochToIsoUtcCommand extends CommandBase {
             'Ensure the epoch time is valid.',
             this._timeConverter.isValidEpoch,
             true);
+        const getEpochSourceFormat = new QuickPickStep(
+            'Select epoch source unit',
+            this.title,
+            [
+                {
+                    label: 's',
+                    detail: 'seconds'
+                },
+                {
+                    label: 'ms',
+                    detail: 'milliseconds'
+                },
+                {
+                    label: 'ns',
+                    detail: 'nanoseconds'
+                }
+            ],
+            undefined,
+            undefined,
+            undefined,
+            false); // Does not use custom formats.
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep);
+        this._stepHandler.registerStep(getEpochSourceFormat);
     }
 }
 
-export { EpochToIsoUtcCommand };
+export { EpochToReadableDurationCommand };

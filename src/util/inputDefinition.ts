@@ -12,8 +12,8 @@ class InputDefinition {
     private _originalUnit: string;
     private _originalInput: string;
 
-    constructor(userInput: string) {
-        this.initialize(userInput);
+    constructor(userInput: string, unit?: string) {
+        this.initialize(userInput, unit);
     }
 
     public get inputAsMs(): number {
@@ -28,23 +28,42 @@ class InputDefinition {
         return this._originalInput;
     }
 
-    private initialize(userInput: string) {
+    private initialize(userInput: string, unit?: string) {
         this._originalInput = userInput;
         this._originalUnit = undefined;
         this._inputAsMs = undefined;
 
+        // If unit is given convert number to ms and set original unit
         if (userInput && !isNaN(Number(userInput))) {
-            if (userInput.length <= 11) {
-                this._inputAsMs = Number(userInput) * 1000;
-                this._originalUnit = 's';
-            } else if (userInput.length <= 14) {
-                this._inputAsMs = Number(userInput);
-                this._originalUnit = 'ms';
-            } else if (userInput.length <= 21) {
-                this._inputAsMs = Number(userInput) / 1000000;
-                this._originalUnit = 'ns';
-            } else {
-                throw Error('Unknown format: number with ' + userInput.length + ' digits.');
+            if (unit) {
+                this._originalUnit = unit;
+                switch (unit) {
+                    case 's':
+                        this._inputAsMs = Number(userInput) * 1000;
+                        break;
+                    case 'ms':
+                        this._inputAsMs = Number(userInput);
+                        break;
+                    case 'ns':
+                        this._inputAsMs = Number(userInput) / 1000000;
+                        break;
+                    default:
+                        throw Error('Unknown format="' + unit + '" was given.');
+                }
+                // If unit is not given, determine it by checking the length
+            } else if (!isNaN(Number(userInput))) {
+                if (userInput.length <= 11) {
+                    this._inputAsMs = Number(userInput) * 1000;
+                    this._originalUnit = 's';
+                } else if (userInput.length <= 14) {
+                    this._inputAsMs = Number(userInput);
+                    this._originalUnit = 'ms';
+                } else if (userInput.length <= 21) {
+                    this._inputAsMs = Number(userInput) / 1000000;
+                    this._originalUnit = 'ns';
+                } else {
+                    throw Error('Unknown format: number with ' + userInput.length + ' digits.');
+                }
             }
         }
     }

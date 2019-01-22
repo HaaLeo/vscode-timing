@@ -175,8 +175,8 @@
                     "pattern": "(true|false)"
                 },
                 "timing.hoverTargetFormat": {
-                    "title": "DEPRECATED: Use timing.hoverTimestamp.targetFormat instead. The target format of the hover preview.",
-                    "description": "DEPRECATED: Indicates the target format of the hover preview. It can be either \"utc\", \"local\", a custom format or \"disable\" to disable the hover preview.",
+                    "title": "DEPRECATED: Use timing.hoverTimestamp.targetFormat instead.",
+                    "description": "DEPRECATED: Use timing.hoverTimestamp.targetFormat instead.",
                     "type": "string",
                     "default": "utc"
                 },
@@ -211,7 +211,7 @@
                     "title": "Use the ISO 8601 duration representation as target format.",
                     "description": "Indicates whether the ISO 8601 duration definition is used as target format.",
                     "type": "boolean",
-                    "default": "false",
+                    "default": false,
                     "pattern": "(true|false)"
                 }
             }

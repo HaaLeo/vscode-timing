@@ -26,26 +26,28 @@ This extension was inspired by [zodiac403's epoch-time-converter](https://github
 
 ## Features
 
-Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion:  
+Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion. Epoch times can be converted to a human readable _timestamp_ or _duration_.  
 
-| Source Format| ⟶ | Target Format|
-|:--|:--:|:-- |
+| Source Format| ⟶ | Target Format| Example|
+|:--|:--:|:-- |:--|
+| Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#-Simple-Conversion)
 | Epoch (s, ms, ns) | ⟶ | ISO 8601 Local|
-| Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC|
-| Epoch (s, ms, ns) | ⟶ | Custom|
+| Epoch (s, ms, ns) | ⟶ | Custom| [Link](#-Custom-Formats)
+| Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration|
+| Epoch (s, ms, ns) | ⟶ | Human Readable Duration|
 | ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)|
 | ISO 8601 / RFC 2282 | ⟶ | Custom|
 | - | ⟶ | Now as Epoch (s, ms, ns)|
-| - | ⟶ | Now as ISO 8601 Local|
 | - | ⟶ | Now as ISO 8601 UTC|
+| - | ⟶ | Now as ISO 8601 Local| [Link](#-Current-Time)|
 | - | ⟶ | Now as Custom|
 | Custom | ⟶ | Epoch (s, ms, ns)|
-| Custom | ⟶ | ISO 8601 Local|
 | Custom | ⟶ | ISO 8601 Utc|
+| Custom | ⟶ | ISO 8601 Local|
 
-Whether the current selection is replaced with the converted time, is indicated by the `timing.insertConvertedTime` setting.  
+Whether the current selection is [replaced](#-Insert-Converted-Time) with the converted time, is indicated by the `timing.insertConvertedTime` setting. When you already [pre-selected](#Pre-selection) a valid epoch time, the extension will directly convert this selection instead of asking for your input.
 
-When the _epoch time is the **source**_ format of the conversion its unit is determined by its **digit count**:
+When the _epoch time is the **source**_ format of the _timestamp_ conversion its unit is determined by its **digit count**:
 
 | Minimum Length| Maximum Length| Used Unit |
 |:--:|:--:|:--:|
@@ -55,7 +57,71 @@ When the _epoch time is the **source**_ format of the conversion its unit is det
 
 >**Note**: Currently those boundaries are fixed and cannot be changed.
 
-When the _epoch time is the **target**_ format of the conversion you can select its unit during the conversion process.  
+When the _epoch time is the **target**_ format of the timestamp conversion you can select its unit during the conversion process.  
+
+When the _epoch time is the **source**_ format of the duration conversion you can select its unit during the conversion process.  
+
+Further the extension shows a [hover preview](#Hover-Preview) of the converted _timestamp_ and _duration_ when the mouse is moved over a valid epoch time.
+
+## Settings Overview
+
+* `timing.customFormats`: An array of custom source/target formats used to convert from/to
+* `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
+* `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
+* `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
+* `timing.hoverTargetFormat`: DEPRECATED use the `timing.hoverTimestamp.*` settings instead.
+* `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format. Possible values:
+  * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.
+  * `local`: Show the hover preview in ISO 8601 Local time.
+  * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
+
+* `timing.hoverTimestamp.enabled`: Controls whether the timestamp hover is enabled or disabled.
+* `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
+* `timing.hoverDuration.enabled`: Controls whether the duration hover is enabled or disabled.
+* `timing.hoverDuration.useISOTargetFormat`: Indicates whether the ISO 8601 duration definition is used as target format for the hover.
+
+## Command Overview
+
+To view all commands, open the _command palette_ and type _Timing_.
+* `timing.customToEpoch`: Custom ⟶ Epoch
+* `timing.customToIsoUtc`: Custom ⟶ ISO 8601 UTC
+* `timing.customToIsoLocal`: Custom ⟶ ISO 8601 Local
+* `timing.epochToIsoUtc`: Epoch ⟶ ISO 8601 UTC
+* `timing.epochToIsoLocal`: Epoch ⟶ ISO 8601 Local
+* `timing.epochToCustom`: Epoch ⟶ Custom
+* `timing.isoRfcToEpoch`: ISO 8601 / RFC 2822 ⟶ Epoch
+* `timing.isoRfcToCustom`: ISO 8601 / RFC 2822 ⟶ Custom
+* `timing.nowAsCustom`: Now ⟶ Custom
+* `timing.nowAsEpoch`: Now ⟶ Epoch
+* `timing.nowAsIsoLocal`: Now ⟶ Epoch
+* `timing.nowAsIsoUtc`: Now ⟶ Epoch
+* `timing.toggleInsertConvertedTimeUserLevel`: toggle the `timing.insertConvertedTime` user setting
+* `timing.epochToIsoDuration`: Epoch ⟶ ISO 8601 Duration
+* `timing.epochToReadableDuration`: Epoch ⟶ Readable Duration
+
+## Keyboard Shortcuts
+
+Any of the above commands can be bound to its own keyboard shortcut. For that just open the _Keyboard Shortcuts_ view by pressing <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>S</kbd>. Now search for the corresponding command and assign it to a shortcut.  
+Alternatively, you can edit the `keybindings.json` directly. For example you can add the following entry to the `keybindings.json` to bind the `timing.epochToIsoUtc` to the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>Z</kbd>.  
+For further information check out the [docs](https://code.visualstudio.com/docs/getstarted/keybindings).
+
+```JSON
+{
+    "key": "ctrl+k ctrl+z",
+    "command": "timing.epochToIsoUtc"
+}
+```
+
+## Contribution
+
+If you found a bug or are missing a feature do not hesitate to [file an issue](https://github.com/HaaLeo/vscode-timing/issues/new/choose).  
+Pull Requests are welcome!
+
+## Support
+When you like this extension make sure to [star the repo](https://github.com/HaaLeo/vscode-timing/stargazers) and [write a review](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing#review-details). I am always looking for new ideas and feedback.  
+In addition, it is possible to [donate via paypal](https://www.paypal.me/LeoHanisch).
+
+## Examples
 
 ### Conversion via Command Palette
 
@@ -121,53 +187,3 @@ You can add the setting `"timing.insertConvertedTime": true` in order to automat
 Alternatively, you can press the pencil button in the top right corner.
 
 ![Insert Sample](doc/Insert_Sample.gif)
-
-## Settings Overview
-
-* `timing.customFormats`: An array of custom source/target formats used to convert from/to
-* `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
-* `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
-* `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
-* `timing.hoverTargetFormat`: indicates the target format of the hover preview. Possible values are:
-  * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.
-  * `local`: Show the hover preview in ISO 8601 Local time.
-  * `disable`: No hover preview is shown.
-  * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
-
-## Command Overview
-
-* `timing.customToEpoch`: Custom ⟶ Epoch
-* `timing.customToIsoUtc`: Custom ⟶ ISO 8601 UTC
-* `timing.customToIsoLocal`: Custom ⟶ ISO 8601 Local
-* `timing.epochToIsoUtc`: Epoch ⟶ ISO 8601 UTC
-* `timing.epochToIsoLocal`: Epoch ⟶ ISO 8601 Local
-* `timing.epochToCustom`: Epoch ⟶ Custom
-* `timing.isoRfcToEpoch`: ISO 8601 / RFC 2822 ⟶ Epoch
-* `timing.isoRfcToCustom`: ISO 8601 / RFC 2822 ⟶ Custom
-* `timing.nowAsCustom`: Now ⟶ Custom
-* `timing.nowAsEpoch`: Now ⟶ Epoch
-* `timing.nowAsIsoLocal`: Now ⟶ Epoch
-* `timing.nowAsIsoUtc`: Now ⟶ Epoch
-* `timing.toggleInsertConvertedTimeUserLevel`: toggle the `timing.insertConvertedTime` user setting
-
-## Keyboard Shortcuts
-
-Any of the above commands can be bound to its own keyboard shortcut. For that just open the _Keyboard Shortcuts_ view by pressing <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>S</kbd>. Now search for the corresponding command and assign it to a shortcut.  
-Alternatively, you can edit the `keybindings.json` directly. For example you can add the following entry to the `keybindings.json` to bind the `timing.epochToIsoUtc` to the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>Z</kbd>.  
-For further information check out the [docs](https://code.visualstudio.com/docs/getstarted/keybindings).
-
-```JSON
-{
-    "key": "ctrl+k ctrl+z",
-    "command": "timing.epochToIsoUtc"
-}
-```
-
-## Contribution
-
-If you found a bug or are missing a feature do not hesitate to [file an issue](https://github.com/HaaLeo/vscode-timing/issues/new/choose).  
-Pull Requests are welcome!
-
-## Support
-When you like this extension make sure to [star the repo](https://github.com/HaaLeo/vscode-timing/stargazers) and [write a review](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing#review-details). I am always looking for new ideas and feedback.  
-In addition, it is possible to [donate via paypal](https://www.paypal.me/LeoHanisch).

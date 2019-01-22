@@ -13,7 +13,7 @@ import { CustomToEpochCommand } from './commands/customToEpochCommand';
 import { CustomToIsoLocalCommand } from './commands/customToIsoLocalCommand';
 import { CustomToIsoUtcCommand } from './commands/customToIsoUtcCommand';
 import { EpochToCustomCommand } from './commands/epochToCustomCommand';
-import { EpochToISODurationCommand } from './commands/epochToIsoDurationCommand';
+import { EpochToISODurationCommand } from './commands/epochToISODurationCommand';
 import { EpochToIsoLocalCommand } from './commands/epochToIsoLocalCommand';
 import { EpochToIsoUtcCommand } from './commands/epochToIsoUtcCommand';
 import { EpochToReadableDurationCommand } from './commands/epochToReadableDurationCommand';
@@ -25,8 +25,9 @@ import { NowAsIsoLocalCommand } from './commands/nowAsIsoLocalCommand';
 import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
 import { ToggleInsertConvertedTimeUserLevelCommand } from './commands/toggleInsertConvertedTimeUserLevelCommand';
 
+import { DurationHoverProvider } from './util/durationHoverProvider';
 import { TimeConverter } from './util/timeConverter';
-import { TimeHoverProvider } from './util/timeHoverProvider';
+import { TimestampHoverProvider } from './util/timestampHoverProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -51,7 +52,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     const toggleInsertConvertedTimeUserLevelCommand = new ToggleInsertConvertedTimeUserLevelCommand();
 
-    const timeHoverProvider = new TimeHoverProvider(timeConverter);
+    const timestampHoverProvider = new TimestampHoverProvider(timeConverter);
+    const durationHoverProvider = new DurationHoverProvider(timeConverter);
     /* tslint:disable:max-line-length */
 
     context.subscriptions.push(
@@ -73,7 +75,8 @@ export function activate(context: vscode.ExtensionContext) {
 
         vscode.commands.registerCommand('timing.toggleInsertConvertedTimeUserLevel', toggleInsertConvertedTimeUserLevelCommand.execute, toggleInsertConvertedTimeUserLevelCommand),
         // Register Hover Provider
-        timeHoverProvider, vscode.languages.registerHoverProvider('*', timeHoverProvider)
+        timestampHoverProvider, vscode.languages.registerHoverProvider('*', timestampHoverProvider),
+        durationHoverProvider, vscode.languages.registerHoverProvider('*', durationHoverProvider)
     );
     /* tslint:enable:max-line-length */
 }

@@ -4,12 +4,18 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased - v1.2.0
 * **DEPRECATED** the `timing.hoverTargetFormat` setting. Use the `timing.hoverTimestamp` settings instead.
-* **Added** the `timing.hoverTimestamp.targetFormat` setting. Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format.
-* **Added** the `timing.hoverTimestamp.enabled` setting. Controls whether the timestamp hover is enabled or disabled. Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
-* **Added** setting `timing.hoverDuration.sourceUnit`. Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
-* **Added** setting `timing.hoverDuration.enabled`. Controls whether the duration hover is enabled or disabled.
-* **Added** setting `timing.hoverDuration.useISOTargetFormat`. Indicates whether the ISO 8601 duration definition is used as target format.
-* **Added** command
+* **Added**
+  * Settings:
+    * `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format.
+    * `timing.hoverTimestamp.enabled`: Controls whether the timestamp hover is enabled or disabled.
+    * `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
+    * `timing.hoverDuration.enabled`: Controls whether the duration hover is enabled or disabled.
+    * `timing.hoverDuration.useISOTargetFormat`: Indicates whether the ISO 8601 duration definition is used as target format.
+  * Commands:
+    * `timing.epochToIsoDuration`: Convert an epoch time to an ISO 8601 duration.
+    * `timing.epochToReadableDuration`: Convert an epoch time to an human readable duration.
+  * Hover Provider:  
+    * Shows the duration, when the mouse is hovered over an epoch time.
 
 ## 2018-11-08 - v1.1.2
 * **Fixed** changelog
@@ -39,7 +45,7 @@ All notable changes to the "timing" extension will be documented in this file. T
 * **Added** command `timing.toggleInsertConvertedTimeUserLevel` to toggle the `timing.insertConvertedTime` setting on user level
 
 ## 2018-06-23 - v0.4.2
-* **Fixed** layout of Readme for vscode's extension explorer ([#51859](https://github.com/Microsoft/vscode/issues/51859)).
+* **Fixed** layout of Readme for vscode's extension explorer ([Microsoft/vscode#51859](https://github.com/Microsoft/vscode/issues/51859)).
 
 ## 2018-06-13 - v0.4.1
 * **Fixed** layout of the Readme and Changelog

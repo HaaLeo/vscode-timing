@@ -15,9 +15,9 @@ import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
 
-class EpochToReadableDurationCommand extends CommandBase {
+class EpochToISODurationCommand extends CommandBase {
 
-    private readonly title: string = 'Epoch → Readable Duration';
+    private readonly title: string = 'Epoch → ISO 8601 Duration';
 
     /**
      * Execute the command.
@@ -45,7 +45,7 @@ class EpochToReadableDurationCommand extends CommandBase {
             }
 
             const input = new InputDefinition(rawInput, epochFormat);
-            const result = this._timeConverter.epochToReadableDuration(input.inputAsMs);
+            const result = this._timeConverter.epochToISODuration(input.inputAsMs);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -102,4 +102,4 @@ class EpochToReadableDurationCommand extends CommandBase {
     }
 }
 
-export { EpochToReadableDurationCommand };
+export { EpochToISODurationCommand };

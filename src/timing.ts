@@ -13,6 +13,7 @@ import { CustomToEpochCommand } from './commands/customToEpochCommand';
 import { CustomToIsoLocalCommand } from './commands/customToIsoLocalCommand';
 import { CustomToIsoUtcCommand } from './commands/customToIsoUtcCommand';
 import { EpochToCustomCommand } from './commands/epochToCustomCommand';
+import { EpochToISODurationCommand } from './commands/epochToIsoDurationCommand';
 import { EpochToIsoLocalCommand } from './commands/epochToIsoLocalCommand';
 import { EpochToIsoUtcCommand } from './commands/epochToIsoUtcCommand';
 import { EpochToReadableDurationCommand } from './commands/epochToReadableDurationCommand';
@@ -38,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
     const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter);
     const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter);
     const epochToReadableDurationCommand = new EpochToReadableDurationCommand(context, timeConverter);
+    const epochToIsoDurationCommand = new EpochToISODurationCommand(context, timeConverter);
     const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter);
     const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter);
     const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter);
@@ -59,6 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
         customToIsoUtcCommand, vscode.commands.registerCommand('timing.customToIsoUtc', customToIsoUtcCommand.execute, customToIsoUtcCommand),
         epochToCustomCommand, vscode.commands.registerCommand('timing.epochToCustom', epochToCustomCommand.execute, epochToCustomCommand),
         epochToReadableDurationCommand, vscode.commands.registerCommand('timing.epochToReadableDuration', epochToReadableDurationCommand.execute, epochToReadableDurationCommand),
+        epochToIsoDurationCommand, vscode.commands.registerCommand('timing.epochToIsoDuration', epochToIsoDurationCommand.execute, epochToIsoDurationCommand),
         epochToIsoLocalCommand, vscode.commands.registerCommand('timing.epochToIsoLocal', epochToIsoLocalCommand.execute, epochToIsoLocalCommand),
         epochToIsoUtcCommand, vscode.commands.registerCommand('timing.epochToIsoUtc', epochToIsoUtcCommand.execute, epochToIsoUtcCommand),
         isoRfcToCustomCommand, vscode.commands.registerCommand('timing.isoRfcToCustom', isoRfcToCustomCommand.execute, isoRfcToCustomCommand),

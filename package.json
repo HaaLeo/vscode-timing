@@ -62,6 +62,11 @@
                 "title": "Epoch ⟶ Readable Duration"
             },
             {
+                "command": "timing.epochToIsoDuration",
+                "category": "Timing",
+                "title": "Epoch ⟶ ISO 8601 Duration"
+            },
+            {
                 "command": "timing.isoRfcToEpoch",
                 "category": "Timing",
                 "title": "ISO 8601 / RFC 2822 ⟶ Epoch"

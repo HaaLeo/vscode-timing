@@ -44,7 +44,7 @@ class EpochToReadableDurationCommand extends CommandBase {
                 break;
             }
 
-            const input = new InputDefinition(rawInput);
+            const input = new InputDefinition(rawInput, epochFormat);
             const result = this._timeConverter.epochToHumanDuration(input.inputAsMs);
 
             let inserted: boolean = false;
@@ -98,6 +98,7 @@ class EpochToReadableDurationCommand extends CommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep);
+        this._stepHandler.registerStep(getEpochSourceFormat);
     }
 }
 

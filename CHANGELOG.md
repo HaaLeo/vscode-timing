@@ -1,5 +1,15 @@
-# Change Log
-All notable changes to the "timing" extension will be documented in this file.
+# Changelog
+All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## Unreleased - v1.2.0
+* **DEPRECATED** the `timing.hoverTargetFormat` setting. Use the `timing.hoverTimestamp` settings instead.
+* **Added** the `timing.hoverTimestamp.targetFormat` setting. Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format.
+* **Added** the `timing.hoverTimestamp.enabled` setting. Controls whether the timestamp hover is enabled or disabled. Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
+* **Added** setting `timing.hoverDuration.sourceUnit`. Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
+* **Added** setting `timing.hoverDuration.enabled`. Controls whether the duration hover is enabled or disabled.
+* **Added** setting `timing.hoverDuration.useISOTargetFormat`. Indicates whether the ISO 8601 duration definition is used as target format.
+* **Added** command
 
 ## 2018-11-08 - v1.1.2
 * **Fixed** changelog

@@ -30,7 +30,8 @@ describe('MultiStepHandler', () => {
             reset: () => undefined
         };
         firstStepStub = sinon.stub(firstStep);
-        firstStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'first-result'));
+        firstStepStub.execute.returns(
+            new Promise((resolve) => resolve(new StepResult(InputFlowAction.Continue, 'first-result'))));
 
         const secondStep: IStep = {
             dispose: () => undefined,
@@ -40,7 +41,8 @@ describe('MultiStepHandler', () => {
             reset: () => undefined
         };
         secondStepStub = sinon.stub(secondStep);
-        secondStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'second-result'));
+        secondStepStub.execute.returns(
+            new Promise((resolve) => resolve(new StepResult(InputFlowAction.Continue, 'second-result'))));
 
     });
 
@@ -120,7 +122,8 @@ describe('MultiStepHandler', () => {
                 reset: () => undefined
             };
             firstStepStub = sinon.stub(firstStep);
-            firstStepStub.execute.returns(new StepResult(InputFlowAction.Continue, 'first-result'));
+            firstStepStub.execute.returns(
+                new Promise((resolve) => resolve(new StepResult(InputFlowAction.Continue, 'first-result'))));
             testObject = new MultiStepHandler();
             testObject.registerStep(firstStepStub);
 
@@ -132,14 +135,14 @@ describe('MultiStepHandler', () => {
         });
 
         it('should go back once.', async () => {
-            firstStepStub.execute.onFirstCall().returns(
-                new StepResult(InputFlowAction.Continue, 'input user wants to edit'));
-            firstStepStub.execute.onSecondCall().returns(
-                new StepResult(InputFlowAction.Continue, 'second-result-of-first-step'));
-            secondStepStub.execute.onFirstCall().returns(
-                new StepResult(InputFlowAction.Back, undefined));
-            secondStepStub.execute.onSecondCall().returns(
-                new StepResult(InputFlowAction.Continue, 'second-result-of-second-step'));
+            firstStepStub.execute.onFirstCall().returns(new Promise((resolve) =>
+                resolve(new StepResult(InputFlowAction.Continue, 'input user wants to edit'))));
+            firstStepStub.execute.onSecondCall().returns(new Promise((resolve) =>
+                resolve(new StepResult(InputFlowAction.Continue, 'second-result-of-first-step'))));
+            secondStepStub.execute.onFirstCall().returns(new Promise((resolve) =>
+                resolve(new StepResult(InputFlowAction.Back, undefined))));
+            secondStepStub.execute.onSecondCall().returns(new Promise((resolve) =>
+                resolve(new StepResult(InputFlowAction.Continue, 'second-result-of-second-step'))));
 
             const result = await testObject.run(true, '');
 
@@ -150,7 +153,7 @@ describe('MultiStepHandler', () => {
 
         it('should throw on unknown input flow action.', async () => {
             firstStepStub.execute.returns(
-                new StepResult(6, 'input user wants to edit'));
+                new Promise((resolve) => resolve(new StepResult(6, 'input user wants to edit'))));
 
             try {
                 await testObject.run(true, '');
@@ -160,7 +163,7 @@ describe('MultiStepHandler', () => {
 
         it('should return empty result when canceled.', async () => {
             firstStepStub.execute.returns(
-                new StepResult(InputFlowAction.Cancel, 'input user wants to edit'));
+                new Promise((resolve) => resolve(new StepResult(InputFlowAction.Cancel, 'input user wants to edit'))));
             const result = await testObject.run(true, '');
 
             assert.strictEqual(result.length, 0);

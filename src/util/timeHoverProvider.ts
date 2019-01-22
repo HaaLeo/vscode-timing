@@ -24,7 +24,7 @@ class TimeHoverProvider implements vscode.HoverProvider, vscode.Disposable {
 
         this.updateHoverTargetFormat();
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
-            if (changedEvent.affectsConfiguration('timing.hoverTargetFormat')) {
+            if (changedEvent.affectsConfiguration('timing.hoverTargetFormat')) { // todo show deprecation message
                 this.updateHoverTargetFormat();
             }
         }, this, this._disposables);

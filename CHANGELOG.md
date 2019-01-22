@@ -1,9 +1,8 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
-## Unreleased - v1.2.0
-* **DEPRECATED** the `timing.hoverTargetFormat` setting. Use the `timing.hoverTimestamp` settings instead.
+## 2018-01-22 - v1.2.0
+* **DEPRECATED** the `timing.hoverTargetFormat` setting. Use the `timing.hoverTimestamp.*` settings instead.
 * **Added**
   * Settings:
     * `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format.

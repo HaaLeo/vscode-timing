@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2018-01-22 - v1.2.1
+* **Fixed** links in readme for vscode marketplace.
+
 ## 2018-01-22 - v1.2.0
 * **DEPRECATED** the `timing.hoverTargetFormat` setting. Use the `timing.hoverTimestamp.*` settings instead.
 * **Added**

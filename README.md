@@ -30,22 +30,22 @@ Currently this extension is capable to do the following conversions, where the _
 
 | Source Format| ⟶ | Target Format| Example|
 |:--|:--:|:-- |:--|
-| Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#Simple-Conversion)
+| Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#simple-conversion)
 | Epoch (s, ms, ns) | ⟶ | ISO 8601 Local|
 | Epoch (s, ms, ns) | ⟶ | Custom|
 | Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration|
 | Epoch (s, ms, ns) | ⟶ | Human Readable Duration|
 | ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)|
-| ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#Custom-Formats)
+| ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)
 | - | ⟶ | Now as Epoch (s, ms, ns)|
 | - | ⟶ | Now as ISO 8601 UTC|
-| - | ⟶ | Now as ISO 8601 Local| [Link](#Current-Time)
+| - | ⟶ | Now as ISO 8601 Local| [Link](#current-time)
 | - | ⟶ | Now as Custom|
 | Custom | ⟶ | Epoch (s, ms, ns)|
 | Custom | ⟶ | ISO 8601 Utc|
 | Custom | ⟶ | ISO 8601 Local|
 
-Whether the current selection is [replaced](#Insert-Converted-Time) with the converted time, is indicated by the `timing.insertConvertedTime` setting. When you already [pre-selected](#Pre-selection) a valid epoch time, the extension will directly convert this selection instead of asking for your input.
+Whether the current selection is [replaced](#insert-converted-time) with the converted time, is indicated by the `timing.insertConvertedTime` setting. When you already [pre-selected](#pre-selection) a valid epoch time, the extension will directly convert this selection instead of asking for your input.
 
 When the _epoch time is the **source**_ format of the _timestamp_ conversion its unit is determined by its **digit count**:
 
@@ -61,7 +61,7 @@ When the _epoch time is the **target**_ format of the timestamp conversion you c
 
 When the _epoch time is the **source**_ format of the duration conversion you can select its unit during the conversion process.  
 
-Further the extension shows a [hover preview](#Hover-Preview) of the converted _timestamp_ and _duration_ when the mouse is moved over a valid epoch time.
+Further the extension shows a [hover preview](#hover-preview) of the converted _timestamp_ and _duration_ when the mouse is moved over a valid epoch time.
 
 ## Settings Overview
 
@@ -179,7 +179,7 @@ Example:
 
 When you hover over a number the extension shows you the converted **UTC**, **Local**, or **Custom** timestamp and which **unit** was used for the conversion. The target time is indicated by the `timing.hoverTimestamp.targetFormat` setting. Its default value is `utc`.  Further it also shows the converted duration.  
 
-Both hover provider can be configured via several [settings](#Settings-Overview)
+Both hover provider can be configured via several [settings](#settings-overview)
 
 ![Hover Sample](doc/Hover_Sample.gif)
 

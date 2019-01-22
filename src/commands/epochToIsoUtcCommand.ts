@@ -47,7 +47,7 @@ class EpochToIsoUtcCommand extends CommandBase {
             }
 
             const input = new InputDefinition(rawInput);
-            const result = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
+            const result = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {

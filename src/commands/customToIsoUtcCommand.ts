@@ -41,7 +41,7 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
                 break;
             }
 
-            const result = this._timeConverter.customToIsoUtc(rawInput, customFormat);
+            const result = this._timeConverter.customToISOUtc(rawInput, customFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {

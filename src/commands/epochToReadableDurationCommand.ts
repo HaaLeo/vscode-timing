@@ -45,7 +45,7 @@ class EpochToReadableDurationCommand extends CommandBase {
             }
 
             const input = new InputDefinition(rawInput, epochFormat);
-            const result = this._timeConverter.epochToHumanDuration(input.inputAsMs);
+            const result = this._timeConverter.epochToReadableDuration(input.inputAsMs);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {

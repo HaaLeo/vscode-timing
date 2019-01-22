@@ -20,27 +20,27 @@ class TimeConverter {
         return result;
     }
 
-    public customToIsoUtc(time: string, format: string): string {
+    public customToISOUtc(time: string, format: string): string {
         const result = moment(time, format, true).toISOString(false);
         return result;
     }
 
-    public customToIsoLocal(time: string, format: string): string {
+    public customToISOLocal(time: string, format: string): string {
         const result = moment(time, format, true).toISOString(true);
         return result;
     }
 
-    public epochToIsoUtc(ms: string): string {
+    public epochToISOUtc(ms: string): string {
         const result = moment(ms, 'x').toISOString(false);
         return result;
     }
 
-    public epochToIsoDuration(ms: number): string {
+    public epochToISODuration(ms: number): string {
         const duration = moment.duration(ms).toISOString();
         return duration;
     }
 
-    public epochToHumanDuration(ms: number): string {
+    public epochToReadableDuration(ms: number): string {
         const duration = moment.duration(ms);
 
         let text = '';

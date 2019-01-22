@@ -41,7 +41,7 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
                 break;
             }
 
-            const result = this._timeConverter.customToIsoLocal(rawInput, customFormat);
+            const result = this._timeConverter.customToISOLocal(rawInput, customFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {

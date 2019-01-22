@@ -82,7 +82,7 @@ describe('CustomToIsoUtc', () => {
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.customToIsoUtc('2018', 'YYYY'));
+                timeConverter.customToISOUtc('2018', 'YYYY'));
         });
 
         it('Should start with last step if input flow action is Back.', async () => {

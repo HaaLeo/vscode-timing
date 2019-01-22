@@ -34,24 +34,24 @@ class InputDefinition {
         this._inputAsMs = undefined;
 
         // If unit is given convert number to ms and set original unit
-        if (unit) {
-            this._originalUnit = unit;
-            switch (unit) {
-                case 's':
-                    this._inputAsMs = Number(userInput) * 1000;
-                    break;
-                case 'ms':
-                    this._inputAsMs = Number(userInput);
-                    break;
-                case 'ns':
-                    this._inputAsMs = Number(userInput) / 1000000;
-                    break;
-                default:
-                    throw Error('Unknown format="' + unit + '" was given.');
-            }
-            // If unit is not given, determine it by checking the length
-        } else {
-            if (userInput && !isNaN(Number(userInput))) {
+        if (userInput && !isNaN(Number(userInput))) {
+            if (unit) {
+                this._originalUnit = unit;
+                switch (unit) {
+                    case 's':
+                        this._inputAsMs = Number(userInput) * 1000;
+                        break;
+                    case 'ms':
+                        this._inputAsMs = Number(userInput);
+                        break;
+                    case 'ns':
+                        this._inputAsMs = Number(userInput) / 1000000;
+                        break;
+                    default:
+                        throw Error('Unknown format="' + unit + '" was given.');
+                }
+                // If unit is not given, determine it by checking the length
+            } else if (!isNaN(Number(userInput))) {
                 if (userInput.length <= 11) {
                     this._inputAsMs = Number(userInput) * 1000;
                     this._originalUnit = 's';

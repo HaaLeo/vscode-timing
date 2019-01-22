@@ -40,7 +40,7 @@ describe('TimeHoverProvider', () => {
     });
 
     it('should provide correct utc hover message.', async () => {
-        timeConverterMock.epochToIsoUtc.returns('test-time');
+        timeConverterMock.epochToISOUtc.returns('test-time');
         const config = vscode.workspace.getConfiguration('timing');
         await config.update('hoverTargetFormat', 'utc');
 
@@ -50,8 +50,8 @@ describe('TimeHoverProvider', () => {
             tokenSource.token);
 
         assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
-        assert.equal(timeConverterMock.epochToIsoUtc.callCount, 1);
-        assert.equal(timeConverterMock.epochToIsoUtc.firstCall.args[0], '123456789000');
+        assert.equal(timeConverterMock.epochToISOUtc.callCount, 1);
+        assert.equal(timeConverterMock.epochToISOUtc.firstCall.args[0], '123456789000');
         assert.equal(result.contents.length, 1);
         assert.equal(
             result.contents[0],

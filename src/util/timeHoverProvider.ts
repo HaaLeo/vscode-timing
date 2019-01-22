@@ -42,7 +42,7 @@ class TimeHoverProvider implements vscode.HoverProvider, vscode.Disposable {
                 const prefix = '*Epoch Unit*: `' + input.originalUnit + '`  \n';
 
                 if (this._hoverTargetFormat === 'utc') {
-                    const utc = this._timeConverter.epochToIsoUtc(input.inputAsMs.toString());
+                    const utc = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
                     result = new vscode.Hover(prefix + '*UTC*: `' + utc + '`');
                 } else if (this._hoverTargetFormat === 'local') {
                     const local = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());

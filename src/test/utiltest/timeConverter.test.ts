@@ -309,8 +309,17 @@ describe('TimeConverter', () => {
         });
 
         it('should consist of "d", "h", "min", "s" and "ms".', () => {
+            const input = 123456789;
+            const expected = '1d, 10h, 17min, 36s, 789ms';
+
+            const result = testObject.epochToReadableDuration(input);
+
+            assert.strictEqual(result, expected);
+        });
+
+        it('should consist of "w", "d", "h", "min", "s" and "ms".', () => {
             const input = 12345678900;
-            const expected = '142d, 21h, 21min, 18s, 900ms';
+            const expected = '20w, 2d, 21h, 21min, 18s, 900ms';
 
             const result = testObject.epochToReadableDuration(input);
 

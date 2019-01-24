@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+* **Added** _weeks_ to the readable duration conversion.
+
 ## 2019-01-22 - v1.2.1
 * **Fixed** links in readme for vscode marketplace.
 

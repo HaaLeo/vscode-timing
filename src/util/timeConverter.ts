@@ -45,8 +45,15 @@ class TimeConverter {
 
         let text = '';
 
-        if (duration.asDays() >= 1) {
-            text += Math.floor(duration.asDays()) + 'd';
+        if (text !== '') {
+            text += ', ' + Math.floor(duration.asDays() / 7) + 'w';
+        } else if (Math.floor(duration.asDays() / 7) !== 0) {
+            text += Math.floor(duration.asDays() / 7) + 'w';
+        }
+        if (text !== '') {
+            text += ', ' + Math.floor(duration.asDays() % 7) + 'd';
+        } else if (Math.floor(duration.asDays() % 7) !== 0) {
+            text += Math.floor(duration.asDays() % 7) + 'd';
         }
         if (text !== '') {
             text += ', ' + duration.hours() + 'h';

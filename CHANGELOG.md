@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 2019-01-28 - v1.3.0
 * **Added** _weeks_ to the readable duration conversion.
 * **Added** `timing.isoDurationToEpoch` command to convert an ISO 8601 duration to an epoch timestamp.
 

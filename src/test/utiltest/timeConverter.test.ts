@@ -38,6 +38,36 @@ describe('TimeConverter', () => {
         });
     });
 
+    describe('isoDurationToEpoch', () => {
+        let testObject: TimeConverter;
+
+        beforeEach('Set up test object.', () => {
+            testObject = new TimeConverter();
+        });
+
+        it('Should convert to epoch correctly as s.', () => {
+            const result = testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', 's');
+
+            assert.strictEqual(result, '37080306');
+        });
+
+        it('Should convert to epoch correctly as ms.', () => {
+            const result = testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', 'ms');
+
+            assert.strictEqual(result, '37080306000');
+        });
+
+        it('Should convert to epoch correctly as ns.', () => {
+            const result = testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', 'ns');
+
+            assert.strictEqual(result, '37080306000000000');
+        });
+
+        it('Should throw an error if option is unknown.', () => {
+            assert.throws(() => testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', undefined));
+        });
+    });
+
     describe('isoRfcToEpoch', () => {
         let testObject: TimeConverter;
 
@@ -157,6 +187,21 @@ describe('TimeConverter', () => {
         });
     });
 
+    describe('isValidIsoDuration', () => {
+        let testObject: TimeConverter;
+
+        beforeEach('Set up test object.', () => {
+            testObject = new TimeConverter();
+        });
+
+        it('Should return true if it is a valid ISO duration.', () => {
+            assert.strictEqual(testObject.isValidISODuration('P1Y2M3DT4H5M6S'), true);
+        });
+
+        it('Should return false if it is an invalid ISO duration.', () => {
+            assert.strictEqual(testObject.isValidIsoRfc('123456789'), false);
+        });
+    });
     describe('isValidCustom', () => {
         let testObject: TimeConverter;
 

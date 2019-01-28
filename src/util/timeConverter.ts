@@ -45,9 +45,7 @@ class TimeConverter {
 
         let text = '';
 
-        if (text !== '') {
-            text += ', ' + Math.floor(duration.asDays() / 7) + 'w';
-        } else if (Math.floor(duration.asDays() / 7) !== 0) {
+        if (Math.floor(duration.asDays() / 7) !== 0) {
             text += Math.floor(duration.asDays() / 7) + 'w';
         }
         if (text !== '') {

@@ -8,7 +8,7 @@
 'use strict';
 
 import * as moment from 'moment';
-
+import { Constants } from '../util/constants';
 class TimeConverter {
     public isoRfcToCustom(date: string, targetFormat: string): any {
         const result = moment(date).format(targetFormat);
@@ -66,14 +66,14 @@ class TimeConverter {
             text += duration.minutes() + 'min';
         }
         if (text !== '') {
-            text += ', ' + duration.seconds() + 's';
+            text += ', ' + duration.seconds() + Constants.SECONDS;
         } else if (duration.seconds() !== 0) {
-            text += duration.seconds() + 's';
+            text += duration.seconds() + Constants.SECONDS;
         }
         if (text !== '') {
-            text += ', ' + duration.milliseconds() + 'ms';
+            text += ', ' + duration.milliseconds() + Constants.MILLISECONDS;
         } else {
-            text += duration.milliseconds() + 'ms';
+            text += duration.milliseconds() + Constants.MILLISECONDS;
         }
 
         return text;
@@ -83,20 +83,38 @@ class TimeConverter {
         return result;
     }
 
-    public isoRfcToEpoch(date: string, targetFormat: string): string {
+    public isoDurationToEpoch(duration: string, targetUnit: string): string {
         let result: number;
-        switch (targetFormat) {
-            case 's':
+        switch (targetUnit) {
+            case Constants.SECONDS:
+                result = moment.duration(duration).asSeconds();
+                break;
+            case Constants.MILLISECONDS:
+                result = moment.duration(duration).asMilliseconds();
+                break;
+            case Constants.NANOSECONDS:
+                result = moment.duration(duration).asMilliseconds() * 1000000;
+                break;
+            default:
+                throw new Error('Unknown option="' + targetUnit + '" detected.');
+        }
+        return result.toString();
+
+    }
+    public isoRfcToEpoch(date: string, targetUnit: string): string {
+        let result: number;
+        switch (targetUnit) {
+            case Constants.SECONDS:
                 result = moment(date).unix();
                 break;
-            case 'ms':
+            case Constants.MILLISECONDS:
                 result = moment(date).valueOf();
                 break;
-            case 'ns':
+            case Constants.NANOSECONDS:
                 result = moment(date).valueOf() * 1000000;
                 break;
             default:
-                throw new Error('Unknown option="' + targetFormat + '" detected.');
+                throw new Error('Unknown option="' + targetUnit + '" detected.');
         }
         return result.toString();
     }
@@ -104,13 +122,13 @@ class TimeConverter {
     public customToEpoch(time: string, customFormat: string, epochFormat: string): string {
         let result: number;
         switch (epochFormat) {
-            case 's':
+            case Constants.SECONDS:
                 result = moment(time, customFormat, true).unix();
                 break;
-            case 'ms':
+            case Constants.MILLISECONDS:
                 result = moment(time, customFormat, true).valueOf();
                 break;
-            case 'ns':
+            case Constants.NANOSECONDS:
                 result = moment(time, customFormat, true).valueOf() * 1000000;
                 break;
             default:
@@ -120,9 +138,17 @@ class TimeConverter {
     }
 
     public isValidEpoch(epoch: string): boolean {
-        let result: boolean = false;
+        let result = false;
         if (epoch) {
             result = moment(Number(epoch)).isValid();
+        }
+        return result;
+    }
+
+    public isValidISODuration(duration: string): boolean {
+        let result = false;
+        if (duration) {
+            result = moment.duration(duration).isValid();
         }
         return result;
     }
@@ -150,20 +176,20 @@ class TimeConverter {
         return result;
     }
 
-    public getNowAsEpoch(targetFormat: string): string {
+    public getNowAsEpoch(targetUnit: string): string {
         let result: number;
-        switch (targetFormat) {
-            case 's':
+        switch (targetUnit) {
+            case Constants.SECONDS:
                 result = moment().unix();
                 break;
-            case 'ms':
+            case Constants.MILLISECONDS:
                 result = moment().valueOf();
                 break;
-            case 'ns':
+            case Constants.NANOSECONDS:
                 result = moment().valueOf() * 1000000;
                 break;
             default:
-                throw new Error('Unknown option="' + targetFormat + '" detected.');
+                throw new Error('Unknown option="' + targetUnit + '" detected.');
         }
         return result.toString();
     }

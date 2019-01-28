@@ -7,6 +7,8 @@
 
 'use strict';
 
+import { Constants } from './constants';
+
 class InputDefinition {
     private _inputAsMs: number;
     private _originalUnit: string;
@@ -38,13 +40,13 @@ class InputDefinition {
             if (unit) {
                 this._originalUnit = unit;
                 switch (unit) {
-                    case 's':
+                    case Constants.SECONDS:
                         this._inputAsMs = Number(userInput) * 1000;
                         break;
-                    case 'ms':
+                    case Constants.MILLISECONDS:
                         this._inputAsMs = Number(userInput);
                         break;
-                    case 'ns':
+                    case Constants.NANOSECONDS:
                         this._inputAsMs = Number(userInput) / 1000000;
                         break;
                     default:
@@ -54,13 +56,13 @@ class InputDefinition {
             } else if (!isNaN(Number(userInput))) {
                 if (userInput.length <= 11) {
                     this._inputAsMs = Number(userInput) * 1000;
-                    this._originalUnit = 's';
+                    this._originalUnit = Constants.SECONDS;
                 } else if (userInput.length <= 14) {
                     this._inputAsMs = Number(userInput);
-                    this._originalUnit = 'ms';
+                    this._originalUnit = Constants.MILLISECONDS;
                 } else if (userInput.length <= 21) {
                     this._inputAsMs = Number(userInput) / 1000000;
-                    this._originalUnit = 'ns';
+                    this._originalUnit = Constants.NANOSECONDS;
                 } else {
                     throw Error('Unknown format: number with ' + userInput.length + ' digits.');
                 }

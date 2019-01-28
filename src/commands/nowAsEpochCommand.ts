@@ -7,10 +7,10 @@
 
 'use strict';
 
-import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
@@ -61,20 +61,7 @@ class NowAsEpochCommand extends CustomCommandBase {
         const getEpochTargetFormat = new QuickPickStep(
             'Select epoch target format',
             this.title,
-            [
-                {
-                    label: 's',
-                    detail: 'seconds'
-                },
-                {
-                    label: 'ms',
-                    detail: 'milliseconds'
-                },
-                {
-                    label: 'ns',
-                    detail: 'nanoseconds'
-                }
-            ],
+            Constants.EPOCHUNITS,
             undefined,
             undefined,
             undefined,

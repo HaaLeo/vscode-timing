@@ -12,13 +12,15 @@ import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { Constants } from '../util/constants';
-import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
 
-class EpochToReadableDurationCommand extends CommandBase {
+/**
+ * Command to convert ISO 8601 duration to epoch time.
+ */
+class IsoDurationToEpochCommand extends CommandBase {
 
-    private readonly title: string = 'Epoch → Readable Duration';
+    private readonly title: string = 'ISO 8601 Duration → Epoch';
 
     /**
      * Execute the command.
@@ -29,33 +31,32 @@ class EpochToReadableDurationCommand extends CommandBase {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let epochFormat: string;
+            let epochTargetUnit: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+                [rawInput, epochTargetUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+                [rawInput, epochTargetUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
                 break;
             }
 
-            const input = new InputDefinition(rawInput, epochFormat);
-            const result = this._timeConverter.epochToReadableDuration(input.inputAsMs);
+            const result = this._timeConverter.isoDurationToEpoch(rawInput, epochTargetUnit);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const titlePostfix = inserted ? ': Inserted Result' : ': Result';
+            const titlePostfix = (inserted ? ': Inserted Result' : ': Result') + ' (' + epochTargetUnit + ')';
 
             loopResult = await this._resultBox.show(
-                'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
+                'Input: ' + rawInput,
                 this.title + titlePostfix,
                 result,
                 this.insert,
@@ -68,26 +69,27 @@ class EpochToReadableDurationCommand extends CommandBase {
      * Initialize all members.
      */
     private initialize(): void {
-        const getEpochTimeStep = new InputBoxStep(
-            '123456789',
-            'Insert the epoch time.',
+        const getIsoDuration = new InputBoxStep(
+            'P1Y2M3DT4H5M6S',
+            'Insert a ISO 8601 duration.',
             this.title,
-            'Ensure the epoch time is valid.',
-            this._timeConverter.isValidEpoch,
+            'Ensure the duration is valid.',
+            this._timeConverter.isValidISODuration,
             true);
-        const getEpochSourceFormat = new QuickPickStep(
-            'Select epoch source unit',
+
+        const getEpochTargetUnit = new QuickPickStep(
+            'Select epoch target unit',
             this.title,
             Constants.EPOCHUNITS,
             undefined,
             undefined,
             undefined,
-            false); // Does not use custom formats.
+            false);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTimeStep);
-        this._stepHandler.registerStep(getEpochSourceFormat);
+        this._stepHandler.registerStep(getIsoDuration);
+        this._stepHandler.registerStep(getEpochTargetUnit);
     }
 }
 
-export { EpochToReadableDurationCommand };
+export { IsoDurationToEpochCommand };

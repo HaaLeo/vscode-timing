@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { Constants } from '../util/constants';
 import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
@@ -77,20 +78,7 @@ class EpochToISODurationCommand extends CommandBase {
         const getEpochSourceFormat = new QuickPickStep(
             'Select epoch source unit',
             this.title,
-            [
-                {
-                    label: 's',
-                    detail: 'seconds'
-                },
-                {
-                    label: 'ms',
-                    detail: 'milliseconds'
-                },
-                {
-                    label: 'ns',
-                    detail: 'nanoseconds'
-                }
-            ],
+            Constants.EPOCHUNITS,
             undefined,
             undefined,
             undefined,

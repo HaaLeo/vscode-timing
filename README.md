@@ -35,6 +35,7 @@ Currently this extension is capable to do the following conversions, where the _
 | Epoch (s, ms, ns) | ⟶ | Custom|
 | Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration|
 | Epoch (s, ms, ns) | ⟶ | Human Readable Duration|
+| ISO 8601 Duration | ⟶ | Epoch (s, ms, ns)|
 | ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)|
 | ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)
 | - | ⟶ | Now as Epoch (s, ms, ns)|
@@ -84,20 +85,21 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 
 To view all commands, open the _command palette_ and type _Timing_.
 * `timing.customToEpoch`: Custom ⟶ Epoch
-* `timing.customToIsoUtc`: Custom ⟶ ISO 8601 UTC
 * `timing.customToIsoLocal`: Custom ⟶ ISO 8601 Local
-* `timing.epochToIsoUtc`: Epoch ⟶ ISO 8601 UTC
-* `timing.epochToIsoLocal`: Epoch ⟶ ISO 8601 Local
+* `timing.customToIsoUtc`: Custom ⟶ ISO 8601 UTC
 * `timing.epochToCustom`: Epoch ⟶ Custom
-* `timing.isoRfcToEpoch`: ISO 8601 / RFC 2822 ⟶ Epoch
+* `timing.epochToIsoDuration`: Epoch ⟶ ISO 8601 Duration
+* `timing.epochToIsoLocal`: Epoch ⟶ ISO 8601 Local
+* `timing.epochToIsoUtc`: Epoch ⟶ ISO 8601 UTC
+* `timing.epochToReadableDuration`: Epoch ⟶ Readable Duration
+* `timing.isoDurationToEpoch`: ISO 8601 Duration ⟶ Epoch
 * `timing.isoRfcToCustom`: ISO 8601 / RFC 2822 ⟶ Custom
+* `timing.isoRfcToEpoch`: ISO 8601 / RFC 2822 ⟶ Epoch
 * `timing.nowAsCustom`: Now ⟶ Custom
 * `timing.nowAsEpoch`: Now ⟶ Epoch
 * `timing.nowAsIsoLocal`: Now ⟶ Epoch
 * `timing.nowAsIsoUtc`: Now ⟶ Epoch
 * `timing.toggleInsertConvertedTimeUserLevel`: toggle the `timing.insertConvertedTime` user setting
-* `timing.epochToIsoDuration`: Epoch ⟶ ISO 8601 Duration
-* `timing.epochToReadableDuration`: Epoch ⟶ Readable Duration
 
 ## Keyboard Shortcuts
 

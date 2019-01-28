@@ -3,6 +3,7 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 * **Added** _weeks_ to the readable duration conversion.
+* **Added** `timing.isoDurationToEpoch` command to convert an ISO 8601 duration to an epoch timestamp.
 
 ## 2019-01-22 - v1.2.1
 * **Fixed** links in readme for vscode marketplace.

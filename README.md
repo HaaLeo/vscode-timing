@@ -189,7 +189,10 @@ Both hover provider can be configured via several [settings](#settings-overview)
 
 ### Insert Converted Time
 
-You can add the setting `"timing.insertConvertedTime": true` in order to automatically replace the cursor's selection with the converted time. To enable that behavior there exists the command `timing.toggleInsertConvertedTimeUserLevel` to toggle this setting (on User Level).  
-Alternatively, you can press the pencil button in the top right corner.
+You can add the setting `"timing.insertConvertedTime": true` in order to automatically replace the cursor's selection with the converted time. When `timing.insertConvertedTime` is set to `true`, no result view will be shown. To enable that behavior there exists the command `timing.toggleInsertConvertedTimeUserLevel` to toggle this setting (on User Level).  
+Alternatively, you can press the pencil button in the top right corner of the result view.
 
-![Insert Sample](doc/Insert_Sample.gif)
+* `"timing.insertConvertedTime": true`  
+  ![Insert Sample 1](doc/Insert_Sample1.gif)
+* `"timing.insertConvertedTime": false`  
+  ![Insert Sample 2](doc/Insert_Sample2.gif)

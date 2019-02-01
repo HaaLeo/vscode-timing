@@ -71,7 +71,7 @@ describe('NowAsIsoUtcCommand', () => {
 
             await testObject.execute();
 
-            assert.strictEqual(showResultStub.calledOnce, true);
+            assert.strictEqual(showResultStub.notCalled, true);
             assert.strictEqual(spy.calledOnce, true);
 
             // Restore

@@ -106,7 +106,7 @@ describe('CustomToCustomCommand', () => {
 
             assert.strictEqual(handlerMock.run.calledOnce, true);
             assert.strictEqual(handlerMock.registerStep.calledThrice, true);
-            assert.strictEqual(showResultStub.calledOnce, true);
+            assert.strictEqual(showResultStub.notCalled, true);
             assert.strictEqual(spy.calledOnce, true);
 
             // Restore

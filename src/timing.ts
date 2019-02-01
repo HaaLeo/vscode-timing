@@ -9,6 +9,7 @@
 
 import * as vscode from 'vscode';
 
+import { CustomToCustomCommand } from './commands/customToCustomCommand';
 import { CustomToEpochCommand } from './commands/customToEpochCommand';
 import { CustomToIsoLocalCommand } from './commands/customToIsoLocalCommand';
 import { CustomToIsoUtcCommand } from './commands/customToIsoUtcCommand';
@@ -36,6 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
     const timeConverter = new TimeConverter();
 
     // Create commands
+    const customToCustomCommand = new CustomToCustomCommand(context, timeConverter);
     const customToEpochCommand = new CustomToEpochCommand(context, timeConverter);
     const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter);
     const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter);
@@ -60,6 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         // Register Commands
+        customToCustomCommand, vscode.commands.registerCommand('timing.customToCustom', customToCustomCommand.execute, customToCustomCommand),
         customToEpochCommand, vscode.commands.registerCommand('timing.customToEpoch', customToEpochCommand.execute, customToEpochCommand),
         customToIsoLocalCommand, vscode.commands.registerCommand('timing.customToIsoLocal', customToIsoLocalCommand.execute, customToIsoLocalCommand),
         customToIsoUtcCommand, vscode.commands.registerCommand('timing.customToIsoUtc', customToIsoUtcCommand.execute, customToIsoUtcCommand),

@@ -11,7 +11,6 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
-import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
@@ -93,7 +92,7 @@ class CustomToCustomCommand extends CustomCommandBase {
             this._timeConverter.isValidCustom,
             true);
         const getCustomTargetFormatStep = new QuickPickStep(
-            'Select custom source format.',
+            'Select custom target format.',
             this.title,
             this._customTimeFormatOptions,
             { label: 'Other Format...' },

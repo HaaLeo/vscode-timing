@@ -102,6 +102,11 @@
                 "title": "Now ⟶ Custom"
             },
             {
+                "command": "timing.customToCustom",
+                "category": "Timing",
+                "title": "Custom ⟶ Custom"
+            },
+            {
                 "command": "timing.customToEpoch",
                 "category": "Timing",
                 "title": "Custom ⟶ Epoch"
@@ -243,7 +248,7 @@
     },
     "devDependencies": {
         "@types/mocha": "^5.2.5",
-        "@types/node": "^10.12.18",
+        "@types/node": "^10.12.21",
         "@types/sinon": "^7.0.5",
         "codecov": "^3.1.0",
         "decache": "^4.5.1",
@@ -252,8 +257,8 @@
         "remap-istanbul": "^0.13.0",
         "sinon": "^7.2.3",
         "tslint": "^5.12.1",
-        "typescript": "^3.2.4",
-        "vsce": "^1.54.0",
+        "typescript": "^3.3.1",
+        "vsce": "^1.55.0",
         "vscode": "^1.1.28"
     },
     "dependencies": {

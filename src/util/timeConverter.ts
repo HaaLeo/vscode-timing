@@ -30,6 +30,10 @@ class TimeConverter {
         return result;
     }
 
+    public customToCustom(time: string, sourceFormat: string, targetFormat: string): any {
+        throw new Error('Method not implemented.');
+    }
+
     public epochToISOUtc(ms: string): string {
         const result = moment(ms, 'x').toISOString(false);
         return result;

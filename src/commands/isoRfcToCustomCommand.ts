@@ -51,14 +51,17 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const titlePostfix = inserted ? ': Inserted Result' : ': Result';
+            if (!inserted) {
+                loopResult = await this._resultBox.show(
+                    'Input: ' + rawInput,
+                    this.title + ': Result',
+                    result,
+                    this.insert,
+                    this._ignoreFocusOut);
+            } else {
+                loopResult = new StepResult(InputFlowAction.Cancel, undefined);
+            }
 
-            loopResult = await this._resultBox.show(
-                'Input: ' + rawInput,
-                this.title + titlePostfix,
-                result,
-                this.insert,
-                this._ignoreFocusOut);
         } while (loopResult.action === InputFlowAction.Back
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }

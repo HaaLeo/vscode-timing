@@ -24,15 +24,19 @@ class NowAsIsoUtcCommand extends CustomCommandBase {
             if (this._insertConvertedTime) {
                 inserted = await this.insert(result);
             }
-            const titlePostfix = inserted ? ': Inserted Result' : ': Result';
 
-            loopResult = await this._resultBox.show(
-                '',
-                this.title + titlePostfix,
-                result,
-                this.insert,
-                this._ignoreFocusOut,
-                false);
+            if (!inserted) {
+                loopResult = await this._resultBox.show(
+                    '',
+                    this.title + ': Result',
+                    result,
+                    this.insert,
+                    this._ignoreFocusOut,
+                    false);
+            } else {
+                loopResult = new StepResult(InputFlowAction.Cancel, undefined);
+            }
+
         } while (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue);
     }
 }

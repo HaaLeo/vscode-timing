@@ -18,7 +18,7 @@ class CustomToCustomCommand extends CustomCommandBase {
 
     private readonly title: string = 'Custom → Custom';
 
-    public async execute() {
+    public async execute(options?: string[]) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
@@ -27,7 +27,7 @@ class CustomToCustomCommand extends CustomCommandBase {
             let customTargetFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(options);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
@@ -64,7 +64,7 @@ class CustomToCustomCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(): void {
+    private initialize(options): void {
         const alternativeCustomFormatStep1 = new InputBoxStep(
             'E.g.: YYYY/MM/DD',
             'Insert custom format',

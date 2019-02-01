@@ -48,11 +48,19 @@ class MultiStepHandler implements Disposable {
 
     /**
      * Registers a given step if it was not registered before.
-     * @param {IStep} step The step to register
+     * @param {IStep} step The step to register.
      * @param {number} index zero based index indicating at which position the step is registered.
+     * @param {string} stepResult predefined result of the step. If set, the `step` will be skipped.
      */
-    public registerStep(step: IStep, index?: number, skipIfUserSelectionValid: boolean = false): void {
-        if (this._steps.indexOf(step, 0) === -1) {
+    public registerStep(step: IStep, index?: number, stepResult?: string): void {
+
+        if (stepResult) {
+            if (index === 0 || index) {
+                this._stepResults.splice(index, 0, stepResult);
+            } else {
+                this._stepResults.push(stepResult);
+            }
+        } else if (this._steps.indexOf(step, 0) === -1) {
             if (index === 0 || index) {
                 this._steps.splice(index, 0, step);
             } else {

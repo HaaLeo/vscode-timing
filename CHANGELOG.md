@@ -3,6 +3,7 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 * **Added** `timing.customToCustom` command to convert a custom time to another custom format.
+* **Changed** behavior of the result view: The result view is only shown when the converted time was _not inserted_ automatically
 
 ## 2019-01-28 - v1.3.0
 * **Added** _weeks_ to the readable duration conversion.

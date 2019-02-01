@@ -146,6 +146,14 @@ describe('TimeConverter', () => {
         });
     });
 
+    describe('customToCustom', () => {
+        it('Should convert to custom format correctly.', () => {
+            const testObject = new TimeConverter();
+            const result = testObject.customToCustom('2018-05-13', 'YYYY-MM-DD', 'DD/MM/YYYY');
+            assert.strictEqual(result, '13/05/2018');
+        });
+    });
+
     describe('customToISOUtc', () => {
         it('Should convert to ISO UTC correctly.', () => {
             const testObject = new TimeConverter();

@@ -42,6 +42,7 @@ Currently this extension is capable to do the following conversions, where the _
 | - | ⟶ | Now as ISO 8601 UTC|
 | - | ⟶ | Now as ISO 8601 Local| [Link](#current-time)
 | - | ⟶ | Now as Custom|
+| Custom | ⟶ | Custom|
 | Custom | ⟶ | Epoch (s, ms, ns)|
 | Custom | ⟶ | ISO 8601 Utc|
 | Custom | ⟶ | ISO 8601 Local|
@@ -84,6 +85,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 ## Command Overview
 
 To view all commands, open the _command palette_ and type _Timing_.
+* `timing.customToCustom`: Custom ⟶ Custom
 * `timing.customToEpoch`: Custom ⟶ Epoch
 * `timing.customToIsoLocal`: Custom ⟶ ISO 8601 Local
 * `timing.customToIsoUtc`: Custom ⟶ ISO 8601 UTC

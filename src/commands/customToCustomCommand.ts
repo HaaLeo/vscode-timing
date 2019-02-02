@@ -108,9 +108,9 @@ class CustomToCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep2);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomSourceFormatStep, 0, undefined);
+        this._stepHandler.registerStep(getCustomSourceFormatStep, 0, sourceFormat);
         this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
-        this._stepHandler.registerStep(getCustomTargetFormatStep, 2, 'YYYY-MM-DD');
+        this._stepHandler.registerStep(getCustomTargetFormatStep, 2, targetFormat);
     }
 }
 

@@ -94,8 +94,8 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getIsoRfcTimeStep);
-        this._stepHandler.registerStep(getCustomFormatStep);
+        this._stepHandler.registerStep(getIsoRfcTimeStep, 0);
+        this._stepHandler.registerStep(getCustomFormatStep, 1);
     }
 }
 

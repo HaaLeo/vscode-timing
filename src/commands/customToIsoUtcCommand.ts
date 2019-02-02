@@ -88,8 +88,8 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
             true);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomFormatStep);
-        this._stepHandler.registerStep(getTimeOfCustomFormat);
+        this._stepHandler.registerStep(getCustomFormatStep, 0);
+        this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
     }
 }
 

@@ -97,8 +97,8 @@ class EpochToCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTimeStep);
-        this._stepHandler.registerStep(getCustomFormatStep);
+        this._stepHandler.registerStep(getEpochTimeStep, 0);
+        this._stepHandler.registerStep(getCustomFormatStep, 1);
     }
 }
 

@@ -91,8 +91,8 @@ class IsoDurationToEpochCommand extends CommandBase {
             false);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getIsoDuration);
-        this._stepHandler.registerStep(getEpochTargetUnit);
+        this._stepHandler.registerStep(getIsoDuration, 0);
+        this._stepHandler.registerStep(getEpochTargetUnit, 1);
     }
 }
 

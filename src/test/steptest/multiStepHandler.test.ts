@@ -48,8 +48,8 @@ describe('MultiStepHandler', () => {
 
     describe('registerStep', () => {
         it('should register steps properly.', async () => {
-            testObject.registerStep(firstStepStub);
-            testObject.registerStep(secondStepStub);
+            testObject.registerStep(firstStepStub, 0);
+            testObject.registerStep(secondStepStub, 1);
             const result = await testObject.run(true, '');
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'first-result');
@@ -69,8 +69,8 @@ describe('MultiStepHandler', () => {
 
     describe('unregisterStep', () => {
         it('should unregister first step.', async () => {
-            testObject.registerStep(firstStepStub);
-            testObject.registerStep(secondStepStub);
+            testObject.registerStep(firstStepStub, 0);
+            testObject.registerStep(secondStepStub, 1);
             testObject.unregisterStep(firstStepStub);
             const result = await testObject.run(true, '');
 
@@ -81,8 +81,8 @@ describe('MultiStepHandler', () => {
 
     describe('run', () => {
         beforeEach(() => {
-            testObject.registerStep(firstStepStub);
-            testObject.registerStep(secondStepStub);
+            testObject.registerStep(firstStepStub, 0);
+            testObject.registerStep(secondStepStub, 1);
         });
 
         it('should execute all steps and return results', async () => {
@@ -125,7 +125,7 @@ describe('MultiStepHandler', () => {
             firstStepStub.execute.returns(
                 new Promise((resolve) => resolve(new StepResult(InputFlowAction.Continue, 'first-result'))));
             testObject = new MultiStepHandler();
-            testObject.registerStep(firstStepStub);
+            testObject.registerStep(firstStepStub, 0);
 
             const result = await testObject.run(true, 'test-selection');
 
@@ -173,8 +173,8 @@ describe('MultiStepHandler', () => {
 
     describe('dispose', () => {
         it('should dispose all steps.', () => {
-            testObject.registerStep(firstStepStub);
-            testObject.registerStep(secondStepStub);
+            testObject.registerStep(firstStepStub, 0);
+            testObject.registerStep(secondStepStub, 1);
 
             testObject.dispose();
 

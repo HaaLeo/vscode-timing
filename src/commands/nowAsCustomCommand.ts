@@ -79,7 +79,7 @@ class NowAsCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomFormatStep);
+        this._stepHandler.registerStep(getCustomFormatStep, 0);
     }
 }
 

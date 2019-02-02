@@ -89,8 +89,8 @@ class EpochToISODurationCommand extends CommandBase {
             false); // Does not use custom formats.
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTimeStep);
-        this._stepHandler.registerStep(getEpochSourceFormat);
+        this._stepHandler.registerStep(getEpochTimeStep, 0);
+        this._stepHandler.registerStep(getEpochSourceFormat, 1);
     }
 }
 

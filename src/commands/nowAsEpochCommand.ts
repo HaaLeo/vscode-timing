@@ -72,7 +72,7 @@ class NowAsEpochCommand extends CustomCommandBase {
             false);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTargetFormat);
+        this._stepHandler.registerStep(getEpochTargetFormat, 0);
     }
 }
 

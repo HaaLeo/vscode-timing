@@ -19,31 +19,36 @@ class CustomToEpochCommand extends CustomCommandBase {
 
     private readonly title: string = 'Custom → Epoch';
 
-    public async execute() {
+    /**
+     * Execute the command.
+     * @param sourceFormat Pre defined custom source format. If set, it will be used instead of the corresponding step.
+     * @param targetUnit Pre defined custom target unit. If set, it will be used instead of the corresponding step.
+     */
+    public async execute(sourceFormat?: string, targetUnit?: string) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let customFormat: string;
-            let epochTargetFormat: string;
+            let selectedCustomFormat: string;
+            let selectedEpochTargetFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(sourceFormat, targetUnit);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [customFormat, rawInput, epochTargetFormat] =
+                [selectedCustomFormat, rawInput, selectedEpochTargetFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [customFormat, rawInput, epochTargetFormat] =
+                [selectedCustomFormat, rawInput, selectedEpochTargetFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
-            if (!rawInput || !customFormat || !epochTargetFormat) {
+            if (!rawInput || !selectedCustomFormat || !selectedEpochTargetFormat) {
                 break;
             }
 
-            const result = this._timeConverter.customToEpoch(rawInput, customFormat, epochTargetFormat);
+            const result = this._timeConverter.customToEpoch(rawInput, selectedCustomFormat, selectedEpochTargetFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -52,8 +57,8 @@ class CustomToEpochCommand extends CustomCommandBase {
 
             if (!inserted) {
                 loopResult = await this._resultBox.show(
-                    'Input: ' + rawInput + ' (Format: ' + customFormat + ')',
-                    this.title + ': Result (' + epochTargetFormat + ')',
+                    'Input: ' + rawInput + ' (Format: ' + selectedCustomFormat + ')',
+                    this.title + ': Result (' + selectedEpochTargetFormat + ')',
                     result,
                     this.insert,
                     this._ignoreFocusOut);
@@ -65,7 +70,7 @@ class CustomToEpochCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(): void {
+    private initialize(sourceFormat: string, targetUnit: string): void {
         const alternativeCustomFormatStep = new InputBoxStep(
             'E.g.: YYYY/MM/DD',
             'Insert custom format',
@@ -98,9 +103,9 @@ class CustomToEpochCommand extends CustomCommandBase {
             false); // Does not use custom formats.
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomFormatStep, 0);
+        this._stepHandler.registerStep(getCustomFormatStep, 0, sourceFormat);
         this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
-        this._stepHandler.registerStep(getEpochTargetFormat, 2);
+        this._stepHandler.registerStep(getEpochTargetFormat, 2, targetUnit);
     }
 }
 

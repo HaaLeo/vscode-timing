@@ -22,30 +22,31 @@ class EpochToReadableDurationCommand extends CommandBase {
 
     /**
      * Execute the command.
+     * @param sourceUnit Pre defined epoch source unit. If set, it will be used instead of the corresponding step.
      */
-    public async execute() {
+    public async execute(sourceUnit?: string) {
 
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let epochFormat: string;
+            let selectedUnit: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(sourceUnit);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
                 break;
             }
 
-            const input = new InputDefinition(rawInput, epochFormat);
+            const input = new InputDefinition(rawInput, selectedUnit);
             const result = this._timeConverter.epochToReadableDuration(input.inputAsMs);
 
             let inserted: boolean = false;
@@ -71,7 +72,7 @@ class EpochToReadableDurationCommand extends CommandBase {
     /**
      * Initialize all members.
      */
-    private initialize(): void {
+    private initialize(sourceUnit: string): void {
         const getEpochTimeStep = new InputBoxStep(
             '123456789',
             'Insert the epoch time.',
@@ -90,7 +91,7 @@ class EpochToReadableDurationCommand extends CommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep, 0);
-        this._stepHandler.registerStep(getEpochSourceFormat, 1);
+        this._stepHandler.registerStep(getEpochSourceFormat, 1, sourceUnit);
     }
 }
 

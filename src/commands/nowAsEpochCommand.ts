@@ -18,13 +18,17 @@ class NowAsEpochCommand extends CustomCommandBase {
 
     private readonly title: string = 'Now → Epoch';
 
-    public async execute() {
+    /**
+     * Execute the command.
+     * @param targetUnit Pre defined epoch target unit. If set, it will be used instead of the corresponding step.
+     */
+    public async execute(targetUnit?: string) {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
         do {
             let epochTargetFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(targetUnit);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
@@ -52,7 +56,8 @@ class NowAsEpochCommand extends CustomCommandBase {
                     this.title + ': Result',
                     result,
                     this.insert,
-                    this._ignoreFocusOut);
+                    this._ignoreFocusOut,
+                    targetUnit ? false : true);
             } else {
                 loopResult = new StepResult(InputFlowAction.Cancel, undefined);
             }
@@ -61,7 +66,7 @@ class NowAsEpochCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(): void {
+    private initialize(targetUnit: string): void {
         const getEpochTargetFormat = new QuickPickStep(
             'Select epoch target format',
             this.title,
@@ -72,7 +77,7 @@ class NowAsEpochCommand extends CustomCommandBase {
             false);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTargetFormat, 0);
+        this._stepHandler.registerStep(getEpochTargetFormat, 0, targetUnit);
     }
 }
 

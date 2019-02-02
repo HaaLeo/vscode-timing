@@ -21,31 +21,32 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
 
     /**
      * Execute the command.
+     * @param targetFormat Pre defined custom target format. If set, it will be used instead of the corresponding step.
      */
-    public async execute() {
+    public async execute(targetFormat?: string) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let customFormat: string;
+            let selectedFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(targetFormat);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, customFormat] =
+                [rawInput, selectedFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput, customFormat] =
+                [rawInput, selectedFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
-            if (!rawInput || !customFormat) {
+            if (!rawInput || !selectedFormat) {
                 break;
             }
 
-            const result = this._timeConverter.isoRfcToCustom(rawInput, customFormat);
+            const result = this._timeConverter.isoRfcToCustom(rawInput, selectedFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -69,7 +70,7 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
     /**
      * Initialize all members.
      */
-    private initialize(): void {
+    private initialize(targetFormat: string): void {
         const getIsoRfcTimeStep = new InputBoxStep(
             '1970-01-01T00:00:00.000Z',
             'Insert a ISO 8601 or RFC 2282 time.',
@@ -95,7 +96,7 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getIsoRfcTimeStep, 0);
-        this._stepHandler.registerStep(getCustomFormatStep, 1);
+        this._stepHandler.registerStep(getCustomFormatStep, 1, targetFormat);
     }
 }
 

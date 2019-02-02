@@ -24,30 +24,31 @@ class IsoDurationToEpochCommand extends CommandBase {
 
     /**
      * Execute the command.
+     * @param targetUnit Pre defined epoch target unit. If set, it will be used instead of the corresponding step.
      */
-    public async execute() {
+    public async execute(targetUnit?: string) {
 
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let epochTargetUnit: string;
+            let selectedUnit: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(targetUnit);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, epochTargetUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput, epochTargetUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
                 break;
             }
 
-            const result = this._timeConverter.isoDurationToEpoch(rawInput, epochTargetUnit);
+            const result = this._timeConverter.isoDurationToEpoch(rawInput, selectedUnit);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -57,7 +58,7 @@ class IsoDurationToEpochCommand extends CommandBase {
             if (!inserted) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput,
-                    this.title + ': Result (' + epochTargetUnit + ')',
+                    this.title + ': Result (' + selectedUnit + ')',
                     result,
                     this.insert,
                     this._ignoreFocusOut);
@@ -72,7 +73,7 @@ class IsoDurationToEpochCommand extends CommandBase {
     /**
      * Initialize all members.
      */
-    private initialize(): void {
+    private initialize(targetUnit: string): void {
         const getIsoDuration = new InputBoxStep(
             'P1Y2M3DT4H5M6S',
             'Insert a ISO 8601 duration.',
@@ -92,7 +93,7 @@ class IsoDurationToEpochCommand extends CommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getIsoDuration, 0);
-        this._stepHandler.registerStep(getEpochTargetUnit, 1);
+        this._stepHandler.registerStep(getEpochTargetUnit, 1, targetUnit);
     }
 }
 

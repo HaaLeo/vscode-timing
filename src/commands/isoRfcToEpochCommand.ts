@@ -24,8 +24,9 @@ class IsoRfcToEpochCommand extends CommandBase {
 
     /**
      * Execute the command.
+     * @param targetUnit Pre defined epoch target unit. If set, it will be used instead of the corresponding step.
      */
-    public async execute() {
+    public async execute(targetUnit?: string) {
 
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
@@ -34,7 +35,7 @@ class IsoRfcToEpochCommand extends CommandBase {
             let epochTargetFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(targetUnit);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
@@ -72,7 +73,7 @@ class IsoRfcToEpochCommand extends CommandBase {
     /**
      * Initialize all members.
      */
-    private initialize(): void {
+    private initialize(targetUnit: string): void {
         const getIsoRfcTimeStep = new InputBoxStep(
             '1970-01-01T00:00:00.000Z',
             'Insert a ISO 8601 or RFC 2282 time.',
@@ -92,7 +93,7 @@ class IsoRfcToEpochCommand extends CommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getIsoRfcTimeStep, 0);
-        this._stepHandler.registerStep(getEpochTargetFormat, 1);
+        this._stepHandler.registerStep(getEpochTargetFormat, 1, targetUnit);
     }
 }
 

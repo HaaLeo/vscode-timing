@@ -18,30 +18,34 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
 
     private readonly title: string = 'Custom → ISO 8601 UTC';
 
-    public async execute() {
+    /**
+     * Execute the command.
+     * @param sourceFormat Pre defined custom source format. If set, it will be used instead of the corresponding step.
+     */
+    public async execute(sourceFormat?: string) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let customFormat: string;
+            let selectedFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize();
+                this.initialize(sourceFormat);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [customFormat, rawInput] =
+                [selectedFormat, rawInput] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [customFormat, rawInput] =
+                [selectedFormat, rawInput] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
-            if (!rawInput || !customFormat) {
+            if (!rawInput || !selectedFormat) {
                 break;
             }
 
-            const result = this._timeConverter.customToISOUtc(rawInput, customFormat);
+            const result = this._timeConverter.customToISOUtc(rawInput, selectedFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -50,7 +54,7 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
 
             if (!inserted) {
                 loopResult = await this._resultBox.show(
-                    'Input: ' + rawInput + ' (Format: ' + customFormat + ')',
+                    'Input: ' + rawInput + ' (Format: ' + selectedFormat + ')',
                     this.title + ': Result',
                     result,
                     this.insert,
@@ -63,7 +67,7 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(): void {
+    private initialize(sourceFormat: string): void {
         const alternativeCustomFormatStep = new InputBoxStep(
             'E.g.: YYYY/MM/DD',
             'Insert custom format',
@@ -88,7 +92,7 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
             true);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomFormatStep, 0);
+        this._stepHandler.registerStep(getCustomFormatStep, 0, sourceFormat);
         this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
     }
 }

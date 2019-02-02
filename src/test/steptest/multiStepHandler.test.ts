@@ -169,6 +169,17 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result.length, 0);
             assert.strictEqual(secondStepStub.execute.notCalled, true);
         });
+
+        it('should return predefined result.', async () => {
+            testObject.unregisterStep(secondStepStub);
+            testObject.registerStep(secondStepStub, 1, 'test-result');
+
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(firstStepStub.execute.calledOnce, true);
+            assert.strictEqual(secondStepStub.execute.notCalled, true);
+            assert.strictEqual(result[1], 'test-result');
+        });
     });
 
     describe('dispose', () => {

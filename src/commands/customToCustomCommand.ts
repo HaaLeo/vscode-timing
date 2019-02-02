@@ -20,8 +20,8 @@ class CustomToCustomCommand extends CustomCommandBase {
 
     /**
      * Execute the command.
-     * @param sourceFormat Pre defined custom source format. If set, will be used instead of the corresponding step.
-     * @param targetFormat Pre defined custom target format. If set, will be used instead of the corresponding step.
+     * @param sourceFormat Pre defined custom source format. If set, it will be used instead of the corresponding step.
+     * @param targetFormat Pre defined custom target format. If set, it will be used instead of the corresponding step.
      */
     public async execute(sourceFormat?: string, targetFormat?: string) {
         const preSelection = this.isInputSelected();
@@ -55,18 +55,12 @@ class CustomToCustomCommand extends CustomCommandBase {
             }
 
             if (!inserted) {
-                // Only show back button when user input was required.
-                const showBackButton =
-                    rawInput !== preSelection
-                    || selectedSourceFormat !== sourceFormat
-                    || selectedTargetFormat !== targetFormat;
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedSourceFormat + ')',
                     this.title + ': Result (' + selectedTargetFormat + ')',
                     result,
                     this.insert,
-                    this._ignoreFocusOut,
-                    showBackButton);
+                    this._ignoreFocusOut);
             } else {
                 loopResult = new StepResult(InputFlowAction.Cancel, undefined);
             }
@@ -114,9 +108,9 @@ class CustomToCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep2);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomSourceFormatStep, 0, 'YYYY');
+        this._stepHandler.registerStep(getCustomSourceFormatStep, 0, undefined);
         this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
-        this._stepHandler.registerStep(getCustomTargetFormatStep, 2, undefined);
+        this._stepHandler.registerStep(getCustomTargetFormatStep, 2, 'YYYY-MM-DD');
     }
 }
 

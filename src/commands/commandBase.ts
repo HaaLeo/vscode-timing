@@ -48,7 +48,7 @@ abstract class CommandBase {
         }, this, this._disposables);
     }
 
-    public abstract execute(): void;
+    public abstract execute(...args: string[]): void;
 
     public dispose() {
         this._disposables.forEach((disposable) => {

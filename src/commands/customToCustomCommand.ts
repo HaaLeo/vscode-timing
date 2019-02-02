@@ -18,31 +18,36 @@ class CustomToCustomCommand extends CustomCommandBase {
 
     private readonly title: string = 'Custom → Custom';
 
-    public async execute(options?: string[]) {
+    /**
+     * Execute the command.
+     * @param sourceFormat Pre defined custom source format. If set, will be used instead of the corresponding step.
+     * @param targetFormat Pre defined custom target format. If set, will be used instead of the corresponding step.
+     */
+    public async execute(sourceFormat?: string, targetFormat?: string) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let customSourceFormat: string;
-            let customTargetFormat: string;
+            let selectedSourceFormat: string;
+            let selectedTargetFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize(options);
+                this.initialize(sourceFormat, targetFormat);
             }
 
             if (loopResult.action === InputFlowAction.Back) {
-                [customSourceFormat, rawInput, customTargetFormat] =
+                [selectedSourceFormat, rawInput, selectedTargetFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [customSourceFormat, rawInput, customTargetFormat] =
+                [selectedSourceFormat, rawInput, selectedTargetFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
-            if (!rawInput || !customSourceFormat || !customTargetFormat) {
+            if (!rawInput || !selectedSourceFormat || !selectedTargetFormat) {
                 break;
             }
 
-            const result = this._timeConverter.customToCustom(rawInput, customSourceFormat, customTargetFormat);
+            const result = this._timeConverter.customToCustom(rawInput, selectedSourceFormat, selectedTargetFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -50,12 +55,18 @@ class CustomToCustomCommand extends CustomCommandBase {
             }
 
             if (!inserted) {
+                // Only show back button when user input was required.
+                const showBackButton =
+                    rawInput !== preSelection
+                    || selectedSourceFormat !== sourceFormat
+                    || selectedTargetFormat !== targetFormat;
                 loopResult = await this._resultBox.show(
-                    'Input: ' + rawInput + ' (Format: ' + customSourceFormat + ')',
-                    this.title + ': Result (' + customTargetFormat + ')',
+                    'Input: ' + rawInput + ' (Format: ' + selectedSourceFormat + ')',
+                    this.title + ': Result (' + selectedTargetFormat + ')',
                     result,
                     this.insert,
-                    this._ignoreFocusOut);
+                    this._ignoreFocusOut,
+                    showBackButton);
             } else {
                 loopResult = new StepResult(InputFlowAction.Cancel, undefined);
             }
@@ -64,7 +75,7 @@ class CustomToCustomCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(options): void {
+    private initialize(sourceFormat: string, targetFormat: string): void {
         const alternativeCustomFormatStep1 = new InputBoxStep(
             'E.g.: YYYY/MM/DD',
             'Insert custom format',
@@ -103,9 +114,9 @@ class CustomToCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep2);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomSourceFormatStep);
-        this._stepHandler.registerStep(getTimeOfCustomFormat);
-        this._stepHandler.registerStep(getCustomTargetFormatStep);
+        this._stepHandler.registerStep(getCustomSourceFormatStep, 0, 'YYYY');
+        this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
+        this._stepHandler.registerStep(getCustomTargetFormatStep, 2, undefined);
     }
 }
 

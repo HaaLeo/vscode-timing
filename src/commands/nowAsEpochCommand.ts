@@ -10,6 +10,7 @@
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
@@ -18,7 +19,11 @@ class NowAsEpochCommand extends CustomCommandBase {
 
     private readonly title: string = 'Now → Epoch';
 
-    public async execute() {
+    /**
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
+     */
+    public async execute(options: ICommandOptions = {}) {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
         do {
             let epochTargetFormat: string;
@@ -26,6 +31,7 @@ class NowAsEpochCommand extends CustomCommandBase {
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetUnit, 0);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [epochTargetFormat] =
@@ -52,7 +58,8 @@ class NowAsEpochCommand extends CustomCommandBase {
                     this.title + ': Result',
                     result,
                     this.insert,
-                    this._ignoreFocusOut);
+                    this._ignoreFocusOut,
+                    options.targetUnit ? false : true);
             } else {
                 loopResult = new StepResult(InputFlowAction.Cancel, undefined);
             }
@@ -73,6 +80,7 @@ class NowAsEpochCommand extends CustomCommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTargetFormat);
+        this._disposables.push(this._stepHandler);
     }
 }
 

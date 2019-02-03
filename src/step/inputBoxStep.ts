@@ -78,7 +78,7 @@ class InputBoxStep implements IStep {
         totalSteps: number,
         ignoreFocusOut: boolean): Thenable<StepResult> {
 
-        let previousResult = handler.stepResults[handler.indexOf(this) - 1];
+        let previousResult = handler.getPreviousResult(this);
 
         this._isRunning = true;
 
@@ -102,7 +102,8 @@ class InputBoxStep implements IStep {
                 this._inputBox.enabled = false;
 
                 // Update
-                previousResult = handler.stepResults[handler.indexOf(this) - 1];
+
+                previousResult = handler.getPreviousResult(this);
 
                 if (this._validate(this._inputBox.value, previousResult)) {
                     this._isRunning = false;
@@ -120,7 +121,7 @@ class InputBoxStep implements IStep {
                 this._inputBox.enabled = false;
 
                 // Update
-                previousResult = handler.stepResults[handler.indexOf(this) - 1];
+                previousResult = handler.getPreviousResult(this);
 
                 if (this._validate(current, previousResult)) {
                     this._inputBox.validationMessage = '';

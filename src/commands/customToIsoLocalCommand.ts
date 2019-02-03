@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
@@ -18,30 +19,35 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
 
     private readonly title: string = 'Custom → ISO 8601 Local';
 
-    public async execute() {
+    /**
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
+     */
+    public async execute(options: ICommandOptions = {}) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let customFormat: string;
+            let selectedFormat: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.sourceFormat, 0);
 
             if (loopResult.action === InputFlowAction.Back) {
-                [customFormat, rawInput] =
+                [selectedFormat, rawInput] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [customFormat, rawInput] =
+                [selectedFormat, rawInput] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
-            if (!rawInput || !customFormat) {
+            if (!rawInput || !selectedFormat) {
                 break;
             }
 
-            const result = this._timeConverter.customToISOLocal(rawInput, customFormat);
+            const result = this._timeConverter.customToISOLocal(rawInput, selectedFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -50,7 +56,7 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
 
             if (!inserted) {
                 loopResult = await this._resultBox.show(
-                    'Input: ' + rawInput + ' (Format: ' + customFormat + ')',
+                    'Input: ' + rawInput + ' (Format: ' + selectedFormat + ')',
                     this.title + ': Result',
                     result,
                     this.insert,
@@ -90,6 +96,8 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getCustomFormatStep);
         this._stepHandler.registerStep(getTimeOfCustomFormat);
+        this._disposables.push(this._stepHandler);
+        this._disposables.push(this._stepHandler);
     }
 }
 

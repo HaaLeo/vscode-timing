@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
@@ -23,31 +24,33 @@ class IsoDurationToEpochCommand extends CommandBase {
     private readonly title: string = 'ISO 8601 Duration → Epoch';
 
     /**
-     * Execute the command.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute() {
+    public async execute(options: ICommandOptions = {}) {
 
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let epochTargetUnit: string;
+            let selectedUnit: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetUnit, 1);
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, epochTargetUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput, epochTargetUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
                 break;
             }
 
-            const result = this._timeConverter.isoDurationToEpoch(rawInput, epochTargetUnit);
+            const result = this._timeConverter.isoDurationToEpoch(rawInput, selectedUnit);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -57,7 +60,7 @@ class IsoDurationToEpochCommand extends CommandBase {
             if (!inserted) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput,
-                    this.title + ': Result (' + epochTargetUnit + ')',
+                    this.title + ': Result (' + selectedUnit + ')',
                     result,
                     this.insert,
                     this._ignoreFocusOut);
@@ -93,6 +96,7 @@ class IsoDurationToEpochCommand extends CommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getIsoDuration);
         this._stepHandler.registerStep(getEpochTargetUnit);
+        this._disposables.push(this._stepHandler);
     }
 }
 

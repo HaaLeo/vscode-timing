@@ -13,6 +13,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 
@@ -21,33 +22,35 @@ class EpochToCustomCommand extends CustomCommandBase {
     private readonly title: string = 'Epoch → Custom';
 
     /**
-     * Execute the command.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute() {
+    public async execute(options: ICommandOptions = {}) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let customFormat: string;
+            let selectedFormat: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetFormat, 1);
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, customFormat] =
+                [rawInput, selectedFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput, customFormat] =
+                [rawInput, selectedFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
-            if (!rawInput || !customFormat) {
+            if (!rawInput || !selectedFormat) {
                 break;
             }
 
             const input = new InputDefinition(rawInput);
-            const result = this._timeConverter.epochToCustom(input.inputAsMs.toString(), customFormat);
+            const result = this._timeConverter.epochToCustom(input.inputAsMs.toString(), selectedFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -99,6 +102,7 @@ class EpochToCustomCommand extends CustomCommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep);
         this._stepHandler.registerStep(getCustomFormatStep);
+        this._disposables.push(this._stepHandler);
     }
 }
 

@@ -28,34 +28,34 @@ This extension was inspired by [zodiac403's epoch-time-converter](https://github
 
 Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion. Epoch times can be converted to a human readable _timestamp_ or _duration_.  
 
-| Source Format| ⟶ | Target Format| Example|
-|:--|:--:|:-- |:--|
-| Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#simple-conversion)
-| Epoch (s, ms, ns) | ⟶ | ISO 8601 Local|
-| Epoch (s, ms, ns) | ⟶ | Custom|
-| Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration|
-| Epoch (s, ms, ns) | ⟶ | Human Readable Duration|
-| ISO 8601 Duration | ⟶ | Epoch (s, ms, ns)|
-| ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)|
-| ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)
-| - | ⟶ | Now as Epoch (s, ms, ns)|
-| - | ⟶ | Now as ISO 8601 UTC|
-| - | ⟶ | Now as ISO 8601 Local| [Link](#current-time)
-| - | ⟶ | Now as Custom|
-| Custom | ⟶ | Custom|
-| Custom | ⟶ | Epoch (s, ms, ns)|
-| Custom | ⟶ | ISO 8601 Utc|
-| Custom | ⟶ | ISO 8601 Local|
+ Source Format| ⟶ | Target Format| Example
+:--|:--:|:-- |:--
+Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#simple-conversion)
+Epoch (s, ms, ns) | ⟶ | ISO 8601 Local
+Epoch (s, ms, ns) | ⟶ | Custom
+Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration
+Epoch (s, ms, ns) | ⟶ | Human Readable Duration
+ISO 8601 Duration | ⟶ | Epoch (s, ms, ns)
+ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)
+ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)
+- | ⟶ | Now as Epoch (s, ms, ns)
+- | ⟶ | Now as ISO 8601 UTC
+- | ⟶ | Now as ISO 8601 Local| [Link](#current-time)
+- | ⟶ | Now as Custom
+Custom | ⟶ | Custom
+Custom | ⟶ | Epoch (s, ms, ns)
+Custom | ⟶ | ISO 8601 Utc
+Custom | ⟶ | ISO 8601 Local
 
 Whether the current selection is [replaced](#insert-converted-time) with the converted time, is indicated by the `timing.insertConvertedTime` setting. When you already [pre-selected](#pre-selection) a valid epoch time, the extension will directly convert this selection instead of asking for your input.
 
 When the _epoch time is the **source**_ format of the _timestamp_ conversion its unit is determined by its **digit count**:
 
-| Minimum Length| Maximum Length| Used Unit |
-|:--:|:--:|:--:|
-| 1 | 11| **s**
-|12 | 14| **ms**
-|15 | 21| **ns**
+Minimum Length| Maximum Length| Used Unit
+:--:|:--:|:--:
+1 | 11| **s**
+12 | 14| **ms**
+15 | 21| **ns**
 
 >**Note**: Currently those boundaries are fixed and cannot be changed.
 
@@ -84,37 +84,56 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 
 ## Command Overview
 
-To view all commands, open the _command palette_ and type _Timing_.
-* `timing.customToCustom`: Custom ⟶ Custom
-* `timing.customToEpoch`: Custom ⟶ Epoch
-* `timing.customToIsoLocal`: Custom ⟶ ISO 8601 Local
-* `timing.customToIsoUtc`: Custom ⟶ ISO 8601 UTC
-* `timing.epochToCustom`: Epoch ⟶ Custom
-* `timing.epochToIsoDuration`: Epoch ⟶ ISO 8601 Duration
-* `timing.epochToIsoLocal`: Epoch ⟶ ISO 8601 Local
-* `timing.epochToIsoUtc`: Epoch ⟶ ISO 8601 UTC
-* `timing.epochToReadableDuration`: Epoch ⟶ Readable Duration
-* `timing.isoDurationToEpoch`: ISO 8601 Duration ⟶ Epoch
-* `timing.isoRfcToCustom`: ISO 8601 / RFC 2822 ⟶ Custom
-* `timing.isoRfcToEpoch`: ISO 8601 / RFC 2822 ⟶ Epoch
-* `timing.nowAsCustom`: Now ⟶ Custom
-* `timing.nowAsEpoch`: Now ⟶ Epoch
-* `timing.nowAsIsoLocal`: Now ⟶ Epoch
-* `timing.nowAsIsoUtc`: Now ⟶ Epoch
-* `timing.toggleInsertConvertedTimeUserLevel`: toggle the `timing.insertConvertedTime` user setting
+To view all commands, open the _command palette_ and type _Timing_.  
+Optional arguments can be used to reduce the amount of required user inputs during a conversion. They can only be used when the command is invoked via a [hotkey](#keyboard-shortcuts).  
+
+Command Id | Description | Optional Arguments (`string`)
+:--|:-- |:--
+`timing.customToCustom`| Custom ⟶ Custom | `sourceFormat`, `targetFormat`
+`timing.customToEpoch`| Custom ⟶ Epoch | `sourceFormat`, `targetUnit`
+`timing.customToIsoLocal`| Custom ⟶ ISO 8601 Local | `sourceFormat`
+`timing.customToIsoUtc`| Custom ⟶ ISO 8601 UTC | `sourceFormat`
+`timing.epochToCustom`| Epoch ⟶ Custom | `targetFormat`
+`timing.epochToIsoDuration`| Epoch ⟶ ISO 8601 Duration | `sourceUnit`
+`timing.epochToIsoLocal`| Epoch ⟶ ISO 8601 Local
+`timing.epochToIsoUtc`| Epoch ⟶ ISO 8601 UTC
+`timing.epochToReadableDuration`| Epoch ⟶ Readable Duration | `sourceUnit`
+`timing.isoDurationToEpoch`| ISO 8601 Duration ⟶ Epoch | `targetUnit`
+`timing.isoRfcToCustom`| ISO 8601 / RFC 2822 ⟶ Custom | `targetFormat`
+`timing.isoRfcToEpoch`| ISO 8601 / RFC 2822 ⟶ Epoch | `targetUnit`
+`timing.nowAsCustom`| Now ⟶ Custom | `targetFormat`
+`timing.nowAsEpoch`| Now ⟶ Epoch | `targetUnit`
+`timing.nowAsIsoLocal`| Now ⟶ Epoch
+`timing.nowAsIsoUtc`| Now ⟶ Epoch
+`timing.toggleInsertConvertedTimeUserLevel`| toggle the `timing.insertConvertedTime` user setting
 
 ## Keyboard Shortcuts
 
 Any of the above commands can be bound to its own keyboard shortcut. For that just open the _Keyboard Shortcuts_ view by pressing <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>S</kbd>. Now search for the corresponding command and assign it to a shortcut.  
-Alternatively, you can edit the `keybindings.json` directly. For example you can add the following entry to the `keybindings.json` to bind the `timing.epochToIsoUtc` to the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>Z</kbd>.  
-For further information check out the [docs](https://code.visualstudio.com/docs/getstarted/keybindings).
+Alternatively, you can edit the `keybindings.json` directly. For example you can add the following entry to the `keybindings.json` to bind the `timing.customToEpoch` to the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>Z</kbd>.  
 
 ```JSON
 {
     "key": "ctrl+k ctrl+z",
-    "command": "timing.epochToIsoUtc"
+    "command": "timing.customToEpoch"
 }
 ```
+
+Further if you know that you will always use the same parameter for the command you can add _optional arguments_.  
+Example:
+
+```JSON
+{
+    "key": "ctrl+k ctrl+z",
+    "command": "timing.customToEpoch",
+    "args": {
+        "sourceFormat": "DD/MM/YYYY",
+        "targetUnit": "ms"
+    }
+}
+```
+
+For further information check out the [docs](https://code.visualstudio.com/docs/getstarted/keybindings).
 
 ## Contribution
 

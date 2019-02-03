@@ -23,6 +23,11 @@ class MultiStepHandler implements Disposable {
     private _steps: IStep[] = [];
 
     /**
+     * List of all possible steps.
+     */
+    private _stepCache: IStep[] = [];
+
+    /**
      * The results of each step.
      */
     private _stepResults: string[] = [];
@@ -33,6 +38,11 @@ class MultiStepHandler implements Disposable {
     private _userSelection: string;
 
     /**
+     * Pre defined results. The key is the index of the corresponding step that will be skipped.
+     */
+    private _givenResults: Map<number, string> = new Map<number, string>();
+
+    /**
      * Returns the index of the first occurrence of the `step`.
      */
     public indexOf(step: IStep): Readonly<number> {
@@ -40,29 +50,73 @@ class MultiStepHandler implements Disposable {
     }
 
     /**
-     * Get the results of all steps. Ordered according to the steps.
+     * Get the result of a specific step.
+     * @param step The index of the step.
      */
-    public get stepResults(): ReadonlyArray<string> {
-        return this._stepResults;
+    public getPreviousResult(step: IStep): string {
+        let stepIndex = 0;
+        let result: string;
+        for (let i = 0; i < (this._givenResults.size + this._steps.length); i++) {
+            if (!this._givenResults.has(i)) {
+                if (this._steps[stepIndex] === step) {
+                    if (this._givenResults.has(i - 1)) {
+                        result = this._givenResults.get(i - 1);
+                    } else {
+                        result = this._stepResults[stepIndex - 1];
+                    }
+                    break;
+                } else {
+                    stepIndex++;
+                }
+            }
+        }
+
+        return result;
     }
 
     /**
      * Registers a given step if it was not registered before.
-     * @param {IStep} step The step to register
+     * @param {IStep} step The step to register.
      * @param {number} index zero based index indicating at which position the step is registered.
+     * Only use this parameter when registering steps during command execution.
      */
-    public registerStep(step: IStep, index?: number, skipIfUserSelectionValid: boolean = false): void {
+    public registerStep(step: IStep, index?: number): void {
+
         if (this._steps.indexOf(step, 0) === -1) {
             if (index === 0 || index) {
                 this._steps.splice(index, 0, step);
             } else {
                 this._steps.push(step);
+                this._stepCache.push(step);
             }
         }
     }
 
     /**
-     * Un-registers the given step if it was registered before.
+     * Set the `result` of a step indicated by its `index`.
+     * @param result The step result.
+     * @param index The zero based step index.
+     */
+    public setStepResult(result: string, index: number): void {
+        if (result) {
+            this._givenResults.set(index, result);
+            if (this.indexOf(this._stepCache[index]) !== -1) {
+                // Set index to last element when it is out of range
+                if (index > this._steps.length - 1) {
+                    index = index - (index - (this._steps.length - 1));
+                }
+                this._steps.splice(index, 1); // remove step
+            }
+        } else {
+            this._givenResults.delete(index);
+            if (this.indexOf(this._stepCache[index]) === -1) {
+                this._steps.splice(index, 0, this._stepCache[index]); // add step
+            }
+        }
+    }
+
+    /**
+     * Unregister the given step if it was registered before.
      * @param step The step to unregister.
      */
     public unregisterStep(step: IStep): void {
@@ -91,12 +145,13 @@ class MultiStepHandler implements Disposable {
         if (startIndex === -1) {
             startIndex = this._steps.length - 1;
         } else {
+            this._stepResults = [];
             this._steps.forEach((step) => step.reset());
         }
         await this.executeStep(this._steps[startIndex], ignoreFocusOut);
 
         // Filter results when sub steps were used
-        return this._stepResults.filter(Boolean);
+        return this.buildResult();
     }
 
     /**
@@ -123,17 +178,19 @@ class MultiStepHandler implements Disposable {
      * Executes the given `step` and add result to the `_stepResults`.
      * @param step The step to execute.
      * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
+     * @param onBack Indicates whether this step is executed after _back_ was pressed.
      * @returns a promise.
      */
-    private async executeStep(step: IStep, ignoreFocusOut: boolean): Promise<void> {
+    private async executeStep(step: IStep, ignoreFocusOut: boolean, onBack: boolean = false): Promise<void> {
         const stepIndex = this._steps.indexOf(step);
         const totalSteps = this._steps.length;
 
         let result: StepResult;
 
-        // Check whether this step should be skipped
+        // Check whether this step should be skipped because of a valid user pre-selection
         if (step.skip
-            && step.validation(this._userSelection, this._stepResults[stepIndex - 1])) {
+            && step.validation(this._userSelection, this.getPreviousResult(step))
+            && !onBack) {
             result = new StepResult(InputFlowAction.Continue, this._userSelection);
         } else {
             result = await step.execute(this, stepIndex + 1, totalSteps, ignoreFocusOut);
@@ -149,7 +206,7 @@ class MultiStepHandler implements Disposable {
                 break;
             }
             case InputFlowAction.Back: {
-                await this.executeStep(this._steps[stepIndex - 1], ignoreFocusOut);
+                await this.executeStep(this._steps[stepIndex - 1], ignoreFocusOut, true);
                 break;
             }
             case InputFlowAction.Cancel:
@@ -158,6 +215,25 @@ class MultiStepHandler implements Disposable {
             default:
                 throw Error('Unknown input flow action!');
         }
+    }
+
+    /**
+     * Build the final result from the `_givenResults` and from the `_stepResults`.
+     */
+    private buildResult(): string[] {
+        this._stepResults = this._stepResults.filter(Boolean);
+        let stepIndex = 0;
+        const result: string[] = [];
+
+        for (let i = 0; i < (this._givenResults.size + this._stepResults.length); i++) {
+            if (this._givenResults.has(i)) {
+                result.push(this._givenResults.get(i));
+            } else {
+                result.push(this._stepResults[stepIndex]);
+                stepIndex++;
+            }
+        }
+        return result;
     }
 }
 

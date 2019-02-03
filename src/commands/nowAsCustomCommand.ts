@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
@@ -18,28 +19,33 @@ class NowAsCustomCommand extends CustomCommandBase {
 
     private readonly title: string = 'Now → Custom';
 
-    public async execute() {
+    /**
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
+     */
+    public async execute(options: ICommandOptions = {}) {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
         do {
-            let customFormat: string;
+            let selectedFormat: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetFormat, 0);
 
             if (loopResult.action === InputFlowAction.Back) {
-                [customFormat] =
+                [selectedFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);
             } else {
-                [customFormat] =
+                [selectedFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated');
             }
 
-            if (!customFormat) {
+            if (!selectedFormat) {
                 break;
             }
 
-            const result = this._timeConverter.getNowAsCustom(customFormat);
+            const result = this._timeConverter.getNowAsCustom(selectedFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -48,11 +54,12 @@ class NowAsCustomCommand extends CustomCommandBase {
 
             if (!inserted) {
                 loopResult = await this._resultBox.show(
-                    'Format: ' + customFormat,
+                    'Format: ' + selectedFormat,
                     this.title + ': Result',
                     result,
                     this.insert,
-                    this._ignoreFocusOut);
+                    this._ignoreFocusOut,
+                    options.targetFormat ? false : true);
             } else {
                 loopResult = new StepResult(InputFlowAction.Cancel, undefined);
             }
@@ -80,6 +87,7 @@ class NowAsCustomCommand extends CustomCommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getCustomFormatStep);
+        this._disposables.push(this._stepHandler);
     }
 }
 

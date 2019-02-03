@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
 import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
@@ -21,31 +22,33 @@ class EpochToISODurationCommand extends CommandBase {
     private readonly title: string = 'Epoch → ISO 8601 Duration';
 
     /**
-     * Execute the command.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute() {
+    public async execute(options: ICommandOptions = {}) {
 
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let epochFormat: string;
+            let selectedUnit: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.sourceUnit, 1);
 
             if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [rawInput, epochFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
             if (!rawInput) {
                 break;
             }
 
-            const input = new InputDefinition(rawInput, epochFormat);
+            const input = new InputDefinition(rawInput, selectedUnit);
             const result = this._timeConverter.epochToISODuration(input.inputAsMs);
 
             let inserted: boolean = false;
@@ -91,6 +94,7 @@ class EpochToISODurationCommand extends CommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep);
         this._stepHandler.registerStep(getEpochSourceFormat);
+        this._disposables.push(this._stepHandler);
     }
 }
 

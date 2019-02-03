@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
@@ -23,9 +24,10 @@ class IsoRfcToEpochCommand extends CommandBase {
     private readonly title: string = 'ISO 8601 / RFC 2822 → Epoch';
 
     /**
-     * Execute the command.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute() {
+    public async execute(options: ICommandOptions = {}) {
 
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
@@ -36,6 +38,7 @@ class IsoRfcToEpochCommand extends CommandBase {
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetUnit, 1);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [rawInput, epochTargetFormat] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
@@ -93,6 +96,7 @@ class IsoRfcToEpochCommand extends CommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getIsoRfcTimeStep);
         this._stepHandler.registerStep(getEpochTargetFormat);
+        this._disposables.push(this._stepHandler);
     }
 }
 

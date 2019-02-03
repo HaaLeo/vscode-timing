@@ -128,15 +128,14 @@
             }
         ],
         "configuration": {
+            "$schema": "http://json-schema.org/draft-06/schema#",
             "type": "object",
             "title": "Time Converter",
             "properties": {
                 "timing.customFormats": {
                     "title": "Custom time formats.",
                     "description": "An array of custom source/target formats used to convert from/to.",
-                    "type": [
-                        "array"
-                    ],
+                    "type": "array",
                     "items": {
                         "title": "Custom time formats.",
                         "description": "Custom time format to convert from/to.",
@@ -145,17 +144,20 @@
                             "format": {
                                 "type": "string",
                                 "title": "The custom time format.",
-                                "description": "A custom momentjs format to convert a time from/to."
+                                "description": "A custom momentjs format to convert a time from/to.",
+                                "pattern": "^(?!\\s*$).+"
                             },
                             "description": {
                                 "type": "string",
                                 "title": "The description.",
-                                "description": "The description of the format. Used as quick pick description."
+                                "description": "The description of the format. Used as quick pick description.",
+                                "pattern": "^(?!\\s*$).+"
                             },
                             "detail": {
                                 "type": "string",
                                 "title": "The detail.",
-                                "description": "The detail of the format. Used as quick pick detail."
+                                "description": "The detail of the format. Used as quick pick detail.",
+                                "pattern": "^(?!\\s*$).+"
                             }
                         },
                         "required": [
@@ -189,13 +191,15 @@
                     "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\", a custom format or \"disable\" to disable the hover preview.",
                     "type": "string",
                     "default": "utc",
+                    "pattern": "^(?!\\s*$).+",
                     "deprecationMessage": "DEPRECATED: This setting will be removed in the next major release. Use timing.hoverTimestamp.* settings instead."
                 },
                 "timing.hoverTimestamp.targetFormat": {
                     "title": "The target format of the hover preview.",
                     "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\" or custom format.",
                     "type": "string",
-                    "default": "utc"
+                    "default": "utc",
+                    "pattern": "^(?!\\s*$).+"
                 },
                 "timing.hoverTimestamp.enabled": {
                     "title": "En-/disable the timestamp hover.",

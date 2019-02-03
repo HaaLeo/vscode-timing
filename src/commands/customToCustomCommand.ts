@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
@@ -18,31 +19,37 @@ class CustomToCustomCommand extends CustomCommandBase {
 
     private readonly title: string = 'Custom → Custom';
 
-    public async execute() {
+    /**
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
+     */
+    public async execute(options: ICommandOptions = {}) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-            let customSourceFormat: string;
-            let customTargetFormat: string;
+            let selectedSourceFormat: string;
+            let selectedTargetFormat: string;
 
             if (!this._stepHandler) {
                 this.initialize();
             }
+            this._stepHandler.setStepResult(options.sourceFormat, 0);
+            this._stepHandler.setStepResult(options.targetFormat, 2);
 
             if (loopResult.action === InputFlowAction.Back) {
-                [customSourceFormat, rawInput, customTargetFormat] =
+                [selectedSourceFormat, rawInput, selectedTargetFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
             } else {
-                [customSourceFormat, rawInput, customTargetFormat] =
+                [selectedSourceFormat, rawInput, selectedTargetFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
 
-            if (!rawInput || !customSourceFormat || !customTargetFormat) {
+            if (!rawInput || !selectedSourceFormat || !selectedTargetFormat) {
                 break;
             }
 
-            const result = this._timeConverter.customToCustom(rawInput, customSourceFormat, customTargetFormat);
+            const result = this._timeConverter.customToCustom(rawInput, selectedSourceFormat, selectedTargetFormat);
 
             let inserted: boolean = false;
             if (this._insertConvertedTime) {
@@ -51,8 +58,8 @@ class CustomToCustomCommand extends CustomCommandBase {
 
             if (!inserted) {
                 loopResult = await this._resultBox.show(
-                    'Input: ' + rawInput + ' (Format: ' + customSourceFormat + ')',
-                    this.title + ': Result (' + customTargetFormat + ')',
+                    'Input: ' + rawInput + ' (Format: ' + selectedSourceFormat + ')',
+                    this.title + ': Result (' + selectedTargetFormat + ')',
                     result,
                     this.insert,
                     this._ignoreFocusOut);
@@ -106,6 +113,7 @@ class CustomToCustomCommand extends CustomCommandBase {
         this._stepHandler.registerStep(getCustomSourceFormatStep);
         this._stepHandler.registerStep(getTimeOfCustomFormat);
         this._stepHandler.registerStep(getCustomTargetFormatStep);
+        this._disposables.push(this._stepHandler);
     }
 }
 

@@ -99,8 +99,8 @@ class MultiStepHandler {
      */
     public setStepResult(result: string, index: number): void {
         if (result) {
+            this._givenResults.set(index, result);
             if (this.indexOf(this._stepCache[index]) !== -1) {
-                this._givenResults.set(index, result);
                 // Set index to last element when it is out of range
                 if (index > this._steps.length - 1) {
                     index = index - (index - (this._steps.length - 1));
@@ -108,8 +108,8 @@ class MultiStepHandler {
                 this._steps.splice(index, 1); // remove step
             }
         } else {
+            this._givenResults.delete(index);
             if (this.indexOf(this._stepCache[index]) === -1) {
-                this._givenResults.delete(index);
                 this._steps.splice(index, 0, this._stepCache[index]); // add step
             }
         }

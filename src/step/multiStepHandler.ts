@@ -7,7 +7,7 @@
 
 'use strict';
 
-import { Disposable, QuickPickItem } from 'vscode';
+import { QuickPickItem } from 'vscode';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { IStep } from './IStep';
 import { QuickPickStep } from './quickPickStep';
@@ -16,11 +16,16 @@ import { StepResult } from './stepResult';
 /**
  * The handles the execution of multiple steps.
  */
-class MultiStepHandler implements Disposable {
+class MultiStepHandler {
     /**
      * List of steps to be executed.
      */
     private _steps: IStep[] = [];
+
+    /**
+     * List of all possible steps.
+     */
+    private _stepCache: IStep[] = [];
 
     /**
      * The results of each step.
@@ -73,15 +78,39 @@ class MultiStepHandler implements Disposable {
      * Registers a given step if it was not registered before.
      * @param {IStep} step The step to register.
      * @param {number} index zero based index indicating at which position the step is registered.
-     * @param {string} stepResult predefined result of the step. If set, the `step` will be skipped.
+     * Only use this parameter when registering steps during command execution.
      */
-    public registerStep(step: IStep, index: number, stepResult?: string): void {
+    public registerStep(step: IStep, index?: number): void {
 
         if (this._steps.indexOf(step, 0) === -1) {
-            if (stepResult) {
-                this._givenResults.set(index, stepResult);
-            } else {
+            if (index === 0 || index) {
                 this._steps.splice(index, 0, step);
+            } else {
+                this._steps.push(step);
+                this._stepCache.push(step);
+            }
+        }
+    }
+
+    /**
+     * Set the `result` of a step indicated by its `index`.
+     * @param result The step result.
+     * @param index The zero based step index.
+     */
+    public setStepResult(result: string, index: number): void {
+        if (result) {
+            if (this.indexOf(this._stepCache[index]) !== -1) {
+                this._givenResults.set(index, result);
+                // Set index to last element when it is out of range
+                if (index > this._steps.length - 1) {
+                    index = index - (index - (this._steps.length - 1));
+                }
+                this._steps.splice(index, 1); // remove step
+            }
+        } else {
+            if (this.indexOf(this._stepCache[index]) === -1) {
+                this._givenResults.delete(index);
+                this._steps.splice(index, 0, this._stepCache[index]); // add step
             }
         }
     }

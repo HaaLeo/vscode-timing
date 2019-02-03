@@ -48,8 +48,8 @@ describe('MultiStepHandler', () => {
 
     describe('registerStep', () => {
         it('should register steps properly.', async () => {
-            testObject.registerStep(firstStepStub, 0);
-            testObject.registerStep(secondStepStub, 1);
+            testObject.registerStep(firstStepStub);
+            testObject.registerStep(secondStepStub);
             const result = await testObject.run(true, '');
             assert.strictEqual(result.length, 2);
             assert.strictEqual(result[0], 'first-result');
@@ -57,7 +57,7 @@ describe('MultiStepHandler', () => {
         });
 
         it('should register steps properly by index.', async () => {
-            testObject.registerStep(secondStepStub, 0);
+            testObject.registerStep(secondStepStub, 1);
             testObject.registerStep(firstStepStub, 0);
             const result = await testObject.run(true, '');
 
@@ -69,8 +69,8 @@ describe('MultiStepHandler', () => {
 
     describe('unregisterStep', () => {
         it('should unregister first step.', async () => {
-            testObject.registerStep(firstStepStub, 0);
-            testObject.registerStep(secondStepStub, 1);
+            testObject.registerStep(firstStepStub);
+            testObject.registerStep(secondStepStub);
             testObject.unregisterStep(firstStepStub);
             const result = await testObject.run(true, '');
 
@@ -81,8 +81,8 @@ describe('MultiStepHandler', () => {
 
     describe('run', () => {
         beforeEach(() => {
-            testObject.registerStep(firstStepStub, 0);
-            testObject.registerStep(secondStepStub, 1);
+            testObject.registerStep(firstStepStub);
+            testObject.registerStep(secondStepStub);
         });
 
         it('should execute all steps and return results', async () => {
@@ -125,7 +125,7 @@ describe('MultiStepHandler', () => {
             firstStepStub.execute.returns(
                 new Promise((resolve) => resolve(new StepResult(InputFlowAction.Continue, 'first-result'))));
             testObject = new MultiStepHandler();
-            testObject.registerStep(firstStepStub, 0);
+            testObject.registerStep(firstStepStub);
 
             const result = await testObject.run(true, 'test-selection');
 
@@ -170,22 +170,102 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(secondStepStub.execute.notCalled, true);
         });
 
+    });
+    describe('setStepResult', async () => {
+        let thirdStepStub: sinon.SinonStubbedInstance<IStep>;
+        beforeEach(() => {
+            testObject = new MultiStepHandler();
+            const thirdStep: IStep = {
+                dispose: () => undefined,
+                execute: () => undefined,
+                validation: () => true,
+                get skip(): boolean { return false; },
+                reset: () => undefined
+            };
+            thirdStepStub = sinon.stub(thirdStep);
+            thirdStepStub.execute.returns(
+                new Promise((resolve) => resolve(new StepResult(InputFlowAction.Continue, 'third-result'))));
+
+            testObject.registerStep(firstStepStub);
+            testObject.registerStep(secondStepStub);
+            testObject.registerStep(thirdStepStub);
+        });
+
         it('should return predefined result.', async () => {
-            testObject.unregisterStep(secondStepStub);
-            testObject.registerStep(secondStepStub, 1, 'test-result');
+            testObject.setStepResult('test-result', 1);
 
             const result = await testObject.run(true, '');
 
             assert.strictEqual(firstStepStub.execute.calledOnce, true);
             assert.strictEqual(secondStepStub.execute.notCalled, true);
+            assert.strictEqual(thirdStepStub.execute.calledOnce, true);
             assert.strictEqual(result[1], 'test-result');
+        });
+
+        it('should return predefined result x-o-o.', async () => {
+            testObject.setStepResult('test-result-0', 0);
+
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(firstStepStub.execute.notCalled, true);
+            assert.strictEqual(secondStepStub.execute.calledOnce, true);
+            assert.strictEqual(thirdStepStub.execute.calledOnce, true);
+            assert.strictEqual(result[0], 'test-result-0');
+        });
+
+        it('should return predefined result x-o-x.', async () => {
+            testObject.setStepResult('test-result-0', 0);
+            testObject.setStepResult('test-result-2', 2);
+
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(firstStepStub.execute.notCalled, true);
+            assert.strictEqual(secondStepStub.execute.calledOnce, true);
+            assert.strictEqual(thirdStepStub.execute.notCalled, true);
+            assert.strictEqual(result[0], 'test-result-0');
+            assert.strictEqual(result[2], 'test-result-2');
+        });
+
+        it('should return predefined result o-o-x.', async () => {
+            testObject.setStepResult('test-result-2', 2);
+
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(firstStepStub.execute.calledOnce, true);
+            assert.strictEqual(secondStepStub.execute.calledOnce, true);
+            assert.strictEqual(thirdStepStub.execute.notCalled, true);
+            assert.strictEqual(result[2], 'test-result-2');
+        });
+
+        it('should return predefined result o-x.', async () => {
+            testObject.unregisterStep(thirdStepStub);
+            testObject.setStepResult('test-result-1', 1);
+
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(firstStepStub.execute.calledOnce, true);
+            assert.strictEqual(secondStepStub.execute.notCalled, true);
+            assert.strictEqual(thirdStepStub.execute.notCalled, true);
+            assert.strictEqual(result[1], 'test-result-1');
+        });
+
+        it('should return predefined result x-o.', async () => {
+            testObject.unregisterStep(thirdStepStub);
+            testObject.setStepResult('test-result-0', 0);
+
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(firstStepStub.execute.notCalled, true);
+            assert.strictEqual(secondStepStub.execute.calledOnce, true);
+            assert.strictEqual(thirdStepStub.execute.notCalled, true);
+            assert.strictEqual(result[0], 'test-result-0');
         });
     });
 
     describe('dispose', () => {
         it('should dispose all steps.', () => {
-            testObject.registerStep(firstStepStub, 0);
-            testObject.registerStep(secondStepStub, 1);
+            testObject.registerStep(firstStepStub);
+            testObject.registerStep(secondStepStub);
 
             testObject.dispose();
 

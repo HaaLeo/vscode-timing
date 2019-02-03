@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
 import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
@@ -21,10 +22,10 @@ class EpochToISODurationCommand extends CommandBase {
     private readonly title: string = 'Epoch → ISO 8601 Duration';
 
     /**
-     * Execute the command.
-     * @param sourceUnit Pre defined epoch source unit. If set, it will be used instead of the corresponding step.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(sourceUnit?: string) {
+    public async execute(options: ICommandOptions = {}) {
 
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
@@ -33,8 +34,9 @@ class EpochToISODurationCommand extends CommandBase {
             let selectedUnit: string;
 
             if (!this._stepHandler) {
-                this.initialize(sourceUnit);
+                this.initialize();
             }
+            this._stepHandler.setStepResult(options.sourceUnit, 1);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
@@ -72,7 +74,7 @@ class EpochToISODurationCommand extends CommandBase {
     /**
      * Initialize all members.
      */
-    private initialize(sourceUnit: string): void {
+    private initialize(): void {
         const getEpochTimeStep = new InputBoxStep(
             '123456789',
             'Insert the epoch time.',
@@ -90,8 +92,8 @@ class EpochToISODurationCommand extends CommandBase {
             false); // Does not use custom formats.
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTimeStep, 0);
-        this._stepHandler.registerStep(getEpochSourceFormat, 1, sourceUnit);
+        this._stepHandler.registerStep(getEpochTimeStep);
+        this._stepHandler.registerStep(getEpochSourceFormat);
     }
 }
 

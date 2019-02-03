@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
@@ -20,11 +21,10 @@ class CustomToEpochCommand extends CustomCommandBase {
     private readonly title: string = 'Custom → Epoch';
 
     /**
-     * Execute the command.
-     * @param sourceFormat Pre defined custom source format. If set, it will be used instead of the corresponding step.
-     * @param targetUnit Pre defined custom target unit. If set, it will be used instead of the corresponding step.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(sourceFormat?: string, targetUnit?: string) {
+    public async execute(options: ICommandOptions = {}) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
@@ -33,8 +33,10 @@ class CustomToEpochCommand extends CustomCommandBase {
             let selectedEpochTargetFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize(sourceFormat, targetUnit);
+                this.initialize();
             }
+            this._stepHandler.setStepResult(options.sourceFormat, 0);
+            this._stepHandler.setStepResult(options.targetUnit, 2);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [selectedCustomFormat, rawInput, selectedEpochTargetFormat] =
@@ -70,7 +72,7 @@ class CustomToEpochCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(sourceFormat: string, targetUnit: string): void {
+    private initialize(): void {
         const alternativeCustomFormatStep = new InputBoxStep(
             'E.g.: YYYY/MM/DD',
             'Insert custom format',
@@ -103,9 +105,9 @@ class CustomToEpochCommand extends CustomCommandBase {
             false); // Does not use custom formats.
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomFormatStep, 0, sourceFormat);
-        this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
-        this._stepHandler.registerStep(getEpochTargetFormat, 2, targetUnit);
+        this._stepHandler.registerStep(getCustomFormatStep);
+        this._stepHandler.registerStep(getTimeOfCustomFormat);
+        this._stepHandler.registerStep(getEpochTargetFormat);
     }
 }
 

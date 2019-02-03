@@ -10,6 +10,7 @@
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
@@ -19,17 +20,18 @@ class NowAsEpochCommand extends CustomCommandBase {
     private readonly title: string = 'Now → Epoch';
 
     /**
-     * Execute the command.
-     * @param targetUnit Pre defined epoch target unit. If set, it will be used instead of the corresponding step.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(targetUnit?: string) {
+    public async execute(options: ICommandOptions = {}) {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
         do {
             let epochTargetFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize(targetUnit);
+                this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetUnit, 0);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [epochTargetFormat] =
@@ -57,7 +59,7 @@ class NowAsEpochCommand extends CustomCommandBase {
                     result,
                     this.insert,
                     this._ignoreFocusOut,
-                    targetUnit ? false : true);
+                    options.targetUnit ? false : true);
             } else {
                 loopResult = new StepResult(InputFlowAction.Cancel, undefined);
             }
@@ -66,7 +68,7 @@ class NowAsEpochCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(targetUnit: string): void {
+    private initialize(): void {
         const getEpochTargetFormat = new QuickPickStep(
             'Select epoch target format',
             this.title,
@@ -77,7 +79,7 @@ class NowAsEpochCommand extends CustomCommandBase {
             false);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTargetFormat, 0, targetUnit);
+        this._stepHandler.registerStep(getEpochTargetFormat);
     }
 }
 

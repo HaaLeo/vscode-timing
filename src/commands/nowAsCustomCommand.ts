@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
@@ -19,17 +20,18 @@ class NowAsCustomCommand extends CustomCommandBase {
     private readonly title: string = 'Now → Custom';
 
     /**
-     * Execute the command.
-     * @param targetFormat Pre defined custom target format. If set, it will be used instead of the corresponding step.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(targetFormat?: string) {
+    public async execute(options: ICommandOptions = {}) {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
         do {
             let selectedFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize(targetFormat);
+                this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetFormat, 0);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [selectedFormat] =
@@ -57,7 +59,7 @@ class NowAsCustomCommand extends CustomCommandBase {
                     result,
                     this.insert,
                     this._ignoreFocusOut,
-                    targetFormat ? false : true);
+                    options.targetFormat ? false : true);
             } else {
                 loopResult = new StepResult(InputFlowAction.Cancel, undefined);
             }
@@ -66,7 +68,7 @@ class NowAsCustomCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(targetFormat: string): void {
+    private initialize(): void {
         const alternativeCustomFormatStep = new InputBoxStep(
             'E.g.: YYYY/MM/DD',
             'Insert custom format',
@@ -84,7 +86,7 @@ class NowAsCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomFormatStep, 0, targetFormat);
+        this._stepHandler.registerStep(getCustomFormatStep);
     }
 }
 

@@ -9,6 +9,7 @@
 
 import * as vscode from 'vscode';
 import { MultiStepHandler } from '../step/multiStepHandler';
+import { ICommandOptions } from '../util/commandOptions';
 import { ResultBox } from '../util/resultBox';
 import { TimeConverter } from '../util/timeConverter';
 
@@ -48,7 +49,7 @@ abstract class CommandBase {
         }, this, this._disposables);
     }
 
-    public abstract execute(...args: string[]): void;
+    public abstract execute(options?: ICommandOptions): void;
 
     public dispose() {
         this._disposables.forEach((disposable) => {

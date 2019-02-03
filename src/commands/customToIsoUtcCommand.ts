@@ -11,6 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
@@ -19,10 +20,10 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
     private readonly title: string = 'Custom → ISO 8601 UTC';
 
     /**
-     * Execute the command.
-     * @param sourceFormat Pre defined custom source format. If set, it will be used instead of the corresponding step.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(sourceFormat?: string) {
+    public async execute(options: ICommandOptions = {}) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
@@ -30,8 +31,9 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
             let selectedFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize(sourceFormat);
+                this.initialize();
             }
+            this._stepHandler.setStepResult(options.sourceFormat, 0);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [selectedFormat, rawInput] =
@@ -67,7 +69,7 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
             || (!this._hideResultViewOnEnter && loopResult.action === InputFlowAction.Continue));
     }
 
-    private initialize(sourceFormat: string): void {
+    private initialize(): void {
         const alternativeCustomFormatStep = new InputBoxStep(
             'E.g.: YYYY/MM/DD',
             'Insert custom format',
@@ -92,8 +94,8 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
             true);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getCustomFormatStep, 0, sourceFormat);
-        this._stepHandler.registerStep(getTimeOfCustomFormat, 1);
+        this._stepHandler.registerStep(getCustomFormatStep);
+        this._stepHandler.registerStep(getTimeOfCustomFormat);
     }
 }
 

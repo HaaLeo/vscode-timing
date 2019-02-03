@@ -13,6 +13,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
+import { ICommandOptions } from '../util/commandOptions';
 import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 
@@ -21,10 +22,10 @@ class EpochToCustomCommand extends CustomCommandBase {
     private readonly title: string = 'Epoch → Custom';
 
     /**
-     * Execute the command.
-     * @param targetFormat Pre defined custom target format. If set, it will be used instead of the corresponding step.
+     * Execute the command
+     * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(targetFormat?: string) {
+    public async execute(options: ICommandOptions = {}) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
@@ -32,8 +33,9 @@ class EpochToCustomCommand extends CustomCommandBase {
             let selectedFormat: string;
 
             if (!this._stepHandler) {
-                this.initialize(targetFormat);
+                this.initialize();
             }
+            this._stepHandler.setStepResult(options.targetFormat, 1);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [rawInput, selectedFormat] =
@@ -73,7 +75,7 @@ class EpochToCustomCommand extends CustomCommandBase {
     /**
      * Initialize all members.
      */
-    private initialize(targetFormat: string): void {
+    private initialize(): void {
         const getEpochTimeStep = new InputBoxStep(
             '123456789',
             'Insert the epoch time.',
@@ -98,8 +100,8 @@ class EpochToCustomCommand extends CustomCommandBase {
             alternativeCustomFormatStep);
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTimeStep, 0);
-        this._stepHandler.registerStep(getCustomFormatStep, 1, targetFormat);
+        this._stepHandler.registerStep(getEpochTimeStep);
+        this._stepHandler.registerStep(getCustomFormatStep);
     }
 }
 

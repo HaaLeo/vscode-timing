@@ -27,6 +27,7 @@ import { NowAsIsoLocalCommand } from './commands/nowAsIsoLocalCommand';
 import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
 import { ToggleInsertConvertedTimeUserLevelCommand } from './commands/toggleInsertConvertedTimeUserLevelCommand';
 
+import { CommandManager } from './util/commandManager';
 import { DurationHoverProvider } from './util/durationHoverProvider';
 import { TimeConverter } from './util/timeConverter';
 import { TimestampHoverProvider } from './util/timestampHoverProvider';
@@ -58,8 +59,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     const timestampHoverProvider = new TimestampHoverProvider(timeConverter);
     const durationHoverProvider = new DurationHoverProvider(timeConverter);
-    /* tslint:disable:max-line-length */
 
+    const commandManager = new CommandManager(context, timeConverter);
+
+    /* tslint:disable:max-line-length */
     context.subscriptions.push(
         // Register Commands
         customToCustomCommand, vscode.commands.registerCommand('timing.customToCustom', customToCustomCommand.execute, customToCustomCommand),
@@ -82,7 +85,10 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('timing.toggleInsertConvertedTimeUserLevel', toggleInsertConvertedTimeUserLevelCommand.execute, toggleInsertConvertedTimeUserLevelCommand),
         // Register Hover Provider
         timestampHoverProvider, vscode.languages.registerHoverProvider('*', timestampHoverProvider),
-        durationHoverProvider, vscode.languages.registerHoverProvider('*', durationHoverProvider)
+        durationHoverProvider, vscode.languages.registerHoverProvider('*', durationHoverProvider),
+
+        // Register Command Manager
+        commandManager
     );
     /* tslint:enable:max-line-length */
 }

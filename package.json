@@ -132,8 +132,8 @@
             "type": "object",
             "title": "Time Converter",
             "properties": {
-                "timing.customCommands": {
-                    "title": "Custom conversion commands.",
+                "timing.advancedCommands": {
+                    "title": "Advanced conversion commands.",
                     "description": "Use this setting to create special versions of the available commands in order to reduce the insertion of options during the conversion such as \"custom formats\".",
                     "type": "array",
                     "items": {

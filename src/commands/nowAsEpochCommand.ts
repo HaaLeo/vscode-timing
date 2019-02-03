@@ -80,6 +80,7 @@ class NowAsEpochCommand extends CustomCommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTargetFormat);
+        this._disposables.push(this._stepHandler);
     }
 }
 

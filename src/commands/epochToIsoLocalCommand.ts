@@ -83,6 +83,7 @@ class EpochToIsoLocalCommand extends CommandBase {
 
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep, 0);
+        this._disposables.push(this._stepHandler);
     }
 }
 

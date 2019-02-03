@@ -96,6 +96,8 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getCustomFormatStep);
         this._stepHandler.registerStep(getTimeOfCustomFormat);
+        this._disposables.push(this._stepHandler);
+        this._disposables.push(this._stepHandler);
     }
 }
 

@@ -13,10 +13,10 @@ import { ICommandOptions } from '../util/commandOptions';
 import { ResultBox } from '../util/resultBox';
 import { TimeConverter } from '../util/timeConverter';
 
-abstract class CommandBase {
+abstract class CommandBase implements vscode.Disposable {
 
     protected _timeConverter: TimeConverter;
-    protected _disposables: vscode.Disposable[];
+    protected _disposables: vscode.Disposable[] = [];
     protected _stepHandler: MultiStepHandler;
     protected _resultBox: ResultBox;
 

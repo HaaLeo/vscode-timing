@@ -96,6 +96,7 @@ class IsoRfcToEpochCommand extends CommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getIsoRfcTimeStep);
         this._stepHandler.registerStep(getEpochTargetFormat);
+        this._disposables.push(this._stepHandler);
     }
 }
 

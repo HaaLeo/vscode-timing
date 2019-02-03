@@ -113,6 +113,7 @@ class CustomToCustomCommand extends CustomCommandBase {
         this._stepHandler.registerStep(getCustomSourceFormatStep);
         this._stepHandler.registerStep(getTimeOfCustomFormat);
         this._stepHandler.registerStep(getCustomTargetFormatStep);
+        this._disposables.push(this._stepHandler);
     }
 }
 

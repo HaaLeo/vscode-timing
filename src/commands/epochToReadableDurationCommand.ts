@@ -94,6 +94,7 @@ class EpochToReadableDurationCommand extends CommandBase {
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep);
         this._stepHandler.registerStep(getEpochSourceFormat);
+        this._disposables.push(this._stepHandler);
     }
 }
 

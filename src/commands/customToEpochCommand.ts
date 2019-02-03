@@ -108,6 +108,7 @@ class CustomToEpochCommand extends CustomCommandBase {
         this._stepHandler.registerStep(getCustomFormatStep);
         this._stepHandler.registerStep(getTimeOfCustomFormat);
         this._stepHandler.registerStep(getEpochTargetFormat);
+        this._disposables.push(this._stepHandler);
     }
 }
 

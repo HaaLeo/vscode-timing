@@ -7,7 +7,7 @@
 
 'use strict';
 
-import { QuickPickItem } from 'vscode';
+import { Disposable, QuickPickItem } from 'vscode';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { IStep } from './IStep';
 import { QuickPickStep } from './quickPickStep';
@@ -16,7 +16,7 @@ import { StepResult } from './stepResult';
 /**
  * The handles the execution of multiple steps.
  */
-class MultiStepHandler {
+class MultiStepHandler implements Disposable {
     /**
      * List of steps to be executed.
      */

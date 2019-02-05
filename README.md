@@ -80,7 +80,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
   * `local`: Show the hover preview in ISO 8601 Local time.
   * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
 * `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
-* `timing.insertConvertedTime`: Indicates whether a converted time is inserted at the cursor's current position after conversion
+* `timing.insertConvertedTime`: Indicates whether a converted time is [inserted](#insert-converted-time) at the cursor's current position after conversion
 
 ## Command Overview
 

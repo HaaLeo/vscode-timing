@@ -38,10 +38,10 @@ Epoch (s, ms, ns) | ⟶ | Human Readable Duration
 ISO 8601 Duration | ⟶ | Epoch (s, ms, ns)
 ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)
 ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)
-- | ⟶ | Now as Epoch (s, ms, ns)
-- | ⟶ | Now as ISO 8601 UTC
-- | ⟶ | Now as ISO 8601 Local| [Link](#current-time)
-- | ⟶ | Now as Custom
+\- | ⟶ | Now as Epoch (s, ms, ns)
+\- | ⟶ | Now as ISO 8601 UTC
+\- | ⟶ | Now as ISO 8601 Local| [Link](#current-time)
+\- | ⟶ | Now as Custom
 Custom | ⟶ | Custom
 Custom | ⟶ | Epoch (s, ms, ns)
 Custom | ⟶ | ISO 8601 Utc

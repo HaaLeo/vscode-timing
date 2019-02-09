@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+* **Updated** dependencies to fix security vulnerability in `extend`.
+
 ## 2019-02-05 - v1.4.0
 * **Added** `timing.customToCustom` command to convert a custom time to another custom format ([#20](https://github.com/HaaLeo/vscode-timing/issues/20)).
 * **Added** _optional arguments_ to reduce the required insertions during a conversion ([#21](https://github.com/HaaLeo/vscode-timing/issues/21)). Speeds up command usage if parameter do not change often.

@@ -143,8 +143,8 @@ class TimeConverter {
 
     public isValidEpoch(epoch: string): boolean {
         let result = false;
-        if (epoch) {
-            result = moment(Number(epoch)).isValid();
+        if (/^\d+$/.test(epoch)) {
+            result = true;
         }
         return result;
     }

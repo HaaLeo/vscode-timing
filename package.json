@@ -329,19 +329,19 @@
         "tslint": "tslint --project ./"
     },
     "devDependencies": {
-        "@types/mocha": "^5.2.5",
-        "@types/node": "^10.12.24",
-        "@types/sinon": "^7.0.5",
-        "codecov": "^3.1.0",
+        "@types/mocha": "^5.2.6",
+        "@types/node": "^11.10.5",
+        "@types/sinon": "^7.0.9",
+        "codecov": "^3.2.0",
         "decache": "^4.5.1",
         "istanbul": "^0.4.5",
-        "mocha": "^5.2.0",
+        "mocha": "^6.0.2",
         "remap-istanbul": "^0.13.0",
-        "sinon": "^7.2.3",
-        "tslint": "^5.12.1",
+        "sinon": "^7.2.7",
+        "tslint": "^5.13.1",
         "typescript": "^3.3.3",
-        "vsce": "^1.57.0",
-        "vscode": "^1.1.29"
+        "vsce": "^1.57.1",
+        "vscode": "^1.1.30"
     },
     "dependencies": {
         "moment": "^2.24.0"

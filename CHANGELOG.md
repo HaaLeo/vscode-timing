@@ -3,6 +3,7 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 * **Updated** dependencies to fix security vulnerability in `extend`.
+* **Fixed** a bug that prevented long epoch times (nanoseconds) being accepted as input for commands.
 
 ## 2019-02-05 - v1.4.0
 * **Added** `timing.customToCustom` command to convert a custom time to another custom format ([#20](https://github.com/HaaLeo/vscode-timing/issues/20)).

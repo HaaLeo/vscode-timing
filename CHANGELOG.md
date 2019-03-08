@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 2019-03-08 - v1.4.1
 * **Updated** dependencies to fix security vulnerability in `extend`.
 * **Fixed** a bug that prevented long epoch times (nanoseconds) being accepted as input for commands.
 

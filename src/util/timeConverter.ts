@@ -123,7 +123,7 @@ class TimeConverter {
         return result.toString();
     }
 
-    public customToEpoch(time: string, customFormat: string, epochFormat: string): string {
+    public customToEpoch(customFormat: string, time: string, epochFormat: string): string {
         let result: number;
         switch (epochFormat) {
             case Constants.SECONDS:

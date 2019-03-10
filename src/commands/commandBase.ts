@@ -10,6 +10,7 @@
 import * as vscode from 'vscode';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { ICommandOptions } from '../util/commandOptions';
+import { InputFlowAction } from '../util/InputFlowAction';
 import { ResultBox } from '../util/resultBox';
 import { TimeConverter } from '../util/timeConverter';
 
@@ -24,6 +25,9 @@ abstract class CommandBase implements vscode.Disposable {
     protected _hideResultViewOnEnter: boolean;
     protected _ignoreFocusOut: boolean;
 
+    private _readInputFromClipboard: boolean;
+    private _writeToClipboard: boolean;
+
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter) {
         this._timeConverter = timeConverter;
 
@@ -35,16 +39,23 @@ abstract class CommandBase implements vscode.Disposable {
             tooltip: 'Insert Result'
         });
 
-        this.updateInsertConvertedTime();
-        this.updateIgnoreFocusOut();
-        this.updateHideResultViewOnEnter();
+        this._insertConvertedTime = this.getConfigParameter('insertConvertedTime');
+        this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');
+        this._hideResultViewOnEnter = this.getConfigParameter('hideResultViewOnEnter');
+        this._readInputFromClipboard = this.getConfigParameter('readInputFromClipboard');
+        this._writeToClipboard = this.getConfigParameter('writeResultToClipboard');
+
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
             if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
-                this.updateInsertConvertedTime();
+                this._insertConvertedTime = this.getConfigParameter('insertConvertedTime');
             } else if (changedEvent.affectsConfiguration('timing.ignoreFocusOut')) {
-                this.updateIgnoreFocusOut();
+                this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');
             } else if (changedEvent.affectsConfiguration('timing.hideResultViewOnEnter')) {
-                this.updateHideResultViewOnEnter();
+                this._hideResultViewOnEnter = this.getConfigParameter('hideResultViewOnEnter');
+            } else if (changedEvent.affectsConfiguration('timing.readInputFromClipboard')) {
+                this._readInputFromClipboard = this.getConfigParameter('readInputFromClipboard');
+            } else if (changedEvent.affectsConfiguration('timing.writeResultToClipboard')) {
+                this._writeToClipboard = this.getConfigParameter('writeResultToClipboard');
             }
         }, this, this._disposables);
     }
@@ -57,14 +68,11 @@ abstract class CommandBase implements vscode.Disposable {
         });
     }
 
-    protected isInputSelected(): string | undefined {
-        let result: string;
-        const activeEditor = vscode.window.activeTextEditor;
-        if (activeEditor !== undefined) {
-            const activeSelection = activeEditor.selection;
-            if (!activeSelection.isEmpty) {
-                result = activeEditor.document.getText(activeSelection);
-            }
+    protected async getPreInput(): Promise<string> {
+        let result = this.getSelection();
+
+        if (!result && this._readInputFromClipboard) {
+            result = await vscode.env.clipboard.readText();
         }
 
         return result;
@@ -79,31 +87,65 @@ abstract class CommandBase implements vscode.Disposable {
         }
     }
 
-    private updateInsertConvertedTime(): void {
-        const config = vscode.workspace.getConfiguration('timing')
-            .get('insertConvertedTime');
+    protected async internalExecute(action: InputFlowAction, conversionName: string, rawInput: string)
+        : Promise<{
+            conversionResult: string,
+            stepHandlerResult: string[],
+            inserted: boolean,
+            wroteToClipboard: boolean
+        }> {
 
-        if (typeof (config) === 'boolean') {
-            this._insertConvertedTime = config;
+        let stepHandlerResult: string[];
+        let conversionResult: string;
+        let inserted = false;
+        let wroteToClipboard = false;
+        let abort = false;
+
+        if (action === InputFlowAction.Back) {
+            stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+        } else {
+            stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
         }
+
+        stepHandlerResult.forEach((element) => {
+            if (!element) {
+                abort = true;
+            }
+        });
+
+        if (!abort) {
+
+            conversionResult = this._timeConverter[conversionName](...stepHandlerResult);
+
+            if (this._insertConvertedTime) {
+                inserted = await this.insert(conversionResult);
+            }
+
+            if (this._writeToClipboard) {
+                await vscode.env.clipboard.writeText(conversionResult);
+                wroteToClipboard = true;
+            }
+        }
+
+        return { conversionResult, stepHandlerResult, inserted, wroteToClipboard };
     }
 
-    private updateHideResultViewOnEnter(): void {
-        const config = vscode.workspace.getConfiguration('timing')
-            .get('hideResultViewOnEnter');
-
-        if (typeof (config) === 'boolean') {
-            this._hideResultViewOnEnter = config;
+    private getSelection(): string | undefined {
+        let result: string;
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor !== undefined) {
+            const activeSelection = activeEditor.selection;
+            if (!activeSelection.isEmpty) {
+                result = activeEditor.document.getText(activeSelection);
+            }
         }
+
+        return result;
     }
 
-    private updateIgnoreFocusOut(): void {
-        const config = vscode.workspace.getConfiguration('timing')
-            .get('ignoreFocusOut');
-
-        if (typeof (config) === 'boolean') {
-            this._ignoreFocusOut = config;
-        }
+    private getConfigParameter<T>(configName: string): T {
+        return vscode.workspace.getConfiguration('timing')
+            .get<T>(configName);
     }
 }
 

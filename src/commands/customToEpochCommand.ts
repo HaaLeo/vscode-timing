@@ -25,22 +25,23 @@ class CustomToEpochCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let selectedCustomFormat: string;
+        let selectedEpochTargetFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.sourceFormat, 0);
+        this._stepHandler.setStepResult(options.targetUnit, 2);
+
         do {
             let rawInput = loopResult.value;
-            let selectedCustomFormat: string;
-            let selectedEpochTargetFormat: string;
-
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.sourceFormat, 0);
-            this._stepHandler.setStepResult(options.targetUnit, 2);
 
             const internalResult = await this.internalExecute(loopResult.action, 'customToEpoch', rawInput);
 
             [selectedCustomFormat, rawInput, selectedEpochTargetFormat] = internalResult.stepHandlerResult;
-            if (!internalResult.inserted) {
+            if (!internalResult.inserted && internalResult.conversionResult) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedCustomFormat + ')',
                     this.title + ': Result (' + selectedEpochTargetFormat + ')',

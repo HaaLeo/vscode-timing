@@ -24,16 +24,16 @@ class CustomToIsoUtcCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        let selectedFormat: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.sourceFormat, 0);
+
         do {
             let rawInput = loopResult.value;
-            let selectedFormat: string;
-
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.sourceFormat, 0);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [selectedFormat, rawInput] =

@@ -17,6 +17,7 @@ class NowAsIsoUtcCommand extends CustomCommandBase {
 
     public async execute() {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
+
         do {
             const result = this._timeConverter.getNowAsIsoUtc();
 

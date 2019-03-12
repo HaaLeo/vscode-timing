@@ -27,8 +27,7 @@ class EpochToIsoUtcCommand extends CommandBase {
      */
     public async execute() {
 
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
         do {
             let rawInput = loopResult.value;
 

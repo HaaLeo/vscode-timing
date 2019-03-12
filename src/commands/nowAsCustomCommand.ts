@@ -24,15 +24,15 @@ class NowAsCustomCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let selectedFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.targetFormat, 0);
+
         do {
-            let selectedFormat: string;
-
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.targetFormat, 0);
-
             if (loopResult.action === InputFlowAction.Back) {
                 [selectedFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);

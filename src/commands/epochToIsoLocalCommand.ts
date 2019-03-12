@@ -26,15 +26,13 @@ class EpochToIsoLocalCommand extends CommandBase {
      * Execute the command.
      */
     public async execute() {
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+        if (!this._stepHandler) {
+            this.initialize();
+        }
 
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
         do {
             let rawInput = loopResult.value;
-
-            if (!this._stepHandler) {
-                this.initialize();
-            }
 
             if (loopResult.action === InputFlowAction.Back) {
                 [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);

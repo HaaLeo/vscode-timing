@@ -24,8 +24,8 @@ class CustomToCustomCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+
         do {
             let rawInput = loopResult.value;
             let selectedSourceFormat: string;

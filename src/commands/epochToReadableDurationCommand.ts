@@ -26,17 +26,16 @@ class EpochToReadableDurationCommand extends CommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let selectedUnit: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
 
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.sourceUnit, 1);
+
         do {
             let rawInput = loopResult.value;
-            let selectedUnit: string;
-
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.sourceUnit, 1);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);

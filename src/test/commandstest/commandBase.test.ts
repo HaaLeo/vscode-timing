@@ -17,8 +17,8 @@ import { ExtensionContextMock } from '../mock/extensionContextMock';
 describe('CommandBase', () => {
 
     class TestObject extends CommandBase {
-        public execute(): string {
-            return this.isInputSelected();
+        public execute(): Thenable<string> {
+            return this.getPreInput();
         }
 
         public insert(arg: string): Thenable<boolean> {
@@ -54,20 +54,20 @@ describe('CommandBase', () => {
     });
 
     describe('isInputSelected', () => {
-        it('should get the correct preselected time.', () => {
+        it('should get the correct preselected time.', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
             const testObject = new TestObject(new ExtensionContextMock(), new TimeConverter());
 
-            const result = testObject.execute();
+            const result = await testObject.execute();
 
             assert.equal(result, '123456789');
         });
 
-        it('should return selection no matter whether it is a time.', () => {
+        it('should return selection no matter whether it is a time.', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 2), new vscode.Position(3, 4));
             const testObject = new TestObject(new ExtensionContextMock(), new TimeConverter());
 
-            const result = testObject.execute();
+            const result = await testObject.execute();
 
             assert.equal(result, 't ');
         });
@@ -114,7 +114,7 @@ describe('CommandBase', () => {
         });
 
         it('should insert at the cursor selection', async () => {
-            const priorText = testObject.execute();
+            const priorText = await testObject.execute();
 
             let success = await testObject.insert('test arg');
             const insertedText = testEditor.document.getText(testEditor.selection);

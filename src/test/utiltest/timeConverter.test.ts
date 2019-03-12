@@ -116,25 +116,25 @@ describe('TimeConverter', () => {
         });
 
         it('Should convert to epoch correctly as s.', () => {
-            const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 's');
+            const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 's');
 
             assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').unix());
         });
 
         it('Should convert to epoch correctly as ms.', () => {
-            const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 'ms');
+            const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 'ms');
 
             assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').valueOf());
         });
 
         it('Should convert to epoch correctly as ns.', () => {
-            const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 'ns');
+            const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 'ns');
 
             assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').valueOf() * 1000000);
         });
 
         it('Should throw an error if option is unknown.', () => {
-            assert.throws(() => testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', undefined));
+            assert.throws(() => testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', undefined));
         });
     });
 

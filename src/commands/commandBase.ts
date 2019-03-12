@@ -68,6 +68,9 @@ abstract class CommandBase implements vscode.Disposable {
         });
     }
 
+    /***
+     * Get the pre input. Either from the editors selection or from the clipboard.
+     */
     protected async getPreInput(): Promise<string> {
         let result = this.getSelection();
 
@@ -106,6 +109,8 @@ abstract class CommandBase implements vscode.Disposable {
         } else {
             stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
         }
+
+        abort = stepHandlerResult.length === 0 ? true : false;
 
         stepHandlerResult.forEach((element) => {
             if (!element) {

@@ -24,15 +24,15 @@ class NowAsEpochCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let epochTargetFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.targetUnit, 0);
+
         do {
-            let epochTargetFormat: string;
-
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.targetUnit, 0);
-
             if (loopResult.action === InputFlowAction.Back) {
                 [epochTargetFormat] =
                     await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);

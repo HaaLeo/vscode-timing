@@ -56,20 +56,6 @@ class MultiStepHandler implements Disposable {
         } else if (previousStepIndex >= 0) {
             result = this._stepResults[previousStepIndex];
         }
-        // for (let i = 0; i < (this._givenResults.size + this._steps.length); i++) {
-        //     if (!this._givenResults.has(i)) {
-        //         if (this._steps[stepIndex] === step) {
-        //             if (this._givenResults.has(i - 1)) {
-        //                 result = this._givenResults.get(i - 1);
-        //             } else {
-        //                 result = this._stepResults[stepIndex - 1];
-        //             }
-        //             break;
-        //         } else {
-        //             stepIndex++;
-        //         }
-        //     }
-        // }
 
         return result;
     }
@@ -82,12 +68,18 @@ class MultiStepHandler implements Disposable {
      */
     public registerStep(step: IStep, index?: number): void {
 
-        if (this._steps.indexOf(step, 0) === -1) {
-            if (index === 0 || index) {
-                this._steps.splice(index, 0, step);
-            } else {
-                this._steps.push(step);
+        if (index === 0 || index) {
+            this._steps.splice(index, 0, step);
+            // Shift _givenResultsMap to match index
+            for (let i = this._steps.length - 1; i >= index; i--) {
+                if (this._givenResults.has(i)) {
+                    this._givenResults.set(i + 1, this._givenResults.get(i));
+                    this._givenResults.delete(i);
+                }
             }
+
+        } else {
+            this._steps.push(step);
         }
     }
 
@@ -112,6 +104,13 @@ class MultiStepHandler implements Disposable {
         const index = this._steps.indexOf(step, 0);
         if (index !== -1) {
             this._steps.splice(index, 1);
+            // Shift _givenResultsMap to match index
+            for (let i = index; i < this._steps.length; i++) {
+                if (this._givenResults.has(i + 1)) {
+                    this._givenResults.set(i, this._givenResults.get(i + 1));
+                    this._givenResults.delete(i + 1);
+                }
+            }
         }
     }
 
@@ -142,7 +141,9 @@ class MultiStepHandler implements Disposable {
         await this.executeStep(startIndex, ignoreFocusOut, onBack);
 
         // Filter results when sub steps were used
-        return this.buildResult();
+        this._stepResults = this._stepResults.filter(Boolean);
+
+        return this._stepResults;
     }
 
     /**
@@ -178,25 +179,35 @@ class MultiStepHandler implements Disposable {
         let result: StepResult;
 
         // Check whether this step should be skipped because of a valid user pre-selection
-        // Todo: Can be generalized via givenResult?
         if (step.skip
             && step.validation(this._userSelection, this.getPreviousResult(step))
             && !onBack) {
             result = new StepResult(InputFlowAction.Continue, this._userSelection);
         } else if (this._givenResults.has(stepIndex)) {
+            // Check if this step should be skipped because of pre-defined result
             if (onBack) {
                 result = new StepResult(InputFlowAction.Back, this._givenResults.get(stepIndex));
             } else {
                 result = new StepResult(InputFlowAction.Continue, this._givenResults.get(stepIndex));
             }
         } else {
+            let stepIdxToShow = stepIndex + 1;
+            for (let i = 0; i <= stepIndex; i++) {
+                if (this._givenResults.has(i)) {
+                    // Adjust the index when givenResult was used
+                    stepIdxToShow--;
+                }
+            }
+
+            // Execute the step
             result = await step.execute(
                 this,
-                stepIndex + 1,
+                stepIdxToShow,
                 this._steps.length - this._givenResults.size,
                 ignoreFocusOut);
         }
 
+        // Evaluate result
         switch (result.action) {
 
             case InputFlowAction.Continue: {
@@ -216,25 +227,6 @@ class MultiStepHandler implements Disposable {
             default:
                 throw Error('Unknown input flow action!');
         }
-    }
-
-    /**
-     * Build the final result from the `_givenResults` and from the `_stepResults`.
-     */
-    private buildResult(): string[] {
-        this._stepResults = this._stepResults.filter(Boolean);
-        let stepIndex = 0;
-        const result: string[] = [];
-
-        for (let i = 0; i < (this._givenResults.size + this._stepResults.length); i++) {
-            if (this._givenResults.has(i)) {
-                result.push(this._givenResults.get(i));
-            } else {
-                result.push(this._stepResults[stepIndex]);
-                stepIndex++;
-            }
-        }
-        return result;
     }
 }
 

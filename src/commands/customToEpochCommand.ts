@@ -27,16 +27,17 @@ class CustomToEpochCommand extends CustomCommandBase {
     public async execute(options: ICommandOptions = {}) {
         const preSelection = this.isInputSelected();
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.sourceFormat, 0);
+        this._stepHandler.setStepResult(options.targetUnit, 2);
+
         do {
             let rawInput = loopResult.value;
             let selectedCustomFormat: string;
             let selectedEpochTargetFormat: string;
-
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.sourceFormat, 0);
-            this._stepHandler.setStepResult(options.targetUnit, 2);
 
             if (loopResult.action === InputFlowAction.Back) {
                 [selectedCustomFormat, rawInput, selectedEpochTargetFormat] =

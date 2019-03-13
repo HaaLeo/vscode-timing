@@ -149,7 +149,7 @@ describe('TimeConverter', () => {
     describe('customToCustom', () => {
         it('Should convert to custom format correctly.', () => {
             const testObject = new TimeConverter();
-            const result = testObject.customToCustom('2018-05-13', 'YYYY-MM-DD', 'DD/MM/YYYY');
+            const result = testObject.customToCustom('YYYY-MM-DD', '2018-05-13', 'DD/MM/YYYY');
             assert.strictEqual(result, '13/05/2018');
         });
     });

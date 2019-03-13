@@ -31,7 +31,7 @@ class TimeConverter {
         return result;
     }
 
-    public customToCustom(time: string, sourceFormat: string, targetFormat: string): any {
+    public customToCustom(sourceFormat: string, time: string, targetFormat: string): any {
         const result = moment(time, sourceFormat, true).format(targetFormat);
         return result;
     }

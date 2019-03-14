@@ -23,17 +23,11 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
     constructor(timeConverter: TimeConverter) {
         this._timeConverter = timeConverter;
 
-        this.updateTimestampTargetFormatDeprecated();
+        this.updateTimestampEnabled();
+        this.updateTimestampTargetFormat();
 
-        // Compatibility reasons: only initialize with new settings when old setting has default values (is not set)
-        if (this._enabled && this._targetFormat === 'utc') {
-            this.updateTimestampEnabled();
-            this.updateTimestampTargetFormat();
-        }
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
-            if (changedEvent.affectsConfiguration('timing.hoverTargetFormat')) {
-                this.updateTimestampTargetFormatDeprecated();
-            } else if (changedEvent.affectsConfiguration('timing.hoverTimestamp.targetFormat')) {
+            if (changedEvent.affectsConfiguration('timing.hoverTimestamp.targetFormat')) {
                 this.updateTimestampTargetFormat();
             } else if (changedEvent.affectsConfiguration('timing.hoverTimestamp.enabled')) {
                 this.updateTimestampEnabled();
@@ -93,30 +87,6 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
             .get<boolean>('enabled', true);
 
         this._enabled = config;
-    }
-
-    private updateTimestampTargetFormatDeprecated(): void {
-        // When the new config is already set(!= utc), prioritize the new config's values
-        // Otherwise use the old configurations values
-        const newTargetFormat = vscode.workspace.getConfiguration('timing.hoverTimestamp')
-            .get<string>('targetFormat', 'utc');
-        const newEnabled = vscode.workspace.getConfiguration('timing.hoverTimestamp')
-            .get<boolean>('enabled', true);
-
-        if (newTargetFormat === 'utc' && newEnabled) { // The default values
-            const config = vscode.workspace.getConfiguration('timing')
-                .get<string>('hoverTargetFormat', 'utc');
-
-            if (config === 'disable') {
-                this._enabled = false;
-            } else {
-                this._enabled = true;
-                this._targetFormat = config;
-            }
-        } else {
-            this._enabled = newEnabled;
-            this._targetFormat = newTargetFormat;
-        }
     }
 }
 

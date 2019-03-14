@@ -30,9 +30,6 @@ describe('TimestampHoverProvider', () => {
         const config = vscode.workspace.getConfiguration('timing.hoverTimestamp');
         await config.update('targetFormat', 'utc');
         await config.update('enabled', true);
-        const deprecatedConfig = vscode.workspace.getConfiguration('timing');
-        // In case test computer has this setting set to another value
-        await deprecatedConfig.update('hoverTargetFormat', 'utc');
 
         timeConverterMock.reset();
         timeConverterMock.isValidEpoch.returns(true);
@@ -44,9 +41,6 @@ describe('TimestampHoverProvider', () => {
         const config = vscode.workspace.getConfiguration('timing.hoverTimestamp');
         await config.update('targetFormat', undefined);
         await config.update('enabled', undefined);
-        const deprecatedConfig = vscode.workspace.getConfiguration('timing');
-        await deprecatedConfig.update('hoverTargetFormat', undefined);
-
     });
 
     it('should provide correct utc hover message.', async () => {

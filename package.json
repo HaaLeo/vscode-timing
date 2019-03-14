@@ -201,14 +201,6 @@
                     "type": "boolean",
                     "default": true
                 },
-                "timing.hoverTargetFormat": {
-                    "title": "The target format of the hover preview.",
-                    "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\", a custom format or \"disable\" to disable the hover preview.",
-                    "type": "string",
-                    "default": "utc",
-                    "pattern": "^(?!\\s*$).+",
-                    "deprecationMessage": "DEPRECATED: This setting will be removed in the next major release. Use timing.hoverTimestamp.* settings instead."
-                },
                 "timing.hoverTimestamp.targetFormat": {
                     "title": "The target format of the hover preview.",
                     "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\" or custom format.",

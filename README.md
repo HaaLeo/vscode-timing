@@ -10,7 +10,7 @@
 The *timing* extension converts and visualizes a given time to various formats.  
 This extension was inspired by [zodiac403's epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
-> All breaking changes of **v1.0.0** are listed in the [changelog](CHANGELOG.md)
+> All breaking changes of **v1.0.0** are listed in the [changelog](CHANGELOG.md#changelog)
 
 ## Installation
 
@@ -67,20 +67,21 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 
 ## Settings Overview
 
-* `timing.customFormats`: An array of custom source/target formats used to convert from/to
-* `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart
+* `timing.clipboard.readingEnabled`: Indicates whether the extension should try to get the input time from the clipboard instead of asking the user for input.
+* `timing.clipboard.writingEnabled`: Indicates whether the result of the conversion is written to the clipboard.
+* `timing.customFormats`: An array of custom source/target formats used to convert from/to.
+* `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart.
 * `timing.hiddenCommands`: List of commands that shall be hidden from the command palette.
 * `timing.hoverDuration.enabled`: Controls whether the duration hover is enabled or disabled.
 * `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
 * `timing.hoverDuration.useISOTargetFormat`: Indicates whether the ISO 8601 duration definition is used as target format for the hover.
-* `timing.hoverTargetFormat`: **DEPRECATED** use the `timing.hoverTimestamp.*` settings instead.
 * `timing.hoverTimestamp.enabled`: Controls whether the timestamp hover is enabled or disabled.
 * `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format. Possible values:
   * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.
   * `local`: Show the hover preview in ISO 8601 Local time.
   * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
-* `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost
-* `timing.insertConvertedTime`: Indicates whether a converted time is [inserted](#insert-converted-time) at the cursor's current position after conversion
+* `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost.
+* `timing.insertConvertedTime`: Indicates whether a converted time is [inserted](#insert-converted-time) at the cursor's current position after conversion.
 
 ## Command Overview
 

@@ -35,30 +35,14 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
         do {
             let rawInput = loopResult.value;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [selectedFormat, rawInput] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [selectedFormat, rawInput] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'customToISOLocal', rawInput);
 
-            if (!rawInput || !selectedFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.customToISOLocal(rawInput, selectedFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            [selectedFormat, rawInput] = internalResult.stepHandlerResult;
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedFormat + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

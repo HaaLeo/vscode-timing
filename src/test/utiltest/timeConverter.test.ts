@@ -141,7 +141,7 @@ describe('TimeConverter', () => {
     describe('customToISOLocal', () => {
         it('Should convert to ISO Local correctly.', () => {
             const testObject = new TimeConverter();
-            const result = testObject.customToISOLocal('2018-05-05', 'YYYY-MM-DD');
+            const result = testObject.customToISOLocal('YYYY-MM-DD', '2018-05-05');
             assert.strictEqual(result, moment('2018-05-05', 'YYYY-MM-DD').toISOString(true));
         });
     });
@@ -157,7 +157,7 @@ describe('TimeConverter', () => {
     describe('customToISOUtc', () => {
         it('Should convert to ISO UTC correctly.', () => {
             const testObject = new TimeConverter();
-            const result = testObject.customToISOUtc('2018-05-05', 'YYYY-MM-DD');
+            const result = testObject.customToISOUtc('YYYY-MM-DD', '2018-05-05');
             assert.strictEqual(result, moment('2018-05-05', 'YYYY-MM-DD').toISOString(false));
         });
     });

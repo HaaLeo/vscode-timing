@@ -52,10 +52,10 @@ abstract class CommandBase implements vscode.Disposable {
                 this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');
             } else if (changedEvent.affectsConfiguration('timing.hideResultViewOnEnter')) {
                 this._hideResultViewOnEnter = this.getConfigParameter('hideResultViewOnEnter');
-            } else if (changedEvent.affectsConfiguration('timing.clipboard.readEnabled')) {
-                this._readInputFromClipboard = this.getConfigParameter('clipboard.readEnabled');
-            } else if (changedEvent.affectsConfiguration('timing.clipboard.writeEnabled')) {
-                this._writeToClipboard = this.getConfigParameter('clipboard.writeEnabled');
+            } else if (changedEvent.affectsConfiguration('timing.clipboard.readingEnabled')) {
+                this._readInputFromClipboard = this.getConfigParameter('clipboard.readingEnabled');
+            } else if (changedEvent.affectsConfiguration('timing.clipboard.writingEnabled')) {
+                this._writeToClipboard = this.getConfigParameter('clipboard.writingEnabled');
             }
         }, this, this._disposables);
     }

@@ -82,7 +82,7 @@ describe('CustomToIsoLocal', () => {
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.customToISOLocal('2018', 'YYYY'));
+                timeConverter.customToISOLocal('YYYY', '2018'));
         });
 
         it('Should start with last step if input flow action is Back.', async () => {

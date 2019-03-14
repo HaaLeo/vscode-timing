@@ -23,12 +23,12 @@ class TimeConverter {
         return result;
     }
 
-    public customToISOUtc(time: string, format: string): string {
+    public customToISOUtc(format: string, time: string): string {
         const result = moment(time, format, true).toISOString(false);
         return result;
     }
 
-    public customToISOLocal(time: string, format: string): string {
+    public customToISOLocal(format: string, time: string): string {
         const result = moment(time, format, true).toISOString(true);
         return result;
     }

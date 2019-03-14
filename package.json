@@ -132,13 +132,13 @@
             "type": "object",
             "title": "Time Converter",
             "properties": {
-                "timing.clipboard.readEnabled": {
+                "timing.clipboard.readingEnabled": {
                     "title": "Read input time from the clipboard.",
                     "description": "Indicates whether the extension should try to get the input time from the clipboard instead of asking the user for input.",
                     "type": "boolean",
                     "default": true
                 },
-                "timing.clipboard.writeEnabled": {
+                "timing.clipboard.writingEnabled": {
                     "title": "Write the converted time to the clipboard",
                     "description": "Indicates whether the result of the conversion is written to the clipboard.",
                     "type": "boolean",

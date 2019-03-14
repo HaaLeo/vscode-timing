@@ -41,7 +41,7 @@ class CustomToEpochCommand extends CustomCommandBase {
             const internalResult = await this.internalExecute(loopResult.action, 'customToEpoch', rawInput);
 
             [selectedCustomFormat, rawInput, selectedEpochTargetFormat] = internalResult.stepHandlerResult;
-            if (!internalResult.inserted && internalResult.conversionResult) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedCustomFormat + ')',
                     this.title + ': Result (' + selectedEpochTargetFormat + ')',

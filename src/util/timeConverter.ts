@@ -9,6 +9,7 @@
 
 import * as moment from 'moment';
 import { Constants } from '../util/constants';
+import { InputDefinition } from './inputDefinition';
 
 class TimeConverter {
     public isoRfcToCustom(date: string, targetFormat: string): any {
@@ -16,7 +17,8 @@ class TimeConverter {
         return result;
     }
 
-    public epochToCustom(ms: string, targetFormat: string): any {
+    public epochToCustom(epoch: string, targetFormat: string): string {
+        const ms = new InputDefinition(epoch).inputAsMs;
         const result = moment(ms, 'x').format(targetFormat);
         return result;
     }

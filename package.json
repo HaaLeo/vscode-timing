@@ -132,6 +132,18 @@
             "type": "object",
             "title": "Time Converter",
             "properties": {
+                "timing.clipboard.readEnabled": {
+                    "title": "Read input time from the clipboard.",
+                    "description": "Indicates whether the extension should try to get the input time from the clipboard instead of asking the user for input.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "timing.clipboard.writeEnabled": {
+                    "title": "Write the converted time to the clipboard",
+                    "description": "Indicates whether the result of the conversion is written to the clipboard.",
+                    "type": "boolean",
+                    "default": true
+                },
                 "timing.customFormats": {
                     "title": "Custom time formats.",
                     "description": "An array of custom source/target formats used to convert from/to.",
@@ -169,15 +181,13 @@
                     "title": "Insert the converted time.",
                     "description": "Indicates whether a converted time is inserted at the cursor's current position after conversion.",
                     "type": "boolean",
-                    "default": false,
-                    "pattern": "(true|false)"
+                    "default": false
                 },
                 "timing.ignoreFocusOut": {
                     "title": "Ignore when input box loses focus",
                     "description": "Indicates whether the input boxes remain visible when the focus is lost.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
+                    "default": true
                 },
                 "timing.hiddenCommands": {
                     "title": "Hide Commands from the command palette.",
@@ -189,8 +199,7 @@
                     "title": "Hide the result view when enter is pressed.",
                     "description": "Indicates whether the result view is hidden when enter is pressed. When set to \"false\" the command will restart.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
+                    "default": true
                 },
                 "timing.hoverTargetFormat": {
                     "title": "The target format of the hover preview.",
@@ -211,8 +220,7 @@
                     "title": "En-/disable the timestamp hover.",
                     "description": "Controls whether the timestamp hover is enabled or disabled.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
+                    "default": true
                 },
                 "timing.hoverDuration.sourceUnit": {
                     "title": "The epoch unit of the duration hover preview.",
@@ -235,15 +243,13 @@
                     "title": "En-/disable the duration hover.",
                     "description": "Controls whether the duration hover is enabled or disabled.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
+                    "default": true
                 },
                 "timing.hoverDuration.useISOTargetFormat": {
                     "title": "Use the ISO 8601 duration representation as target format.",
                     "description": "Indicates whether the ISO 8601 duration definition is used as target format.",
                     "type": "boolean",
-                    "default": false,
-                    "pattern": "(true|false)"
+                    "default": false
                 }
             }
         },

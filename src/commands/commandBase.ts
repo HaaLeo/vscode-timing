@@ -52,10 +52,10 @@ abstract class CommandBase implements vscode.Disposable {
                 this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');
             } else if (changedEvent.affectsConfiguration('timing.hideResultViewOnEnter')) {
                 this._hideResultViewOnEnter = this.getConfigParameter('hideResultViewOnEnter');
-            } else if (changedEvent.affectsConfiguration('timing.readInputFromClipboard')) {
-                this._readInputFromClipboard = this.getConfigParameter('readInputFromClipboard');
-            } else if (changedEvent.affectsConfiguration('timing.writeResultToClipboard')) {
-                this._writeToClipboard = this.getConfigParameter('writeResultToClipboard');
+            } else if (changedEvent.affectsConfiguration('timing.clipboard.readEnabled')) {
+                this._readInputFromClipboard = this.getConfigParameter('clipboard.readEnabled');
+            } else if (changedEvent.affectsConfiguration('timing.clipboard.writeEnabled')) {
+                this._writeToClipboard = this.getConfigParameter('clipboard.writeEnabled');
             }
         }, this, this._disposables);
     }
@@ -94,8 +94,7 @@ abstract class CommandBase implements vscode.Disposable {
         : Promise<{
             conversionResult: string,
             stepHandlerResult: string[],
-            inserted: boolean,
-            wroteToClipboard: boolean
+            showResultBox: boolean
         }> {
 
         let stepHandlerResult: string[];
@@ -128,11 +127,15 @@ abstract class CommandBase implements vscode.Disposable {
 
             if (this._writeToClipboard) {
                 await vscode.env.clipboard.writeText(conversionResult);
+                vscode.window.showInformationMessage('"' + conversionResult + '" was copied to the clipboard.');
                 wroteToClipboard = true;
             }
         }
-
-        return { conversionResult, stepHandlerResult, inserted, wroteToClipboard };
+        return {
+            conversionResult,
+            stepHandlerResult,
+            showResultBox: !inserted && !wroteToClipboard && Boolean(conversionResult)
+        };
     }
 
     private getSelection(): string | undefined {

@@ -41,7 +41,7 @@ class CustomToCustomCommand extends CustomCommandBase {
 
             [selectedSourceFormat, rawInput, selectedTargetFormat] = internalResult.stepHandlerResult;
 
-            if (!internalResult.inserted && internalResult.conversionResult) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedSourceFormat + ')',
                     this.title + ': Result (' + selectedTargetFormat + ')',

@@ -37,31 +37,15 @@ class EpochToCustomCommand extends CustomCommandBase {
         do {
             let rawInput = loopResult.value;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput, selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'epochToCustom', rawInput);
+            [rawInput, selectedFormat] = internalResult.stepHandlerResult;
 
-            if (!rawInput || !selectedFormat) {
-                break;
-            }
-
-            const input = new InputDefinition(rawInput);
-            const result = this._timeConverter.epochToCustom(input.inputAsMs.toString(), selectedFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
+                const input = new InputDefinition(rawInput);
                 loopResult = await this._resultBox.show(
                     'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

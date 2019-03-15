@@ -16,7 +16,6 @@ import { ResultBox } from '../../util/resultBox';
 
 describe('ResultBox', () => {
     let testObject: ResultBox;
-    let testEditor: vscode.TextEditor;
     const insertButtonMock: vscode.QuickInputButton = {
         iconPath: 'my-icon-path'
     };
@@ -28,7 +27,7 @@ describe('ResultBox', () => {
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
-            testEditor = await vscode.window.showTextDocument(file);
+            await vscode.window.showTextDocument(file);
         }
     });
 

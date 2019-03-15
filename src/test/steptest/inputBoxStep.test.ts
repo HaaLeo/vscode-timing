@@ -14,12 +14,10 @@ import { InputBoxStep } from '../../step/inputBoxStep';
 import { MultiStepHandler } from '../../step/multiStepHandler';
 import { StepResult } from '../../step/stepResult';
 import { InputFlowAction } from '../../util/InputFlowAction';
-import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
 describe('InputBoxStep', () => {
     let testObject: InputBoxStep;
-    let testEditor: vscode.TextEditor;
     let handlerMock: MultiStepHandlerMock;
     let spy: sinon.SinonSpy;
     let inputBoxStub: sinon.SinonStubbedInstance<vscode.InputBox>;
@@ -48,7 +46,7 @@ describe('InputBoxStep', () => {
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
-            testEditor = await vscode.window.showTextDocument(file);
+            await vscode.window.showTextDocument(file);
         }
     });
 

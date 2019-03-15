@@ -26,7 +26,6 @@ class EpochToCustomCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        let selectedFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
 
         if (!this._stepHandler) {
@@ -38,7 +37,7 @@ class EpochToCustomCommand extends CustomCommandBase {
             let rawInput = loopResult.value;
 
             const internalResult = await this.internalExecute(loopResult.action, 'epochToCustom', rawInput);
-            [rawInput, selectedFormat] = internalResult.stepHandlerResult;
+            [rawInput] = internalResult.stepHandlerResult;
 
             if (internalResult.showResultBox) {
                 const input = new InputDefinition(rawInput);

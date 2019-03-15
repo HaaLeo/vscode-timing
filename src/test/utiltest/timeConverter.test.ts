@@ -94,8 +94,6 @@ describe('TimeConverter', () => {
         });
 
         it('Should throw an error if option is unknown.', () => {
-            const result = testObject.isoRfcToEpoch('1973-11-29T21:33:09.000Z', 'ns');
-
             assert.throws(() => testObject.isoRfcToEpoch('1973-11-29T21:33:09.000Z', undefined));
         });
     });

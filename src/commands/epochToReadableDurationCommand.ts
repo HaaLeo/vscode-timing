@@ -39,7 +39,7 @@ class EpochToReadableDurationCommand extends CommandBase {
             const internalResult = await this.internalExecute(loopResult.action, 'epochToReadableDuration', rawInput);
             [rawInput, selectedUnit] = internalResult.stepHandlerResult;
 
-            if (!internalResult.showResultBox) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (' + selectedUnit + ')',
                     this.title + ': Result',

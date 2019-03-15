@@ -13,7 +13,6 @@ import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
-import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
 
@@ -40,7 +39,7 @@ class EpochToReadableDurationCommand extends CommandBase {
             const internalResult = await this.internalExecute(loopResult.action, 'epochToReadableDuration', rawInput);
             [rawInput, selectedUnit] = internalResult.stepHandlerResult;
 
-            if (internalResult.showResultBox) {
+            if (!internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (' + selectedUnit + ')',
                     this.title + ': Result',

@@ -13,7 +13,6 @@ import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
-import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
 

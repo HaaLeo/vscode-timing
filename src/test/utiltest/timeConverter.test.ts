@@ -302,7 +302,7 @@ describe('TimeConverter', () => {
     describe('epochToISODuration', () => {
         it('Should convert to the correct ISO duration.', () => {
             const testObject = new TimeConverter();
-            const result = testObject.epochToISODuration(123456789);
+            const result = testObject.epochToISODuration('123456789', 'ms');
 
             assert.strictEqual(result, 'PT34H17M36.789S');
         });
@@ -316,64 +316,64 @@ describe('TimeConverter', () => {
         });
 
         it('should only consist of "0 ms".', () => {
-            const input = 0;
+            const input = '0';
             const expected = '0ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "ms".', () => {
-            const input = 123;
+            const input = '123';
             const expected = '123ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "s" and "ms".', () => {
-            const input = 6123;
+            const input = '6123';
             const expected = '6s, 123ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "min", "s" and "ms".', () => {
-            const input = 123456;
+            const input = '123456';
             const expected = '2min, 3s, 456ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "h", "min", "s" and "ms".', () => {
-            const input = 12345678;
+            const input = '12345678';
             const expected = '3h, 25min, 45s, 678ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should consist of "d", "h", "min", "s" and "ms".', () => {
-            const input = 123456789;
+            const input = '123456789';
             const expected = '1d, 10h, 17min, 36s, 789ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should consist of "w", "d", "h", "min", "s" and "ms".', () => {
-            const input = 12345678900;
+            const input = '12345678900';
             const expected = '20w, 2d, 21h, 21min, 18s, 900ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });

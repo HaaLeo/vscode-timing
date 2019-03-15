@@ -74,7 +74,8 @@ describe('DurationHoverProvider', () => {
 
         assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.equal(timeConverterMock.epochToReadableDuration.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], 123456789000);
+        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], 123456789);
+        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[1], 's');
         assert.equal(result.contents.length, 1);
         assert.equal(
             result.contents[0],
@@ -93,7 +94,8 @@ describe('DurationHoverProvider', () => {
 
         assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.equal(timeConverterMock.epochToReadableDuration.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], 123.456789);
+        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], '123456789');
+        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[1], 'ns');
         assert.equal(result.contents.length, 1);
         assert.equal(
             result.contents[0],

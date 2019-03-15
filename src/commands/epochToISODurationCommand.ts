@@ -37,29 +37,15 @@ class EpochToISODurationCommand extends CommandBase {
         do {
             let rawInput = loopResult.value;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'epochToISODuration', rawInput);
 
-            if (!rawInput) {
-                break;
-            }
+            [rawInput, selectedUnit] = internalResult.stepHandlerResult;
 
-            const input = new InputDefinition(rawInput, selectedUnit);
-            const result = this._timeConverter.epochToISODuration(input.inputAsMs);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
-                    'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
+                    'Input: ' + rawInput + ' (' + selectedUnit + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

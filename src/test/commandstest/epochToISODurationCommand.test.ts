@@ -82,7 +82,7 @@ describe('EpochToISODurationCommand', () => {
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.epochToISODuration(1000));
+                timeConverter.epochToISODuration('1000', 'ms'));
         });
 
         it('Should start with last step if input flow action is Back.', async () => {

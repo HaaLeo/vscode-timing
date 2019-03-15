@@ -43,12 +43,14 @@ class TimeConverter {
         return result;
     }
 
-    public epochToISODuration(ms: number): string {
+    public epochToISODuration(epoch: string, unit: string): string {
+        const ms = new InputDefinition(epoch, unit).inputAsMs;
         const duration = moment.duration(ms).toISOString();
         return duration;
     }
 
-    public epochToReadableDuration(ms: number): string {
+    public epochToReadableDuration(epoch: string, unit: string): string {
+        const ms = new InputDefinition(epoch, unit).inputAsMs;
         const duration = moment.duration(ms);
 
         let text = '';

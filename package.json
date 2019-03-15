@@ -328,17 +328,17 @@
     },
     "devDependencies": {
         "@types/mocha": "^5.2.6",
-        "@types/node": "^11.10.5",
-        "@types/sinon": "^7.0.9",
+        "@types/node": "^11.11.3",
+        "@types/sinon": "^7.0.10",
         "codecov": "^3.2.0",
         "decache": "^4.5.1",
         "istanbul": "^0.4.5",
         "mocha": "^6.0.2",
         "remap-istanbul": "^0.13.0",
         "sinon": "^7.2.7",
-        "tslint": "^5.13.1",
+        "tslint": "^5.14.0",
         "typescript": "^3.3.3333",
-        "vsce": "^1.57.1",
+        "vsce": "^1.58.0",
         "vscode": "^1.1.30"
     },
     "dependencies": {

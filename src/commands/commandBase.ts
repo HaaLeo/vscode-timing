@@ -68,7 +68,7 @@ abstract class CommandBase implements vscode.Disposable {
         });
     }
 
-    /***
+    /**
      * Get the pre input. Either from the editors selection or from the clipboard.
      */
     protected async getPreInput(): Promise<string> {

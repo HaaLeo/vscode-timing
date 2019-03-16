@@ -26,38 +26,24 @@ class EpochToIsoUtcCommand extends CommandBase {
      * Execute the command.
      */
     public async execute() {
-
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+
         do {
             let rawInput = loopResult.value;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'epochToISOUtc', rawInput);
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
-
-            if (!rawInput) {
-                break;
-            }
-
+            [rawInput] = internalResult.stepHandlerResult;
             const input = new InputDefinition(rawInput);
-            const result = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
 
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

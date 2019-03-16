@@ -2,7 +2,7 @@
     "name": "timing",
     "displayName": "Time Converter",
     "description": "Converts timestamps from/to various formats and inserts them on demand.",
-    "version": "1.4.1",
+    "version": "2.0.0",
     "publisher": "HaaLeo",
     "engines": {
         "vscode": "^1.30.0"
@@ -142,7 +142,7 @@
                     "title": "Write the converted time to the clipboard",
                     "description": "Indicates whether the result of the conversion is written to the clipboard. When enabled, no result view is shown.",
                     "type": "boolean",
-                    "default": true
+                    "default": false
                 },
                 "timing.customFormats": {
                     "title": "Custom time formats.",

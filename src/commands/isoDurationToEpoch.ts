@@ -39,28 +39,14 @@ class IsoDurationToEpochCommand extends CommandBase {
         do {
             let rawInput = loopResult.value;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'isoDurationToEpoch', rawInput);
+            [rawInput, selectedUnit] = internalResult.stepHandlerResult;
 
-            if (!rawInput) {
-                break;
-            }
-
-            const result = this._timeConverter.isoDurationToEpoch(rawInput, selectedUnit);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput,
                     this.title + ': Result (' + selectedUnit + ')',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

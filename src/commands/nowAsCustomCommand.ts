@@ -33,30 +33,14 @@ class NowAsCustomCommand extends CustomCommandBase {
         this._stepHandler.setStepResult(options.targetFormat, 0);
 
         do {
-            if (loopResult.action === InputFlowAction.Back) {
-                [selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);
-            } else {
-                [selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated');
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'getNowAsCustom', undefined);
+            [selectedFormat] = internalResult.stepHandlerResult;
 
-            if (!selectedFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.getNowAsCustom(selectedFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Format: ' + selectedFormat,
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut,
                     options.targetFormat ? false : true);

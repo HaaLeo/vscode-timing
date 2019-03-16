@@ -25,7 +25,6 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        let selectedFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
 
         if (!this._stepHandler) {
@@ -36,29 +35,14 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
         do {
             let rawInput = loopResult.value;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput, selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'isoRfcToCustom', rawInput);
+            [rawInput] = internalResult.stepHandlerResult;
 
-            if (!rawInput || !selectedFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.isoRfcToCustom(rawInput, selectedFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput,
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

@@ -33,30 +33,14 @@ class NowAsEpochCommand extends CustomCommandBase {
         this._stepHandler.setStepResult(options.targetUnit, 0);
 
         do {
-            if (loopResult.action === InputFlowAction.Back) {
-                [epochTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);
-            } else {
-                [epochTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated');
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'getNowAsEpoch', undefined);
+            [epochTargetFormat] = internalResult.stepHandlerResult;
 
-            if (!epochTargetFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.getNowAsEpoch(epochTargetFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Format: ' + epochTargetFormat,
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut,
                     options.targetUnit ? false : true);

@@ -103,19 +103,23 @@ abstract class CommandBase implements vscode.Disposable {
         let wroteToClipboard = false;
         let abort = false;
 
-        if (action === InputFlowAction.Back) {
-            stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-        } else {
-            stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-        }
-
-        abort = stepHandlerResult.length === 0 ? true : false;
-
-        stepHandlerResult.forEach((element) => {
-            if (!element) {
-                abort = true;
+        if (this._stepHandler) {
+            if (action === InputFlowAction.Back) {
+                stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+            } else {
+                stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
             }
-        });
+
+            abort = stepHandlerResult.length === 0 ? true : false;
+
+            stepHandlerResult.forEach((element) => {
+                if (!element) {
+                    abort = true;
+                }
+            });
+        } else {
+            stepHandlerResult = [];
+        }
 
         if (!abort) {
 

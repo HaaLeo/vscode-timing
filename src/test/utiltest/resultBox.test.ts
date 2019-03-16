@@ -16,7 +16,6 @@ import { ResultBox } from '../../util/resultBox';
 
 describe('ResultBox', () => {
     let testObject: ResultBox;
-    let testEditor: vscode.TextEditor;
     const insertButtonMock: vscode.QuickInputButton = {
         iconPath: 'my-icon-path'
     };
@@ -28,7 +27,7 @@ describe('ResultBox', () => {
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
-            testEditor = await vscode.window.showTextDocument(file);
+            await vscode.window.showTextDocument(file);
         }
     });
 
@@ -54,7 +53,7 @@ describe('ResultBox', () => {
         beforeEach(() => {
             spy = sinon.spy(vscode.window, 'createInputBox');
             testObject = new ResultBox(insertButtonMock);
-            assert.equal(spy.calledOnce, true);
+            assert.strictEqual(spy.calledOnce, true);
 
             const resultBox: vscode.InputBox = spy.returnValues[0];
             resultBoxStub = sinon.stub(resultBox);

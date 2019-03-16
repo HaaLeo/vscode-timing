@@ -24,39 +24,23 @@ class NowAsEpochCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let epochTargetFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.targetUnit, 0);
+
         do {
-            let epochTargetFormat: string;
+            const internalResult = await this.internalExecute(loopResult.action, 'getNowAsEpoch', undefined);
+            [epochTargetFormat] = internalResult.stepHandlerResult;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.targetUnit, 0);
-
-            if (loopResult.action === InputFlowAction.Back) {
-                [epochTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);
-            } else {
-                [epochTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated');
-            }
-
-            if (!epochTargetFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.getNowAsEpoch(epochTargetFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Format: ' + epochTargetFormat,
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut,
                     options.targetUnit ? false : true);

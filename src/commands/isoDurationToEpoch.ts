@@ -28,40 +28,25 @@ class IsoDurationToEpochCommand extends CommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let selectedUnit: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
 
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.targetUnit, 1);
+
         do {
             let rawInput = loopResult.value;
-            let selectedUnit: string;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.targetUnit, 1);
+            const internalResult = await this.internalExecute(loopResult.action, 'isoDurationToEpoch', rawInput);
+            [rawInput, selectedUnit] = internalResult.stepHandlerResult;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
-
-            if (!rawInput) {
-                break;
-            }
-
-            const result = this._timeConverter.isoDurationToEpoch(rawInput, selectedUnit);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput,
                     this.title + ': Result (' + selectedUnit + ')',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

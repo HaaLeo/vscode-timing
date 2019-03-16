@@ -46,7 +46,7 @@ describe('CustomCommandBase', () => {
 
         const formats = await testObject.customTimeFormatOptions;
 
-        assert.equal(JSON.stringify(formats),
+        assert.strictEqual(JSON.stringify(formats),
             JSON.stringify([{label: 'first'}, {label: 'second'}]));
     });
 });

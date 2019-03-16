@@ -24,41 +24,25 @@ class CustomToIsoLocalCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        let selectedFormat: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.sourceFormat, 0);
+
         do {
             let rawInput = loopResult.value;
-            let selectedFormat: string;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.sourceFormat, 0);
+            const internalResult = await this.internalExecute(loopResult.action, 'customToISOLocal', rawInput);
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [selectedFormat, rawInput] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [selectedFormat, rawInput] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
-
-            if (!rawInput || !selectedFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.customToISOLocal(rawInput, selectedFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            [selectedFormat, rawInput] = internalResult.stepHandlerResult;
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedFormat + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

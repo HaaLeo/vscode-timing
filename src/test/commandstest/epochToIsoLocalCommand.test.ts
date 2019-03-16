@@ -82,7 +82,7 @@ describe('EpochToIsoLocalCommand', () => {
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.epochToIsoLocal('1000000'));
+                timeConverter.epochToIsoLocal('1000'));
         });
 
         it('Should start with last step if input flow action is Back.', async () => {

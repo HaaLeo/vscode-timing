@@ -26,42 +26,25 @@ class EpochToCustomCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.targetFormat, 1);
+
         do {
             let rawInput = loopResult.value;
-            let selectedFormat: string;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.targetFormat, 1);
+            const internalResult = await this.internalExecute(loopResult.action, 'epochToCustom', rawInput);
+            [rawInput] = internalResult.stepHandlerResult;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput, selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
-
-            if (!rawInput || !selectedFormat) {
-                break;
-            }
-
-            const input = new InputDefinition(rawInput);
-            const result = this._timeConverter.epochToCustom(input.inputAsMs.toString(), selectedFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
+                const input = new InputDefinition(rawInput);
                 loopResult = await this._resultBox.show(
                     'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

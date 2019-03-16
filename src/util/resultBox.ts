@@ -7,7 +7,7 @@
 
 'use strict';
 
-import { Disposable, ExtensionContext, InputBox, QuickInputButton, QuickInputButtons, Uri, window } from 'vscode';
+import { Disposable, InputBox, QuickInputButton, QuickInputButtons, window } from 'vscode';
 import { StepResult } from '../step/stepResult';
 import { InputFlowAction } from './InputFlowAction';
 

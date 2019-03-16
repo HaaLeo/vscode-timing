@@ -13,7 +13,6 @@ import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
-import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/InputFlowAction';
 import { CommandBase } from './commandBase';
 
@@ -26,41 +25,26 @@ class EpochToISODurationCommand extends CommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let selectedUnit: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
 
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.sourceUnit, 1);
+
         do {
             let rawInput = loopResult.value;
-            let selectedUnit: string;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.sourceUnit, 1);
+            const internalResult = await this.internalExecute(loopResult.action, 'epochToISODuration', rawInput);
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput, selectedUnit] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            [rawInput, selectedUnit] = internalResult.stepHandlerResult;
 
-            if (!rawInput) {
-                break;
-            }
-
-            const input = new InputDefinition(rawInput, selectedUnit);
-            const result = this._timeConverter.epochToISODuration(input.inputAsMs);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
-                    'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
+                    'Input: ' + rawInput + ' (' + selectedUnit + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

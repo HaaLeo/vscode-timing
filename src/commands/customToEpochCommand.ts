@@ -25,8 +25,9 @@ class CustomToEpochCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        let selectedCustomFormat: string;
+        let selectedEpochTargetFormat: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
 
         if (!this._stepHandler) {
             this.initialize();
@@ -36,33 +37,15 @@ class CustomToEpochCommand extends CustomCommandBase {
 
         do {
             let rawInput = loopResult.value;
-            let selectedCustomFormat: string;
-            let selectedEpochTargetFormat: string;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [selectedCustomFormat, rawInput, selectedEpochTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [selectedCustomFormat, rawInput, selectedEpochTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'customToEpoch', rawInput);
 
-            if (!rawInput || !selectedCustomFormat || !selectedEpochTargetFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.customToEpoch(rawInput, selectedCustomFormat, selectedEpochTargetFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            [selectedCustomFormat, rawInput, selectedEpochTargetFormat] = internalResult.stepHandlerResult;
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedCustomFormat + ')',
                     this.title + ': Result (' + selectedEpochTargetFormat + ')',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

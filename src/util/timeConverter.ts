@@ -9,6 +9,7 @@
 
 import * as moment from 'moment';
 import { Constants } from '../util/constants';
+import { InputDefinition } from './inputDefinition';
 
 class TimeConverter {
     public isoRfcToCustom(date: string, targetFormat: string): any {
@@ -16,22 +17,23 @@ class TimeConverter {
         return result;
     }
 
-    public epochToCustom(ms: string, targetFormat: string): any {
+    public epochToCustom(epoch: string, targetFormat: string): string {
+        const ms = new InputDefinition(epoch).inputAsMs;
         const result = moment(ms, 'x').format(targetFormat);
         return result;
     }
 
-    public customToISOUtc(time: string, format: string): string {
+    public customToISOUtc(format: string, time: string): string {
         const result = moment(time, format, true).toISOString(false);
         return result;
     }
 
-    public customToISOLocal(time: string, format: string): string {
+    public customToISOLocal(format: string, time: string): string {
         const result = moment(time, format, true).toISOString(true);
         return result;
     }
 
-    public customToCustom(time: string, sourceFormat: string, targetFormat: string): any {
+    public customToCustom(sourceFormat: string, time: string, targetFormat: string): any {
         const result = moment(time, sourceFormat, true).format(targetFormat);
         return result;
     }
@@ -41,12 +43,14 @@ class TimeConverter {
         return result;
     }
 
-    public epochToISODuration(ms: number): string {
+    public epochToISODuration(epoch: string, unit: string): string {
+        const ms = new InputDefinition(epoch, unit).inputAsMs;
         const duration = moment.duration(ms).toISOString();
         return duration;
     }
 
-    public epochToReadableDuration(ms: number): string {
+    public epochToReadableDuration(epoch: string, unit: string): string {
+        const ms = new InputDefinition(epoch, unit).inputAsMs;
         const duration = moment.duration(ms);
 
         let text = '';
@@ -82,7 +86,8 @@ class TimeConverter {
 
         return text;
     }
-    public epochToIsoLocal(ms: string): string {
+    public epochToIsoLocal(epoch: string): string {
+        const ms = new InputDefinition(epoch).inputAsMs;
         const result = moment(ms, 'x').toISOString(true);
         return result;
     }
@@ -123,7 +128,7 @@ class TimeConverter {
         return result.toString();
     }
 
-    public customToEpoch(time: string, customFormat: string, epochFormat: string): string {
+    public customToEpoch(customFormat: string, time: string, epochFormat: string): string {
         let result: number;
         switch (epochFormat) {
             case Constants.SECONDS:

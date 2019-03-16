@@ -5,9 +5,9 @@ about: Create a report to help us improve
 ---
 
 <!-- Please fulfill the table below-->
-| VS Code Version | vscode-timing Version |
-| --------------- | --------------------- |
-|                 |                       |
+| VS Code Version | vscode-timing Version | Operating System |
+| --------------- | --------------------- | ---------------- |
+|                 |                       |                  |
 
 # Description
 <!-- Please add a brief description of the error you are receiving here.-->

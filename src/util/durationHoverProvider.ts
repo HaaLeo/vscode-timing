@@ -8,7 +8,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { InputDefinition } from './inputDefinition';
+import { Constants } from './constants';
 import { TimeConverter } from './timeConverter';
 
 class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
@@ -24,16 +24,16 @@ class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
     constructor(timeConverter: TimeConverter) {
         this._timeConverter = timeConverter;
 
-        this.updateEnabled();
-        this.updateSourceUnit();
-        this.updateUseISOTargetFormat();
+        this._enabled = this.getConfigParameter('enabled', true);
+        this._sourceUnit = this.getConfigParameter('sourceUnit', 'ms');
+        this._useISOTargetFormat = this.getConfigParameter('useISOTargetFormat', false);
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
             if (changedEvent.affectsConfiguration('timing.hoverDuration.sourceUnit')) {
-                this.updateSourceUnit();
+                this._sourceUnit = this.getConfigParameter('sourceUnit', 'ms');
             } else if (changedEvent.affectsConfiguration('timing.hoverDuration.enabled')) {
-                this.updateEnabled();
+                this._enabled = this.getConfigParameter('enabled', true);
             } else if (changedEvent.affectsConfiguration('timing.hoverDuration.useISOTargetFormat')) {
-                this.updateUseISOTargetFormat();
+                this._useISOTargetFormat = this.getConfigParameter('useISOTargetFormat', false);
             }
         }, this, this._disposables);
     }
@@ -48,32 +48,26 @@ class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
         if (timeRange !== undefined) {
             const hoveredWord = document.getText(timeRange);
             if (this._timeConverter.isValidEpoch(hoveredWord)) {
-                let input: InputDefinition;
                 let prefix = '*Epoch Unit*: `';
 
                 // Is the feature enabled?
                 if (this._enabled) {
                     switch (this._sourceUnit) {
-                        case 's':
-                            input = new InputDefinition(hoveredWord, 's');
-                            break;
-                        case 'ms':
-                            input = new InputDefinition(hoveredWord, 'ms');
-                            break;
-                        case 'ns':
-                            input = new InputDefinition(hoveredWord, 'ns');
+                        case Constants.SECONDS:
+                        case Constants.MILLISECONDS:
+                        case Constants.NANOSECONDS:
                             break;
                         default:
-                            input = new InputDefinition(hoveredWord, 'ms');
+                            this._sourceUnit = 'ms';
                             break;
                     }
-                    prefix += input.originalUnit + '`  \n';
+                    prefix += this._sourceUnit + '`  \n';
 
                     let duration: string;
                     if (this._useISOTargetFormat) {
-                        duration = this._timeConverter.epochToISODuration(input.inputAsMs);
+                        duration = this._timeConverter.epochToISODuration(hoveredWord, this._sourceUnit);
                     } else {
-                        duration = this._timeConverter.epochToReadableDuration(input.inputAsMs);
+                        duration = this._timeConverter.epochToReadableDuration(hoveredWord, this._sourceUnit);
                     }
 
                     result = new vscode.Hover(prefix + '*Duration*: `' + duration + '`', timeRange);
@@ -90,25 +84,9 @@ class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
         this._disposables.forEach((disposable) => disposable.dispose());
     }
 
-    private updateSourceUnit(): void {
-        const config = vscode.workspace.getConfiguration('timing.hoverDuration')
-            .get<string>('sourceUnit', 'ms');
-
-        this._sourceUnit = config;
-    }
-
-    private updateEnabled(): void {
-        const config = vscode.workspace.getConfiguration('timing.hoverDuration')
-            .get<boolean>('enabled', true);
-
-        this._enabled = config;
-    }
-
-    private updateUseISOTargetFormat(): void {
-        const config = vscode.workspace.getConfiguration('timing.hoverDuration')
-            .get<boolean>('useISOTargetFormat', false);
-
-        this._useISOTargetFormat = config;
+    private getConfigParameter<T>(configName: string, defaultValue: T): T {
+        return vscode.workspace.getConfiguration('timing.hoverDuration')
+            .get<T>(configName, defaultValue);
     }
 }
 

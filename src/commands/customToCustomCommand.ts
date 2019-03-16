@@ -24,43 +24,28 @@ class CustomToCustomCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
-        const preSelection = this.isInputSelected();
-        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, preSelection);
+        let selectedSourceFormat: string;
+        let selectedTargetFormat: string;
+        let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.sourceFormat, 0);
+        this._stepHandler.setStepResult(options.targetFormat, 2);
+
         do {
             let rawInput = loopResult.value;
-            let selectedSourceFormat: string;
-            let selectedTargetFormat: string;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.sourceFormat, 0);
-            this._stepHandler.setStepResult(options.targetFormat, 2);
+            const internalResult = await this.internalExecute(loopResult.action, 'customToCustom', rawInput);
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [selectedSourceFormat, rawInput, selectedTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [selectedSourceFormat, rawInput, selectedTargetFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            [selectedSourceFormat, rawInput, selectedTargetFormat] = internalResult.stepHandlerResult;
 
-            if (!rawInput || !selectedSourceFormat || !selectedTargetFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.customToCustom(rawInput, selectedSourceFormat, selectedTargetFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + rawInput + ' (Format: ' + selectedSourceFormat + ')',
                     this.title + ': Result (' + selectedTargetFormat + ')',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

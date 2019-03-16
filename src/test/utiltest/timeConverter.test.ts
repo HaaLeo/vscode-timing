@@ -12,19 +12,21 @@ import * as moment from 'moment';
 import { TimeConverter } from '../../util/timeConverter';
 
 describe('TimeConverter', () => {
+    let testObject: TimeConverter;
+
+    beforeEach('Set up test object.', () => {
+        testObject = new TimeConverter();
+    });
+
     describe('epochToISOUtc', () => {
         it('Should convert to ISO correctly.', () => {
-            const testObject = new TimeConverter();
-
             const result = testObject.epochToISOUtc('123456789000');
-
             assert.strictEqual(result, '1973-11-29T21:33:09.000Z');
         });
     });
 
     describe('epochToISOLocal', () => {
         it('Should convert to ISO correctly.', () => {
-            const testObject = new TimeConverter();
             const result = testObject.epochToIsoLocal('123456789000');
             assert.strictEqual(result, moment('1973-11-29T21:33:09.000Z').toISOString(true));
         });
@@ -32,19 +34,12 @@ describe('TimeConverter', () => {
 
     describe('epochToCustom', () => {
         it('Should convert to ISO correctly.', () => {
-            const testObject = new TimeConverter();
             const result = testObject.epochToCustom('123456789000', 'YYYY');
             assert.strictEqual(result, '1973');
         });
     });
 
     describe('isoDurationToEpoch', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should convert to epoch correctly as s.', () => {
             const result = testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', 's');
 
@@ -69,12 +64,6 @@ describe('TimeConverter', () => {
     });
 
     describe('isoRfcToEpoch', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should convert to epoch correctly as s.', () => {
             const result = testObject.isoRfcToEpoch('1973-11-29T21:33:09.000Z', 's');
 
@@ -94,81 +83,63 @@ describe('TimeConverter', () => {
         });
 
         it('Should throw an error if option is unknown.', () => {
-            const result = testObject.isoRfcToEpoch('1973-11-29T21:33:09.000Z', 'ns');
-
             assert.throws(() => testObject.isoRfcToEpoch('1973-11-29T21:33:09.000Z', undefined));
         });
     });
 
     describe('isoRfcToCustom', () => {
         it('Should convert to ISO correctly.', () => {
-            const testObject = new TimeConverter();
             const result = testObject.isoRfcToCustom('1973-11-29T21:33:09.000Z', 'YYYY-MM-DD');
             assert.strictEqual(result, '1973-11-29');
         });
     });
 
     describe('customToEpoch', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should convert to epoch correctly as s.', () => {
-            const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 's');
+            const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 's');
 
             assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').unix());
         });
 
         it('Should convert to epoch correctly as ms.', () => {
-            const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 'ms');
+            const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 'ms');
 
             assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').valueOf());
         });
 
         it('Should convert to epoch correctly as ns.', () => {
-            const result = testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', 'ns');
+            const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 'ns');
 
             assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').valueOf() * 1000000);
         });
 
         it('Should throw an error if option is unknown.', () => {
-            assert.throws(() => testObject.customToEpoch('2018/07/07', 'YYYY/MM/DD', undefined));
+            assert.throws(() => testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', undefined));
         });
     });
 
     describe('customToISOLocal', () => {
         it('Should convert to ISO Local correctly.', () => {
-            const testObject = new TimeConverter();
-            const result = testObject.customToISOLocal('2018-05-05', 'YYYY-MM-DD');
+            const result = testObject.customToISOLocal('YYYY-MM-DD', '2018-05-05');
             assert.strictEqual(result, moment('2018-05-05', 'YYYY-MM-DD').toISOString(true));
         });
     });
 
     describe('customToCustom', () => {
         it('Should convert to custom format correctly.', () => {
-            const testObject = new TimeConverter();
-            const result = testObject.customToCustom('2018-05-13', 'YYYY-MM-DD', 'DD/MM/YYYY');
+            const result = testObject.customToCustom('YYYY-MM-DD', '2018-05-13', 'DD/MM/YYYY');
             assert.strictEqual(result, '13/05/2018');
         });
     });
 
     describe('customToISOUtc', () => {
         it('Should convert to ISO UTC correctly.', () => {
-            const testObject = new TimeConverter();
-            const result = testObject.customToISOUtc('2018-05-05', 'YYYY-MM-DD');
+            const result = testObject.customToISOUtc('YYYY-MM-DD', '2018-05-05');
             assert.strictEqual(result, moment('2018-05-05', 'YYYY-MM-DD').toISOString(false));
         });
     });
 
     describe('isValidEpoch', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should return true if it is a valid epoch time.', () => {
             assert.strictEqual(true, testObject.isValidEpoch('123456789'));
             assert.strictEqual(true, testObject.isValidEpoch('1551980884683000000'));
@@ -181,12 +152,6 @@ describe('TimeConverter', () => {
     });
 
     describe('isValidIsoRfc', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should return true if it is a valid ISO time.', () => {
             assert.strictEqual(testObject.isValidIsoRfc('1973-11-29T21:33:09.000Z'), true);
         });
@@ -197,12 +162,6 @@ describe('TimeConverter', () => {
     });
 
     describe('isValidIsoDuration', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should return true if it is a valid ISO duration.', () => {
             assert.strictEqual(testObject.isValidISODuration('P1Y2M3DT4H5M6S'), true);
         });
@@ -212,12 +171,6 @@ describe('TimeConverter', () => {
         // });
     });
     describe('isValidCustom', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should return true if it is a valid custom time.', () => {
             assert.strictEqual(testObject.isValidCustom('2018/07/07', 'YYYY/MM/DD'), true);
         });
@@ -234,12 +187,6 @@ describe('TimeConverter', () => {
     });
 
     describe('getNowAsCustom', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should return current time in custom format.', () => {
             const now = moment(moment().format('YYYY/MM/DD'), 'YYYY/MM/DD').unix();
             const result = testObject.getNowAsCustom('YYYY/MM/DD');
@@ -249,12 +196,6 @@ describe('TimeConverter', () => {
     });
 
     describe('getNowAsEpoch', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('Should return current epoch time as seconds.', () => {
             const now = moment().unix();
             const result = testObject.getNowAsEpoch('s');
@@ -284,7 +225,6 @@ describe('TimeConverter', () => {
     describe('getNowAsISOUtc', () => {
 
         it('Should return current time in ISO UTC format.', () => {
-            const testObject = new TimeConverter();
             const now = moment();
             const result = testObject.getNowAsIsoUtc();
 
@@ -292,7 +232,6 @@ describe('TimeConverter', () => {
         });
 
         it('Should return current time in ISO Local format.', () => {
-            const testObject = new TimeConverter();
             const now = moment();
             const result = testObject.getNowAsIsoLocal();
 
@@ -303,79 +242,72 @@ describe('TimeConverter', () => {
 
     describe('epochToISODuration', () => {
         it('Should convert to the correct ISO duration.', () => {
-            const testObject = new TimeConverter();
-            const result = testObject.epochToISODuration(123456789);
+            const result = testObject.epochToISODuration('123456789', 'ms');
 
             assert.strictEqual(result, 'PT34H17M36.789S');
         });
     });
 
     describe('epochToReadableDuration', () => {
-        let testObject: TimeConverter;
-
-        beforeEach('Set up test object.', () => {
-            testObject = new TimeConverter();
-        });
-
         it('should only consist of "0 ms".', () => {
-            const input = 0;
+            const input = '0';
             const expected = '0ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "ms".', () => {
-            const input = 123;
+            const input = '123';
             const expected = '123ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "s" and "ms".', () => {
-            const input = 6123;
+            const input = '6123';
             const expected = '6s, 123ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "min", "s" and "ms".', () => {
-            const input = 123456;
+            const input = '123456';
             const expected = '2min, 3s, 456ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should only consist of "h", "min", "s" and "ms".', () => {
-            const input = 12345678;
+            const input = '12345678';
             const expected = '3h, 25min, 45s, 678ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should consist of "d", "h", "min", "s" and "ms".', () => {
-            const input = 123456789;
+            const input = '123456789';
             const expected = '1d, 10h, 17min, 36s, 789ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });
 
         it('should consist of "w", "d", "h", "min", "s" and "ms".', () => {
-            const input = 12345678900;
+            const input = '12345678900';
             const expected = '20w, 2d, 21h, 21min, 18s, 900ms';
 
-            const result = testObject.epochToReadableDuration(input);
+            const result = testObject.epochToReadableDuration(input, 'ms');
 
             assert.strictEqual(result, expected);
         });

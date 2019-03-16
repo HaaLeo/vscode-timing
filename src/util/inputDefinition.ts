@@ -53,7 +53,7 @@ class InputDefinition {
                         throw Error('Unknown format="' + unit + '" was given.');
                 }
                 // If unit is not given, determine it by checking the length
-            } else if (!isNaN(Number(userInput))) {
+            } else {
                 if (userInput.length <= 11) {
                     this._inputAsMs = Number(userInput) * 1000;
                     this._originalUnit = Constants.SECONDS;

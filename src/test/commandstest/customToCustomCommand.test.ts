@@ -82,7 +82,7 @@ describe('CustomToCustomCommand', () => {
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                timeConverter.customToCustom('03/20/2018', 'MM/DD/YYYY', 'DD-MM-YYYY'));
+                timeConverter.customToCustom('MM/DD/YYYY', '03/20/2018', 'DD-MM-YYYY'));
         });
 
         it('Should start with last step if input flow action is Back.', async () => {

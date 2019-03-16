@@ -1,6 +1,6 @@
 {
     "recommendations": [
         "streetsidesoftware.code-spell-checker",
-        "eg2.tslint"
+        "ms-vscode.vscode-typescript-tslint-plugin"
     ]
 }

@@ -5,7 +5,7 @@
     "version": "1.4.1",
     "publisher": "HaaLeo",
     "engines": {
-        "vscode": "^1.26.0"
+        "vscode": "^1.30.0"
     },
     "license": "SEE LICENSE IN LICENSE.txt",
     "repository": {
@@ -132,6 +132,18 @@
             "type": "object",
             "title": "Time Converter",
             "properties": {
+                "timing.clipboard.readingEnabled": {
+                    "title": "Read input time from the clipboard.",
+                    "description": "Indicates whether the extension should try to get the input time from the clipboard instead of asking the user for input.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "timing.clipboard.writingEnabled": {
+                    "title": "Write the converted time to the clipboard",
+                    "description": "Indicates whether the result of the conversion is written to the clipboard. When enabled, no result view is shown.",
+                    "type": "boolean",
+                    "default": true
+                },
                 "timing.customFormats": {
                     "title": "Custom time formats.",
                     "description": "An array of custom source/target formats used to convert from/to.",
@@ -167,17 +179,15 @@
                 },
                 "timing.insertConvertedTime": {
                     "title": "Insert the converted time.",
-                    "description": "Indicates whether a converted time is inserted at the cursor's current position after conversion.",
+                    "description": "Indicates whether a converted time is inserted at the cursor's current position after conversion. When enabled, no result view is shown.",
                     "type": "boolean",
-                    "default": false,
-                    "pattern": "(true|false)"
+                    "default": false
                 },
                 "timing.ignoreFocusOut": {
                     "title": "Ignore when input box loses focus",
                     "description": "Indicates whether the input boxes remain visible when the focus is lost.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
+                    "default": true
                 },
                 "timing.hiddenCommands": {
                     "title": "Hide Commands from the command palette.",
@@ -189,16 +199,7 @@
                     "title": "Hide the result view when enter is pressed.",
                     "description": "Indicates whether the result view is hidden when enter is pressed. When set to \"false\" the command will restart.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
-                },
-                "timing.hoverTargetFormat": {
-                    "title": "The target format of the hover preview.",
-                    "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\", a custom format or \"disable\" to disable the hover preview.",
-                    "type": "string",
-                    "default": "utc",
-                    "pattern": "^(?!\\s*$).+",
-                    "deprecationMessage": "DEPRECATED: This setting will be removed in the next major release. Use timing.hoverTimestamp.* settings instead."
+                    "default": true
                 },
                 "timing.hoverTimestamp.targetFormat": {
                     "title": "The target format of the hover preview.",
@@ -211,8 +212,7 @@
                     "title": "En-/disable the timestamp hover.",
                     "description": "Controls whether the timestamp hover is enabled or disabled.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
+                    "default": true
                 },
                 "timing.hoverDuration.sourceUnit": {
                     "title": "The epoch unit of the duration hover preview.",
@@ -235,15 +235,13 @@
                     "title": "En-/disable the duration hover.",
                     "description": "Controls whether the duration hover is enabled or disabled.",
                     "type": "boolean",
-                    "default": true,
-                    "pattern": "(true|false)"
+                    "default": true
                 },
                 "timing.hoverDuration.useISOTargetFormat": {
                     "title": "Use the ISO 8601 duration representation as target format.",
                     "description": "Indicates whether the ISO 8601 duration definition is used as target format.",
                     "type": "boolean",
-                    "default": false,
-                    "pattern": "(true|false)"
+                    "default": false
                 }
             }
         },
@@ -330,17 +328,17 @@
     },
     "devDependencies": {
         "@types/mocha": "^5.2.6",
-        "@types/node": "^11.10.5",
-        "@types/sinon": "^7.0.9",
+        "@types/node": "^11.11.3",
+        "@types/sinon": "^7.0.10",
         "codecov": "^3.2.0",
         "decache": "^4.5.1",
         "istanbul": "^0.4.5",
         "mocha": "^6.0.2",
         "remap-istanbul": "^0.13.0",
         "sinon": "^7.2.7",
-        "tslint": "^5.13.1",
+        "tslint": "^5.14.0",
         "typescript": "^3.3.3333",
-        "vsce": "^1.57.1",
+        "vsce": "^1.58.0",
         "vscode": "^1.1.30"
     },
     "dependencies": {

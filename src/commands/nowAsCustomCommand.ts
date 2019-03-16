@@ -24,39 +24,23 @@ class NowAsCustomCommand extends CustomCommandBase {
      * @param options The command options, to skip option insertion during conversion.
      */
     public async execute(options: ICommandOptions = {}) {
+        let selectedFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
+
+        if (!this._stepHandler) {
+            this.initialize();
+        }
+        this._stepHandler.setStepResult(options.targetFormat, 0);
+
         do {
-            let selectedFormat: string;
+            const internalResult = await this.internalExecute(loopResult.action, 'getNowAsCustom', undefined);
+            [selectedFormat] = internalResult.stepHandlerResult;
 
-            if (!this._stepHandler) {
-                this.initialize();
-            }
-            this._stepHandler.setStepResult(options.targetFormat, 0);
-
-            if (loopResult.action === InputFlowAction.Back) {
-                [selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated', -1);
-            } else {
-                [selectedFormat] =
-                    await this._stepHandler.run(this._ignoreFocusOut, 'not evaluated');
-            }
-
-            if (!selectedFormat) {
-                break;
-            }
-
-            const result = this._timeConverter.getNowAsCustom(selectedFormat);
-
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Format: ' + selectedFormat,
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut,
                     options.targetFormat ? false : true);

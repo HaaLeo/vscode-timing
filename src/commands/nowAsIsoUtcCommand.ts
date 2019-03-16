@@ -17,19 +17,15 @@ class NowAsIsoUtcCommand extends CustomCommandBase {
 
     public async execute() {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
+
         do {
-            const result = this._timeConverter.getNowAsIsoUtc();
+            const internalResult = await this.internalExecute(loopResult.action, 'getNowAsIsoUtc', undefined);
 
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     '',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut,
                     false);

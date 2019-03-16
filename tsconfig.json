@@ -7,7 +7,19 @@
             "es6"
         ],
         "sourceMap": true,
-        "rootDir": "src"
+        "rootDir": "src",
+        "plugins": [
+            {
+                "name": "typescript-tslint-plugin",
+                "alwaysShowRuleFailuresAsWarnings": false,
+                "ignoreDefinitionFiles": true,
+                "configFile": "tslint.json",
+                "suppressWhileTypeErrorsPresent": false,
+                "mockTypeScriptVersion": false
+            }
+        ],
+        "noUnusedLocals": true,
+        "newLine": "LF",
     },
     "exclude": [
         "node_modules",

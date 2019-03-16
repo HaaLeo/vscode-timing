@@ -19,7 +19,6 @@ import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
 describe('QuickPickStep', () => {
     let testObject: QuickPickStep;
-    let testEditor: vscode.TextEditor;
     let inputBoxStepStub: sinon.SinonStubbedInstance<InputBoxStep>;
     let quickPick: vscode.QuickPick<vscode.QuickPickItem>;
     let handlerMock: MultiStepHandlerMock;
@@ -54,7 +53,7 @@ describe('QuickPickStep', () => {
             { label: 'other-item-label' },
             inputBoxStepStub,
             true);
-        assert.equal(spy.calledOnce, true);
+        assert.strictEqual(spy.calledOnce, true);
 
         quickPick = spy.returnValues[0];
         quickPickStub = sinon.stub(quickPick);
@@ -62,7 +61,7 @@ describe('QuickPickStep', () => {
         if (vscode.workspace.workspaceFolders !== undefined) {
             const uris = await vscode.workspace.findFiles('*.ts');
             const file = await vscode.workspace.openTextDocument(uris[0]);
-            testEditor = await vscode.window.showTextDocument(file);
+            await vscode.window.showTextDocument(file);
         }
     });
 

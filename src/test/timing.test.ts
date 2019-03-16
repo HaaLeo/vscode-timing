@@ -21,6 +21,6 @@ describe('Timing', () => {
 
     it('should be activated', () => {
         const ext = vscode.extensions.getExtension('HaaLeo.timing');
-        assert.equal(ext.isActive, true);
+        assert.strictEqual(ext.isActive, true);
     });
 });

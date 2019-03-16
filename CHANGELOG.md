@@ -6,7 +6,7 @@ All notable changes to the "timing" extension will be documented in this file. T
   * The extension now requires minimum VS Code version **1.30.0**
   * Removed setting `timing.hoverTargetFormat`
 * **Added** setting `timing.clipboard.readingEnabled` to indicate whether the extension should try to get the input time from the clipboard instead of asking the user for input.
-* **Added** setting `timing.clipboard.writingEnabled` to indicate whether the result of the conversion is written to the clipboard.
+* **Added** setting `timing.clipboard.writingEnabled` to indicate whether the result of the conversion is written to the clipboard. When enabled, no result view is shown.
 
 ## 2019-03-08 - v1.4.1
 * **Updated** dependencies to fix security vulnerability in `extend`.

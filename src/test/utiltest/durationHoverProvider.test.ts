@@ -53,11 +53,11 @@ describe('DurationHoverProvider', () => {
             new vscode.Position(3, 32),
             tokenSource.token);
 
-        assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], 123456789);
-        assert.equal(result.contents.length, 1);
-        assert.equal(
+        assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[0], '123456789');
+        assert.strictEqual(result.contents.length, 1);
+        assert.strictEqual(
             result.contents[0],
             '*Epoch Unit*: `ms`  \n*Duration*: `test-duration`');
     });
@@ -72,12 +72,12 @@ describe('DurationHoverProvider', () => {
             new vscode.Position(3, 32),
             tokenSource.token);
 
-        assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], 123456789);
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[1], 's');
-        assert.equal(result.contents.length, 1);
-        assert.equal(
+        assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[0], '123456789');
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[1], 's');
+        assert.strictEqual(result.contents.length, 1);
+        assert.strictEqual(
             result.contents[0],
             '*Epoch Unit*: `s`  \n*Duration*: `test-duration`');
     });
@@ -92,12 +92,12 @@ describe('DurationHoverProvider', () => {
             new vscode.Position(3, 32),
             tokenSource.token);
 
-        assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], '123456789');
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[1], 'ns');
-        assert.equal(result.contents.length, 1);
-        assert.equal(
+        assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[0], '123456789');
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[1], 'ns');
+        assert.strictEqual(result.contents.length, 1);
+        assert.strictEqual(
             result.contents[0],
             '*Epoch Unit*: `ns`  \n*Duration*: `test-duration`');
     });
@@ -112,11 +112,11 @@ describe('DurationHoverProvider', () => {
             new vscode.Position(3, 32),
             tokenSource.token);
 
-        assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
-        assert.equal(timeConverterMock.epochToISODuration.calledOnce, true);
-        assert.equal(timeConverterMock.epochToISODuration.firstCall.args[0], 123456789);
-        assert.equal(result.contents.length, 1);
-        assert.equal(
+        assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToISODuration.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToISODuration.firstCall.args[0], '123456789');
+        assert.strictEqual(result.contents.length, 1);
+        assert.strictEqual(
             result.contents[0],
             '*Epoch Unit*: `ms`  \n*Duration*: `test-duration`');
     });
@@ -129,8 +129,8 @@ describe('DurationHoverProvider', () => {
             new vscode.Position(0, 0),
             tokenSource.token);
 
-        assert.equal(result, undefined);
-        assert.equal(timeConverterMock.isValidEpoch.notCalled, true);
+        assert.strictEqual(result, undefined);
+        assert.strictEqual(timeConverterMock.isValidEpoch.notCalled, true);
     });
 
     it('should return undefined if it is disabled.', async () => {
@@ -142,8 +142,8 @@ describe('DurationHoverProvider', () => {
             new vscode.Position(3, 32),
             tokenSource.token);
 
-        assert.equal(result, undefined);
-        assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
+        assert.strictEqual(result, undefined);
+        assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
     });
 
     it('should return valid duration hover in ms if config is invalid.', async () => {
@@ -156,11 +156,11 @@ describe('DurationHoverProvider', () => {
             new vscode.Position(3, 32),
             tokenSource.token);
 
-        assert.equal(timeConverterMock.isValidEpoch.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.calledOnce, true);
-        assert.equal(timeConverterMock.epochToReadableDuration.firstCall.args[0], 123456789);
-        assert.equal(result.contents.length, 1);
-        assert.equal(
+        assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[0], '123456789');
+        assert.strictEqual(result.contents.length, 1);
+        assert.strictEqual(
             result.contents[0],
             '*Epoch Unit*: `ms`  \n*Duration*: `test-duration`');
     });

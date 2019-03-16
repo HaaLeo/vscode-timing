@@ -38,7 +38,7 @@ describe('InputBoxStep', () => {
             'test-title',
             'test-validation-message',
             () => true);
-        assert.equal(spy.calledOnce, true);
+        assert.strictEqual(spy.calledOnce, true);
 
         const inputBox: vscode.InputBox = spy.returnValues[0];
         inputBoxStub = sinon.stub(inputBox);
@@ -162,7 +162,7 @@ describe('InputBoxStep', () => {
                     () => false,
                     false,
                     true);
-                assert.equal(spy.calledOnce, true);
+                assert.strictEqual(spy.calledOnce, true);
                 const inputBox: vscode.InputBox = spy.returnValues[0];
                 inputBoxStub = sinon.stub(inputBox);
                 testObject.execute(new MultiStepHandler(), 0, 0, true);

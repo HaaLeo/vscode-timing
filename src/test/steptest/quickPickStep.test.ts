@@ -53,7 +53,7 @@ describe('QuickPickStep', () => {
             { label: 'other-item-label' },
             inputBoxStepStub,
             true);
-        assert.equal(spy.calledOnce, true);
+        assert.strictEqual(spy.calledOnce, true);
 
         quickPick = spy.returnValues[0];
         quickPickStub = sinon.stub(quickPick);

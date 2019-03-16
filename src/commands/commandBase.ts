@@ -25,8 +25,8 @@ abstract class CommandBase implements vscode.Disposable {
     protected _hideResultViewOnEnter: boolean;
     protected _ignoreFocusOut: boolean;
 
-    private _readInputFromClipboard: boolean;
-    private _writeToClipboard: boolean;
+    protected _readInputFromClipboard: boolean;
+    protected _writeToClipboard: boolean;
 
     public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter) {
         this._timeConverter = timeConverter;
@@ -42,11 +42,11 @@ abstract class CommandBase implements vscode.Disposable {
         this._insertConvertedTime = this.getConfigParameter('insertConvertedTime');
         this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');
         this._hideResultViewOnEnter = this.getConfigParameter('hideResultViewOnEnter');
-        this._readInputFromClipboard = this.getConfigParameter('readInputFromClipboard');
-        this._writeToClipboard = this.getConfigParameter('writeResultToClipboard');
+        this._readInputFromClipboard = this.getConfigParameter('clipboard.readingEnabled');
+        this._writeToClipboard = this.getConfigParameter('clipboard.writingEnabled');
 
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
-            if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
+        if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
                 this._insertConvertedTime = this.getConfigParameter('insertConvertedTime');
             } else if (changedEvent.affectsConfiguration('timing.ignoreFocusOut')) {
                 this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');

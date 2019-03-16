@@ -68,7 +68,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 ## Settings Overview
 
 * `timing.clipboard.readingEnabled`: Indicates whether the extension should try to get the input time from the clipboard instead of asking the user for input.
-* `timing.clipboard.writingEnabled`: Indicates whether the result of the conversion is written to the clipboard.
+* `timing.clipboard.writingEnabled`: Indicates whether the result of the conversion is written to the clipboard. When enabled, no result view will be shown.
 * `timing.customFormats`: An array of custom source/target formats used to convert from/to.
 * `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart.
 * `timing.hiddenCommands`: List of commands that shall be hidden from the command palette.
@@ -81,7 +81,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
   * `local`: Show the hover preview in ISO 8601 Local time.
   * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
 * `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost.
-* `timing.insertConvertedTime`: Indicates whether a converted time is [inserted](#insert-converted-time) at the cursor's current position after conversion.
+* `timing.insertConvertedTime`: Indicates whether a converted time is [inserted](#insert-converted-time) at the cursor's current position after conversion. When enabled, no result view is shown.
 
 ## Command Overview
 

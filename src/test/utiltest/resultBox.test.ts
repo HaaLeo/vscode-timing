@@ -53,7 +53,7 @@ describe('ResultBox', () => {
         beforeEach(() => {
             spy = sinon.spy(vscode.window, 'createInputBox');
             testObject = new ResultBox(insertButtonMock);
-            assert.equal(spy.calledOnce, true);
+            assert.strictEqual(spy.calledOnce, true);
 
             const resultBox: vscode.InputBox = spy.returnValues[0];
             resultBoxStub = sinon.stub(resultBox);

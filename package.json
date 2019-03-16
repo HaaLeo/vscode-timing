@@ -140,7 +140,7 @@
                 },
                 "timing.clipboard.writingEnabled": {
                     "title": "Write the converted time to the clipboard",
-                    "description": "Indicates whether the result of the conversion is written to the clipboard.",
+                    "description": "Indicates whether the result of the conversion is written to the clipboard. When enabled, no result view is shown.",
                     "type": "boolean",
                     "default": true
                 },
@@ -179,7 +179,7 @@
                 },
                 "timing.insertConvertedTime": {
                     "title": "Insert the converted time.",
-                    "description": "Indicates whether a converted time is inserted at the cursor's current position after conversion.",
+                    "description": "Indicates whether a converted time is inserted at the cursor's current position after conversion. When enabled, no result view is shown.",
                     "type": "boolean",
                     "default": false
                 },

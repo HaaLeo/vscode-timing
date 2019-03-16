@@ -42,7 +42,7 @@ describe('ToggleInsertConvertedTimeUserLevelCommand', () => {
 
             config = vscode.workspace.getConfiguration('timing');
             const result = config.get('insertConvertedTime');
-            assert.equal(result, true);
+            assert.strictEqual(result, true);
         });
 
         it('Should toggle setting to false', async () => {
@@ -53,7 +53,7 @@ describe('ToggleInsertConvertedTimeUserLevelCommand', () => {
 
             config = vscode.workspace.getConfiguration('timing');
             const result = config.get('insertConvertedTime');
-            assert.equal(result, false);
+            assert.strictEqual(result, false);
         });
     });
 });

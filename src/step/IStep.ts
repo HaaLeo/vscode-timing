@@ -29,11 +29,15 @@ interface IStep extends Disposable {
     /**
      * Execute this step.
      * @param handler The handler of the step.
-     * @param step The step's number.
-     * @param totalSteps The amount of overall steps.
+     * @param stepIndex The step's number to show. May be different than its actual index.
+     * @param totalSteps The amount of all steps.
      * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      */
-    execute(handler: MultiStepHandler, step: number, totalSteps: number, ignoreFocusOut: boolean): Thenable<StepResult>;
+    execute(
+        handler: MultiStepHandler,
+        stepIndex: number,
+        totalSteps: number,
+        ignoreFocusOut: boolean): Thenable<StepResult>;
 
     /**
      * Resets the step's current value

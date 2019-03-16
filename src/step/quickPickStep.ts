@@ -96,23 +96,23 @@ class QuickPickStep implements IStep {
     /**
      * Execute this step.
      * @param handler The handler of the step.
-     * @param step The step's number.
+     * @param stepIndex The step's index to show.
      * @param totalSteps The amount of overall steps.
      * @param ignoreFocusOut Indicates whether the form stays visible when focus is lost
      */
     public execute(
         handler: MultiStepHandler,
-        step: number,
+        stepIndex: number,
         totalSteps: number,
         ignoreFocusOut: boolean): Thenable<StepResult> {
 
         this._quickPick.value = '';
-        this._quickPick.step = step;
+        this._quickPick.step = stepIndex;
         this._quickPick.totalSteps = totalSteps;
         this._quickPick.ignoreFocusOut = ignoreFocusOut;
         this._quickPick.items = this._allowOtherItem ? [...this._items, this._allowOtherItem] : this._items;
         this._quickPick.selectedItems = [];
-        if (step > 1) {
+        if (stepIndex > 1) {
             this._quickPick.buttons = [QuickInputButtons.Back];
         }
 
@@ -129,7 +129,7 @@ class QuickPickStep implements IStep {
                     let resultValue: string;
                     const picked = this._quickPick.selectedItems[0];
                     if (this._allowOtherItem && (picked.label === this._allowOtherItem.label)) {
-                        handler.registerStep(this._alternativeStep, step);
+                        handler.registerStep(this._alternativeStep, handler.indexOf(this) + 1);
                         resultValue = undefined;
                         this._preSelectedItem = this._allowOtherItem;
                     } else {

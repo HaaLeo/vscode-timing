@@ -67,19 +67,20 @@ class MultiStepHandler implements Disposable {
      * Only use this parameter when registering steps during command execution.
      */
     public registerStep(step: IStep, index?: number): void {
-
-        if (index === 0 || index) {
-            this._steps.splice(index, 0, step);
-            // Shift _givenResultsMap to match index
-            for (let i = this._steps.length - 1; i >= index; i--) {
-                if (this._givenResults.has(i)) {
-                    this._givenResults.set(i + 1, this._givenResults.get(i));
-                    this._givenResults.delete(i);
+        // Only register step when it is not registered yet
+        if (this._steps.indexOf(step) === -1) {
+            if (index === 0 || index) {
+                this._steps.splice(index, 0, step);
+                // Shift _givenResultsMap to match index
+                for (let i = this._steps.length - 1; i >= index; i--) {
+                    if (this._givenResults.has(i)) {
+                        this._givenResults.set(i + 1, this._givenResults.get(i));
+                        this._givenResults.delete(i);
+                    }
                 }
+            } else {
+                this._steps.push(step);
             }
-
-        } else {
-            this._steps.push(step);
         }
     }
 

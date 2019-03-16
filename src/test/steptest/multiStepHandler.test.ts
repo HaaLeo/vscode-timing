@@ -65,6 +65,18 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(result[0], 'first-result');
             assert.strictEqual(result[1], 'second-result');
         });
+
+        it('should not register step when it was registered before.', async () => {
+            testObject.registerStep(secondStepStub, 1);
+            testObject.registerStep(secondStepStub, 1);
+            testObject.registerStep(firstStepStub, 0);
+            testObject.registerStep(firstStepStub, 0);
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(result.length, 2);
+            assert.strictEqual(result[0], 'first-result');
+            assert.strictEqual(result[1], 'second-result');
+        });
     });
 
     describe('unregisterStep', () => {

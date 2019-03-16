@@ -34,29 +34,16 @@ class EpochToIsoLocalCommand extends CommandBase {
         do {
             let rawInput = loopResult.value;
 
-            if (loopResult.action === InputFlowAction.Back) {
-                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
-            } else {
-                [rawInput] = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
-            }
+            const internalResult = await this.internalExecute(loopResult.action, 'epochToIsoLocal', rawInput);
 
-            if (!rawInput) {
-                break;
-            }
-
+            [rawInput] = internalResult.stepHandlerResult;
             const input = new InputDefinition(rawInput);
-            const result = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
 
-            let inserted: boolean = false;
-            if (this._insertConvertedTime) {
-                inserted = await this.insert(result);
-            }
-
-            if (!inserted) {
+            if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(
                     'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
                     this.title + ': Result',
-                    result,
+                    internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
             } else {

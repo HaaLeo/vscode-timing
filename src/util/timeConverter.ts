@@ -86,7 +86,8 @@ class TimeConverter {
 
         return text;
     }
-    public epochToIsoLocal(ms: string): string {
+    public epochToIsoLocal(epoch: string): string {
+        const ms = new InputDefinition(epoch).inputAsMs;
         const result = moment(ms, 'x').toISOString(true);
         return result;
     }

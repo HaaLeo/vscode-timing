@@ -225,7 +225,6 @@ describe('TimeConverter', () => {
     describe('getNowAsISOUtc', () => {
 
         it('Should return current time in ISO UTC format.', () => {
-            const testObject = new TimeConverter();
             const now = moment();
             const result = testObject.getNowAsIsoUtc();
 
@@ -233,7 +232,6 @@ describe('TimeConverter', () => {
         });
 
         it('Should return current time in ISO Local format.', () => {
-            const testObject = new TimeConverter();
             const now = moment();
             const result = testObject.getNowAsIsoLocal();
 
@@ -244,7 +242,6 @@ describe('TimeConverter', () => {
 
     describe('epochToISODuration', () => {
         it('Should convert to the correct ISO duration.', () => {
-            const testObject = new TimeConverter();
             const result = testObject.epochToISODuration('123456789', 'ms');
 
             assert.strictEqual(result, 'PT34H17M36.789S');

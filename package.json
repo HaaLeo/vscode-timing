@@ -128,7 +128,7 @@
             }
         ],
         "configuration": {
-            "$schema": "http://json-schema.org/draft-06/schema#",
+            "$schema": "http://json-schema.org/draft-07/schema#",
             "type": "object",
             "title": "Time Converter",
             "properties": {
@@ -203,10 +203,61 @@
                 },
                 "timing.hoverTimestamp.targetFormat": {
                     "title": "The target format of the hover preview.",
-                    "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\" or custom format.",
-                    "type": "string",
-                    "default": "utc",
-                    "pattern": "^(?!\\s*$).+"
+                    "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\" or a custom format. Use an object to specify further options for custom formats.",
+                    "default": [
+                        "utc"
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "default": "utc",
+                            "pattern": "^(?!\\s*$).+"
+                        },
+                        {
+                            "title": "Target Formats.",
+                            "description": "List of target formats.",
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "title": "Custom Format.",
+                                        "description": "Use an object to specify further options for custom formats.",
+                                        "properties": {
+                                            "name": {
+                                                "title": "The name of the format.",
+                                                "description": "Shown as prefix in the hover preview.",
+                                                "type": "string",
+                                                "pattern": "^(?!\\s*$).+"
+                                            },
+                                            "customFormat": {
+                                                "title": "The custom time format.",
+                                                "description": "A custom momentjs format.",
+                                                "type": "string",
+                                                "pattern": "^(?!\\s*$).+"
+                                            },
+                                            "localize": {
+                                                "title": "Localize the format.",
+                                                "description": "Indicates whether the custom format shall be localized.",
+                                                "type": "boolean",
+                                                "default": true
+                                            }
+                                        },
+                                        "required": [
+                                            "customFormat"
+                                        ]
+                                    },
+                                    {
+                                        "title": "The format of the hover preview.",
+                                        "description": "\"utc\", \"local\" or a custom format.",
+                                        "type": "string",
+                                        "pattern": "^(?!\\s*$).+"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 },
                 "timing.hoverTimestamp.enabled": {
                     "title": "En-/disable the timestamp hover.",

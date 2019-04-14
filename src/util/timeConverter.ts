@@ -17,9 +17,16 @@ class TimeConverter {
         return result;
     }
 
-    public epochToCustom(epoch: string, targetFormat: string): string {
+    public epochToCustom(epoch: string, targetFormat: string, localize: boolean = true): string {
         const ms = new InputDefinition(epoch).inputAsMs;
-        const result = moment(ms, 'x').format(targetFormat);
+        let result: string;
+
+        if (localize) {
+            result = moment(ms, 'x').format(targetFormat);
+        } else {
+            result = moment.utc(ms, 'x').format(targetFormat);
+        }
+
         return result;
     }
 

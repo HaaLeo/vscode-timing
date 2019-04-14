@@ -8,8 +8,10 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import { HoverFormat } from './hoverFormat';
 import { InputDefinition } from './inputDefinition';
 import { TimeConverter } from './timeConverter';
+
 
 class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable {
 
@@ -17,7 +19,7 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
 
     private _disposables: vscode.Disposable[];
 
-    private _targetFormat: string;
+    private _targetFormats: Array<string | { customFormat: string, name: string, localize: boolean }>;
     private _enabled: boolean;
 
     constructor(timeConverter: TimeConverter) {
@@ -44,24 +46,10 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
             const hoveredWord = document.getText(timeRange);
             if (this._timeConverter.isValidEpoch(hoveredWord)) {
                 const input = new InputDefinition(hoveredWord);
-                const prefix = '*Epoch Unit*: `' + input.originalUnit + '`  \n*Timestamp*: `';
 
                 // Is the feature enabled?
                 if (this._enabled) {
-                    if (this._targetFormat === 'utc') {
-                        const utc = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
-                        result = new vscode.Hover(prefix + utc + '`', timeRange);
-                    } else if (this._targetFormat === 'local') {
-                        const local = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
-                        result = new vscode.Hover(prefix + local + '`', timeRange);
-                    } else if (this._targetFormat) {
-                        const custom = this._timeConverter.epochToCustom(
-                            input.inputAsMs.toString(),
-                            this._targetFormat);
-                        result = new vscode.Hover(prefix + custom + '`', timeRange);
-                    } else {
-                        result = undefined;
-                    }
+                    result = new vscode.Hover(this.buildMessage(input), timeRange);
                 } else {
                     result = undefined;
                 }
@@ -75,11 +63,49 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
         this._disposables.forEach((disposable) => disposable.dispose());
     }
 
+    private buildMessage(input: InputDefinition): string {
+        let result = '*Epoch Unit*: `' + input.originalUnit + '`';//*Timestamp*: `';
+
+        // Append message foreach configured format
+        this._targetFormats.forEach((format: (string | { customFormat: string, name: string, localize: boolean })) => {
+            if (format === 'utc') {
+                // UTC format
+                const utc = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
+                result += '  \n*UTC Timestamp*: `' + utc + '`';
+
+            } else if (format === 'local') {
+                // Local format
+                const local = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
+                result += '  \n*Local Timestamp*:' + local + '`';
+
+            } else if (typeof format === 'string') {
+                // Other simple custom format
+                const custom = this._timeConverter.epochToCustom(
+                    input.inputAsMs.toString(),
+                    format);
+                result += '  \n*Formatted Timestamp*:' + custom + '`';
+
+            } else if (format instanceof HoverFormat) {
+                // Advanced configured custom format
+                const custom = this._timeConverter.epochToCustom(
+                    input.inputAsMs.toString(),
+                    format.customFormat);
+                if (format.name) {
+                    result += '  \n*' + format.name + '*:' + custom + '`';
+                } else {
+                    result += '  \n*Formatted Timestamp' + custom + '`';
+                }
+            }
+        });
+
+        return result;
+    }
+
     private updateTimestampTargetFormat(): void {
         const config = vscode.workspace.getConfiguration('timing.hoverTimestamp')
             .get<string>('targetFormat', 'utc');
 
-        this._targetFormat = config;
+        this._targetFormats = config;
     }
 
     private updateTimestampEnabled(): void {

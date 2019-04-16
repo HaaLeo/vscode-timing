@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+* **Added** webpack for bundling the extension. Now the extension ships with 11 files instead of 383. Therefore the extension now is loaded much faster.
+
 ## 2019-03-16 - v2.0.0
 * **BREAKING CHANGES**:
   * The extension now requires minimum VS Code version **1.30.0**

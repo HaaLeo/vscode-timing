@@ -16,6 +16,7 @@ class ExtensionContextMock implements ExtensionContext {
     public workspaceState = undefined;
     public globalState = undefined;
     public extensionPath = undefined;
+    public globalStoragePath = undefined;
     public asAbsolutePath = sinon.stub().returns('');
     public storagePath = undefined;
 

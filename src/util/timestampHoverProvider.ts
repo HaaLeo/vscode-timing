@@ -61,7 +61,7 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
     }
 
     private buildMessage(input: InputDefinition): string {
-        let result = '*Epoch Unit*: `' + input.originalUnit + '`';
+        let result: string = '';
 
         // Append message foreach configured format
         for (const format of this._targetFormats) {
@@ -82,8 +82,6 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
                         input.inputAsMs.toString(),
                         format);
                     result += '  \n*Formatted Timestamp*: `' + custom + '`';
-                } else {
-                    result = undefined;
                 }
 
             } else if (format.customFormat) {
@@ -97,12 +95,10 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
                 } else {
                     result += '  \n*Formatted Timestamp*: `' + custom + '`';
                 }
-            } else {
-                result = undefined;
             }
         }
 
-        return result;
+        return result ? '*Epoch Unit*: `' + input.originalUnit + '`' + result : undefined;
     }
 
     private updateTimestampTargetFormat(): void {

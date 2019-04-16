@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+* **Changed** `timing.hoverTimestamp.targetFormat` setting. It now supports an array of multiple formats, too.  
+  Further in the array you can additionally express custom formats as objects for advanced configuration.
+
 ## 2019-03-16 - v2.0.0
 * **BREAKING CHANGES**:
   * The extension now requires minimum VS Code version **1.30.0**

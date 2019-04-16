@@ -8,10 +8,8 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { HoverFormat } from './hoverFormat';
 import { InputDefinition } from './inputDefinition';
 import { TimeConverter } from './timeConverter';
-
 
 class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable {
 
@@ -49,9 +47,8 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
 
                 // Is the feature enabled?
                 if (this._enabled) {
-                    result = new vscode.Hover(this.buildMessage(input), timeRange);
-                } else {
-                    result = undefined;
+                    const message = this.buildMessage(input);
+                    result = message ? new vscode.Hover(message) : undefined;
                 }
             }
         }
@@ -64,10 +61,10 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
     }
 
     private buildMessage(input: InputDefinition): string {
-        let result = '*Epoch Unit*: `' + input.originalUnit + '`';//*Timestamp*: `';
+        let result = '*Epoch Unit*: `' + input.originalUnit + '`';
 
         // Append message foreach configured format
-        this._targetFormats.forEach((format: (string | { customFormat: string, name: string, localize: boolean })) => {
+        for (const format of this._targetFormats) {
             if (format === 'utc') {
                 // UTC format
                 const utc = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
@@ -76,36 +73,46 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
             } else if (format === 'local') {
                 // Local format
                 const local = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
-                result += '  \n*Local Timestamp*:' + local + '`';
+                result += '  \n*Local Timestamp*: `' + local + '`';
 
             } else if (typeof format === 'string') {
                 // Other simple custom format
-                const custom = this._timeConverter.epochToCustom(
-                    input.inputAsMs.toString(),
-                    format);
-                result += '  \n*Formatted Timestamp*:' + custom + '`';
+                if (format) {
+                    const custom = this._timeConverter.epochToCustom(
+                        input.inputAsMs.toString(),
+                        format);
+                    result += '  \n*Formatted Timestamp*: `' + custom + '`';
+                } else {
+                    result = undefined;
+                }
 
-            } else if (format instanceof HoverFormat) {
+            } else if (format.customFormat) {
                 // Advanced configured custom format
                 const custom = this._timeConverter.epochToCustom(
                     input.inputAsMs.toString(),
-                    format.customFormat);
+                    format.customFormat,
+                    format.localize);
                 if (format.name) {
-                    result += '  \n*' + format.name + '*:' + custom + '`';
+                    result += '  \n*' + format.name + '*: `' + custom + '`';
                 } else {
-                    result += '  \n*Formatted Timestamp' + custom + '`';
+                    result += '  \n*Formatted Timestamp*: `' + custom + '`';
                 }
+            } else {
+                result = undefined;
             }
-        });
+        }
 
         return result;
     }
 
     private updateTimestampTargetFormat(): void {
-        const config = vscode.workspace.getConfiguration('timing.hoverTimestamp')
-            .get<string>('targetFormat', 'utc');
-
-        this._targetFormats = config;
+        const config = vscode.workspace.getConfiguration('timing.hoverTimestamp');
+        const value = config.get<any>('targetFormat', ['utc']);
+        if (typeof value === 'string') {
+            this._targetFormats = [value];
+        } else if (value instanceof Array) {
+            this._targetFormats = value;
+        }
     }
 
     private updateTimestampEnabled(): void {

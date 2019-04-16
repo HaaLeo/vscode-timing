@@ -29,9 +29,9 @@ jobs:
     - stage: build
       script:
         - npm run compile
-        - npm run test-compile
     - stage: test
       script:
+        - npm run test-compile
         - npm run tslint
         - npm run test
     - stage: deploy

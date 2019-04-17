@@ -35,7 +35,7 @@ describe('TimeConverter', () => {
     describe('epochToCustom', () => {
         it('Should convert to custom correctly with localization.', () => {
             const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss');
-            assert.strictEqual(result, '29.11.1973 22:33:09');
+            assert.strictEqual(result, moment(123456789000, 'x').format('DD.MM.YYYY HH:mm:ss'));
         });
 
         it('Should convert to custom correctly without localization.', () => {

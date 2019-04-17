@@ -33,9 +33,14 @@ describe('TimeConverter', () => {
     });
 
     describe('epochToCustom', () => {
-        it('Should convert to ISO correctly.', () => {
-            const result = testObject.epochToCustom('123456789000', 'YYYY');
-            assert.strictEqual(result, '1973');
+        it('Should convert to custom correctly with localization.', () => {
+            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss');
+            assert.strictEqual(result, '29.11.1973 22:33:09');
+        });
+
+        it('Should convert to custom correctly without localization.', () => {
+            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss', false);
+            assert.strictEqual(result, '29.11.1973 21:33:09');
         });
     });
 

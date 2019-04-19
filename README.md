@@ -3,7 +3,7 @@
 [![Version](https://vsmarketplacebadge.apphb.com/version/HaaLeo.timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing) [![Downloads](https://vsmarketplacebadge.apphb.com/downloads/HaaLeo.timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing) [![Ratings](https://vsmarketplacebadge.apphb.com/rating/HaaLeo.timing.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing#review-details) [![Stars](https://img.shields.io/github/stars/HaaLeo/vscode-timing.svg?label=Stars&logo=github&style=flat-square)](https://github.com/HaaLeo/vscode-timing/stargazers)  
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://raw.githubusercontent.com/HaaLeo/vscode-timing/master/LICENSE.txt) [![Build Status](https://img.shields.io/travis/HaaLeo/vscode-timing/master.svg?style=flat-square)](https://travis-ci.org/HaaLeo/vscode-timing) [![Build Status](https://dev.azure.com/HaaLeo/vscode-timing/_apis/build/status/vscode-timing-CI?branchName=master)](https://dev.azure.com/HaaLeo/vscode-timing/_build/latest?definitionId=2&branchName=master) [![Codecov](https://img.shields.io/codecov/c/github/HaaLeo/vscode-timing.svg?style=flat-square)](https://codecov.io/gh/HaaLeo/vscode-timing)  
 [![David](https://img.shields.io/david/HaaLeo/vscode-timing.svg?style=flat-square)](https://david-dm.org/HaaLeo/vscode-timing) [![David](https://img.shields.io/david/dev/HaaLeo/vscode-timing.svg?style=flat-square)](https://david-dm.org/HaaLeo/vscode-timing?type=dev) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)  
-[![Donate](https://img.shields.io/badge/-Donate-blue.svg?logo=paypal&style=flat-square)](https://www.paypal.me/LeoHanisch)
+[![Donate](https://img.shields.io/badge/☕️-Buy%20Me%20a%20Coffee-blue.svg?&style=flat-square)](https://www.paypal.me/LeoHanisch/3eur)
 
 ## Description
 
@@ -26,7 +26,7 @@ This extension was inspired by [zodiac403's epoch-time-converter](https://github
 
 ## Features
 
-Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion. Epoch times can be converted to a human readable _timestamp_ or _duration_.  
+Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a localized [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion. Epoch times can be converted to a human readable _timestamp_ or _duration_.  
 
  Source Format| ⟶ | Target Format| Example
 :--|:--:|:-- |:--
@@ -76,10 +76,27 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 * `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
 * `timing.hoverDuration.useISOTargetFormat`: Indicates whether the ISO 8601 duration definition is used as target format for the hover.
 * `timing.hoverTimestamp.enabled`: Controls whether the timestamp hover is enabled or disabled.
-* `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. It can be either "utc", "local" or a custom format. Possible values:
+* `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. Possible values:
   * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.
   * `local`: Show the hover preview in ISO 8601 Local time.
-  * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.
+  * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.  
+
+  In addition, you can specify multiple formats via an array. When doing so, you can add further options for custom formats. E.g.:
+  ```json
+  {
+      "timing.hoverTimestamp.targetFormat": [
+          "local",
+          "utc",
+          "DD.MM.YYYY HH:mm:ss",
+          {
+              "customFormat": "DD.MM.YYYY HH:mm:ss",
+              "localize": false,
+              "name": "My Format"
+          }
+      ]
+  }
+  ```
+
 * `timing.ignoreFocusOut`: Indicates whether the input boxes remain visible when the focus is lost.
 * `timing.insertConvertedTime`: Indicates whether a converted time is [inserted](#insert-converted-time) at the cursor's current position after conversion. When enabled, no result view is shown.
 
@@ -143,7 +160,7 @@ Pull Requests are welcome!
 
 ## Support
 When you like this extension make sure to [star the repo](https://github.com/HaaLeo/vscode-timing/stargazers) and [write a review](https://marketplace.visualstudio.com/items?itemName=HaaLeo.timing#review-details). I am always looking for new ideas and feedback.  
-In addition, it is possible to [donate via paypal](https://www.paypal.me/LeoHanisch).
+In addition, it is possible to [donate via paypal](https://www.paypal.me/LeoHanisch/3eur).
 
 ## Examples
 

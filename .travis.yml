@@ -23,16 +23,16 @@ before_install:
 
 install:
   - npm install
-  - npm run vscode:prepublish
 
 jobs:
   include:
     - stage: build
       script:
         - npm run compile
-        - npm run tslint
     - stage: test
       script:
+        - npm run test-compile
+        - npm run tslint
         - npm run test
     - stage: deploy
       before_deploy:

@@ -54,8 +54,17 @@ jobs:
   - job: Linux
     pool:
       name: Hosted Ubuntu 1604
-      demands: npm
+      demands:
+      - npm
+      - curl
     steps:
+      - script: |
+          curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $(System.AccessToken)" -d '{"variables": {"currentTag": {"value": "'"$(git tag --points-at HEAD)"'"}},"type": "Vsts","name": "Git","description": "Updated current tag via CI at '"$(date --rfc-3339 seconds)"'"}' https://dev.azure.com/HaaLeo/vscode-timing/_apis/distributedtask/variablegroups/2?api-version=5.0-preview.1
+        displayName: Update variable
+      - task: CopyFiles@2
+        inputs:
+          contents: '**/*'
+          targetFolder: $(Build.ArtifactStagingDirectory)
       - task: NodeTool@0
         displayName: 'Use Node 10.x'
         inputs:
@@ -88,10 +97,6 @@ jobs:
           verbose: false
           customCommand: 'run package'
         displayName: Package extension
-      - task: CopyFiles@2
-        inputs:
-          contents: '*.vsix'
-          targetFolder: $(Build.ArtifactStagingDirectory)
       - task: PublishBuildArtifacts@1
         inputs:
           pathtoPublish: $(Build.ArtifactStagingDirectory)

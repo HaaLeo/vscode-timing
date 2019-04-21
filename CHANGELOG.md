@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 2019-04-22 - v2.1.0
 * **Changed** `timing.hoverTimestamp.targetFormat` setting. It now supports an array of multiple formats, too.  
   In the array you can additionally express custom formats as objects for advanced configuration. ([#30](https://github.com/HaaLeo/vscode-timing/issues/30))
 * **Added** webpack for bundling the extension. Now the extension ships with 11 files instead of 383 and will load much faster.

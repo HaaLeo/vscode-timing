@@ -3,8 +3,9 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 * **Changed** `timing.hoverTimestamp.targetFormat` setting. It now supports an array of multiple formats, too.  
-  Further in the array you can additionally express custom formats as objects for advanced configuration. ([#30](https://github.com/HaaLeo/vscode-timing/issues/30))
-* **Added** webpack for bundling the extension. Now the extension ships with 11 files instead of 383. Therefore the extension now is loaded much faster.
+  In the array you can additionally express custom formats as objects for advanced configuration. ([#30](https://github.com/HaaLeo/vscode-timing/issues/30))
+* **Added** webpack for bundling the extension. Now the extension ships with 11 files instead of 383 and will load much faster.
+* **Changed** CI/CD provider. Moved the project to azure pipelines.
 
 ## 2019-03-16 - v2.0.0
 * **BREAKING CHANGES**:

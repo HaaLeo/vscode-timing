@@ -376,7 +376,9 @@
         "test-compile": "tsc -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "node ./node_modules/vscode/bin/test",
-        "tslint": "tslint --project ./"
+        "tslint": "tslint --project ./",
+        "package": "vsce package",
+        "publish": "vsce publish -p"
     },
     "devDependencies": {
         "@types/mocha": "^5.2.6",

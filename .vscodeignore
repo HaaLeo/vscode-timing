@@ -7,7 +7,7 @@ doc/**/*.gif
 .github/
 tsconfig.json
 tslint.json
-.travis.yml
+azure-pipelines.yml
 coverconfig.json
 coverage/
 dist/**/*.map

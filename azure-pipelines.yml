@@ -89,6 +89,11 @@ jobs:
         inputs:
           verbose: false
       - script: |
+          set -e
+          /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+          disown -ar
+        displayName: 'Start xvfb'
+      - script: |
           npm run tslint
           npm run test-compile
           npm run test

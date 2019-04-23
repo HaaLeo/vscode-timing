@@ -54,10 +54,6 @@ jobs:
         inputs:
           testRunner: JUnit
           testResultsFiles: '**/test-results.xml'
-      - script: 'bash <(curl -s https://codecov.io/bash)'
-        displayName: 'Publish coverage results to codecov.io'
-        env:
-          CODECOV_TOKEN: '$(CODECOV_IO_TOKEN)'
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: Cobertura

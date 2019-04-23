@@ -20,17 +20,6 @@ if (!tty.getWindowSize) {
     };
 }
 
-let mocha = new Mocha({
-    ui: 'bdd',
-    useColors: true,
-    timeout: 3000
-});
-
-function configure(mochaOpts): void {
-    mocha = new Mocha(mochaOpts);
-}
-exports.configure = configure;
-
 function _mkDirIfExists(dir: string): void {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
@@ -61,6 +50,19 @@ function run(testsRoot, clb): any {
 
     // Glob test files
     glob('**/**.test.js', { cwd: testsRoot }, (error, files): any => {
+        let mocha = new Mocha({
+            ui: 'bdd',
+            useColors: true,
+            timeout: 3000,
+            reporter: "mocha-multi-reporters",
+            reporterOptions: {
+                "reporterEnabled": "mocha-junit-reporter, spec",
+                "mochaJunitReporterReporterOptions": {
+                    "mochaFile": testsRoot + "/../../test-results.xml"
+                }
+            }
+        });
+
         if (error) {
             return clb(error);
         }

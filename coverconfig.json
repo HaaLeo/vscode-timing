@@ -4,6 +4,6 @@
     "relativeCoverageDir": "../../coverage",
     "ignorePatterns": ["**/node_modules/**", "**/test/**"],
     "includePid": false,
-    "reports": ["json", "html", "lcov"],
+    "reports": ["json", "cobertura"],
     "verbose": false
 }

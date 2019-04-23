@@ -49,6 +49,20 @@ jobs:
           npm run test-compile
           npm run test
         displayName: 'Run tests'
+      - script: 'bash <(curl -s https://codecov.io/bash)'
+        displayName: 'Publish test results to codecov.io'
+        env:
+          CODECOV_TOKEN: '$(CODECOV_IO_TOKEN)'
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testRunner: JUnit
+          testResultsFiles: '**/test-results.xml'
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+          reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
       - script: npm run compile
         displayName: 'Compile'
   - job: Linux
@@ -74,21 +88,12 @@ jobs:
         inputs:
           verbose: false
       - script: |
-          set -e
-          /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
-          disown -ar
-        displayName: 'Start xvfb'
-      - script: |
           npm run tslint
           npm run test-compile
           npm run test
         displayName: 'Run tests'
         env:
           DISPLAY: :10
-      - script: 'bash <(curl -s https://codecov.io/bash)'
-        displayName: 'Publish test results'
-        env:
-          CODECOV_TOKEN: '$(CODECOV_IO_TOKEN)'
       - script: npm run compile
         displayName: 'Compile'
       - task: Npm@1

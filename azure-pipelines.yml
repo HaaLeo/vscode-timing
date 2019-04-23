@@ -49,20 +49,21 @@ jobs:
           npm run test-compile
           npm run test
         displayName: 'Run tests'
-      - script: 'bash <(curl -s https://codecov.io/bash)'
-        displayName: 'Publish test results to codecov.io'
-        env:
-          CODECOV_TOKEN: '$(CODECOV_IO_TOKEN)'
       - task: PublishTestResults@2
         condition: succeededOrFailed()
         inputs:
           testRunner: JUnit
           testResultsFiles: '**/test-results.xml'
+      - script: 'bash <(curl -s https://codecov.io/bash)'
+        displayName: 'Publish coverage results to codecov.io'
+        env:
+          CODECOV_TOKEN: '$(CODECOV_IO_TOKEN)'
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: Cobertura
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
           reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+          displayName: Publish coverage results to TFS server
       - script: npm run compile
         displayName: 'Compile'
   - job: Linux

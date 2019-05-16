@@ -45,7 +45,8 @@ class TimeConverter {
         return result;
     }
 
-    public epochToISOUtc(ms: string): string {
+    public epochToISOUtc(epoch: string): string {
+        const ms = new InputDefinition(epoch).inputAsMs;
         const result = moment(ms, 'x').toISOString(false);
         return result;
     }

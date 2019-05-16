@@ -2,8 +2,10 @@
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+* **Added** support for [remote development](https://code.visualstudio.com/docs/remote/remote-overview) by explicitly forcing the extension to be a UI extension.
 * **Added** test results. Test results are now published to azure pipelines.
 * **Changed** code coverage. Coverage reports are now published to azure pipelines.
+* **Fixed** a bug in the `timing.epochToIsoUtc` that treated its input, no matter how long it was, as milliseconds. This caused the extension to fail when inserting nanoseconds.
 
 ## 2019-04-22 - v2.1.0
 * **Changed** `timing.hoverTimestamp.targetFormat` setting. It now supports an array of multiple formats, too.  

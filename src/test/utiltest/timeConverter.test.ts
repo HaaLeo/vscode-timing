@@ -20,7 +20,7 @@ describe('TimeConverter', () => {
 
     describe('epochToISOUtc', () => {
         it('Should convert to ISO correctly.', () => {
-            const result = testObject.epochToISOUtc('123456789000');
+            const result = testObject.epochToISOUtc('123456789000000000');
             assert.strictEqual(result, '1973-11-29T21:33:09.000Z');
         });
     });

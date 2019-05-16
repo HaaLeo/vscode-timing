@@ -2,6 +2,8 @@
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## 2019-05-16 - v2.2.0
 * **Added** support for [remote development](https://code.visualstudio.com/docs/remote/remote-overview) by explicitly forcing the extension to be a UI extension.
 * **Added** test results. Test results are now published to azure pipelines.
 * **Changed** code coverage. Coverage reports are now published to azure pipelines.

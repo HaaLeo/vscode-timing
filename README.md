@@ -121,8 +121,8 @@ Command Id | Description | Optional Arguments (`string`)
 `timing.isoRfcToEpoch`| ISO 8601 / RFC 2822 ⟶ Epoch | `targetUnit`
 `timing.nowAsCustom`| Now ⟶ Custom | `targetFormat`
 `timing.nowAsEpoch`| Now ⟶ Epoch | `targetUnit`
-`timing.nowAsIsoLocal`| Now ⟶ Epoch
-`timing.nowAsIsoUtc`| Now ⟶ Epoch
+`timing.nowAsIsoLocal`| Now ⟶ ISO 8601 Local
+`timing.nowAsIsoUtc`| Now ⟶ ISO 8601 UTC
 `timing.toggleInsertConvertedTimeUserLevel`| toggle the `timing.insertConvertedTime` user setting
 
 ## Keyboard Shortcuts

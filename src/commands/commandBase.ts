@@ -33,8 +33,8 @@ abstract class CommandBase implements vscode.Disposable {
 
         this._resultBox = new ResultBox({
             iconPath: {
-                dark: vscode.Uri.file(context.asAbsolutePath('resources/pencil_dark.svg')),
-                light: vscode.Uri.file(context.asAbsolutePath('resources/pencil_light.svg'))
+                dark: vscode.Uri.file(context.asAbsolutePath('resources/dark/insert.svg')),
+                light: vscode.Uri.file(context.asAbsolutePath('resources/light/insert.svg'))
             },
             tooltip: 'Insert Result'
         });

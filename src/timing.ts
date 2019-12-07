@@ -8,6 +8,9 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import * as nls from 'vscode-nls';
+
+const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
 
 import { CustomToCustomCommand } from './commands/customToCustomCommand';
 import { CustomToEpochCommand } from './commands/customToEpochCommand';
@@ -32,7 +35,7 @@ import { TimeConverter } from './util/timeConverter';
 import { TimestampHoverProvider } from './util/timestampHoverProvider';
 
 export function activate(context: vscode.ExtensionContext) {
-
+    localize('foo', 'bar');
     // Create converter
     const timeConverter = new TimeConverter();
 

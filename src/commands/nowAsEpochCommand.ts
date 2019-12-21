@@ -10,9 +10,9 @@
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
-import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
-import { InputFlowAction } from '../util/InputFlowAction';
+import { InputFlowAction } from '../util/inputFlowAction';
+import { ICommandOptions } from './commandOptions';
 import { CustomCommandBase } from './customCommandBase';
 
 class NowAsEpochCommand extends CustomCommandBase {

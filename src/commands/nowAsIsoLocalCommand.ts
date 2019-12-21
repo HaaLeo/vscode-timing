@@ -8,7 +8,7 @@
 'use strict';
 
 import { StepResult } from '../step/stepResult';
-import { InputFlowAction } from '../util/InputFlowAction';
+import { InputFlowAction } from '../util/inputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
 class NowAsIsoLocalCommand extends CustomCommandBase {

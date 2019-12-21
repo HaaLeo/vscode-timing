@@ -12,7 +12,8 @@ import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { EpochToReadableDurationCommand } from '../../commands/epochToReadableDurationCommand';
 import { StepResult } from '../../step/stepResult';
-import { InputFlowAction } from '../../util/InputFlowAction';
+import { ConfigHelper } from '../../util/configHelper';
+import { InputFlowAction } from '../../util/inputFlowAction';
 import { ResultBox } from '../../util/resultBox';
 import { TimeConverter } from '../../util/timeConverter';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
@@ -52,7 +53,7 @@ describe('EpochToReadableDurationCommand', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new EpochToReadableDurationCommand(new ExtensionContextMock(), timeConverter);
+            testObject = new EpochToReadableDurationCommand(new ExtensionContextMock(), timeConverter, new ConfigHelper());
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
             handlerMock.run.returns(new Promise((resolve) => resolve(['1000', 'ms'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

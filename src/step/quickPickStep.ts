@@ -8,7 +8,7 @@
 'use strict';
 
 import { Disposable, QuickInputButtons, QuickPick, QuickPickItem, window } from 'vscode';
-import { InputFlowAction } from '../util/InputFlowAction';
+import { InputFlowAction } from '../util/inputFlowAction';
 import { IStep } from './IStep';
 import { MultiStepHandler } from './multiStepHandler';
 import { StepResult } from './stepResult';

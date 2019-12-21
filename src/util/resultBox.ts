@@ -9,7 +9,7 @@
 
 import { Disposable, InputBox, QuickInputButton, QuickInputButtons, window } from 'vscode';
 import { StepResult } from '../step/stepResult';
-import { InputFlowAction } from './InputFlowAction';
+import { InputFlowAction } from '../util/inputFlowAction';
 
 /**
  * The ResultBox. Used to show conversion results.

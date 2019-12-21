@@ -12,7 +12,8 @@ import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { CustomToIsoUtcCommand } from '../../commands/customToIsoUtcCommand';
 import { StepResult } from '../../step/stepResult';
-import { InputFlowAction } from '../../util/InputFlowAction';
+import { ConfigHelper } from '../../util/configHelper';
+import { InputFlowAction } from '../../util/inputFlowAction';
 import { ResultBox } from '../../util/resultBox';
 import { TimeConverter } from '../../util/timeConverter';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
@@ -52,7 +53,7 @@ describe('CustomToIsoUtc', () => {
     describe('execute', () => {
 
         beforeEach('Reset', () => {
-            testObject = new CustomToIsoUtcCommand(new ExtensionContextMock(), timeConverter);
+            testObject = new CustomToIsoUtcCommand(new ExtensionContextMock(), timeConverter, new ConfigHelper());
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
             handlerMock.run.returns(new Promise((resolve) => resolve(['YYYY', '2018'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));

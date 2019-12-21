@@ -11,7 +11,7 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { StepResult } from '../../step/stepResult';
-import { InputFlowAction } from '../../util/InputFlowAction';
+import { InputFlowAction } from '../../util/inputFlowAction';
 import { ResultBox } from '../../util/resultBox';
 
 describe('ResultBox', () => {

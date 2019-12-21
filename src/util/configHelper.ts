@@ -10,61 +10,62 @@
 import * as vscode from 'vscode';
 
 class ConfigHelper implements vscode.Disposable {
-    public static async updateContextKeys(changedEvent: vscode.ConfigurationChangeEvent) {
-        if (changedEvent.affectsConfiguration('timing.hiddenCommands')) {
-            const rawConfig = ConfigHelper.get<string | string[]>('timing.hiddenCommands', []);
-
-            let config: string[];
-            if (typeof rawConfig === 'string') {
-                config = rawConfig.split(',').map((value) => value.trim());
-            } else {
-                config = rawConfig;
-            }
-            const commands = [
-                'timing.customToCustom',
-                'timing.customToEpoch',
-                'timing.customToIsoLocal',
-                'timing.customToIsoUtc',
-                'timing.epochToCustom',
-                'timing.epochToReadableDuration',
-                'timing.epochToIsoDuration',
-                'timing.epochToIsoLocal',
-                'timing.epochToIsoUtc',
-                'timing.isoDurationToEpoch',
-                'timing.isoRfcToCustom',
-                'timing.isoRfcToEpoch',
-                'timing.nowAsCustom',
-                'timing.nowAsEpoch',
-                'timing.nowAsIsoLocal',
-                'timing.nowAsIsoUtc',
-                'timing.toggleInsertConvertedTimeUserLevel'
-            ];
-
-            const results = commands.map((command) => {
-                const isEnabled = config.indexOf(command) === -1 ? true : false;
-                vscode.commands.executeCommand('setContext', [...command.split('.'), 'enabled'].join(':'), isEnabled);
-            });
-
-            return Promise.all(results);
-        }
-    }
-
     public static get<T>(configKey: string, defaultValue?: T): T {
-        return vscode.workspace.getConfiguration()
-            .get<T>(configKey, defaultValue);
+        return vscode.workspace.getConfiguration().get<T>(configKey, defaultValue);
     }
 
     private _disposables: vscode.Disposable[];
-    private _section: string;
 
-    constructor(configSection: string) {
-        this._section = configSection;
+    constructor() {
+        this.subscribeToConfig('timing.hiddenCommands', this.updateContextKeys, this);
     }
 
-    public subscribeMemberToConfig<T>(configKey: string, memberName: string, thisArg: any, defaultValue?: T) {
+    public async updateContextKeys(rawConfig: string | string[]) {
+        let commandsToHide: string[];
+        if (typeof rawConfig === 'string') {
+            commandsToHide = rawConfig.split(',').map((value) => value.trim());
+        } else {
+            commandsToHide = rawConfig;
+        }
+
+        const commands = [
+            'timing.customToCustom',
+            'timing.customToEpoch',
+            'timing.customToIsoLocal',
+            'timing.customToIsoUtc',
+            'timing.epochToCustom',
+            'timing.epochToReadableDuration',
+            'timing.epochToIsoDuration',
+            'timing.epochToIsoLocal',
+            'timing.epochToIsoUtc',
+            'timing.isoDurationToEpoch',
+            'timing.isoRfcToCustom',
+            'timing.isoRfcToEpoch',
+            'timing.nowAsCustom',
+            'timing.nowAsEpoch',
+            'timing.nowAsIsoLocal',
+            'timing.nowAsIsoUtc',
+            'timing.toggleInsertConvertedTimeUserLevel'
+        ];
+
+        const results = commands.map((command) => {
+            const isEnabled = commandsToHide.indexOf(command) === -1 ? true : false;
+            vscode.commands.executeCommand('setContext', [...command.split('.'), 'enabled'].join(':'), isEnabled);
+        });
+
+        return Promise.all(results);
+
+    }
+
+    public subscribeToConfig<T>(configKey: string, callback: (configValue: T | undefined) => void, thisArg?: any) {
+        const cb = thisArg ? callback.bind(thisArg) : callback;
+        const configValue = ConfigHelper.get<T>(configKey);
+        cb(configValue);
+
         vscode.workspace.onDidChangeConfiguration((changedEvent) => {
-            if (changedEvent.affectsConfiguration(this._section)) {
-                thisArg[memberName] = ConfigHelper.get(`${this._section}.${configKey}`, defaultValue);
+            if (changedEvent.affectsConfiguration(configKey)) {
+                const value = ConfigHelper.get<T>(configKey);
+                cb(value);
             }
         }, this, this._disposables);
     }
@@ -72,8 +73,6 @@ class ConfigHelper implements vscode.Disposable {
     public dispose() {
         this._disposables.forEach((disposable) => disposable.dispose());
     }
-
-
 }
 
 export { ConfigHelper };

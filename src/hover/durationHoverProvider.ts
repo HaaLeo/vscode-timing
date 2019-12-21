@@ -8,34 +8,21 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { Constants } from './constants';
-import { TimeConverter } from './timeConverter';
+import { ConfigHelper } from '../util/configHelper';
+import { Constants } from '../util/constants';
+import { TimeConverter } from '../util/timeConverter';
 
 class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
-
-    private _timeConverter: TimeConverter;
-
-    private _disposables: vscode.Disposable[];
 
     private _sourceUnit: string;
     private _enabled: boolean;
     private _useISOTargetFormat: boolean;
 
-    constructor(timeConverter: TimeConverter) {
-        this._timeConverter = timeConverter;
+    constructor(private _timeConverter: TimeConverter, private _configHelper: ConfigHelper) {
 
-        this._enabled = this.getConfigParameter('enabled', true);
-        this._sourceUnit = this.getConfigParameter('sourceUnit', 'ms');
-        this._useISOTargetFormat = this.getConfigParameter('useISOTargetFormat', false);
-        vscode.workspace.onDidChangeConfiguration((changedEvent) => {
-            if (changedEvent.affectsConfiguration('timing.hoverDuration.sourceUnit')) {
-                this._sourceUnit = this.getConfigParameter('sourceUnit', 'ms');
-            } else if (changedEvent.affectsConfiguration('timing.hoverDuration.enabled')) {
-                this._enabled = this.getConfigParameter('enabled', true);
-            } else if (changedEvent.affectsConfiguration('timing.hoverDuration.useISOTargetFormat')) {
-                this._useISOTargetFormat = this.getConfigParameter('useISOTargetFormat', false);
-            }
-        }, this, this._disposables);
+        this._configHelper.subscribeToConfig<boolean>('timing.hoverDuration.enabled', (configValue) => this._enabled = configValue, this);
+        this._configHelper.subscribeToConfig<string>('timing.hoverDuration.sourceUnit', (configValue) => this._sourceUnit = configValue, this);
+        this._configHelper.subscribeToConfig<boolean>('timing.hoverDuration.useISOTargetFormat', (configValue) => this._useISOTargetFormat = configValue, this);
     }
 
     public provideHover(
@@ -81,12 +68,7 @@ class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
     }
 
     public dispose(): void {
-        this._disposables.forEach((disposable) => disposable.dispose());
-    }
-
-    private getConfigParameter<T>(configName: string, defaultValue: T): T {
-        return vscode.workspace.getConfiguration('timing.hoverDuration')
-            .get<T>(configName, defaultValue);
+        this._configHelper.dispose();
     }
 }
 

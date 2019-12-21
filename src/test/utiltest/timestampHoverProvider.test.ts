@@ -9,7 +9,8 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { TimestampHoverProvider } from '../../util/timestampHoverProvider';
+import { TimestampHoverProvider } from '../../hover/timestampHoverProvider';
+import { ConfigHelper } from '../../util/configHelper';
 import { TimeConverterMock } from '../mock/timeConverterMock';
 
 describe('TimestampHoverProvider', () => {
@@ -33,7 +34,7 @@ describe('TimestampHoverProvider', () => {
 
         timeConverterMock.reset();
         timeConverterMock.isValidEpoch.returns(true);
-        testObject = new TimestampHoverProvider(timeConverterMock);
+        testObject = new TimestampHoverProvider(timeConverterMock, new ConfigHelper());
         tokenSource = new vscode.CancellationTokenSource();
     });
 

@@ -12,7 +12,7 @@ import { InputDefinition } from '../util/inputDefinition';
 import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { StepResult } from '../step/stepResult';
-import { InputFlowAction } from '../util/InputFlowAction';
+import { InputFlowAction } from '../util/inputFlowAction';
 import { CommandBase } from './commandBase';
 
 /**

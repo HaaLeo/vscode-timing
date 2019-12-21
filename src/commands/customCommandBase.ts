@@ -8,28 +8,20 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import { ConfigHelper } from '../util/configHelper';
 import { TimeConverter } from '../util/timeConverter';
 import { CommandBase } from './commandBase';
-
 abstract class CustomCommandBase extends CommandBase implements vscode.Disposable {
 
     protected _customTimeFormatOptions: vscode.QuickPickItem[];
 
-    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter) {
-        super(context, timeConverter);
-        this.updateCustomFormats();
-        vscode.workspace.onDidChangeConfiguration((e) => {
-            if (e.affectsConfiguration('timing.customFormats')) {
-                this.updateCustomFormats();
-            }
+    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter, configHelper: ConfigHelper) {
+        super(context, timeConverter, configHelper);
 
-        }, this, this._disposables);
+        this._configHelper.subscribeToConfig('timing.customFormats', this.updateCustomFormats, this);
     }
 
-    private updateCustomFormats(): void {
-        const config = vscode.workspace.getConfiguration('timing')
-            .get('customFormats') as Array<{ format: string, description?: string, detail?: string }>;
-
+    private updateCustomFormats(config: ICustomFormat[]): void {
         this._customTimeFormatOptions = [];
         config.forEach((newFormat) => {
             if (newFormat.format) {

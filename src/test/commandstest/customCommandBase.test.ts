@@ -11,6 +11,7 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 
 import { CustomCommandBase } from '../../commands/customCommandBase';
+import { ConfigHelper } from '../../util/configHelper';
 import { TimeConverter } from '../../util/timeConverter';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
 
@@ -41,7 +42,7 @@ describe('CustomCommandBase', () => {
 
     it('should should update format options when configuration is updated.', async () => {
         const config = vscode.workspace.getConfiguration('timing');
-        const testObject = new TestObject(new ExtensionContextMock(), new TimeConverter());
+        const testObject = new TestObject(new ExtensionContextMock(), new TimeConverter(), new ConfigHelper());
         await config.update('customFormats', [{format: 'first'}, {format: 'second'}]);
 
         const formats = await testObject.customTimeFormatOptions;

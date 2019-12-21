@@ -71,7 +71,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 * `timing.clipboard.writingEnabled`: Indicates whether the result of the conversion is written to the clipboard. When enabled, no result view will be shown.
 * `timing.customFormats`: An array of custom source/target formats used to convert from/to.
 * `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart.
-* `timing.hiddenCommands`: List of commands that shall be hidden from the command palette.
+* `timing.hiddenCommands`: An array of commands that shall be hidden from the command palette.
 * `timing.hoverDuration.enabled`: Controls whether the duration hover is enabled or disabled.
 * `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
 * `timing.hoverDuration.useISOTargetFormat`: Indicates whether the ISO 8601 duration definition is used as target format for the hover.
@@ -130,7 +130,7 @@ Command Id | Description | Optional Arguments (`string`)
 Any of the above commands can be bound to its own keyboard shortcut. For that just open the _Keyboard Shortcuts_ view by pressing <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>S</kbd>. Now search for the corresponding command and assign it to a shortcut.  
 Alternatively, you can edit the `keybindings.json` directly. For example you can add the following entry to the `keybindings.json` to bind the `timing.customToEpoch` to the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>+<kbd>Z</kbd>.  
 
-```JSON
+```json
 {
     "key": "ctrl+k ctrl+z",
     "command": "timing.customToEpoch"
@@ -140,7 +140,7 @@ Alternatively, you can edit the `keybindings.json` directly. For example you can
 Further if you know that you will always use the same parameter for the command you can add _optional arguments_.  
 Example:
 
-```JSON
+```json
 {
     "key": "ctrl+k ctrl+z",
     "command": "timing.customToEpoch",
@@ -199,7 +199,7 @@ To convert different times from/to custom formats you need to insert a **valid [
 Optionally you can specify **custom formats** of the following shape in the user settings. Those will be shown as possible options.  
 Example:
 
-```JSON
+```json
 {
     "timing.customFormats": [
         {

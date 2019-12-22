@@ -14,13 +14,30 @@ class ConfigHelper implements vscode.Disposable {
         return vscode.workspace.getConfiguration().get<T>(configKey, defaultValue);
     }
 
-    private _disposables: vscode.Disposable[];
+    private _disposables: vscode.Disposable[] = [];
 
     constructor() {
         this.subscribeToConfig('timing.hiddenCommands', this.updateContextKeys, this);
     }
 
-    public async updateContextKeys(rawConfig: string | string[]) {
+    public subscribeToConfig<T>(configKey: string, callback: (configValue: T | undefined) => void, thisArg?: any) {
+        const cb = thisArg ? callback.bind(thisArg) : callback;
+        const configValue = ConfigHelper.get<T>(configKey);
+        cb(configValue);
+
+        vscode.workspace.onDidChangeConfiguration((changedEvent) => {
+            if (changedEvent.affectsConfiguration(configKey)) {
+                const value = ConfigHelper.get<T>(configKey);
+                cb(value);
+            }
+        }, this, this._disposables);
+    }
+
+    public dispose() {
+        this._disposables.forEach((disposable) => disposable.dispose());
+    }
+
+    private async updateContextKeys(rawConfig: string | string[]): Promise<unknown[]> {
         let commandsToHide: string[];
         if (typeof rawConfig === 'string') {
             commandsToHide = rawConfig.split(',').map((value) => value.trim());
@@ -50,28 +67,10 @@ class ConfigHelper implements vscode.Disposable {
 
         const results = commands.map((command) => {
             const isEnabled = commandsToHide.indexOf(command) === -1 ? true : false;
-            vscode.commands.executeCommand('setContext', [...command.split('.'), 'enabled'].join(':'), isEnabled);
+            return vscode.commands.executeCommand('setContext', [...command.split('.'), 'enabled'].join(':'), isEnabled);
         });
 
         return Promise.all(results);
-
-    }
-
-    public subscribeToConfig<T>(configKey: string, callback: (configValue: T | undefined) => void, thisArg?: any) {
-        const cb = thisArg ? callback.bind(thisArg) : callback;
-        const configValue = ConfigHelper.get<T>(configKey);
-        cb(configValue);
-
-        vscode.workspace.onDidChangeConfiguration((changedEvent) => {
-            if (changedEvent.affectsConfiguration(configKey)) {
-                const value = ConfigHelper.get<T>(configKey);
-                cb(value);
-            }
-        }, this, this._disposables);
-    }
-
-    public dispose() {
-        this._disposables.forEach((disposable) => disposable.dispose());
     }
 }
 

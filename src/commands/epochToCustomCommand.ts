@@ -15,7 +15,6 @@ import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/inputFlowAction';
-import { ICommandOptions } from './commandOptions';
 
 class EpochToCustomCommand extends CustomCommandBase {
 

@@ -16,3 +16,10 @@ interface ICustomHoverFormat {
     name?: string;
     localize?: boolean;
 }
+
+interface ICommandOptions {
+    sourceFormat?: string;
+    targetFormat?: string;
+    sourceUnit?: 's' | 'ms' | 'ns';
+    targetUnit?: 's' | 'ms' | 'ns';
+}

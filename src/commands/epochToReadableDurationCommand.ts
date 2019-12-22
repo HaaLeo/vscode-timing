@@ -14,7 +14,6 @@ import { StepResult } from '../step/stepResult';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/inputFlowAction';
 import { CommandBase } from './commandBase';
-import { ICommandOptions } from './commandOptions';
 
 class EpochToReadableDurationCommand extends CommandBase {
 

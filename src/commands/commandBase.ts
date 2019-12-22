@@ -13,7 +13,6 @@ import { ConfigHelper } from '../util/configHelper';
 import { InputFlowAction } from '../util/inputFlowAction';
 import { ResultBox } from '../util/resultBox';
 import { TimeConverter } from '../util/timeConverter';
-import { ICommandOptions } from './commandOptions';
 
 abstract class CommandBase implements vscode.Disposable {
 

@@ -13,7 +13,6 @@ import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/inputFlowAction';
-import { ICommandOptions } from './commandOptions';
 import { CustomCommandBase } from './customCommandBase';
 
 class CustomToEpochCommand extends CustomCommandBase {

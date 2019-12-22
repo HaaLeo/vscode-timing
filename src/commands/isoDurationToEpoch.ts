@@ -14,7 +14,6 @@ import { StepResult } from '../step/stepResult';
 import { Constants } from '../util/constants';
 import { InputFlowAction } from '../util/inputFlowAction';
 import { CommandBase } from './commandBase';
-import { ICommandOptions } from './commandOptions';
 
 /**
  * Command to convert ISO 8601 duration to epoch time.

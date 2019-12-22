@@ -1,6 +1,8 @@
 # Changelog
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
 ## 2019-12-22 - v2.3.0
 * **DEPRECATED** the string type of the `timing.hiddenCommands`.
 * **Changed** the `timing.hiddenCommands` setting. It now accepts an array of command IDs.

@@ -193,8 +193,44 @@
                 "timing.hiddenCommands": {
                     "title": "Hide Commands from the command palette.",
                     "description": "Add all command IDs here that shall not be shown in the command palette.",
-                    "type": "string",
-                    "default": ""
+                    "default": [],
+                    "oneOf": [
+                        {
+                            "deprecationMessage": "The string format of this property is DEPRECATED. Please convert the command IDs to an array instead.",
+                            "title": "The commands to hide.",
+                            "description": "Comma separated string of command IDs",
+                            "type": "string"
+                        },
+                        {
+                            "title": "The commands to hide.",
+                            "description": "Array of command IDs.",
+                            "type": "array",
+                            "items": {
+                                "title": "The command to be hidden",
+                                "description": "The command ID that shall be hidden.",
+                                "type": "string",
+                                "enum": [
+                                    "timing.customToCustom",
+                                    "timing.customToEpoch",
+                                    "timing.customToIsoLocal",
+                                    "timing.customToIsoUtc",
+                                    "timing.epochToCustom",
+                                    "timing.epochToReadableDuration",
+                                    "timing.epochToIsoDuration",
+                                    "timing.epochToIsoLocal",
+                                    "timing.epochToIsoUtc",
+                                    "timing.isoDurationToEpoch",
+                                    "timing.isoRfcToCustom",
+                                    "timing.isoRfcToEpoch",
+                                    "timing.nowAsCustom",
+                                    "timing.nowAsEpoch",
+                                    "timing.nowAsIsoLocal",
+                                    "timing.nowAsIsoUtc",
+                                    "timing.toggleInsertConvertedTimeUserLevel"
+                                ]
+                            }
+                        }
+                    ]
                 },
                 "timing.hideResultViewOnEnter": {
                     "title": "Hide the result view when enter is pressed.",
@@ -301,71 +337,71 @@
             "commandPalette": [
                 {
                     "command": "timing.epochToIsoUtc",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.epochToIsoUtc).)*$/"
+                    "when": "timing:epochToIsoUtc:enabled"
                 },
                 {
                     "command": "timing.epochToIsoLocal",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.epochToIsoLocal).)*$/"
+                    "when": "timing:epochToIsoLocal:enabled"
                 },
                 {
                     "command": "timing.epochToCustom",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.epochToCustom).)*$/"
+                    "when": "timing:epochToCustom:enabled"
                 },
                 {
                     "command": "timing.epochToReadableDuration",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.epochToReadableDuration).)*$/"
+                    "when": "timing:epochToReadableDuration:enabled"
                 },
                 {
                     "command": "timing.epochToIsoDuration",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.epochToIsoDuration).)*$/"
+                    "when": "timing:epochToIsoDuration:enabled"
                 },
                 {
                     "command": "timing.isoDurationToEpoch",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.isoDurationToEpoch).)*$/"
+                    "when": "timing:isoDurationToEpoch:enabled"
                 },
                 {
                     "command": "timing.isoRfcToEpoch",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.isoRfcToEpoch).)*$/"
+                    "when": "timing:isoRfcToEpoch:enabled"
                 },
                 {
                     "command": "timing.isoRfcToCustom",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.isoRfcToCustom).)*$/"
+                    "when": "timing:isoRfcToCustom:enabled"
                 },
                 {
                     "command": "timing.nowAsEpoch",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.nowAsEpoch).)*$/"
+                    "when": "timing:nowAsEpoch:enabled"
                 },
                 {
                     "command": "timing.nowAsIsoUtc",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.nowAsIsoUtc).)*$/"
+                    "when": "timing.nowAsIsoUtc"
                 },
                 {
                     "command": "timing.nowAsIsoLocal",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.nowAsIsoLocal).)*$/"
+                    "when": "timing:nowAsIsoLocal:enabled"
                 },
                 {
                     "command": "timing.nowAsCustom",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.nowAsCustom).)*$/"
+                    "when": "timing:nowAsCustom:enabled"
                 },
                 {
                     "command": "timing.customToCustom",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.customToCustom).)*$/"
+                    "when": "timing:customToCustom:enabled"
                 },
                 {
                     "command": "timing.customToEpoch",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.customToEpoch).)*$/"
+                    "when": "timing:customToEpoch:enabled"
                 },
                 {
                     "command": "timing.customToIsoUtc",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.customToIsoUtc).)*$/"
+                    "when": "timing:customToIsoUtc:enabled"
                 },
                 {
                     "command": "timing.customToIsoLocal",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.customToIsoLocal).)*$/"
+                    "when": "timing:customToIsoLocal:enabled"
                 },
                 {
                     "command": "timing.toggleInsertConvertedTimeUserLevel",
-                    "when": "config.timing.hiddenCommands =~ /^((?!timing\\.toggleInsertConvertedTimeUserLevel).)*$/"
+                    "when": "timing:toggleInsertConvertedTimeUserLevel:enabled"
                 }
             ]
         }

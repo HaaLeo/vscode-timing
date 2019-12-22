@@ -9,14 +9,13 @@
 
 import * as vscode from 'vscode';
 import { MultiStepHandler } from '../step/multiStepHandler';
-import { ICommandOptions } from '../util/commandOptions';
-import { InputFlowAction } from '../util/InputFlowAction';
+import { ConfigHelper } from '../util/configHelper';
+import { InputFlowAction } from '../util/inputFlowAction';
 import { ResultBox } from '../util/resultBox';
 import { TimeConverter } from '../util/timeConverter';
 
 abstract class CommandBase implements vscode.Disposable {
 
-    protected _timeConverter: TimeConverter;
     protected _disposables: vscode.Disposable[] = [];
     protected _stepHandler: MultiStepHandler;
     protected _resultBox: ResultBox;
@@ -28,8 +27,10 @@ abstract class CommandBase implements vscode.Disposable {
     protected _readInputFromClipboard: boolean;
     protected _writeToClipboard: boolean;
 
-    public constructor(context: vscode.ExtensionContext, timeConverter: TimeConverter) {
-        this._timeConverter = timeConverter;
+    public constructor(
+        context: vscode.ExtensionContext,
+        protected _timeConverter: TimeConverter,
+        protected _configHelper: ConfigHelper) {
 
         this._resultBox = new ResultBox({
             iconPath: {
@@ -39,33 +40,17 @@ abstract class CommandBase implements vscode.Disposable {
             tooltip: 'Insert Result'
         });
 
-        this._insertConvertedTime = this.getConfigParameter('insertConvertedTime');
-        this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');
-        this._hideResultViewOnEnter = this.getConfigParameter('hideResultViewOnEnter');
-        this._readInputFromClipboard = this.getConfigParameter('clipboard.readingEnabled');
-        this._writeToClipboard = this.getConfigParameter('clipboard.writingEnabled');
-
-        vscode.workspace.onDidChangeConfiguration((changedEvent) => {
-        if (changedEvent.affectsConfiguration('timing.insertConvertedTime')) {
-                this._insertConvertedTime = this.getConfigParameter('insertConvertedTime');
-            } else if (changedEvent.affectsConfiguration('timing.ignoreFocusOut')) {
-                this._ignoreFocusOut = this.getConfigParameter('ignoreFocusOut');
-            } else if (changedEvent.affectsConfiguration('timing.hideResultViewOnEnter')) {
-                this._hideResultViewOnEnter = this.getConfigParameter('hideResultViewOnEnter');
-            } else if (changedEvent.affectsConfiguration('timing.clipboard.readingEnabled')) {
-                this._readInputFromClipboard = this.getConfigParameter('clipboard.readingEnabled');
-            } else if (changedEvent.affectsConfiguration('timing.clipboard.writingEnabled')) {
-                this._writeToClipboard = this.getConfigParameter('clipboard.writingEnabled');
-            }
-        }, this, this._disposables);
+        this._configHelper.subscribeToConfig('timing.insertConvertedTime', (value: boolean) => this._insertConvertedTime = value, this);
+        this._configHelper.subscribeToConfig('timing.ignoreFocusOut', (value: boolean) => this._ignoreFocusOut = value, this);
+        this._configHelper.subscribeToConfig('timing.hideResultViewOnEnter', (value: boolean) => this._hideResultViewOnEnter = value, this);
+        this._configHelper.subscribeToConfig('timing.clipboard.readingEnabled', (value: boolean) => this._readInputFromClipboard = value, this);
+        this._configHelper.subscribeToConfig('timing.clipboard.writingEnabled', (value: boolean) => this._writeToClipboard = value, this);
     }
 
     public abstract execute(options?: ICommandOptions): void;
 
     public dispose() {
-        this._disposables.forEach((disposable) => {
-            disposable.dispose();
-        });
+        this._configHelper.dispose();
     }
 
     /**
@@ -153,11 +138,6 @@ abstract class CommandBase implements vscode.Disposable {
         }
 
         return result;
-    }
-
-    private getConfigParameter<T>(configName: string): T {
-        return vscode.workspace.getConfiguration('timing')
-            .get<T>(configName);
     }
 }
 

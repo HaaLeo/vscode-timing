@@ -11,8 +11,7 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
-import { ICommandOptions } from '../util/commandOptions';
-import { InputFlowAction } from '../util/InputFlowAction';
+import { InputFlowAction } from '../util/inputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
 class CustomToIsoUtcCommand extends CustomCommandBase {

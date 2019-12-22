@@ -27,37 +27,42 @@ import { NowAsIsoLocalCommand } from './commands/nowAsIsoLocalCommand';
 import { NowAsIsoUtcCommand } from './commands/nowAsIsoUtcCommand';
 import { ToggleInsertConvertedTimeUserLevelCommand } from './commands/toggleInsertConvertedTimeUserLevelCommand';
 
-import { DurationHoverProvider } from './util/durationHoverProvider';
+import { DurationHoverProvider } from './hover/durationHoverProvider';
+import { TimestampHoverProvider } from './hover/timestampHoverProvider';
+import { ConfigHelper } from './util/configHelper';
 import { TimeConverter } from './util/timeConverter';
-import { TimestampHoverProvider } from './util/timestampHoverProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 
     // Create converter
     const timeConverter = new TimeConverter();
 
+    // Create configHelper
+    const configHelper = new ConfigHelper();
+
     // Create commands
-    const customToCustomCommand = new CustomToCustomCommand(context, timeConverter);
-    const customToEpochCommand = new CustomToEpochCommand(context, timeConverter);
-    const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter);
-    const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter);
-    const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter);
-    const epochToReadableDurationCommand = new EpochToReadableDurationCommand(context, timeConverter);
-    const epochToIsoDurationCommand = new EpochToISODurationCommand(context, timeConverter);
-    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter);
-    const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter);
-    const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter);
-    const nowAsCustomCommand = new NowAsCustomCommand(context, timeConverter);
-    const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(context, timeConverter);
-    const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(context, timeConverter);
-    const isoDurationToEpochCommand = new IsoDurationToEpochCommand(context, timeConverter);
-    const isoRfcToCustomCommand = new IsoRfcToCustomCommand(context, timeConverter);
-    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(context, timeConverter);
+    const customToCustomCommand = new CustomToCustomCommand(context, timeConverter, configHelper);
+    const customToEpochCommand = new CustomToEpochCommand(context, timeConverter, configHelper);
+    const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter, configHelper);
+    const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter, configHelper);
+    const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter, configHelper);
+    const epochToReadableDurationCommand = new EpochToReadableDurationCommand(context, timeConverter, configHelper);
+    const epochToIsoDurationCommand = new EpochToISODurationCommand(context, timeConverter, configHelper);
+    const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter, configHelper);
+    const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter, configHelper);
+    const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter, configHelper);
+    const nowAsCustomCommand = new NowAsCustomCommand(context, timeConverter, configHelper);
+    const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(context, timeConverter, configHelper);
+    const nowAsIsoUtcCommand = new NowAsIsoUtcCommand(context, timeConverter, configHelper);
+    const isoDurationToEpochCommand = new IsoDurationToEpochCommand(context, timeConverter, configHelper);
+    const isoRfcToCustomCommand = new IsoRfcToCustomCommand(context, timeConverter, configHelper);
+    const isoRfcToEpochCommand = new IsoRfcToEpochCommand(context, timeConverter, configHelper);
 
     const toggleInsertConvertedTimeUserLevelCommand = new ToggleInsertConvertedTimeUserLevelCommand();
 
-    const timestampHoverProvider = new TimestampHoverProvider(timeConverter);
-    const durationHoverProvider = new DurationHoverProvider(timeConverter);
+    const timestampHoverProvider = new TimestampHoverProvider(timeConverter, configHelper);
+    const durationHoverProvider = new DurationHoverProvider(timeConverter, configHelper);
+
     /* tslint:disable:max-line-length */
 
     context.subscriptions.push(
@@ -80,9 +85,12 @@ export function activate(context: vscode.ExtensionContext) {
         nowAsIsoUtcCommand, vscode.commands.registerCommand('timing.nowAsIsoUtc', nowAsIsoUtcCommand.execute, nowAsIsoUtcCommand),
 
         vscode.commands.registerCommand('timing.toggleInsertConvertedTimeUserLevel', toggleInsertConvertedTimeUserLevelCommand.execute, toggleInsertConvertedTimeUserLevelCommand),
+
         // Register Hover Provider
         timestampHoverProvider, vscode.languages.registerHoverProvider('*', timestampHoverProvider),
-        durationHoverProvider, vscode.languages.registerHoverProvider('*', durationHoverProvider)
+        durationHoverProvider, vscode.languages.registerHoverProvider('*', durationHoverProvider),
+
+        configHelper
     );
     /* tslint:enable:max-line-length */
 }

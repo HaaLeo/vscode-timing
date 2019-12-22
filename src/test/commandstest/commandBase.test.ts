@@ -11,7 +11,8 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 
 import { CommandBase } from '../../commands/commandBase';
-import { InputFlowAction } from '../../util/InputFlowAction';
+import { ConfigHelper } from '../../util/configHelper';
+import { InputFlowAction } from '../../util/inputFlowAction';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { TimeConverterMock } from '../mock/timeConverterMock';
 
@@ -68,7 +69,7 @@ describe('CommandBase', () => {
     let testObject: TestObject;
     beforeEach(() => {
         timeConverterMock = new TimeConverterMock();
-        testObject = new TestObject(new ExtensionContextMock(), timeConverterMock);
+        testObject = new TestObject(new ExtensionContextMock(), timeConverterMock, new ConfigHelper());
     });
 
     after(async () => {

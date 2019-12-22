@@ -14,8 +14,7 @@
             "sourceMaps": true,
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
-            ],
-            "preLaunchTask": "npm: watch"
+            ]
         },
         {
             "name": "Tests",

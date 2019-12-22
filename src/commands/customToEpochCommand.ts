@@ -11,9 +11,8 @@ import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
-import { ICommandOptions } from '../util/commandOptions';
 import { Constants } from '../util/constants';
-import { InputFlowAction } from '../util/InputFlowAction';
+import { InputFlowAction } from '../util/inputFlowAction';
 import { CustomCommandBase } from './customCommandBase';
 
 class CustomToEpochCommand extends CustomCommandBase {

@@ -9,7 +9,8 @@
 
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { DurationHoverProvider } from '../../util/durationHoverProvider';
+import { DurationHoverProvider } from '../../hover/durationHoverProvider';
+import { ConfigHelper } from '../../util/configHelper';
 import { TimeConverterMock } from '../mock/timeConverterMock';
 
 describe('DurationHoverProvider', () => {
@@ -34,7 +35,7 @@ describe('DurationHoverProvider', () => {
 
         timeConverterMock.reset();
         timeConverterMock.isValidEpoch.returns(true);
-        testObject = new DurationHoverProvider(timeConverterMock);
+        testObject = new DurationHoverProvider(timeConverterMock, new ConfigHelper());
         tokenSource = new vscode.CancellationTokenSource();
     });
 

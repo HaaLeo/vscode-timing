@@ -5,7 +5,17 @@
  * --------------------------------------------------------------------------------------------
  */
 
-'use strict';
+interface ICustomFormat {
+    format: string;
+    description?: string;
+    detail?: string;
+}
+
+interface ICustomHoverFormat {
+    customFormat: string;
+    name?: string;
+    localize?: boolean;
+}
 
 interface ICommandOptions {
     sourceFormat?: string;
@@ -13,5 +23,3 @@ interface ICommandOptions {
     sourceUnit?: 's' | 'ms' | 'ns';
     targetUnit?: 's' | 'ms' | 'ns';
 }
-
-export { ICommandOptions };

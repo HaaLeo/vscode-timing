@@ -12,7 +12,7 @@ import * as sinon from 'sinon';
 import { IStep } from '../../step/IStep';
 import { MultiStepHandler } from '../../step/multiStepHandler';
 import { StepResult } from '../../step/stepResult';
-import { InputFlowAction } from '../../util/InputFlowAction';
+import { InputFlowAction } from '../../util/inputFlowAction';
 
 describe('MultiStepHandler', () => {
     let testObject: MultiStepHandler;

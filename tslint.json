@@ -39,7 +39,8 @@
         "linebreak-style": [
             true,
             "LF"
-        ]
+        ],
+        "max-line-length": false
     },
     "rulesDirectory": [],
     "linterOptions": {

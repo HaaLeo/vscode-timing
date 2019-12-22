@@ -3,8 +3,8 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## 2019-12-22 - v2.3.0
 * **DEPRECATED** the string type of the `timing.hiddenCommands`.
-* Changed the `timing.hiddenCommands` setting. It now accepts an array of command IDs.
-* Changed insert icon to the corresponding [microsoft/vscode-icons](https://github.com/microsoft/vscode-icons) icon.
+* **Changed** the `timing.hiddenCommands` setting. It now accepts an array of command IDs.
+* **Changed** insert icon to the corresponding [microsoft/vscode-icons](https://github.com/microsoft/vscode-icons) icon.
 
 ## 2019-05-16 - v2.2.0
 * **Added** support for [remote development](https://code.visualstudio.com/docs/remote/remote-overview) by explicitly forcing the extension to be a UI extension.

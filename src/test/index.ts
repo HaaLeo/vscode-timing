@@ -224,7 +224,7 @@ class CoverageRunner {
         const transformedMap = await self.sourceMapStore.transformCoverage(map);
         // @ts-ignore
         const context = createContext({ dir: reportingDir, coverageMap: transformedMap });
-        // @ts-ignore
+
         const report = create('cobertura', { projectRoot: self.sourceRoot });
         // @ts-ignore
         report.execute(context)

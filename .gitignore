@@ -4,3 +4,4 @@ node_modules
 .vsix
 coverage
 dist/**
+test-results.xml

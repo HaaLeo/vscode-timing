@@ -2,7 +2,7 @@
     "enabled": true,
     "relativeSourcePath": "../..",
     "relativeCoverageDir": "../../coverage",
-    "ignorePatterns": ["**/node_modules/**", "**/test/**", "**/webpack.config.js", "**/dist/**"],
+    "ignorePatterns": ["**/node_modules/**", "**/test/**", "**/webpack.config.js", "**/dist/**", "**/coverage**"],
     "includePid": false,
     "verbose": false
 }

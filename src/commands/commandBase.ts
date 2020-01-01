@@ -47,9 +47,8 @@ abstract class CommandBase implements vscode.Disposable {
         this._configHelper.subscribeToConfig('timing.clipboard.writingEnabled', (value: boolean) => this._writeToClipboard = value, this);
     }
 
-    public abstract execute(options?: ICommandOptions): void;
 
-    public dispose() {
+    public dispose(): void {
         this._configHelper.dispose();
     }
 
@@ -69,18 +68,17 @@ abstract class CommandBase implements vscode.Disposable {
     protected insert(insertion: string): Thenable<boolean> {
         const activeEditor = vscode.window.activeTextEditor;
         if (activeEditor !== undefined) {
-            return activeEditor.edit((editBuilder) => {
+            return activeEditor.edit(editBuilder => {
                 editBuilder.replace(activeEditor.selection, insertion);
             });
         }
     }
 
-    protected async internalExecute(action: InputFlowAction, conversionName: string, rawInput: string)
-        : Promise<{
-            conversionResult: string,
-            stepHandlerResult: string[],
-            showResultBox: boolean
-        }> {
+    protected async internalExecute(action: InputFlowAction, conversionName: string, rawInput: string): Promise<{
+        conversionResult: string;
+        stepHandlerResult: string[];
+        showResultBox: boolean;
+    }> {
 
         let stepHandlerResult: string[];
         let conversionResult: string;
@@ -97,7 +95,7 @@ abstract class CommandBase implements vscode.Disposable {
 
             abort = stepHandlerResult.length === 0 ? true : false;
 
-            stepHandlerResult.forEach((element) => {
+            stepHandlerResult.forEach(element => {
                 if (!element) {
                     abort = true;
                 }
@@ -139,6 +137,8 @@ abstract class CommandBase implements vscode.Disposable {
 
         return result;
     }
+
+    public abstract execute(options?: ICommandOptions): void;
 }
 
 export { CommandBase };

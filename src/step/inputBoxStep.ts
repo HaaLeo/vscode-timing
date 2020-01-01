@@ -96,7 +96,7 @@ class InputBoxStep implements IStep {
             this._inputBox.buttons = [QuickInputButtons.Back];
         }
 
-        return new Promise<StepResult>((resolve, reject) => {
+        return new Promise<StepResult>(resolve => {
             this._inputBox.onDidAccept(() => {
                 this._inputBox.busy = true;
                 this._inputBox.enabled = false;
@@ -116,7 +116,7 @@ class InputBoxStep implements IStep {
                 }
             }, this, this._disposables);
 
-            this._inputBox.onDidChangeValue((current) => {
+            this._inputBox.onDidChangeValue(current => {
                 this._inputBox.busy = true;
                 this._inputBox.enabled = false;
 
@@ -132,7 +132,7 @@ class InputBoxStep implements IStep {
                 this._inputBox.enabled = true;
             }, this, this._disposables);
 
-            this._inputBox.onDidTriggerButton((button) => {
+            this._inputBox.onDidTriggerButton(button => {
                 if (button === QuickInputButtons.Back) {
                     this._inputBox.busy = true;
                     this._inputBox.enabled = false;
@@ -178,8 +178,8 @@ class InputBoxStep implements IStep {
     /**
      * Dispose this object.
      */
-    public dispose() {
-        this._disposables.forEach((disposable) => disposable.dispose());
+    public dispose(): void {
+        this._disposables.forEach(disposable => disposable.dispose());
     }
 
     /**

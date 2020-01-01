@@ -14,18 +14,19 @@ import { TimeConverter } from '../util/timeConverter';
 
 class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable {
 
-    private _targetFormats: Array<string | { customFormat: string, name: string, localize: boolean }>;
+    private _targetFormats: string[] | ICustomHoverFormat[];
     private _enabled: boolean;
 
-    constructor(private _timeConverter: TimeConverter, private _configHelper: ConfigHelper) {
+    public constructor(private _timeConverter: TimeConverter, private _configHelper: ConfigHelper) {
 
         _configHelper.subscribeToConfig('timing.hoverTimestamp.enabled', (value: boolean) => this._enabled = value, this);
         _configHelper.subscribeToConfig('timing.hoverTimestamp.targetFormat', this.updateTimestampTargetFormat, this);
     }
 
     public provideHover(
-        document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken):
+        document: vscode.TextDocument, position: vscode.Position):
         vscode.ProviderResult<vscode.Hover> {
+
         const timeRange = document.getWordRangeAtPosition(position, new RegExp('\\d+'));
         let result: vscode.Hover;
         if (timeRange !== undefined) {

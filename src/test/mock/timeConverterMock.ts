@@ -32,7 +32,7 @@ class TimeConverterMock implements TimeConverter {
     public getNowAsIsoUtc = sinon.stub();
     public getNowAsIsoLocal = sinon.stub();
 
-    public reset() {
+    public reset(): void {
         this.customToCustom.reset();
         this.isoDurationToEpoch.reset();
         this.isValidISODuration.reset();

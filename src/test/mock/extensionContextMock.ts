@@ -20,11 +20,11 @@ class ExtensionContextMock implements ExtensionContext {
     public asAbsolutePath = sinon.stub().returns('');
     public storagePath = undefined;
 
-    public restore() {
+    public restore(): void {
         this.asAbsolutePath.restore();
     }
 
-    public reset() {
+    public reset(): void {
         this.asAbsolutePath.reset();
     }
 }

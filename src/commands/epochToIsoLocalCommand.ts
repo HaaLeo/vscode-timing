@@ -25,7 +25,7 @@ class EpochToIsoLocalCommand extends CommandBase {
     /**
      * Execute the command.
      */
-    public async execute() {
+    public async execute(): Promise<void> {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
         if (!this._stepHandler) {
             this.initialize();

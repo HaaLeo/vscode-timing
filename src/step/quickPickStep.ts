@@ -122,7 +122,7 @@ class QuickPickStep implements IStep {
         // The alternative step could still be registered from previous command call
         handler.unregisterStep(this._alternativeStep);
 
-        return new Promise<StepResult>((resolve, reject) => {
+        return new Promise<StepResult>(resolve => {
 
             this._quickPick.onDidAccept(() => {
                 if (this._quickPick.selectedItems.length === 1) {
@@ -141,7 +141,7 @@ class QuickPickStep implements IStep {
                 }
             });
 
-            this._quickPick.onDidTriggerButton((button) => {
+            this._quickPick.onDidTriggerButton(button => {
                 if (button === QuickInputButtons.Back) {
                     this._quickPick.hide();
                     resolve(new StepResult(InputFlowAction.Back, undefined));
@@ -181,7 +181,7 @@ class QuickPickStep implements IStep {
      * Gets the validation function used for this step.
      */
     public get validation(): (input: string, ...args: string[]) => boolean {
-        return () => true;
+        return (): boolean => true;
     }
 
     /**
@@ -200,8 +200,8 @@ class QuickPickStep implements IStep {
     /**
      * Dispose this object.
      */
-    public dispose() {
-        this._disposables.forEach((disposable) => disposable.dispose());
+    public dispose(): void {
+        this._disposables.forEach(disposable => disposable.dispose());
     }
 
 }

@@ -39,7 +39,7 @@ describe('QuickPickStep', () => {
             'test prompt',
             'test-title',
             'test-validation-message',
-            (input: string) => true,
+            () => true,
             false,
             true);
 

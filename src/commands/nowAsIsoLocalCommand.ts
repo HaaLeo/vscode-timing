@@ -15,7 +15,7 @@ class NowAsIsoLocalCommand extends CustomCommandBase {
 
     private readonly title: string = 'Now → ISO 8601 Local';
 
-    public async execute() {
+    public async execute(): Promise<void> {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');
 
         do {

@@ -7,7 +7,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
-    "ignorePatterns": ["coverage/", "node_modules/", "dist/", "out/", "webpack.config.js"],
+    "ignorePatterns": ["coverage/", "node_modules/", "dist/", "out/", "myscript.ts", "index.ts"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json",
@@ -45,7 +45,12 @@ module.exports = {
                 "SwitchCase": 1
             }
         ],
-        "@typescript-eslint/interface-name-prefix": "error",
+        "@typescript-eslint/interface-name-prefix": [
+            "error",
+            {
+                "prefixWithI": "always"
+            }
+        ],
         "@typescript-eslint/member-delimiter-style": [
             "error",
             {
@@ -63,6 +68,7 @@ module.exports = {
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-misused-new": "error",
         "@typescript-eslint/no-namespace": "error",
         "@typescript-eslint/no-parameter-properties": "off",
@@ -81,6 +87,7 @@ module.exports = {
         ],
         "@typescript-eslint/triple-slash-reference": "error",
         "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/unbound-method": "off",
         "@typescript-eslint/unified-signatures": "error",
         "arrow-body-style": "error",
         "arrow-parens": [

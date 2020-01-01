@@ -14,7 +14,7 @@ class InputDefinition {
     private _originalUnit: string;
     private _originalInput: string;
 
-    constructor(userInput: string, unit?: string) {
+    public constructor(userInput: string, unit?: string) {
         this.initialize(userInput, unit);
     }
 
@@ -30,7 +30,7 @@ class InputDefinition {
         return this._originalInput;
     }
 
-    private initialize(userInput: string, unit?: string) {
+    private initialize(userInput: string, unit?: string): void {
         this._originalInput = userInput;
         this._originalUnit = undefined;
         this._inputAsMs = undefined;

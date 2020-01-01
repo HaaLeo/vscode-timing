@@ -18,7 +18,6 @@ describe('DurationHoverProvider', () => {
     let testEditor: vscode.TextEditor;
     let testObject: DurationHoverProvider;
     let timeConverterMock: TimeConverterMock;
-    let tokenSource: vscode.CancellationTokenSource;
 
     beforeEach(async () => {
         timeConverterMock = new TimeConverterMock();
@@ -36,7 +35,6 @@ describe('DurationHoverProvider', () => {
         timeConverterMock.reset();
         timeConverterMock.isValidEpoch.returns(true);
         testObject = new DurationHoverProvider(timeConverterMock, new ConfigHelper());
-        tokenSource = new vscode.CancellationTokenSource();
     });
 
     after(async () => {
@@ -51,8 +49,7 @@ describe('DurationHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
@@ -70,8 +67,7 @@ describe('DurationHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
@@ -90,8 +86,7 @@ describe('DurationHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
@@ -110,8 +105,7 @@ describe('DurationHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToISODuration.calledOnce, true);
@@ -127,8 +121,7 @@ describe('DurationHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(0, 0),
-            tokenSource.token);
+            new vscode.Position(0, 0));
 
         assert.strictEqual(result, undefined);
         assert.strictEqual(timeConverterMock.isValidEpoch.notCalled, true);
@@ -140,8 +133,7 @@ describe('DurationHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(result, undefined);
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
@@ -154,8 +146,7 @@ describe('DurationHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);

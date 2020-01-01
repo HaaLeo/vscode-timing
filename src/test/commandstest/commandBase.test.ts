@@ -21,9 +21,9 @@ describe('CommandBase', () => {
         public execute(): void { }
 
         public internalExecuteTest(action: InputFlowAction, conversionName: string, rawInput: string): Thenable<{
-            conversionResult: string,
-            stepHandlerResult: string[],
-            showResultBox: boolean
+            conversionResult: string;
+            stepHandlerResult: string[];
+            showResultBox: boolean;
         }> {
             return this.internalExecute(action, conversionName, rawInput);
         }

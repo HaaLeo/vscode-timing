@@ -7,6 +7,8 @@
 
 'use strict';
 
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
+
 import * as vscode from 'vscode';
 
 import { CustomToCustomCommand } from './commands/customToCustomCommand';
@@ -32,7 +34,7 @@ import { TimestampHoverProvider } from './hover/timestampHoverProvider';
 import { ConfigHelper } from './util/configHelper';
 import { TimeConverter } from './util/timeConverter';
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
 
     // Create converter
     const timeConverter = new TimeConverter();
@@ -96,5 +98,5 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
+export function deactivate(): void {
 }

@@ -127,7 +127,7 @@ describe('InputBoxStep', () => {
                 assert.strictEqual(result.action, InputFlowAction.Continue);
             });
 
-            it('onDidChangeValue should take back validation message if input validation succeeded.', async () => {
+            it('onDidChangeValue should take back validation message if input validation succeeded.', () => {
                 listener = inputBoxStub.onDidChangeValue.firstCall.args[0];
                 assert.strictEqual(inputBoxStub.onDidChangeValue.calledOnce, true);
 

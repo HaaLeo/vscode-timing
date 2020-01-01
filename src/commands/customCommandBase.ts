@@ -23,7 +23,7 @@ abstract class CustomCommandBase extends CommandBase implements vscode.Disposabl
 
     private updateCustomFormats(config: ICustomFormat[]): void {
         this._customTimeFormatOptions = [];
-        config.forEach((newFormat) => {
+        config.forEach(newFormat => {
             if (newFormat.format) {
                 this._customTimeFormatOptions.push({
                     label: newFormat.format,

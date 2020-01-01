@@ -10,7 +10,7 @@
 import * as vscode from 'vscode';
 
 class ToggleInsertConvertedTimeUserLevelCommand {
-    public async execute() {
+    public async execute(): Promise<void> {
         const config = vscode.workspace.getConfiguration('timing');
         const newValue: boolean = !config.get('insertConvertedTime');
 

@@ -45,7 +45,7 @@ describe('CustomCommandBase', () => {
         const testObject = new TestObject(new ExtensionContextMock(), new TimeConverter(), new ConfigHelper());
         await config.update('customFormats', [{format: 'first'}, {format: 'second'}]);
 
-        const formats = await testObject.customTimeFormatOptions;
+        const formats = testObject.customTimeFormatOptions;
 
         assert.strictEqual(JSON.stringify(formats),
             JSON.stringify([{label: 'first'}, {label: 'second'}]));

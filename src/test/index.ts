@@ -1,8 +1,17 @@
+/*!
+ * ---------------------------------------------------------------------------------------------
+ *  Copyright (c) Leo Hanisch. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+ * --------------------------------------------------------------------------------------------
+ */
+
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
+
 'use strict';
 
 import * as fs from 'fs';
-import * as glob from 'glob';
 import * as paths from 'path';
+import * as glob from 'glob';
 
 import { Instrumenter, createInstrumenter } from 'istanbul-lib-instrument';
 import { createCoverageMap } from 'istanbul-lib-coverage';
@@ -19,9 +28,8 @@ const tty = require('tty');
 // tslint:enable:no-var-requires
 
 if (!tty.getWindowSize) {
-    tty.getWindowSize = (): number[] => {
-        return [80, 75];
-    };
+    tty.getWindowSize = (): number[] => [80, 75];
+
 }
 
 function _mkDirIfExists(dir: string): void {
@@ -45,7 +53,7 @@ function run(testsRoot, clb): any {
     require('source-map-support').install();
 
     // Read configuration for the coverage file
-    let coverageRunner: CoverageRunner = undefined
+    let coverageRunner: CoverageRunner;
     const coverOptions: ITestRunnerOptions = _readCoverOptions(testsRoot);
     if (coverOptions && coverOptions.enabled) {
         // Setup coverage pre-test, including post-test hook to report
@@ -55,15 +63,15 @@ function run(testsRoot, clb): any {
 
     // Glob test files
     glob('**/**.test.js', { cwd: testsRoot }, (error, files): any => {
-        let mocha = new Mocha({
+        const mocha = new Mocha({
             ui: 'bdd',
             useColors: true,
             timeout: 3000,
-            reporter: "mocha-multi-reporters",
+            reporter: 'mocha-multi-reporters',
             reporterOptions: {
-                "reporterEnabled": "mocha-junit-reporter, spec",
-                "mochaJunitReporterReporterOptions": {
-                    "mochaFile": testsRoot + "/../../test-results.xml"
+                reporterEnabled: 'mocha-junit-reporter, spec',
+                mochaJunitReporterReporterOptions: {
+                    mochaFile: testsRoot + '/../../test-results.xml'
                 }
             }
         });
@@ -112,7 +120,7 @@ class CoverageRunner {
     private sourceRoot: string = undefined;
     private sourceMapStore: MapStore;
 
-    constructor(private options: ITestRunnerOptions, private testsRoot: string, endRunCallback: any) {
+    public constructor(private options: ITestRunnerOptions, private testsRoot: string, endRunCallback: any) {
         if (!options.relativeSourcePath) {
             return endRunCallback('Error - relativeSourcePath must be defined for code coverage to work');
         }
@@ -139,7 +147,7 @@ class CoverageRunner {
         // Create a match function - taken from the run-with-cover.js in istanbul.
         const decache = require('decache');
         const fileMap = {};
-        srcFiles.forEach((file) => {
+        srcFiles.forEach(file => {
             const fullPath = paths.join(self.sourceRoot, file);
             fileMap[fullPath] = true;
 
@@ -158,10 +166,10 @@ class CoverageRunner {
         // Hook up to the Require function so that when this is called, if any of our source files
         // are required, the instrumented version is pulled in instead. These instrumented versions
         // write to a global coverage variable with hit counts whenever they are accessed
-        self.transformer = (code: string, options: TransformerOptions) => {
+        self.transformer = (code: string, options: TransformerOptions): string => {
             const transformFn = self.instrumenter.instrumentSync.bind(self.instrumenter);
             return transformFn(code, options.filename, false);
-        }
+        };
 
         const hookOpts = { verbose: self.options.verbose, extensions: ['.js'] };
         hookRequire(self.matchFn, self.transformer, hookOpts);
@@ -219,7 +227,7 @@ class CoverageRunner {
         _mkDirIfExists(reportingDir);
         fs.writeFileSync(coverageFile, JSON.stringify(cov), 'utf8');
 
-        const map = createCoverageMap(cov)
+        const map = createCoverageMap(cov);
         // @ts-ignore
         const transformedMap = await self.sourceMapStore.transformCoverage(map);
         // @ts-ignore
@@ -227,6 +235,6 @@ class CoverageRunner {
 
         const report = create('cobertura', { projectRoot: self.sourceRoot });
         // @ts-ignore
-        report.execute(context)
+        report.execute(context);
     }
 }

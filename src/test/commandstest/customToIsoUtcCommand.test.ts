@@ -55,7 +55,7 @@ describe('CustomToIsoUtc', () => {
         beforeEach('Reset', () => {
             testObject = new CustomToIsoUtcCommand(new ExtensionContextMock(), timeConverter, new ConfigHelper());
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
-            handlerMock.run.returns(new Promise((resolve) => resolve(['YYYY', '2018'])));
+            handlerMock.run.returns(new Promise(resolve => resolve(['YYYY', '2018'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -66,7 +66,7 @@ describe('CustomToIsoUtc', () => {
 
         it('Should stop if user canceled during epoch time insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            handlerMock.run.returns(new Promise((resolve) => resolve([])));
+            handlerMock.run.returns(new Promise(resolve => resolve([])));
 
             await testObject.execute();
 

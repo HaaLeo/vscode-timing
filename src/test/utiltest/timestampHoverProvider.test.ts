@@ -18,7 +18,6 @@ describe('TimestampHoverProvider', () => {
     let testEditor: vscode.TextEditor;
     let testObject: TimestampHoverProvider;
     let timeConverterMock: TimeConverterMock;
-    let tokenSource: vscode.CancellationTokenSource;
 
     beforeEach(async () => {
         timeConverterMock = new TimeConverterMock();
@@ -35,7 +34,6 @@ describe('TimestampHoverProvider', () => {
         timeConverterMock.reset();
         timeConverterMock.isValidEpoch.returns(true);
         testObject = new TimestampHoverProvider(timeConverterMock, new ConfigHelper());
-        tokenSource = new vscode.CancellationTokenSource();
     });
 
     after(async () => {
@@ -49,8 +47,7 @@ describe('TimestampHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToISOUtc.calledOnce, true);
@@ -68,8 +65,7 @@ describe('TimestampHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToIsoLocal.calledOnce, true);
@@ -88,8 +84,7 @@ describe('TimestampHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToIsoLocal.calledOnce, true);
@@ -109,8 +104,7 @@ describe('TimestampHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
@@ -131,8 +125,7 @@ describe('TimestampHoverProvider', () => {
 
             const result = await testObject.provideHover(
                 testEditor.document,
-                new vscode.Position(3, 32),
-                tokenSource.token);
+                new vscode.Position(3, 32));
 
             assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
             assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
@@ -151,8 +144,7 @@ describe('TimestampHoverProvider', () => {
 
             const result = await testObject.provideHover(
                 testEditor.document,
-                new vscode.Position(3, 32),
-                tokenSource.token);
+                new vscode.Position(3, 32));
 
             assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
             assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
@@ -171,8 +163,7 @@ describe('TimestampHoverProvider', () => {
 
             const result = await testObject.provideHover(
                 testEditor.document,
-                new vscode.Position(3, 32),
-                tokenSource.token);
+                new vscode.Position(3, 32));
 
             assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
             assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
@@ -191,8 +182,7 @@ describe('TimestampHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(0, 0),
-            tokenSource.token);
+            new vscode.Position(0, 0));
 
         assert.strictEqual(result, undefined);
         assert.strictEqual(timeConverterMock.isValidEpoch.notCalled, true);
@@ -204,8 +194,7 @@ describe('TimestampHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(result, undefined);
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
@@ -217,8 +206,7 @@ describe('TimestampHoverProvider', () => {
 
         const result = await testObject.provideHover(
             testEditor.document,
-            new vscode.Position(3, 32),
-            tokenSource.token);
+            new vscode.Position(3, 32));
 
         assert.strictEqual(result, undefined);
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);

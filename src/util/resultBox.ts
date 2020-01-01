@@ -21,7 +21,7 @@ class ResultBox {
     private _insertButton: QuickInputButton;
     private _isRunning: boolean;
 
-    constructor(insertButton: QuickInputButton) {
+    public constructor(insertButton: QuickInputButton) {
         this._resultBox = window.createInputBox();
         this._resultBox.ignoreFocusOut = true;
         this._resultBox.validationMessage = '';
@@ -55,14 +55,14 @@ class ResultBox {
         this._resultBox.value = value;
         this._resultBox.ignoreFocusOut = ignoreFocusOut;
         this._isRunning = true;
-        return new Promise<StepResult>((resolve, reject) => {
+        return new Promise<StepResult>(resolve => {
             this._resultBox.onDidAccept(() => {
                 this._isRunning = false;
                 this._resultBox.hide();
                 resolve(new StepResult(InputFlowAction.Continue, undefined));
             }, this, this._disposables);
 
-            this._resultBox.onDidTriggerButton(async (button) => {
+            this._resultBox.onDidTriggerButton(async button => {
                 if (button === QuickInputButtons.Back) {
                     this._resultBox.hide();
                     resolve(new StepResult(InputFlowAction.Back, undefined));
@@ -85,8 +85,8 @@ class ResultBox {
     /**
      * Dispose this object.
      */
-    public dispose() {
-        this._disposables.forEach((disposable) => disposable.dispose());
+    public dispose(): void {
+        this._disposables.forEach(disposable => disposable.dispose());
     }
 }
 

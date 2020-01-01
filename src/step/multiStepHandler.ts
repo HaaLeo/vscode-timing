@@ -68,7 +68,7 @@ class MultiStepHandler implements Disposable {
      */
     public registerStep(step: IStep, index?: number): void {
         // Only register step when it is not registered yet
-        if (this._steps.indexOf(step) === -1) {
+        if (!this._steps.includes(step)) {
             if (index === 0 || index) {
                 this._steps.splice(index, 0, step);
                 // Shift _givenResultsMap to match index
@@ -137,7 +137,7 @@ class MultiStepHandler implements Disposable {
             onBack = true;
         } else {
             this._stepResults = [];
-            this._steps.forEach((step) => step.reset());
+            this._steps.forEach(step => step.reset());
         }
         await this.executeStep(startIndex, ignoreFocusOut, onBack);
 
@@ -152,7 +152,7 @@ class MultiStepHandler implements Disposable {
      * @param formats The new formats to use.
      */
     public updateFormats(formats: QuickPickItem[]): void {
-        const quickPickSteps = this._steps.filter((step) => step instanceof QuickPickStep);
+        const quickPickSteps = this._steps.filter(step => step instanceof QuickPickStep);
         quickPickSteps.forEach((quickPickStep: QuickPickStep) => {
             if (quickPickStep.usesCustomFormats) {
                 quickPickStep.items = formats;
@@ -164,7 +164,7 @@ class MultiStepHandler implements Disposable {
      * Dispose this object.
      */
     public dispose(): void {
-        this._steps.forEach((step) => step.dispose());
+        this._steps.forEach(step => step.dispose());
     }
 
     /**

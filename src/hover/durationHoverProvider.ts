@@ -18,15 +18,15 @@ class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
     private _enabled: boolean;
     private _useISOTargetFormat: boolean;
 
-    constructor(private _timeConverter: TimeConverter, private _configHelper: ConfigHelper) {
+    public constructor(private _timeConverter: TimeConverter, private _configHelper: ConfigHelper) {
 
-        this._configHelper.subscribeToConfig<boolean>('timing.hoverDuration.enabled', (configValue) => this._enabled = configValue, this);
-        this._configHelper.subscribeToConfig<string>('timing.hoverDuration.sourceUnit', (configValue) => this._sourceUnit = configValue, this);
-        this._configHelper.subscribeToConfig<boolean>('timing.hoverDuration.useISOTargetFormat', (configValue) => this._useISOTargetFormat = configValue, this);
+        this._configHelper.subscribeToConfig<boolean>('timing.hoverDuration.enabled', configValue => this._enabled = configValue, this);
+        this._configHelper.subscribeToConfig<string>('timing.hoverDuration.sourceUnit', configValue => this._sourceUnit = configValue, this);
+        this._configHelper.subscribeToConfig<boolean>('timing.hoverDuration.useISOTargetFormat', configValue => this._useISOTargetFormat = configValue, this);
     }
 
     public provideHover(
-        document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken):
+        document: vscode.TextDocument, position: vscode.Position):
         vscode.ProviderResult<vscode.Hover> {
 
         let result: vscode.Hover;

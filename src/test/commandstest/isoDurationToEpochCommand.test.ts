@@ -55,7 +55,7 @@ describe('IsoDurationToEpochCommand', () => {
         beforeEach('Reset', () => {
             testObject = new IsoDurationToEpochCommand(new ExtensionContextMock(), timeConverter, new ConfigHelper());
             testEditor.selection = new vscode.Selection(new vscode.Position(6, 40), new vscode.Position(6, 44));
-            handlerMock.run.returns(new Promise((resolve) => resolve(['P1Y2M3DT4H5M6S', 'ms'])));
+            handlerMock.run.returns(new Promise(resolve => resolve(['P1Y2M3DT4H5M6S', 'ms'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -66,7 +66,7 @@ describe('IsoDurationToEpochCommand', () => {
 
         it('Should stop if user canceled during duration insertion', async () => {
             testEditor.selection = new vscode.Selection(new vscode.Position(5, 0), new vscode.Position(5, 0));
-            handlerMock.run.returns(new Promise((resolve) => resolve([])));
+            handlerMock.run.returns(new Promise(resolve => resolve([])));
 
             await testObject.execute();
 

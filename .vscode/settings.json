@@ -1,19 +1,19 @@
 {
-    "files.exclude": {
-        "out": false
-    },
-    "search.exclude": {
-        "out": true
-    },
-    "files.trimFinalNewlines": true,
-    "files.insertFinalNewline": true,
-    "typescript.preferences.quoteStyle": "single",
-    "typescript.tsdk": "node_modules\\typescript\\lib",
     "cSpell.words": [
         "Hanisch",
         "Octicons",
         "momentjs",
         "EPOCHUNITS"
     ],
-    "files.eol": "\n"
+    "files.eol": "\n",
+    "files.exclude": {
+        "out": false
+    },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "search.exclude": {
+        "out": true
+    },
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -7,13 +7,14 @@
 
 'use strict';
 
-import { CustomCommandBase } from './customCommandBase';
 
 import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
 import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
 import { InputFlowAction } from '../util/inputFlowAction';
+
+import { CustomCommandBase } from './customCommandBase';
 
 class IsoRfcToCustomCommand extends CustomCommandBase {
 
@@ -23,7 +24,7 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
      * Execute the command
      * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(options: ICommandOptions = {}) {
+    public async execute(options: ICommandOptions = {}): Promise<void> {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
 
         if (!this._stepHandler) {
@@ -69,7 +70,7 @@ class IsoRfcToCustomCommand extends CustomCommandBase {
             'Insert custom format',
             this.title,
             'Ensure you enter a custom momentjs format.',
-            (input) => input ? true : false,
+            input => input ? true : false,
             false,
             true);
         const getCustomFormatStep = new QuickPickStep(

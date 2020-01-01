@@ -45,7 +45,7 @@ jobs:
         inputs:
           verbose: false
       - script: |
-          npm run tslint
+          npm run eslint
           npm run test-compile
           npm run test
         displayName: 'Run tests'
@@ -90,7 +90,7 @@ jobs:
           disown -ar
         displayName: 'Start xvfb'
       - script: |
-          npm run tslint
+          npm run eslint
           npm run test-compile
           npm run test
         displayName: 'Run tests'

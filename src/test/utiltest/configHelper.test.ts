@@ -123,7 +123,7 @@ describe('ConfigHelper', () => {
             assert.strictEqual(result, 's');
         });
 
-        it('should return the default value', async () => {
+        it('should return the default value', () => {
             const result = ConfigHelper.get<string>('timing.hoverDuration.sourceUnit');
 
             assert.strictEqual(result, 'ms');

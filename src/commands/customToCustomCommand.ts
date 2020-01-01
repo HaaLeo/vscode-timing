@@ -22,7 +22,7 @@ class CustomToCustomCommand extends CustomCommandBase {
      * Execute the command
      * @param options The command options, to skip option insertion during conversion.
      */
-    public async execute(options: ICommandOptions = {}) {
+    public async execute(options: ICommandOptions = {}): Promise<void> {
         let selectedSourceFormat: string;
         let selectedTargetFormat: string;
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
@@ -61,7 +61,7 @@ class CustomToCustomCommand extends CustomCommandBase {
             'Insert custom format',
             this.title,
             'Ensure you enter a custom momentjs format.',
-            (input) => input ? true : false,
+            input => input ? true : false,
             false,
             true);
         const alternativeCustomFormatStep2 = new InputBoxStep(
@@ -69,7 +69,7 @@ class CustomToCustomCommand extends CustomCommandBase {
             'Insert custom format',
             this.title,
             'Ensure you enter a custom momentjs format.',
-            (input) => input ? true : false,
+            input => input ? true : false,
             false,
             true);
 

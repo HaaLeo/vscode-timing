@@ -18,7 +18,7 @@ class StepResult {
      * @param _action The next action.
      * @param _value The result value.
      */
-    constructor(
+    public constructor(
         private readonly _action: InputFlowAction,
         private readonly _value: string) { }
 

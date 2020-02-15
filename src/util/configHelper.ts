@@ -13,7 +13,7 @@ class ConfigHelper implements vscode.Disposable {
     private _disposables: vscode.Disposable[] = [];
 
     public constructor() {
-        this.subscribeToConfig('timing.hiddenCommands', this.updateContextKeys, this);
+        this.subscribeToConfig<string | string[]>('timing.hiddenCommands', this.updateContextKeys, this);
     }
 
     public static get<T>(configKey: string, defaultValue?: T): T {
@@ -39,10 +39,13 @@ class ConfigHelper implements vscode.Disposable {
 
     private updateContextKeys(rawConfig: string | string[]): void {
         let commandsToHide: string[];
+
         if (typeof rawConfig === 'string') {
             commandsToHide = rawConfig.split(',').map(value => value.trim());
-        } else {
+        } else if (Array.isArray(rawConfig)) {
             commandsToHide = rawConfig;
+        } else {
+            commandsToHide = [];
         }
 
         const commands = [
@@ -65,9 +68,11 @@ class ConfigHelper implements vscode.Disposable {
             'timing.toggleInsertConvertedTimeUserLevel'
         ];
 
-        commands.map(command => {
+
+        commands.forEach(command => {
             const isEnabled = commandsToHide.includes(command) ? false : true;
-            return vscode.commands.executeCommand('setContext', [...command.split('.'), 'enabled'].join(':'), isEnabled);
+            const contextKey = [...command.split('.'), 'enabled'].join(':');
+            vscode.commands.executeCommand('setContext', contextKey, isEnabled);
         });
     }
 }

@@ -23,7 +23,10 @@
         "color": "#252627",
         "theme": "dark"
     },
-    "extensionKind": "ui",
+    "extensionKind": [
+        "ui",
+        "workspace"
+    ],
     "icon": "doc/Icon_128x128.png",
     "readme": "README.md",
     "categories": [

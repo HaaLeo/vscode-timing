@@ -94,6 +94,7 @@ class TimeConverter {
 
         return text;
     }
+
     public epochToIsoLocal(epoch: string): string {
         const ms = new InputDefinition(epoch).inputAsMs;
         const result = moment(ms, 'x').toISOString(true);
@@ -116,8 +117,8 @@ class TimeConverter {
                 throw new Error('Unknown option="' + targetUnit + '" detected.');
         }
         return result.toString();
-
     }
+
     public isoRfcToEpoch(date: string, targetUnit: string): string {
         let result: number;
         switch (targetUnit) {

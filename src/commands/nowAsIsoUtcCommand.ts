@@ -13,7 +13,7 @@ import { CustomCommandBase } from './customCommandBase';
 
 class NowAsIsoUtcCommand extends CustomCommandBase {
 
-    private readonly title: string = 'Now → ISO 8601 Utc';
+    private readonly title: string = 'Now → ISO 8601 UTC';
 
     public async execute(): Promise<void> {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, 'not evaluated');

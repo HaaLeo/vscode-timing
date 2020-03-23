@@ -376,7 +376,7 @@
                 },
                 {
                     "command": "timing.nowAsIsoUtc",
-                    "when": "timing.nowAsIsoUtc"
+                    "when": "timing:nowAsIsoUtc:enabled"
                 },
                 {
                     "command": "timing.nowAsIsoLocal",

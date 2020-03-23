@@ -2,6 +2,7 @@
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+* **Fixed** a bug that caused the `timing.nowAsIsoUtc` command to be never shown in the command palette.
 
 ## 2019-12-22 - v2.3.0
 * **DEPRECATED** the string type of the `timing.hiddenCommands`.

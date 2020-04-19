@@ -23,7 +23,7 @@ describe('ConfigHelper', () => {
     beforeEach(async () => {
         const config = vscode.workspace.getConfiguration('timing.hoverDuration');
         await config.update('sourceUnit', undefined);
-        // All 17 commands
+        // All 18 commands
         expectedHiddenCommands = {
             'timing:customToCustom:enabled': true,
             'timing:customToEpoch:enabled': true,
@@ -34,6 +34,7 @@ describe('ConfigHelper', () => {
             'timing:epochToIsoDuration:enabled': true,
             'timing:epochToIsoLocal:enabled': true,
             'timing:epochToIsoUtc:enabled': true,
+            'timing:epochToIsoTimezone:enabled': true,
             'timing:isoDurationToEpoch:enabled': true,
             'timing:isoRfcToCustom:enabled': true,
             'timing:isoRfcToEpoch:enabled': true,
@@ -69,9 +70,9 @@ describe('ConfigHelper', () => {
         });
 
         it('Set context keys', () => {
-            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 17);
+            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 18);
 
-            assert.strictEqual(args.length, 17);
+            assert.strictEqual(args.length, 18);
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
                 assert.strictEqual(args[index][0], 'setContext');
                 assert.strictEqual(args[index][1], key);
@@ -85,9 +86,9 @@ describe('ConfigHelper', () => {
             expectedHiddenCommands['timing:customToCustom:enabled'] = false;
             expectedHiddenCommands['timing:customToIsoLocal:enabled'] = false;
 
-            // Get last 17 calls
-            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 17);
-            assert.strictEqual(args.length, 17);
+            // Get last 18 calls
+            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 18);
+            assert.strictEqual(args.length, 18);
 
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
                 assert.strictEqual(args[index][0], 'setContext');
@@ -102,8 +103,8 @@ describe('ConfigHelper', () => {
             expectedHiddenCommands['timing:customToCustom:enabled'] = false;
             expectedHiddenCommands['timing:customToIsoLocal:enabled'] = false;
 
-            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 17);
-            assert.strictEqual(args.length, 17);
+            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 18);
+            assert.strictEqual(args.length, 18);
 
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
                 assert.strictEqual(args[index][0], 'setContext');

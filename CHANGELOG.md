@@ -2,6 +2,7 @@
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+* **Added** `timing.isoToEpochTimezone` command to enable time conversion including a custom timezone.
 
 ## 2020-03-23 - v2.3.1
 * **Fixed** a bug that caused the `timing.nowAsIsoUtc` command to be never shown in the command palette.

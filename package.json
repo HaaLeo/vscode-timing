@@ -1,7 +1,7 @@
 {
     "name": "timing",
     "displayName": "Time Converter",
-    "description": "Converts timestamps from/to various formats and inserts them on demand.",
+    "description": "Convert timestamps from/to various formats and preview/insert them on demand.",
     "version": "2.3.1",
     "publisher": "HaaLeo",
     "engines": {
@@ -43,12 +43,69 @@
         "*"
     ],
     "main": "./dist/timing",
+    "scripts": {
+        "vscode:prepublish": "webpack --mode production",
+        "compile": "webpack --mode none",
+        "watch": "webpack --mode none --watch",
+        "test-compile": "tsc -p ./",
+        "test": "node ./out/test/runTests",
+        "eslint": "eslint . --ext .ts",
+        "package": "vsce package",
+        "publish": "vsce publish -p"
+    },
+    "devDependencies": {
+        "@types/istanbul-lib-coverage": "^2.0.1",
+        "@types/istanbul-lib-hook": "^2.0.0",
+        "@types/istanbul-lib-instrument": "^1.7.3",
+        "@types/istanbul-lib-report": "^3.0.0",
+        "@types/istanbul-lib-source-maps": "^1.2.2",
+        "@types/istanbul-reports": "^1.1.1",
+        "@types/mocha": "^7.0.2",
+        "@types/moment-timezone": "^0.5.13",
+        "@types/node": "^13.9.3",
+        "@types/sinon": "^7.5.2",
+        "@types/vscode": "~1.30.0",
+        "@typescript-eslint/eslint-plugin": "^2.25.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^2.25.0",
+        "@typescript-eslint/parser": "^2.25.0",
+        "decache": "^4.5.1",
+        "eslint": "^6.8.0",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-prefer-arrow": "^1.1.7",
+        "glob": "7.1.6",
+        "istanbul-lib-coverage": "^3.0.0",
+        "istanbul-lib-hook": "^3.0.0",
+        "istanbul-lib-instrument": "^4.0.1",
+        "istanbul-lib-report": "^3.0.0",
+        "istanbul-lib-source-maps": "^4.0.0",
+        "istanbul-reports": "^3.0.0",
+        "mocha": "^7.1.1",
+        "mocha-junit-reporter": "^1.23.3",
+        "mocha-multi-reporters": "^1.1.7",
+        "sinon": "^9.0.1",
+        "ts-loader": "^6.2.2",
+        "tslint": "^6.1.0",
+        "typescript": "^3.8.3",
+        "vsce": "^1.74.0",
+        "vscode-test": "^1.3.0",
+        "webpack": "^4.42.0",
+        "webpack-cli": "^3.3.11"
+    },
+    "dependencies": {
+        "moment-timezone": "^0.5.28",
+        "tz-ids": "^1.0.0"
+    },
     "contributes": {
         "commands": [
             {
                 "command": "timing.epochToIsoUtc",
                 "category": "Timing",
                 "title": "Epoch ⟶ ISO 8601 UTC"
+            },
+            {
+                "command": "timing.epochToIsoTimezone",
+                "category": "Timing",
+                "title": "Epoch ⟶ ISO 8601 Custom Timezone"
             },
             {
                 "command": "timing.epochToIsoLocal",
@@ -222,6 +279,7 @@
                                     "timing.epochToIsoDuration",
                                     "timing.epochToIsoLocal",
                                     "timing.epochToIsoUtc",
+                                    "timing.epochToIsoTimezone",
                                     "timing.isoDurationToEpoch",
                                     "timing.isoRfcToCustom",
                                     "timing.isoRfcToEpoch",
@@ -279,9 +337,19 @@
                                             },
                                             "localize": {
                                                 "title": "Localize the format.",
+                                                "deprecationMessage": "The \"localize\" property has been DEPRECATED. Use the \"timezone\"property instead.",
                                                 "description": "Indicates whether the custom format shall be localized.",
                                                 "type": "boolean",
                                                 "default": true
+                                            },
+                                            "timezone": {
+                                                "title": "The target timezone",
+                                                "description": "Specify which target timezone shall be used for the time conversion.",
+                                                "type": "string",
+                                                "default": "-00:00",
+                                                "enum": [
+                                                    "Foo"
+                                                ]
                                             }
                                         },
                                         "required": [
@@ -341,6 +409,10 @@
                 {
                     "command": "timing.epochToIsoUtc",
                     "when": "timing:epochToIsoUtc:enabled"
+                },
+                {
+                    "command": "timing.epochToIsoTimezone",
+                    "when": "timing:epochToIsoTimezone:enabled"
                 },
                 {
                     "command": "timing.epochToIsoLocal",
@@ -408,55 +480,5 @@
                 }
             ]
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "webpack --mode production",
-        "compile": "webpack --mode none",
-        "watch": "webpack --mode none --watch",
-        "test-compile": "tsc -p ./",
-        "test": "node ./out/test/runTests",
-        "eslint": "eslint . --ext .ts",
-        "package": "vsce package",
-        "publish": "vsce publish -p"
-    },
-    "devDependencies": {
-        "@types/istanbul-lib-coverage": "^2.0.1",
-        "@types/istanbul-lib-hook": "^2.0.0",
-        "@types/istanbul-lib-instrument": "^1.7.3",
-        "@types/istanbul-lib-report": "^3.0.0",
-        "@types/istanbul-lib-source-maps": "^1.2.2",
-        "@types/istanbul-reports": "^1.1.1",
-        "@types/mocha": "^7.0.2",
-        "@types/node": "^13.9.3",
-        "@types/sinon": "^7.5.2",
-        "@types/vscode": "~1.30.0",
-        "@typescript-eslint/eslint-plugin": "^2.25.0",
-        "@typescript-eslint/eslint-plugin-tslint": "^2.25.0",
-        "@typescript-eslint/parser": "^2.25.0",
-        "decache": "^4.5.1",
-        "eslint": "^6.8.0",
-        "eslint-plugin-import": "^2.20.1",
-        "eslint-plugin-prefer-arrow": "^1.1.7",
-        "glob": "7.1.6",
-        "istanbul-lib-coverage": "^3.0.0",
-        "istanbul-lib-hook": "^3.0.0",
-        "istanbul-lib-instrument": "^4.0.1",
-        "istanbul-lib-report": "^3.0.0",
-        "istanbul-lib-source-maps": "^4.0.0",
-        "istanbul-reports": "^3.0.0",
-        "mocha": "^7.1.1",
-        "mocha-junit-reporter": "^1.23.3",
-        "mocha-multi-reporters": "^1.1.7",
-        "sinon": "^9.0.1",
-        "ts-loader": "^6.2.2",
-        "tslint": "^6.1.0",
-        "typescript": "^3.8.3",
-        "vsce": "^1.74.0",
-        "vscode-test": "^1.3.0",
-        "webpack": "^4.42.0",
-        "webpack-cli": "^3.3.11"
-    },
-    "dependencies": {
-        "moment": "^2.24.0"
     }
 }

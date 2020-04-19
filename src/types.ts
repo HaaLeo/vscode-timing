@@ -22,4 +22,5 @@ interface ICommandOptions {
     targetFormat?: string;
     sourceUnit?: 's' | 'ms' | 'ns';
     targetUnit?: 's' | 'ms' | 'ns';
+    timezone?: string;
 }

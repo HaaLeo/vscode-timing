@@ -7,7 +7,7 @@
 
 'use strict';
 
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { Constants } from '../util/constants';
 import { InputDefinition } from './inputDefinition';
 
@@ -155,6 +155,21 @@ class TimeConverter {
         return result.toString();
     }
 
+    public epochToISOTimezone(epoch: string, timezone: string): string {
+        const ms = new InputDefinition(epoch).inputAsMs;
+        let result: string;
+
+        if (Constants.UTCOFFSETS.includes(timezone)) {
+            result = moment(ms, 'x').utcOffset(timezone).toISOString(true);
+        } else if (Constants.TIMEZONES.includes(timezone)) {
+            result = moment(ms, 'x').tz(timezone).toISOString(true);
+        } else {
+            throw new Error(`Received unknown timezone="${timezone}".`);
+        }
+
+        return result;
+    }
+
     public isValidEpoch(epoch: string): boolean {
         let result = false;
         if (/^\d+$/.test(epoch)) {
@@ -187,6 +202,10 @@ class TimeConverter {
             } catch (e) { }
         }
         return result;
+    }
+
+    public isValidTimezone(timezone: string): boolean {
+        return Constants.TIMEZONES.concat(Constants.UTCOFFSETS).includes(timezone);
     }
 
     public getNowAsCustom(targetFormat: string): string {

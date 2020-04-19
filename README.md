@@ -92,7 +92,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
           "DD.MM.YYYY HH:mm:ss",
           {
               "customFormat": "DD.MM.YYYY HH:mm:ss",
-              "localize": false,
+              "timezone": "Europe/Berlin",
               "name": "My Format"
           }
       ]

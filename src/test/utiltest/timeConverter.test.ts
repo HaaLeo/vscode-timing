@@ -54,9 +54,14 @@ describe('TimeConverter', () => {
             assert.strictEqual(result, moment(123456789000, 'x').format('DD.MM.YYYY HH:mm:ss'));
         });
 
-        it('Should convert to custom correctly without localization.', () => {
-            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss', false);
-            assert.strictEqual(result, '29.11.1973 21:33:09');
+        it('Should convert to custom correctly with timezone.', () => {
+            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss', 'Europe/Berlin');
+            assert.strictEqual(result, '29.11.1973 22:33:09');
+        });
+
+        it('Should convert to custom correctly with UTC offset.', () => {
+            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss', '+01:00');
+            assert.strictEqual(result, '29.11.1973 22:33:09');
         });
     });
 

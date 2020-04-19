@@ -14,7 +14,8 @@ interface ICustomFormat {
 interface ICustomHoverFormat {
     customFormat: string;
     name?: string;
-    localize?: boolean;
+    localize?: boolean; // DEPRECATED
+    timezone?: string;
 }
 
 interface ICommandOptions {

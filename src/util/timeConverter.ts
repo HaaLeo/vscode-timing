@@ -17,14 +17,26 @@ class TimeConverter {
         return result;
     }
 
-    public epochToCustom(epoch: string, targetFormat: string, localize: boolean = true): string {
+    // Boolean to fulfill deprecated "localize" option
+    public epochToCustom(epoch: string, targetFormat: string, timezone: boolean | string = ''): string {
         const ms = new InputDefinition(epoch).inputAsMs;
         let result: string;
 
-        if (localize) {
-            result = moment(ms, 'x').format(targetFormat);
+        if (typeof timezone === 'string') {
+            if (Constants.UTCOFFSETS.includes(timezone)) {
+                result = moment(ms, 'x').utcOffset(timezone).format(targetFormat);
+            } else if (Constants.TIMEZONES.includes(timezone)) {
+                result = moment(ms, 'x').tz(timezone).format(targetFormat);
+            } else {
+                result = moment(ms, 'x').format(targetFormat); // By default localize format
+            }
         } else {
-            result = moment.utc(ms, 'x').format(targetFormat);
+            // Handle deprecated data contract
+            if (timezone) {
+                result = moment(ms, 'x').format(targetFormat);
+            } else {
+                result = moment.utc(ms, 'x').format(targetFormat);
+            }
         }
 
         return result;

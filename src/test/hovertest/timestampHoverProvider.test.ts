@@ -175,6 +175,26 @@ describe('TimestampHoverProvider', () => {
                 result.contents[0],
                 '*Epoch Unit*: `s`  \n*My Name*: `test-time`');
         });
+
+        it('should provide correct advanced custom hover message with name and timezone.', async () => {
+            timeConverterMock.epochToCustom.returns('test-time');
+            const config = vscode.workspace.getConfiguration('timing.hoverTimestamp');
+            await config.update('targetFormat', [{ customFormat: 'YYYY', name: 'My Name', timezone: 'Europe/Berlin', localize: false }]);
+
+            const result = await testObject.provideHover(
+                testEditor.document,
+                new vscode.Position(3, 32));
+
+            assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
+            assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
+            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789000');
+            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[1], 'YYYY');
+            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[2], 'Europe/Berlin');
+            assert.strictEqual(result.contents.length, 1);
+            assert.strictEqual(
+                result.contents[0],
+                '*Epoch Unit*: `s`  \n*My Name*: `test-time`');
+        });
     });
 
     it('should return undefined if position is no epoch time.', async () => {

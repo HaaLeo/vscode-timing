@@ -8,7 +8,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { TimeConverter } from '../../util/timeConverter';
 
 describe('TimeConverter', () => {
@@ -22,6 +22,22 @@ describe('TimeConverter', () => {
         it('Should convert to ISO correctly.', () => {
             const result = testObject.epochToISOUtc('123456789000000000');
             assert.strictEqual(result, '1973-11-29T21:33:09.000Z');
+        });
+    });
+
+    describe('epochToIsoTimezone', () => {
+        it('Should convert to ISO custom timezone (UTC offset) correctly.', () => {
+            const result = testObject.epochToISOTimezone('123456789000000000', '+04:00');
+            assert.strictEqual(result, '1973-11-30T01:33:09.000+04:00');
+        });
+
+        it('Should convert to ISO custom timezone (TZ ID) correctly.', () => {
+            const result = testObject.epochToISOTimezone('123456789000000000', 'Europe/Berlin');
+            assert.strictEqual(result, '1973-11-29T22:33:09.000+01:00');
+        });
+
+        it('Should throw an error when timezone is unknown.', () => {
+            assert.throws(() => testObject.epochToISOTimezone('123456789000000000', 'Europe/foo'));
         });
     });
 

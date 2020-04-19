@@ -16,12 +16,14 @@ class MultiStepHandlerMock {
     public registerStep = sinon.stub(MultiStepHandler.prototype, 'registerStep');
     public unregisterStep = sinon.stub(MultiStepHandler.prototype, 'unregisterStep');
     public dispose = sinon.stub(MultiStepHandler.prototype, 'dispose');
+    public setStepResult = sinon.stub(MultiStepHandler.prototype, 'setStepResult');
 
     public restore(): void {
         this.run.restore();
         this.registerStep.restore();
         this.unregisterStep.restore();
         this.dispose.restore();
+        this.setStepResult.restore();
     }
 
     public reset(): void {
@@ -29,6 +31,7 @@ class MultiStepHandlerMock {
         this.registerStep.reset();
         this.unregisterStep.reset();
         this.dispose.reset();
+        this.setStepResult.reset();
     }
 }
 

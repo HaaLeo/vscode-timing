@@ -10,7 +10,7 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { EpochToIsoTimezoneCommand } from '../../commands/EpochToIsoTimezoneCommand';
+import { EpochToIsoTimezoneCommand } from '../../commands/epochToIsoTimezoneCommand';
 import { StepResult } from '../../step/stepResult';
 import { ConfigHelper } from '../../util/configHelper';
 import { InputFlowAction } from '../../util/inputFlowAction';

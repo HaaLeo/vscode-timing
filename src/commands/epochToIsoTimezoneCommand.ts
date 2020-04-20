@@ -7,42 +7,46 @@
 
 'use strict';
 
+import { InputDefinition } from '../util/inputDefinition';
+
 import { InputBoxStep } from '../step/inputBoxStep';
 import { MultiStepHandler } from '../step/multiStepHandler';
-import { QuickPickStep } from '../step/quickPickStep';
 import { StepResult } from '../step/stepResult';
-import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/inputFlowAction';
+import { QuickPickStep } from '../step/quickPickStep';
+import { Constants } from '../util/constants';
+import { CommandBase } from './commandBase';
 
-import { CustomCommandBase } from './customCommandBase';
+/**
+ * Command to convert epoch time to ISO 8601 Utc time.
+ */
+class EpochToIsoTimezoneCommand extends CommandBase {
 
-class EpochToCustomCommand extends CustomCommandBase {
-
-    private readonly title: string = 'Epoch → Custom';
+    private readonly title: string = 'Epoch → ISO 8601 Custom Timezone';
 
     /**
-     * Execute the command
-     * @param options The command options, to skip option insertion during conversion.
+     * Execute the command.
      */
     public async execute(options: ICommandOptions = {}): Promise<void> {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+        let timezone: string;
 
         if (!this._stepHandler) {
             this.initialize();
         }
-        this._stepHandler.setStepResult(options.targetFormat, 1);
+        this._stepHandler.setStepResult(options.timezone, 1);
 
         do {
             let rawInput = loopResult.value;
 
-            const internalResult = await this.internalExecute(loopResult.action, 'epochToCustom', rawInput);
-            [rawInput] = internalResult.stepHandlerResult;
+            const internalResult = await this.internalExecute(loopResult.action, 'epochToISOTimezone', rawInput);
+            [rawInput, timezone] = internalResult.stepHandlerResult;
+            const input = new InputDefinition(rawInput);
 
             if (internalResult.showResultBox) {
-                const input = new InputDefinition(rawInput);
                 loopResult = await this._resultBox.show(
-                    'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
-                    this.title + ': Result',
+                    `Input: ${input.originalInput} (${input.originalUnit}), Timezone: ${timezone}`,
+                    `${this.title}: Result`,
                     internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
@@ -66,26 +70,19 @@ class EpochToCustomCommand extends CustomCommandBase {
             this._timeConverter.isValidEpoch,
             true);
 
-        const alternativeCustomFormatStep = new InputBoxStep(
-            'E.g.: YYYY/MM/DD',
-            'Insert custom format',
+        const utcOffsetItems = Constants.UTCOFFSETS.map(offset => ({ label: offset, description: 'UTC Offset' }));
+        const timezoneItems = Constants.TIMEZONES.map(timezone => ({ label: timezone, description: 'Timezone' }));
+        const getTimezoneStep = new QuickPickStep(
+            '+04:00',
             this.title,
-            'Ensure you enter a custom momentjs format.',
-            input => input ? true : false,
-            false,
-            true);
-        const getCustomFormatStep = new QuickPickStep(
-            'Select custom target format.',
-            this.title,
-            this._customTimeFormatOptions,
-            { label: 'Other Format...' },
-            alternativeCustomFormatStep);
+            utcOffsetItems.concat(timezoneItems)
+        );
 
         this._stepHandler = new MultiStepHandler();
-        this._stepHandler.registerStep(getEpochTimeStep);
-        this._stepHandler.registerStep(getCustomFormatStep);
+        this._stepHandler.registerStep(getEpochTimeStep, 0);
+        this._stepHandler.registerStep(getTimezoneStep, 1);
         this._disposables.push(this._stepHandler);
     }
 }
 
-export { EpochToCustomCommand };
+export { EpochToIsoTimezoneCommand };

@@ -54,10 +54,12 @@ class ConfigHelper implements vscode.Disposable {
             'timing.customToIsoLocal',
             'timing.customToIsoUtc',
             'timing.epochToCustom',
+            'timing.epochToCustomTimezone',
             'timing.epochToReadableDuration',
             'timing.epochToIsoDuration',
             'timing.epochToIsoLocal',
             'timing.epochToIsoUtc',
+            'timing.epochToIsoTimezone',
             'timing.isoDurationToEpoch',
             'timing.isoRfcToCustom',
             'timing.isoRfcToEpoch',
@@ -67,7 +69,6 @@ class ConfigHelper implements vscode.Disposable {
             'timing.nowAsIsoUtc',
             'timing.toggleInsertConvertedTimeUserLevel'
         ];
-
 
         commands.forEach(command => {
             const isEnabled = commandsToHide.includes(command) ? false : true;

@@ -7,7 +7,7 @@
 
 'use strict';
 
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { Constants } from '../util/constants';
 import { InputDefinition } from './inputDefinition';
 
@@ -17,14 +17,26 @@ class TimeConverter {
         return result;
     }
 
-    public epochToCustom(epoch: string, targetFormat: string, localize: boolean = true): string {
+    // Boolean to fulfill deprecated "localize" option
+    public epochToCustom(epoch: string, targetFormat: string, timezone: boolean | string = ''): string {
         const ms = new InputDefinition(epoch).inputAsMs;
         let result: string;
 
-        if (localize) {
-            result = moment(ms, 'x').format(targetFormat);
+        if (typeof timezone === 'string') {
+            if (Constants.UTCOFFSETS.includes(timezone)) {
+                result = moment(ms, 'x').utcOffset(timezone).format(targetFormat);
+            } else if (Constants.TIMEZONES.includes(timezone)) {
+                result = moment(ms, 'x').tz(timezone).format(targetFormat);
+            } else {
+                result = moment(ms, 'x').format(targetFormat); // By default localize format
+            }
         } else {
-            result = moment.utc(ms, 'x').format(targetFormat);
+            // Handle deprecated data contract
+            if (timezone) {
+                result = moment(ms, 'x').format(targetFormat);
+            } else {
+                result = moment.utc(ms, 'x').format(targetFormat);
+            }
         }
 
         return result;
@@ -155,6 +167,21 @@ class TimeConverter {
         return result.toString();
     }
 
+    public epochToISOTimezone(epoch: string, timezone: string): string {
+        const ms = new InputDefinition(epoch).inputAsMs;
+        let result: string;
+
+        if (Constants.UTCOFFSETS.includes(timezone)) {
+            result = moment(ms, 'x').utcOffset(timezone).toISOString(true);
+        } else if (Constants.TIMEZONES.includes(timezone)) {
+            result = moment(ms, 'x').tz(timezone).toISOString(true);
+        } else {
+            throw new Error(`Received unknown timezone="${timezone}".`);
+        }
+
+        return result;
+    }
+
     public isValidEpoch(epoch: string): boolean {
         let result = false;
         if (/^\d+$/.test(epoch)) {
@@ -187,6 +214,10 @@ class TimeConverter {
             } catch (e) { }
         }
         return result;
+    }
+
+    public isValidTimezone(timezone: string): boolean {
+        return Constants.TIMEZONES.concat(Constants.UTCOFFSETS).includes(timezone);
     }
 
     public getNowAsCustom(targetFormat: string): string {

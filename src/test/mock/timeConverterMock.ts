@@ -11,6 +11,8 @@ import * as sinon from 'sinon';
 import { TimeConverter } from '../../util/timeConverter';
 
 class TimeConverterMock implements TimeConverter {
+    public epochToISOTimezone = sinon.stub();
+    public isValidTimezone = sinon.stub();
     public customToCustom = sinon.stub();
     public isoDurationToEpoch = sinon.stub();
     public isValidISODuration = sinon.stub();
@@ -53,6 +55,8 @@ class TimeConverterMock implements TimeConverter {
         this.getNowAsEpoch.reset();
         this.getNowAsIsoUtc.reset();
         this.getNowAsIsoLocal.reset();
+        this.epochToISOTimezone.reset();
+        this.isValidTimezone.reset();
     }
 }
 export { TimeConverterMock };

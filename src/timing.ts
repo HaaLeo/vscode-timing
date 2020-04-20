@@ -18,6 +18,7 @@ import { CustomToIsoUtcCommand } from './commands/customToIsoUtcCommand';
 import { EpochToCustomCommand } from './commands/epochToCustomCommand';
 import { EpochToISODurationCommand } from './commands/epochToISODurationCommand';
 import { EpochToIsoLocalCommand } from './commands/epochToIsoLocalCommand';
+import { EpochToIsoTimezoneCommand } from './commands/epochToIsoTimezoneCommand';
 import { EpochToIsoUtcCommand } from './commands/epochToIsoUtcCommand';
 import { EpochToReadableDurationCommand } from './commands/epochToReadableDurationCommand';
 import { IsoDurationToEpochCommand } from './commands/isoDurationToEpoch';
@@ -33,6 +34,7 @@ import { DurationHoverProvider } from './hover/durationHoverProvider';
 import { TimestampHoverProvider } from './hover/timestampHoverProvider';
 import { ConfigHelper } from './util/configHelper';
 import { TimeConverter } from './util/timeConverter';
+import { EpochToCustomTimezoneCommand } from './commands/epochToCustomTimezoneCommand';
 
 export function activate(context: vscode.ExtensionContext): void {
 
@@ -48,10 +50,12 @@ export function activate(context: vscode.ExtensionContext): void {
     const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter, configHelper);
     const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter, configHelper);
     const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter, configHelper);
+    const epochToCustomTimezoneCommand = new EpochToCustomTimezoneCommand(context, timeConverter, configHelper);
     const epochToReadableDurationCommand = new EpochToReadableDurationCommand(context, timeConverter, configHelper);
     const epochToIsoDurationCommand = new EpochToISODurationCommand(context, timeConverter, configHelper);
     const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter, configHelper);
     const epochToIsoUtcCommand = new EpochToIsoUtcCommand(context, timeConverter, configHelper);
+    const epochToIsoTimezoneCommand = new EpochToIsoTimezoneCommand(context, timeConverter, configHelper);
     const nowAsEpochCommand = new NowAsEpochCommand(context, timeConverter, configHelper);
     const nowAsCustomCommand = new NowAsCustomCommand(context, timeConverter, configHelper);
     const nowAsIsoLocalCommand = new NowAsIsoLocalCommand(context, timeConverter, configHelper);
@@ -74,9 +78,11 @@ export function activate(context: vscode.ExtensionContext): void {
         customToIsoLocalCommand, vscode.commands.registerCommand('timing.customToIsoLocal', customToIsoLocalCommand.execute, customToIsoLocalCommand),
         customToIsoUtcCommand, vscode.commands.registerCommand('timing.customToIsoUtc', customToIsoUtcCommand.execute, customToIsoUtcCommand),
         epochToCustomCommand, vscode.commands.registerCommand('timing.epochToCustom', epochToCustomCommand.execute, epochToCustomCommand),
+        epochToCustomTimezoneCommand, vscode.commands.registerCommand('timing.epochToCustomTimezone', epochToCustomTimezoneCommand.execute, epochToCustomTimezoneCommand),
         epochToReadableDurationCommand, vscode.commands.registerCommand('timing.epochToReadableDuration', epochToReadableDurationCommand.execute, epochToReadableDurationCommand),
         epochToIsoDurationCommand, vscode.commands.registerCommand('timing.epochToIsoDuration', epochToIsoDurationCommand.execute, epochToIsoDurationCommand),
         epochToIsoLocalCommand, vscode.commands.registerCommand('timing.epochToIsoLocal', epochToIsoLocalCommand.execute, epochToIsoLocalCommand),
+        epochToIsoUtcCommand, vscode.commands.registerCommand('timing.epochToIsoTimezone', epochToIsoTimezoneCommand.execute, epochToIsoTimezoneCommand),
         epochToIsoUtcCommand, vscode.commands.registerCommand('timing.epochToIsoUtc', epochToIsoUtcCommand.execute, epochToIsoUtcCommand),
         isoDurationToEpochCommand, vscode.commands.registerCommand('timing.isoDurationToEpoch', isoDurationToEpochCommand.execute, isoDurationToEpochCommand),
         isoRfcToCustomCommand, vscode.commands.registerCommand('timing.isoRfcToCustom', isoRfcToCustomCommand.execute, isoRfcToCustomCommand),

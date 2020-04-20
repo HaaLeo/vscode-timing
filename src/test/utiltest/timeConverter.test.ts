@@ -8,7 +8,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { TimeConverter } from '../../util/timeConverter';
 
 describe('TimeConverter', () => {
@@ -25,6 +25,22 @@ describe('TimeConverter', () => {
         });
     });
 
+    describe('epochToIsoTimezone', () => {
+        it('Should convert to ISO custom timezone (UTC offset) correctly.', () => {
+            const result = testObject.epochToISOTimezone('123456789000000000', '+04:00');
+            assert.strictEqual(result, '1973-11-30T01:33:09.000+04:00');
+        });
+
+        it('Should convert to ISO custom timezone (TZ ID) correctly.', () => {
+            const result = testObject.epochToISOTimezone('123456789000000000', 'Europe/Berlin');
+            assert.strictEqual(result, '1973-11-29T22:33:09.000+01:00');
+        });
+
+        it('Should throw an error when timezone is unknown.', () => {
+            assert.throws(() => testObject.epochToISOTimezone('123456789000000000', 'Europe/foo'));
+        });
+    });
+
     describe('epochToISOLocal', () => {
         it('Should convert to ISO correctly.', () => {
             const result = testObject.epochToIsoLocal('123456789000');
@@ -38,9 +54,14 @@ describe('TimeConverter', () => {
             assert.strictEqual(result, moment(123456789000, 'x').format('DD.MM.YYYY HH:mm:ss'));
         });
 
-        it('Should convert to custom correctly without localization.', () => {
-            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss', false);
-            assert.strictEqual(result, '29.11.1973 21:33:09');
+        it('Should convert to custom correctly with timezone.', () => {
+            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss', 'Europe/Berlin');
+            assert.strictEqual(result, '29.11.1973 22:33:09');
+        });
+
+        it('Should convert to custom correctly with UTC offset.', () => {
+            const result = testObject.epochToCustom('123456789000', 'DD.MM.YYYY HH:mm:ss', '+01:00');
+            assert.strictEqual(result, '29.11.1973 22:33:09');
         });
     });
 

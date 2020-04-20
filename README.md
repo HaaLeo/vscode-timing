@@ -7,7 +7,8 @@
 
 ## Description
 
-The *timing* extension converts and visualizes a given time to various formats.  
+The *timing* extension converts and visualizes a given time to various formats. You can invoke all commands via the command palette ([sample](#simple-conversion)). Each command will ask you to insert the corresponding options for the conversion. To view all commands, open the _command palette_ and type _Timing_. In addition, you can just hover over an epoch timestamp in the editor to get a human readable preview of that timestamp ([sample](#hover-preview)).
+
 This extension was inspired by [zodiac403's epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
 > All breaking changes of **v2.0.0** are listed in the [changelog](CHANGELOG.md#changelog)
@@ -31,8 +32,10 @@ Currently this extension is capable to do the following conversions, where the _
  Source Format| ⟶ | Target Format| Example
 :--|:--:|:-- |:--
 Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#simple-conversion)
+Epoch (s, ms, ns) | ⟶ | ISO 8601 Custom Timezone
 Epoch (s, ms, ns) | ⟶ | ISO 8601 Local
 Epoch (s, ms, ns) | ⟶ | Custom
+Epoch (s, ms, ns) | ⟶ | Custom Format and Timezone
 Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration
 Epoch (s, ms, ns) | ⟶ | Human Readable Duration
 ISO 8601 Duration | ⟶ | Epoch (s, ms, ns)
@@ -90,7 +93,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
           "DD.MM.YYYY HH:mm:ss",
           {
               "customFormat": "DD.MM.YYYY HH:mm:ss",
-              "localize": false,
+              "timezone": "Europe/Berlin",
               "name": "My Format"
           }
       ]
@@ -112,8 +115,10 @@ Command Id | Description | Optional Arguments (`string`)
 `timing.customToIsoLocal`| Custom ⟶ ISO 8601 Local | `sourceFormat`
 `timing.customToIsoUtc`| Custom ⟶ ISO 8601 UTC | `sourceFormat`
 `timing.epochToCustom`| Epoch ⟶ Custom | `targetFormat`
+`timing.epochToCustomTimezone`| Epoch ⟶ Custom Timezone | `targetFormat`, `timezone`
 `timing.epochToIsoDuration`| Epoch ⟶ ISO 8601 Duration | `sourceUnit`
 `timing.epochToIsoLocal`| Epoch ⟶ ISO 8601 Local
+`timing.epochToIsoTimezone`| Epoch ⟶ ISO 8601 Custom Timezone | `timezone`
 `timing.epochToIsoUtc`| Epoch ⟶ ISO 8601 UTC
 `timing.epochToReadableDuration`| Epoch ⟶ Readable Duration | `sourceUnit`
 `timing.isoDurationToEpoch`| ISO 8601 Duration ⟶ Epoch | `targetUnit`

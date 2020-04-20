@@ -75,10 +75,14 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
 
             } else if (format.customFormat) {
                 // Advanced configured custom format
+
+                // Handle deprecated localize option
+                const timezone = format.timezone ? format.timezone : (format.localize !== undefined ? format.localize : true);
+
                 const custom = this._timeConverter.epochToCustom(
                     input.inputAsMs.toString(),
                     format.customFormat,
-                    format.localize);
+                    timezone);
                 if (format.name) {
                     result += '  \n*' + format.name + '*: `' + custom + '`';
                 } else {

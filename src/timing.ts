@@ -34,6 +34,7 @@ import { DurationHoverProvider } from './hover/durationHoverProvider';
 import { TimestampHoverProvider } from './hover/timestampHoverProvider';
 import { ConfigHelper } from './util/configHelper';
 import { TimeConverter } from './util/timeConverter';
+import { EpochToCustomTimezoneCommand } from './commands/epochToCustomTimezoneCommand';
 
 export function activate(context: vscode.ExtensionContext): void {
 
@@ -49,6 +50,7 @@ export function activate(context: vscode.ExtensionContext): void {
     const customToIsoUtcCommand = new CustomToIsoUtcCommand(context, timeConverter, configHelper);
     const customToIsoLocalCommand = new CustomToIsoLocalCommand(context, timeConverter, configHelper);
     const epochToCustomCommand = new EpochToCustomCommand(context, timeConverter, configHelper);
+    const epochToCustomTimezoneCommand = new EpochToCustomTimezoneCommand(context, timeConverter, configHelper);
     const epochToReadableDurationCommand = new EpochToReadableDurationCommand(context, timeConverter, configHelper);
     const epochToIsoDurationCommand = new EpochToISODurationCommand(context, timeConverter, configHelper);
     const epochToIsoLocalCommand = new EpochToIsoLocalCommand(context, timeConverter, configHelper);
@@ -76,6 +78,7 @@ export function activate(context: vscode.ExtensionContext): void {
         customToIsoLocalCommand, vscode.commands.registerCommand('timing.customToIsoLocal', customToIsoLocalCommand.execute, customToIsoLocalCommand),
         customToIsoUtcCommand, vscode.commands.registerCommand('timing.customToIsoUtc', customToIsoUtcCommand.execute, customToIsoUtcCommand),
         epochToCustomCommand, vscode.commands.registerCommand('timing.epochToCustom', epochToCustomCommand.execute, epochToCustomCommand),
+        epochToCustomTimezoneCommand, vscode.commands.registerCommand('timing.epochToCustomTimezone', epochToCustomTimezoneCommand.execute, epochToCustomTimezoneCommand),
         epochToReadableDurationCommand, vscode.commands.registerCommand('timing.epochToReadableDuration', epochToReadableDurationCommand.execute, epochToReadableDurationCommand),
         epochToIsoDurationCommand, vscode.commands.registerCommand('timing.epochToIsoDuration', epochToIsoDurationCommand.execute, epochToIsoDurationCommand),
         epochToIsoLocalCommand, vscode.commands.registerCommand('timing.epochToIsoLocal', epochToIsoLocalCommand.execute, epochToIsoLocalCommand),

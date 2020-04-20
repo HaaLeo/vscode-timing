@@ -35,6 +35,7 @@ Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#simple-conversion)
 Epoch (s, ms, ns) | ⟶ | ISO 8601 Custom Timezone
 Epoch (s, ms, ns) | ⟶ | ISO 8601 Local
 Epoch (s, ms, ns) | ⟶ | Custom
+Epoch (s, ms, ns) | ⟶ | Custom Format and Timezone
 Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration
 Epoch (s, ms, ns) | ⟶ | Human Readable Duration
 ISO 8601 Duration | ⟶ | Epoch (s, ms, ns)
@@ -114,6 +115,7 @@ Command Id | Description | Optional Arguments (`string`)
 `timing.customToIsoLocal`| Custom ⟶ ISO 8601 Local | `sourceFormat`
 `timing.customToIsoUtc`| Custom ⟶ ISO 8601 UTC | `sourceFormat`
 `timing.epochToCustom`| Epoch ⟶ Custom | `targetFormat`
+`timing.epochToCustomTimezone`| Epoch ⟶ Custom Timezone | `targetFormat`, `timezone`
 `timing.epochToIsoDuration`| Epoch ⟶ ISO 8601 Duration | `sourceUnit`
 `timing.epochToIsoLocal`| Epoch ⟶ ISO 8601 Local
 `timing.epochToIsoTimezone`| Epoch ⟶ ISO 8601 Custom Timezone | `timezone`

@@ -10,7 +10,7 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { EpochToIsoTimezoneCommand } from '../../commands/epochToIsoTimezoneCommand';
+import { EpochToCustomTimezoneCommand } from '../../commands/epochToCustomTimezoneCommand';
 import { StepResult } from '../../step/stepResult';
 import { ConfigHelper } from '../../util/configHelper';
 import { InputFlowAction } from '../../util/inputFlowAction';
@@ -19,9 +19,9 @@ import { TimeConverter } from '../../util/timeConverter';
 import { ExtensionContextMock } from '../mock/extensionContextMock';
 import { MultiStepHandlerMock } from '../mock/multiStepHandlerMock';
 
-describe('EpochToIsoTimezoneCommand', () => {
+describe('EpochToCustomTimezoneCommand', () => {
     let timeConverter: TimeConverter;
-    let testObject: EpochToIsoTimezoneCommand;
+    let testObject: EpochToCustomTimezoneCommand;
     let testEditor: vscode.TextEditor;
     let handlerMock: MultiStepHandlerMock;
     let showResultStub: sinon.SinonStub;
@@ -52,9 +52,9 @@ describe('EpochToIsoTimezoneCommand', () => {
 
     describe('execute', () => {
         beforeEach('Reset', () => {
-            testObject = new EpochToIsoTimezoneCommand(new ExtensionContextMock(), timeConverter, new ConfigHelper());
+            testObject = new EpochToCustomTimezoneCommand(new ExtensionContextMock(), timeConverter, new ConfigHelper());
             testEditor.selection = new vscode.Selection(new vscode.Position(3, 32), new vscode.Position(3, 41));
-            handlerMock.run.returns(new Promise(resolve => resolve(['123456789', '+01:00'])));
+            handlerMock.run.returns(new Promise(resolve => resolve(['123456789', 'DD.MM.YYYY HH:mm:ss', '-05:00'])));
             showResultStub.returns(new StepResult(InputFlowAction.Cancel, undefined));
         });
 
@@ -70,7 +70,7 @@ describe('EpochToIsoTimezoneCommand', () => {
             await testObject.execute();
 
             assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(handlerMock.registerStep.calledTwice, true);
+            assert.strictEqual(handlerMock.registerStep.calledThrice, true);
             assert.strictEqual(showResultStub.notCalled, true);
         });
 
@@ -78,11 +78,11 @@ describe('EpochToIsoTimezoneCommand', () => {
             await testObject.execute();
 
             assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(handlerMock.registerStep.calledTwice, true);
+            assert.strictEqual(handlerMock.registerStep.calledThrice, true);
             assert.strictEqual(showResultStub.calledOnce, true);
             assert.strictEqual(
                 showResultStub.args[0][2],
-                '1973-11-29T22:33:09.000+01:00');
+                '29.11.1973 16:33:09');
         });
 
         it('Should start with last step if input flow action is Back.', async () => {
@@ -97,9 +97,11 @@ describe('EpochToIsoTimezoneCommand', () => {
         });
 
         it('Should set stephandler result if timezone argument is provided.', async () => {
-            await testObject.execute({ timezone: 'Europe/Berlin' });
+            await testObject.execute({ timezone: 'Europe/Berlin', targetFormat: 'myTargetFormat' });
 
-            assert.strictEqual(handlerMock.setStepResult.calledOnceWithExactly('Europe/Berlin', 1), true);
+            assert.strictEqual(handlerMock.setStepResult.calledTwice, true);
+            assert.strictEqual(handlerMock.setStepResult.calledWithExactly('myTargetFormat', 1), true);
+            assert.strictEqual(handlerMock.setStepResult.calledWithExactly('Europe/Berlin', 2), true);
         });
 
         it('Should insert the converted time.', async () => {
@@ -111,7 +113,7 @@ describe('EpochToIsoTimezoneCommand', () => {
             await testObject.execute();
 
             assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(handlerMock.registerStep.calledTwice, true);
+            assert.strictEqual(handlerMock.registerStep.calledThrice, true);
             assert.strictEqual(showResultStub.notCalled, true);
             assert.strictEqual(spy.calledOnce, true);
 

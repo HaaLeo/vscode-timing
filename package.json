@@ -118,6 +118,11 @@
                 "title": "Epoch ⟶ Custom"
             },
             {
+                "command": "timing.epochToCustomTimezone",
+                "category": "Timing",
+                "title": "Epoch ⟶ Custom Format and Timezone"
+            },
+            {
                 "command": "timing.epochToReadableDuration",
                 "category": "Timing",
                 "title": "Epoch ⟶ Readable Duration"
@@ -878,6 +883,10 @@
                 {
                     "command": "timing.epochToCustom",
                     "when": "timing:epochToCustom:enabled"
+                },
+                {
+                    "command": "timing.epochToCustomTimezone",
+                    "when": "timing:epochToCustomTimezone:enabled"
                 },
                 {
                     "command": "timing.epochToReadableDuration",

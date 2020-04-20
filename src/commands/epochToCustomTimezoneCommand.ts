@@ -14,11 +14,12 @@ import { StepResult } from '../step/stepResult';
 import { InputDefinition } from '../util/inputDefinition';
 import { InputFlowAction } from '../util/inputFlowAction';
 
+import { Constants } from '../util/constants';
 import { CustomCommandBase } from './customCommandBase';
 
-class EpochToCustomCommand extends CustomCommandBase {
+class EpochToCustomTimezoneCommand extends CustomCommandBase {
 
-    private readonly title: string = 'Epoch → Custom';
+    private readonly title: string = 'Epoch → Custom Format and Timezone';
 
     /**
      * Execute the command
@@ -26,23 +27,25 @@ class EpochToCustomCommand extends CustomCommandBase {
      */
     public async execute(options: ICommandOptions = {}): Promise<void> {
         let loopResult: StepResult = new StepResult(InputFlowAction.Continue, await this.getPreInput());
+        let timezone: string;
 
         if (!this._stepHandler) {
             this.initialize();
         }
         this._stepHandler.setStepResult(options.targetFormat, 1);
+        this._stepHandler.setStepResult(options.timezone, 2);
 
         do {
             let rawInput = loopResult.value;
 
             const internalResult = await this.internalExecute(loopResult.action, 'epochToCustom', rawInput);
-            [rawInput] = internalResult.stepHandlerResult;
+            [rawInput, , timezone] = internalResult.stepHandlerResult;
 
             if (internalResult.showResultBox) {
                 const input = new InputDefinition(rawInput);
                 loopResult = await this._resultBox.show(
-                    'Input: ' + input.originalInput + ' (' + input.originalUnit + ')',
-                    this.title + ': Result',
+                    `Input: ${input.originalInput} (${input.originalUnit}), Timezone: ${timezone}`,
+                    `${this.title}: Result`,
                     internalResult.conversionResult,
                     this.insert,
                     this._ignoreFocusOut);
@@ -81,11 +84,20 @@ class EpochToCustomCommand extends CustomCommandBase {
             { label: 'Other Format...' },
             alternativeCustomFormatStep);
 
+        const utcOffsetItems = Constants.UTCOFFSETS.map(offset => ({ label: offset, description: 'UTC Offset' }));
+        const timezoneItems = Constants.TIMEZONES.map(timezone => ({ label: timezone, description: 'Timezone' }));
+        const getTimezoneStep = new QuickPickStep(
+            '+04:00',
+            this.title,
+            utcOffsetItems.concat(timezoneItems)
+        );
+
         this._stepHandler = new MultiStepHandler();
         this._stepHandler.registerStep(getEpochTimeStep);
         this._stepHandler.registerStep(getCustomFormatStep);
+        this._stepHandler.registerStep(getTimezoneStep);
         this._disposables.push(this._stepHandler);
     }
 }
 
-export { EpochToCustomCommand };
+export { EpochToCustomTimezoneCommand };

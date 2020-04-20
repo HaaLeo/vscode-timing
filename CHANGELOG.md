@@ -2,6 +2,8 @@
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## 2020-04-20 - v2.4.0
 * **DEPRECATED** the `localize` option for advanced `timing.hoverTimestamp.targetFormat`s. Use the new `timezone` option instead.
 * **Added** `timezone` option for advanced `timing.hoverTimestamp.targetFormat`s to enable custom timezone support. ([#41](https://github.com/HaaLeo/vscode-timing/issues/41))
 * **Added** `timing.epochToIsoTimezone` command to enable ISO time conversion including a custom timezone.

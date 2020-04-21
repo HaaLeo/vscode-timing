@@ -3,6 +3,9 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 
+## 2020-04-21 - v2.4.1
+* **Fixed** a bug that marked the `timing.hiddenCommands` settings invalid when the `timing.epochToCustomTimezone` command was added.
+
 ## 2020-04-20 - v2.4.0
 * **DEPRECATED** the `localize` option for advanced `timing.hoverTimestamp.targetFormat`s. Use the new `timezone` option instead.
 * **Added** `timezone` option for advanced `timing.hoverTimestamp.targetFormat`s to enable custom timezone support. ([#41](https://github.com/HaaLeo/vscode-timing/issues/41))

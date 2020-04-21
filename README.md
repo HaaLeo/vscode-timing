@@ -7,7 +7,9 @@
 
 ## Description
 
-The *timing* extension converts and visualizes a given time to various formats. You can invoke all commands via the command palette ([sample](#simple-conversion)). Each command will ask you to insert the corresponding options for the conversion. To view all commands, open the _command palette_ and type _Timing_. In addition, you can just hover over an epoch timestamp in the editor to get a human readable preview of that timestamp ([sample](#hover-preview)).
+The *timing* extension converts and visualizes a given time to various formats. You can invoke all commands via the command palette ([sample](#simple-conversion)). In addition, you can just hover over an epoch timestamp in the editor to get a human readable preview of that timestamp ([sample](#hover-preview)).
+
+To view all commands, open the _command palette_ and type _Timing_.
 
 This extension was inspired by [zodiac403's epoch-time-converter](https://github.com/zodiac403/epoch-time-converter).
 
@@ -47,7 +49,7 @@ ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)
 \- | ⟶ | Now as Custom
 Custom | ⟶ | Custom
 Custom | ⟶ | Epoch (s, ms, ns)
-Custom | ⟶ | ISO 8601 Utc
+Custom | ⟶ | ISO 8601 UTC
 Custom | ⟶ | ISO 8601 Local
 
 Whether the current selection is [replaced](#insert-converted-time) with the converted time, is indicated by the `timing.insertConvertedTime` setting. When you already [pre-selected](#pre-selection) a valid epoch time, the extension will directly convert this selection instead of asking for your input.
@@ -79,12 +81,12 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 * `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
 * `timing.hoverDuration.useISOTargetFormat`: Indicates whether the ISO 8601 duration definition is used as target format for the hover.
 * `timing.hoverTimestamp.enabled`: Controls whether the timestamp hover is enabled or disabled.
-* `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. Possible values:
+* `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. Possible values are an array of:
   * `utc`: Show the hover preview in ISO 8601 UTC time. This is the default value.
   * `local`: Show the hover preview in ISO 8601 Local time.
   * A custom [momentjs format](https://momentjs.com/docs/#/displaying/format/): For instance `LLLL`.  
 
-  In addition, you can specify multiple formats via an array. When doing so, you can add further options for custom formats. E.g.:
+  In addition, you can specify a custom format via an object. When doing so, you can add further options like the target `timezone`. E.g.:
   ```json
   {
       "timing.hoverTimestamp.targetFormat": [

@@ -50,7 +50,7 @@ class InputDefinition {
                         this._inputAsMs = Number(userInput) / 1000000;
                         break;
                     default:
-                        throw Error('Unknown format="' + unit + '" was given.');
+                        throw Error(`Unknown format="${unit}" was given.`);
                 }
                 // If unit is not given, determine it by checking the length
             } else {
@@ -64,7 +64,7 @@ class InputDefinition {
                     this._inputAsMs = Number(userInput) / 1000000;
                     this._originalUnit = Constants.NANOSECONDS;
                 } else {
-                    throw Error('Unknown format: number with ' + userInput.length + ' digits.');
+                    throw Error(`Unknown format: number with ${userInput.length} digits.`);
                 }
             }
         }

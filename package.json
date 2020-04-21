@@ -193,6 +193,86 @@
                 "title": "Toggle Insert Converted Time (User Level)"
             }
         ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "timing.epochToIsoUtc",
+                    "when": "timing:epochToIsoUtc:enabled"
+                },
+                {
+                    "command": "timing.epochToIsoTimezone",
+                    "when": "timing:epochToIsoTimezone:enabled"
+                },
+                {
+                    "command": "timing.epochToIsoLocal",
+                    "when": "timing:epochToIsoLocal:enabled"
+                },
+                {
+                    "command": "timing.epochToCustom",
+                    "when": "timing:epochToCustom:enabled"
+                },
+                {
+                    "command": "timing.epochToCustomTimezone",
+                    "when": "timing:epochToCustomTimezone:enabled"
+                },
+                {
+                    "command": "timing.epochToReadableDuration",
+                    "when": "timing:epochToReadableDuration:enabled"
+                },
+                {
+                    "command": "timing.epochToIsoDuration",
+                    "when": "timing:epochToIsoDuration:enabled"
+                },
+                {
+                    "command": "timing.isoDurationToEpoch",
+                    "when": "timing:isoDurationToEpoch:enabled"
+                },
+                {
+                    "command": "timing.isoRfcToEpoch",
+                    "when": "timing:isoRfcToEpoch:enabled"
+                },
+                {
+                    "command": "timing.isoRfcToCustom",
+                    "when": "timing:isoRfcToCustom:enabled"
+                },
+                {
+                    "command": "timing.nowAsEpoch",
+                    "when": "timing:nowAsEpoch:enabled"
+                },
+                {
+                    "command": "timing.nowAsIsoUtc",
+                    "when": "timing:nowAsIsoUtc:enabled"
+                },
+                {
+                    "command": "timing.nowAsIsoLocal",
+                    "when": "timing:nowAsIsoLocal:enabled"
+                },
+                {
+                    "command": "timing.nowAsCustom",
+                    "when": "timing:nowAsCustom:enabled"
+                },
+                {
+                    "command": "timing.customToCustom",
+                    "when": "timing:customToCustom:enabled"
+                },
+                {
+                    "command": "timing.customToEpoch",
+                    "when": "timing:customToEpoch:enabled"
+                },
+                {
+                    "command": "timing.customToIsoUtc",
+                    "when": "timing:customToIsoUtc:enabled"
+                },
+                {
+                    "command": "timing.customToIsoLocal",
+                    "when": "timing:customToIsoLocal:enabled"
+                },
+                {
+                    "command": "timing.toggleInsertConvertedTimeUserLevel",
+                    "when": "timing:toggleInsertConvertedTimeUserLevel:enabled"
+                }
+            ]
+        },
         "configuration": {
             "$schema": "http://json-schema.org/draft-07/schema#",
             "type": "object",
@@ -280,6 +360,7 @@
                                     "timing.customToIsoLocal",
                                     "timing.customToIsoUtc",
                                     "timing.epochToCustom",
+                                    "timing.epochToCustomTimezone",
                                     "timing.epochToReadableDuration",
                                     "timing.epochToIsoDuration",
                                     "timing.epochToIsoLocal",
@@ -304,6 +385,41 @@
                     "type": "boolean",
                     "default": true
                 },
+                "timing.hoverDuration.sourceUnit": {
+                    "title": "The epoch unit of the duration hover preview.",
+                    "description": "Indicates the source epoch unit for the duration hover preview.",
+                    "type": "string",
+                    "default": "ms",
+                    "pattern": "(ms|s|ns)",
+                    "enum": [
+                        "s",
+                        "ms",
+                        "ns"
+                    ],
+                    "enumDescriptions": [
+                        "seconds",
+                        "milliseconds",
+                        "nanoseconds"
+                    ]
+                },
+                "timing.hoverDuration.enabled": {
+                    "title": "En-/disable the duration hover.",
+                    "description": "Controls whether the duration hover is enabled or disabled.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "timing.hoverDuration.useISOTargetFormat": {
+                    "title": "Use the ISO 8601 duration representation as target format.",
+                    "description": "Indicates whether the ISO 8601 duration definition is used as target format.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "timing.hoverTimestamp.enabled": {
+                    "title": "En-/disable the timestamp hover.",
+                    "description": "Controls whether the timestamp hover is enabled or disabled.",
+                    "type": "boolean",
+                    "default": true
+                },
                 "timing.hoverTimestamp.targetFormat": {
                     "title": "The target format of the hover preview.",
                     "description": "Indicates the target format of the hover preview. It can be either \"utc\", \"local\" or a custom format. Use an object to specify further options for custom formats.",
@@ -324,9 +440,18 @@
                             "items": {
                                 "oneOf": [
                                     {
+                                        "title": "The format of the hover preview.",
+                                        "description": "\"utc\", \"local\" or a custom format.",
+                                        "type": "string",
+                                        "pattern": "^(?!\\s*$).+"
+                                    },
+                                    {
                                         "type": "object",
                                         "title": "Custom Format.",
                                         "description": "Use an object to specify further options for custom formats.",
+                                        "required": [
+                                            "customFormat"
+                                        ],
                                         "properties": {
                                             "name": {
                                                 "title": "The name of the format.",
@@ -813,138 +938,14 @@
                                                     "Pacific/Wallis"
                                                 ]
                                             }
-                                        },
-                                        "required": [
-                                            "customFormat"
-                                        ]
-                                    },
-                                    {
-                                        "title": "The format of the hover preview.",
-                                        "description": "\"utc\", \"local\" or a custom format.",
-                                        "type": "string",
-                                        "pattern": "^(?!\\s*$).+"
+                                        }
                                     }
                                 ]
                             }
                         }
                     ]
-                },
-                "timing.hoverTimestamp.enabled": {
-                    "title": "En-/disable the timestamp hover.",
-                    "description": "Controls whether the timestamp hover is enabled or disabled.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "timing.hoverDuration.sourceUnit": {
-                    "title": "The epoch unit of the duration hover preview.",
-                    "description": "Indicates the source epoch unit for the duration hover preview.",
-                    "type": "string",
-                    "default": "ms",
-                    "pattern": "(ms|s|ns)",
-                    "enum": [
-                        "s",
-                        "ms",
-                        "ns"
-                    ],
-                    "enumDescriptions": [
-                        "seconds",
-                        "milliseconds",
-                        "nanoseconds"
-                    ]
-                },
-                "timing.hoverDuration.enabled": {
-                    "title": "En-/disable the duration hover.",
-                    "description": "Controls whether the duration hover is enabled or disabled.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "timing.hoverDuration.useISOTargetFormat": {
-                    "title": "Use the ISO 8601 duration representation as target format.",
-                    "description": "Indicates whether the ISO 8601 duration definition is used as target format.",
-                    "type": "boolean",
-                    "default": false
                 }
             }
-        },
-        "menus": {
-            "commandPalette": [
-                {
-                    "command": "timing.epochToIsoUtc",
-                    "when": "timing:epochToIsoUtc:enabled"
-                },
-                {
-                    "command": "timing.epochToIsoTimezone",
-                    "when": "timing:epochToIsoTimezone:enabled"
-                },
-                {
-                    "command": "timing.epochToIsoLocal",
-                    "when": "timing:epochToIsoLocal:enabled"
-                },
-                {
-                    "command": "timing.epochToCustom",
-                    "when": "timing:epochToCustom:enabled"
-                },
-                {
-                    "command": "timing.epochToCustomTimezone",
-                    "when": "timing:epochToCustomTimezone:enabled"
-                },
-                {
-                    "command": "timing.epochToReadableDuration",
-                    "when": "timing:epochToReadableDuration:enabled"
-                },
-                {
-                    "command": "timing.epochToIsoDuration",
-                    "when": "timing:epochToIsoDuration:enabled"
-                },
-                {
-                    "command": "timing.isoDurationToEpoch",
-                    "when": "timing:isoDurationToEpoch:enabled"
-                },
-                {
-                    "command": "timing.isoRfcToEpoch",
-                    "when": "timing:isoRfcToEpoch:enabled"
-                },
-                {
-                    "command": "timing.isoRfcToCustom",
-                    "when": "timing:isoRfcToCustom:enabled"
-                },
-                {
-                    "command": "timing.nowAsEpoch",
-                    "when": "timing:nowAsEpoch:enabled"
-                },
-                {
-                    "command": "timing.nowAsIsoUtc",
-                    "when": "timing:nowAsIsoUtc:enabled"
-                },
-                {
-                    "command": "timing.nowAsIsoLocal",
-                    "when": "timing:nowAsIsoLocal:enabled"
-                },
-                {
-                    "command": "timing.nowAsCustom",
-                    "when": "timing:nowAsCustom:enabled"
-                },
-                {
-                    "command": "timing.customToCustom",
-                    "when": "timing:customToCustom:enabled"
-                },
-                {
-                    "command": "timing.customToEpoch",
-                    "when": "timing:customToEpoch:enabled"
-                },
-                {
-                    "command": "timing.customToIsoUtc",
-                    "when": "timing:customToIsoUtc:enabled"
-                },
-                {
-                    "command": "timing.customToIsoLocal",
-                    "when": "timing:customToIsoLocal:enabled"
-                },
-                {
-                    "command": "timing.toggleInsertConvertedTimeUserLevel",
-                    "when": "timing:toggleInsertConvertedTimeUserLevel:enabled"
-                }
-            ]
         }
     }
 }

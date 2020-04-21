@@ -2,6 +2,8 @@
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## 2020-04-21 v2.5.0
 * **Added** support for microsecond conversion ([#43](https://github.com/HaaLeo/vscode-timing/issues/43)).  
   However, if you prefer to stick with the old conversion behavior, just add the following to your `settings.json`:  
   ```json

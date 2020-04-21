@@ -29,6 +29,14 @@ describe('InputDefinition', () => {
                 assert.strictEqual(result.originalInput, '123456789000');
             });
 
+            it('Should treat input as microseconds.', () => {
+                const result = new InputDefinition('123456789123456');
+
+                assert.strictEqual(result.inputAsMs, 123456789123.456);
+                assert.strictEqual(result.originalUnit, 'μs');
+                assert.strictEqual(result.originalInput, '123456789123456');
+            });
+
             it('Should treat input as nanoseconds.', () => {
                 const result = new InputDefinition('123456789123456789');
 
@@ -37,8 +45,12 @@ describe('InputDefinition', () => {
                 assert.strictEqual(result.originalInput, '123456789123456789');
             });
 
-            it('Should throw if to many digits are detected.', () => {
-                assert.throws(() => new InputDefinition('123456789123456789123456789123456789'));
+            it('Should initialize with undefined if to many digits are detected.', () => {
+                const result = new InputDefinition('123456789123456789123456789123456789');
+
+                assert.strictEqual(result.inputAsMs, undefined);
+                assert.strictEqual(result.originalUnit, undefined);
+                assert.strictEqual(result.originalInput, '123456789123456789123456789123456789');
             });
 
             it('Should treat input as ISO 8601 date.', () => {
@@ -72,6 +84,14 @@ describe('InputDefinition', () => {
 
                 assert.strictEqual(result.inputAsMs, 1);
                 assert.strictEqual(result.originalUnit, 'ms');
+                assert.strictEqual(result.originalInput, '1');
+            });
+
+            it('Should treat input as microseconds.', () => {
+                const result = new InputDefinition('1', 'μs');
+
+                assert.strictEqual(result.inputAsMs, 0.001);
+                assert.strictEqual(result.originalUnit, 'μs');
                 assert.strictEqual(result.originalInput, '1');
             });
 

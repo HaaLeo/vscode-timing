@@ -12,6 +12,7 @@ import * as tzIds from 'tz-ids/index.json';
 class Constants {
     public static readonly MILLISECONDS = 'ms';
     public static readonly SECONDS = 's';
+    public static readonly MICROSECONDS = 'μs';
     public static readonly NANOSECONDS = 'ns';
 
     public static readonly EPOCHUNITS = [
@@ -22,6 +23,10 @@ class Constants {
         {
             label: Constants.MILLISECONDS,
             detail: 'milliseconds'
+        },
+        {
+            label: Constants.MICROSECONDS,
+            detail: 'microseconds'
         },
         {
             label: Constants.NANOSECONDS,

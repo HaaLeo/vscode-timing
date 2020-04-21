@@ -60,9 +60,10 @@ Minimum Length| Maximum Length| Used Unit
 :--:|:--:|:--:
 1 | 11| **s**
 12 | 14| **ms**
-15 | 21| **ns**
+15 | 17| **μs**
+18 | 21| **ns**
 
->**Note**: Currently those boundaries are fixed and cannot be changed.
+>**Note**: Those boundaries are set with the `timing.epochConversionBoundaries` setting.
 
 When the _epoch time is the **target**_ format of the timestamp conversion you can select its unit during the conversion process.  
 
@@ -75,6 +76,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 * `timing.clipboard.readingEnabled`: Indicates whether the extension should try to get the input time from the clipboard instead of asking the user for input.
 * `timing.clipboard.writingEnabled`: Indicates whether the result of the conversion is written to the clipboard. When enabled, no result view will be shown.
 * `timing.customFormats`: An array of custom source/target formats used to convert from/to.
+* `timing.epochConversionBoundaries`: Distinguish when to consider an epoch timestamp's unit as "seconds", "milliseconds", "microseconds" or "nanoseconds".
 * `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart.
 * `timing.hiddenCommands`: An array of commands that shall be hidden from the command palette.
 * `timing.hoverDuration.enabled`: Controls whether the duration hover is enabled or disabled.

@@ -42,6 +42,7 @@ class DurationHoverProvider implements vscode.HoverProvider, vscode.Disposable {
                     switch (this._sourceUnit) {
                         case Constants.SECONDS:
                         case Constants.MILLISECONDS:
+                        case Constants.MICROSECONDS:
                         case Constants.NANOSECONDS:
                             break;
                         default:

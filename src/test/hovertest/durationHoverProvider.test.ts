@@ -79,6 +79,25 @@ describe('DurationHoverProvider', () => {
             '*Epoch Unit*: `s`  \n*Duration*: `test-duration`');
     });
 
+    it('should provide correct human readable duration hover message (unit: μs).', async () => {
+        timeConverterMock.epochToReadableDuration.returns('test-duration');
+        const config = vscode.workspace.getConfiguration('timing.hoverDuration');
+        await config.update('sourceUnit', 'μs');
+
+        const result = await testObject.provideHover(
+            testEditor.document,
+            new vscode.Position(3, 32));
+
+        assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.calledOnce, true);
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[0], '123456789');
+        assert.strictEqual(timeConverterMock.epochToReadableDuration.firstCall.args[1], 'μs');
+        assert.strictEqual(result.contents.length, 1);
+        assert.strictEqual(
+            result.contents[0],
+            '*Epoch Unit*: `μs`  \n*Duration*: `test-duration`');
+    });
+
     it('should provide correct human readable duration hover message (unit: ns).', async () => {
         const config = vscode.workspace.getConfiguration('timing.hoverDuration');
         await config.update('sourceUnit', 'ns');

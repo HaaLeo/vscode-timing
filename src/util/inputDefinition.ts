@@ -8,6 +8,7 @@
 'use strict';
 
 import { Constants } from './constants';
+import { ConfigHelper } from './configHelper';
 
 class InputDefinition {
     private _inputAsMs: number;
@@ -46,6 +47,9 @@ class InputDefinition {
                     case Constants.MILLISECONDS:
                         this._inputAsMs = Number(userInput);
                         break;
+                    case Constants.MICROSECONDS:
+                        this._inputAsMs = Number(userInput) / 1000;
+                        break;
                     case Constants.NANOSECONDS:
                         this._inputAsMs = Number(userInput) / 1000000;
                         break;
@@ -54,17 +58,19 @@ class InputDefinition {
                 }
                 // If unit is not given, determine it by checking the length
             } else {
-                if (userInput.length <= 11) {
+                const conversionBoundaries = ConfigHelper.get<IEpochConversionBoundaries>('timing.epochConversionBoundaries');
+                if (conversionBoundaries.seconds && userInput.length <= conversionBoundaries.seconds.max && userInput.length >= conversionBoundaries.seconds.min) {
                     this._inputAsMs = Number(userInput) * 1000;
                     this._originalUnit = Constants.SECONDS;
-                } else if (userInput.length <= 14) {
+                } else if (conversionBoundaries.milliseconds && userInput.length <= conversionBoundaries.milliseconds.max && userInput.length >= conversionBoundaries.milliseconds.min) {
                     this._inputAsMs = Number(userInput);
                     this._originalUnit = Constants.MILLISECONDS;
-                } else if (userInput.length <= 21) {
+                } else if (conversionBoundaries.microseconds && userInput.length <= conversionBoundaries.microseconds.max && userInput.length >= conversionBoundaries.microseconds.min) {
+                    this._inputAsMs = Number(userInput) / 1000;
+                    this._originalUnit = Constants.MICROSECONDS;
+                } else if (conversionBoundaries.nanoseconds && userInput.length <= conversionBoundaries.nanoseconds.max && userInput.length >= conversionBoundaries.nanoseconds.min) {
                     this._inputAsMs = Number(userInput) / 1000000;
                     this._originalUnit = Constants.NANOSECONDS;
-                } else {
-                    throw Error(`Unknown format: number with ${userInput.length} digits.`);
                 }
             }
         }

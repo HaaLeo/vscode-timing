@@ -190,6 +190,9 @@ describe('TimeConverter', () => {
         });
 
         it('Should return false if it is an invalid epoch time.', () => {
+            // Too long to match valid conversion boundaries
+            assert.strictEqual(false, testObject.isValidEpoch('15519808846830000000000000'));
+
             assert.strictEqual(false, testObject.isValidEpoch('1973-11-29T21:33:09.000Z'));
             assert.strictEqual(false, testObject.isValidEpoch(''));
         });

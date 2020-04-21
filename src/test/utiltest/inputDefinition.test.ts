@@ -45,8 +45,12 @@ describe('InputDefinition', () => {
                 assert.strictEqual(result.originalInput, '123456789123456789');
             });
 
-            it('Should throw if to many digits are detected.', () => {
-                assert.throws(() => new InputDefinition('123456789123456789123456789123456789'));
+            it('Should initialize with undefined if to many digits are detected.', () => {
+                const result = new InputDefinition('123456789123456789123456789123456789');
+
+                assert.strictEqual(result.inputAsMs, undefined);
+                assert.strictEqual(result.originalUnit, undefined);
+                assert.strictEqual(result.originalInput, '123456789123456789123456789123456789');
             });
 
             it('Should treat input as ISO 8601 date.', () => {

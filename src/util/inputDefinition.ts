@@ -71,8 +71,6 @@ class InputDefinition {
                 } else if (conversionBoundaries.nanoseconds && userInput.length <= conversionBoundaries.nanoseconds.max && userInput.length >= conversionBoundaries.nanoseconds.min) {
                     this._inputAsMs = Number(userInput) / 1000000;
                     this._originalUnit = Constants.NANOSECONDS;
-                } else {
-                    throw Error(`Unknown format: number with ${userInput.length} digits.`);
                 }
             }
         }

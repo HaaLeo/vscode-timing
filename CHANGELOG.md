@@ -18,6 +18,10 @@ All notable changes to the "timing" extension will be documented in this file. T
           "nanoseconds": {
               "min": 15,
               "max": 21
+          },
+          "microseconds": {
+              "min": 0,
+              "max": 0
           }
       }
   }

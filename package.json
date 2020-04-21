@@ -300,27 +300,11 @@
                             "max": 21
                         }
                     },
-                    "anyOf": [
-                        {
-                            "required": [
-                                "seconds"
-                            ]
-                        },
-                        {
-                            "required": [
-                                "milliseconds"
-                            ]
-                        },
-                        {
-                            "required": [
-                                "microseconds"
-                            ]
-                        },
-                        {
-                            "required": [
-                                "nanoseconds"
-                            ]
-                        }
+                    "required": [
+                        "seconds",
+                        "milliseconds",
+                        "microseconds",
+                        "nanoseconds"
                     ],
                     "properties": {
                         "seconds": {

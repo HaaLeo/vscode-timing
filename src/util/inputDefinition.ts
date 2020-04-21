@@ -8,6 +8,7 @@
 'use strict';
 
 import { Constants } from './constants';
+import { ConfigHelper } from './configHelper';
 
 class InputDefinition {
     private _inputAsMs: number;
@@ -46,6 +47,9 @@ class InputDefinition {
                     case Constants.MILLISECONDS:
                         this._inputAsMs = Number(userInput);
                         break;
+                    case Constants.MICROSECONDS:
+                        this._inputAsMs = Number(userInput) / 1000;
+                        break;
                     case Constants.NANOSECONDS:
                         this._inputAsMs = Number(userInput) / 1000000;
                         break;
@@ -54,13 +58,17 @@ class InputDefinition {
                 }
                 // If unit is not given, determine it by checking the length
             } else {
-                if (userInput.length <= 11) {
+                const conversionBoundaries = ConfigHelper.get<IEpochConversionBoundaries>('timing.epochConversionBoundaries');
+                if (userInput.length <= conversionBoundaries.seconds) {
                     this._inputAsMs = Number(userInput) * 1000;
                     this._originalUnit = Constants.SECONDS;
-                } else if (userInput.length <= 14) {
+                } else if (userInput.length <= conversionBoundaries.milliseconds) {
                     this._inputAsMs = Number(userInput);
                     this._originalUnit = Constants.MILLISECONDS;
-                } else if (userInput.length <= 21) {
+                } else if (userInput.length <= conversionBoundaries.microseconds) {
+                    this._inputAsMs = Number(userInput) / 1000;
+                    this._originalUnit = Constants.MICROSECONDS;
+                } else if (userInput.length <= conversionBoundaries.nanoseconds) {
                     this._inputAsMs = Number(userInput) / 1000000;
                     this._originalUnit = Constants.NANOSECONDS;
                 } else {

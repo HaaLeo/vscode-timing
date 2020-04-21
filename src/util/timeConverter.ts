@@ -122,6 +122,9 @@ class TimeConverter {
             case Constants.MILLISECONDS:
                 result = moment.duration(duration).asMilliseconds();
                 break;
+            case Constants.MICROSECONDS:
+                result = moment.duration(duration).asMilliseconds() * 1000;
+                break;
             case Constants.NANOSECONDS:
                 result = moment.duration(duration).asMilliseconds() * 1000000;
                 break;
@@ -140,6 +143,9 @@ class TimeConverter {
             case Constants.MILLISECONDS:
                 result = moment(date).valueOf();
                 break;
+            case Constants.MICROSECONDS:
+                result = moment(date).valueOf() * 1000;
+                break;
             case Constants.NANOSECONDS:
                 result = moment(date).valueOf() * 1000000;
                 break;
@@ -157,6 +163,9 @@ class TimeConverter {
                 break;
             case Constants.MILLISECONDS:
                 result = moment(time, customFormat, true).valueOf();
+                break;
+            case Constants.MICROSECONDS:
+                result = moment(time, customFormat, true).valueOf() * 1000;
                 break;
             case Constants.NANOSECONDS:
                 result = moment(time, customFormat, true).valueOf() * 1000000;
@@ -233,6 +242,9 @@ class TimeConverter {
                 break;
             case Constants.MILLISECONDS:
                 result = moment().valueOf();
+                break;
+            case Constants.MICROSECONDS:
+                result = moment().valueOf() * 1000;
                 break;
             case Constants.NANOSECONDS:
                 result = moment().valueOf() * 1000000;

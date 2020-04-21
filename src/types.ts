@@ -18,6 +18,13 @@ interface ICustomHoverFormat {
     timezone?: string;
 }
 
+interface IEpochConversionBoundaries {
+    seconds?: number;
+    milliseconds?: number;
+    microseconds?: number;
+    nanoseconds?: number;
+}
+
 interface ICommandOptions {
     sourceFormat?: string;
     targetFormat?: string;

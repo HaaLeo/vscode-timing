@@ -278,6 +278,65 @@
             "type": "object",
             "title": "Time Converter",
             "properties": {
+                "timing.epochConversionBoundaries": {
+                    "title": "The epoch conversion boundaries.",
+                    "description": "The conversion boundaries to distinguish when to consider an epoch timestamp's unit as \"seconds\", \"milliseconds\", \"microseconds\" or \"nanoseconds\".",
+                    "type": "object",
+                    "default": {
+                        "seconds": 11,
+                        "milliseconds": 14,
+                        "microseconds": 17,
+                        "nanoseconds": 21
+                    },
+                    "anyOf": [
+                        {
+                            "required": [
+                                "seconds"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "milliseconds"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "microseconds"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "nanoseconds"
+                            ]
+                        }
+                    ],
+                    "properties": {
+                        "seconds": {
+                            "title": "Conversion boundary for epoch seconds.",
+                            "description": "Maximum digit count to consider an epoch timestamp as seconds.",
+                            "type": "number",
+                            "default": 11
+                        },
+                        "milliseconds": {
+                            "title": "Conversion boundary for epoch milliseconds.",
+                            "description": "Maximum digit count to consider an epoch timestamp as milliseconds.",
+                            "type": "number",
+                            "default": 14
+                        },
+                        "microseconds": {
+                            "title": "Conversion boundary for epoch microseconds.",
+                            "description": "Maximum digit count to consider an epoch timestamp as microseconds.",
+                            "type": "number",
+                            "default": 17
+                        },
+                        "nanoseconds": {
+                            "title": "Conversion boundary for epoch nanoseconds.",
+                            "description": "Maximum digit count to consider an epoch timestamp as nanoseconds.",
+                            "type": "number",
+                            "default": 21
+                        }
+                    }
+                },
                 "timing.clipboard.readingEnabled": {
                     "title": "Read input time from the clipboard.",
                     "description": "Indicates whether the extension should try to get the input time from the clipboard instead of asking the user for input.",
@@ -390,15 +449,17 @@
                     "description": "Indicates the source epoch unit for the duration hover preview.",
                     "type": "string",
                     "default": "ms",
-                    "pattern": "(ms|s|ns)",
+                    "pattern": "(ms|s|μs|ns)",
                     "enum": [
                         "s",
                         "ms",
+                        "μs",
                         "ns"
                     ],
                     "enumDescriptions": [
                         "seconds",
                         "milliseconds",
+                        "microseconds",
                         "nanoseconds"
                     ]
                 },

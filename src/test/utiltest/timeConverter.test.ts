@@ -78,6 +78,12 @@ describe('TimeConverter', () => {
             assert.strictEqual(result, '37080306000');
         });
 
+        it('Should convert to epoch correctly as μs.', () => {
+            const result = testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', 'μs');
+
+            assert.strictEqual(result, '37080306000000');
+        });
+
         it('Should convert to epoch correctly as ns.', () => {
             const result = testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', 'ns');
 
@@ -100,6 +106,12 @@ describe('TimeConverter', () => {
             const result = testObject.isoRfcToEpoch('1973-11-29T21:33:09.000Z', 'ms');
 
             assert.strictEqual(result, '123456789000');
+        });
+
+        it('Should convert to epoch correctly as μs.', () => {
+            const result = testObject.isoRfcToEpoch('1973-11-29T21:33:09.000Z', 'μs');
+
+            assert.strictEqual(result, '123456789000000');
         });
 
         it('Should convert to epoch correctly as ns.', () => {
@@ -131,6 +143,12 @@ describe('TimeConverter', () => {
             const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 'ms');
 
             assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').valueOf());
+        });
+
+        it('Should convert to epoch correctly as μs.', () => {
+            const result = testObject.customToEpoch('YYYY/MM/DD', '2018/07/07', 'μs');
+
+            assert.strictEqual(Number(result), moment('2018/07/07', 'YYYY/MM/DD').valueOf() * 1000);
         });
 
         it('Should convert to epoch correctly as ns.', () => {
@@ -232,6 +250,13 @@ describe('TimeConverter', () => {
         it('Should return current epoch time as milliseconds.', () => {
             const now = moment().valueOf();
             const result = testObject.getNowAsEpoch('ms');
+            assert.strictEqual(isNaN(Number(result)), false);
+            assert.strictEqual(now <= Number(result), true);
+        });
+
+        it('Should return current epoch time as microseconds.', () => {
+            const now = moment().valueOf() * 1000;
+            const result = testObject.getNowAsEpoch('μs');
             assert.strictEqual(isNaN(Number(result)), false);
             assert.strictEqual(now <= Number(result), true);
         });

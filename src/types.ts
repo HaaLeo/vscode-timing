@@ -19,10 +19,10 @@ interface ICustomHoverFormat {
 }
 
 interface IEpochConversionBoundaries {
-    seconds?: number;
-    milliseconds?: number;
-    microseconds?: number;
-    nanoseconds?: number;
+    seconds?: { min: number; max: number };
+    milliseconds?: { min: number; max: number };
+    microseconds?: { min: number; max: number };
+    nanoseconds?: { min: number; max: number };
 }
 
 interface ICommandOptions {

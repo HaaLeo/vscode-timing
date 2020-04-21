@@ -2,13 +2,34 @@
 All notable changes to the "timing" extension will be documented in this file. This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+* **Added** support for microsecond conversion ([#41](https://github.com/HaaLeo/vscode-timing/issues/41)).  
+  However, if you prefer to stick with the old conversion behavior, just add the following to your `settings.json`:  
+  ```json
+  {
+      "timing.epochConversionBoundaries": {
+          "seconds": {
+              "min": 1,
+              "max": 11
+          },
+          "milliseconds": {
+              "min": 12,
+              "max": 14
+          },
+          "nanoseconds": {
+              "min": 15,
+              "max": 21
+          }
+      }
+  }
+  ```
+* **Added** the `timing.epochConversionBoundaries` setting to distinguish when to consider an epoch timestamp's unit as "seconds", "milliseconds", "microseconds" or "nanoseconds".
 
 ## 2020-04-21 - v2.4.1
 * **Fixed** a bug that marked the `timing.hiddenCommands` settings invalid when the `timing.epochToCustomTimezone` command was added.
 
 ## 2020-04-20 - v2.4.0
 * **DEPRECATED** the `localize` option for advanced `timing.hoverTimestamp.targetFormat`s. Use the new `timezone` option instead.
-* **Added** `timezone` option for advanced `timing.hoverTimestamp.targetFormat`s to enable custom timezone support. ([#41](https://github.com/HaaLeo/vscode-timing/issues/41))
+* **Added** `timezone` option for advanced `timing.hoverTimestamp.targetFormat`s to enable custom timezone support ([#41](https://github.com/HaaLeo/vscode-timing/issues/41)).
 * **Added** `timing.epochToIsoTimezone` command to enable ISO time conversion including a custom timezone.
 * **Added** `timing.epochToCustomTimezone` command to enable custom time conversion including a custom timezone.
 

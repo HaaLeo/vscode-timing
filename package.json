@@ -283,10 +283,22 @@
                     "description": "The conversion boundaries to distinguish when to consider an epoch timestamp's unit as \"seconds\", \"milliseconds\", \"microseconds\" or \"nanoseconds\".",
                     "type": "object",
                     "default": {
-                        "seconds": 11,
-                        "milliseconds": 14,
-                        "microseconds": 17,
-                        "nanoseconds": 21
+                        "seconds": {
+                            "min": 1,
+                            "max": 11
+                        },
+                        "milliseconds": {
+                            "min": 12,
+                            "max": 14
+                        },
+                        "microseconds": {
+                            "min": 15,
+                            "max": 17
+                        },
+                        "nanoseconds": {
+                            "min": 18,
+                            "max": 21
+                        }
                     },
                     "anyOf": [
                         {
@@ -313,27 +325,95 @@
                     "properties": {
                         "seconds": {
                             "title": "Conversion boundary for epoch seconds.",
-                            "description": "Maximum digit count to consider an epoch timestamp as seconds.",
-                            "type": "number",
-                            "default": 11
+                            "description": "Define the digit count to consider an epoch timestamp as seconds.",
+                            "type": "object",
+                            "required": [
+                                "min",
+                                "max"
+                            ],
+                            "properties": {
+                                "min": {
+                                    "title": "Minimum digit count.",
+                                    "description": "Minimum digit count to consider an epoch timestamp as seconds.",
+                                    "type": "number",
+                                    "default": 1
+                                },
+                                "max": {
+                                    "title": "Maximum digit count.",
+                                    "description": "Maximum digit count to consider an epoch timestamp as seconds.",
+                                    "type": "number",
+                                    "default": 11
+                                }
+                            }
                         },
                         "milliseconds": {
                             "title": "Conversion boundary for epoch milliseconds.",
-                            "description": "Maximum digit count to consider an epoch timestamp as milliseconds.",
-                            "type": "number",
-                            "default": 14
+                            "description": "Define the digit count to consider an epoch timestamp as milliseconds.",
+                            "type": "object",
+                            "required": [
+                                "min",
+                                "max"
+                            ],
+                            "properties": {
+                                "min": {
+                                    "title": "Minimum digit count.",
+                                    "description": "Minimum digit count to consider an epoch timestamp as milliseconds.",
+                                    "type": "number",
+                                    "default": 12
+                                },
+                                "max": {
+                                    "title": "Maximum digit count.",
+                                    "description": "Maximum digit count to consider an epoch timestamp as milliseconds.",
+                                    "type": "number",
+                                    "default": 14
+                                }
+                            }
                         },
                         "microseconds": {
                             "title": "Conversion boundary for epoch microseconds.",
-                            "description": "Maximum digit count to consider an epoch timestamp as microseconds.",
-                            "type": "number",
-                            "default": 17
+                            "description": "Define the digit count to consider an epoch timestamp as microseconds.",
+                            "type": "object",
+                            "required": [
+                                "min",
+                                "max"
+                            ],
+                            "properties": {
+                                "min": {
+                                    "title": "Minimum digit count.",
+                                    "description": "Minimum digit count to consider an epoch timestamp as microseconds.",
+                                    "type": "number",
+                                    "default": 15
+                                },
+                                "max": {
+                                    "title": "Maximum digit count.",
+                                    "description": "Maximum digit count to consider an epoch timestamp as microseconds.",
+                                    "type": "number",
+                                    "default": 17
+                                }
+                            }
                         },
                         "nanoseconds": {
                             "title": "Conversion boundary for epoch nanoseconds.",
-                            "description": "Maximum digit count to consider an epoch timestamp as nanoseconds.",
-                            "type": "number",
-                            "default": 21
+                            "description": "Define the digit count to consider an epoch timestamp as nanoseconds.",
+                            "type": "object",
+                            "required": [
+                                "min",
+                                "max"
+                            ],
+                            "properties": {
+                                "min": {
+                                    "title": "Minimum digit count.",
+                                    "description": "Minimum digit count to consider an epoch timestamp as nanoseconds.",
+                                    "type": "number",
+                                    "default": 18
+                                },
+                                "max": {
+                                    "title": "Maximum digit count.",
+                                    "description": "Maximum digit count to consider an epoch timestamp as nanoseconds.",
+                                    "type": "number",
+                                    "default": 21
+                                }
+                            }
                         }
                     }
                 },

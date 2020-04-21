@@ -59,16 +59,16 @@ class InputDefinition {
                 // If unit is not given, determine it by checking the length
             } else {
                 const conversionBoundaries = ConfigHelper.get<IEpochConversionBoundaries>('timing.epochConversionBoundaries');
-                if (userInput.length <= conversionBoundaries.seconds) {
+                if (conversionBoundaries.seconds && userInput.length <= conversionBoundaries.seconds.max && userInput.length >= conversionBoundaries.seconds.min) {
                     this._inputAsMs = Number(userInput) * 1000;
                     this._originalUnit = Constants.SECONDS;
-                } else if (userInput.length <= conversionBoundaries.milliseconds) {
+                } else if (conversionBoundaries.milliseconds && userInput.length <= conversionBoundaries.milliseconds.max && userInput.length >= conversionBoundaries.milliseconds.min) {
                     this._inputAsMs = Number(userInput);
                     this._originalUnit = Constants.MILLISECONDS;
-                } else if (userInput.length <= conversionBoundaries.microseconds) {
+                } else if (conversionBoundaries.microseconds && userInput.length <= conversionBoundaries.microseconds.max && userInput.length >= conversionBoundaries.microseconds.min) {
                     this._inputAsMs = Number(userInput) / 1000;
                     this._originalUnit = Constants.MICROSECONDS;
-                } else if (userInput.length <= conversionBoundaries.nanoseconds) {
+                } else if (conversionBoundaries.nanoseconds && userInput.length <= conversionBoundaries.nanoseconds.max && userInput.length >= conversionBoundaries.nanoseconds.min) {
                     this._inputAsMs = Number(userInput) / 1000000;
                     this._originalUnit = Constants.NANOSECONDS;
                 } else {

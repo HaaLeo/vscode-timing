@@ -29,26 +29,26 @@ This extension was inspired by [zodiac403's epoch-time-converter](https://github
 
 ## Features
 
-Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds** or **nanoseconds**, and _custom_ is a localized [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion. Epoch times can be converted to a human readable _timestamp_ or _duration_.  
+Currently this extension is capable to do the following conversions, where the _epoch_ time can be formated in **seconds**, **milliseconds**, **microseconds** or **nanoseconds**, and _custom_ is a localized [momentjs format](https://momentjs.com/docs/#/displaying/format/), that you can specify in the settings or insert during the conversion. Epoch times can be converted to a human readable _timestamp_ or _duration_.  
 
  Source Format| ⟶ | Target Format| Example
 :--|:--:|:-- |:--
-Epoch (s, ms, ns) | ⟶ | ISO 8601 UTC| [Link](#simple-conversion)
-Epoch (s, ms, ns) | ⟶ | ISO 8601 Custom Timezone
-Epoch (s, ms, ns) | ⟶ | ISO 8601 Local
-Epoch (s, ms, ns) | ⟶ | Custom
-Epoch (s, ms, ns) | ⟶ | Custom Format and Timezone
-Epoch (s, ms, ns) | ⟶ | ISO 8601 Duration
-Epoch (s, ms, ns) | ⟶ | Human Readable Duration
-ISO 8601 Duration | ⟶ | Epoch (s, ms, ns)
-ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, ns)
+Epoch (s, ms, μs, ns) | ⟶ | ISO 8601 UTC| [Link](#simple-conversion)
+Epoch (s, ms, μs, ns) | ⟶ | ISO 8601 Custom Timezone
+Epoch (s, ms, μs, ns) | ⟶ | ISO 8601 Local
+Epoch (s, ms, μs, ns) | ⟶ | Custom
+Epoch (s, ms, μs, ns) | ⟶ | Custom Format and Timezone
+Epoch (s, ms, μs, ns) | ⟶ | ISO 8601 Duration
+Epoch (s, ms, μs, ns) | ⟶ | Human Readable Duration
+ISO 8601 Duration | ⟶ | Epoch (s, ms, μs, ns)
+ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, μs, ns)
 ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)
-\- | ⟶ | Now as Epoch (s, ms, ns)
+\- | ⟶ | Now as Epoch (s, ms, μs, ns)
 \- | ⟶ | Now as ISO 8601 UTC
 \- | ⟶ | Now as ISO 8601 Local| [Link](#current-time)
 \- | ⟶ | Now as Custom
 Custom | ⟶ | Custom
-Custom | ⟶ | Epoch (s, ms, ns)
+Custom | ⟶ | Epoch (s, ms, μs, ns)
 Custom | ⟶ | ISO 8601 UTC
 Custom | ⟶ | ISO 8601 Local
 
@@ -80,7 +80,7 @@ Further the extension shows a [hover preview](#hover-preview) of the converted _
 * `timing.hideResultViewOnEnter`: Indicates whether the result view is hidden when enter is pressed. When set to `false` the command will restart.
 * `timing.hiddenCommands`: An array of commands that shall be hidden from the command palette.
 * `timing.hoverDuration.enabled`: Controls whether the duration hover is enabled or disabled.
-* `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms" or "ns".
+* `timing.hoverDuration.sourceUnit`: Indicates the source epoch unit for the duration hover preview. It can be either "s", "ms", "μs" or "ns".
 * `timing.hoverDuration.useISOTargetFormat`: Indicates whether the ISO 8601 duration definition is used as target format for the hover.
 * `timing.hoverTimestamp.enabled`: Controls whether the timestamp hover is enabled or disabled.
 * `timing.hoverTimestamp.targetFormat`: Indicates the target format of the hover preview. Possible values are an array of:

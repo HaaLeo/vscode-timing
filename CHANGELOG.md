@@ -3,6 +3,10 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 
+## 2020-06-16 v2.5.1
+* **Added** the extension to the [Open VSX Registry](https://open-vsx.org/extension/HaaLeo/timing).
+* **Updated** the extension's dependencies.
+
 ## 2020-04-21 v2.5.0
 * **Added** support for microsecond conversion ([#43](https://github.com/HaaLeo/vscode-timing/issues/43)).  
   However, if you prefer to stick with the old conversion behavior, just add the following to your `settings.json`:  

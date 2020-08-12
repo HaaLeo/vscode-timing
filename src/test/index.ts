@@ -65,7 +65,7 @@ function run(testsRoot, clb): any {
     glob('**/**.test.js', { cwd: testsRoot }, (error, files): any => {
         const mocha = new Mocha({
             ui: 'bdd',
-            useColors: true,
+            color: true,
             timeout: 3000,
             reporter: 'mocha-multi-reporters',
             reporterOptions: {
@@ -228,9 +228,9 @@ class CoverageRunner {
         fs.writeFileSync(coverageFile, JSON.stringify(cov), 'utf8');
 
         const map = createCoverageMap(cov);
-        // @ts-ignore
+
         const transformedMap = await self.sourceMapStore.transformCoverage(map);
-        // @ts-ignore
+
         const context = createContext({ dir: reportingDir, coverageMap: transformedMap });
 
         const report = create('cobertura', { projectRoot: self.sourceRoot });

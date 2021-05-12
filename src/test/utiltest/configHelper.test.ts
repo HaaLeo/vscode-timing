@@ -17,8 +17,8 @@ describe('ConfigHelper', () => {
 
     let testObject: ConfigHelper;
     const sandbox = sinon.createSandbox();
-    let expectedHiddenCommands;
-    let executeCommandStub;
+    let expectedHiddenCommands: {[key: string]: boolean};
+    let executeCommandSpy: sinon.SinonSpy;
 
     beforeEach(async () => {
         const config = vscode.workspace.getConfiguration('timing.hoverDuration');
@@ -45,7 +45,7 @@ describe('ConfigHelper', () => {
             'timing:nowAsIsoUtc:enabled': true,
             'timing:toggleInsertConvertedTimeUserLevel:enabled': true
         };
-        executeCommandStub = sandbox.spy(vscode.commands, 'executeCommand');
+        executeCommandSpy = sandbox.spy(vscode.commands, 'executeCommand');
         testObject = new ConfigHelper();
     });
 
@@ -71,7 +71,7 @@ describe('ConfigHelper', () => {
         });
 
         it('Set context keys', () => {
-            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 19);
+            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 19);
 
             assert.strictEqual(args.length, 19);
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
@@ -88,7 +88,7 @@ describe('ConfigHelper', () => {
             expectedHiddenCommands['timing:customToIsoLocal:enabled'] = false;
 
             // Get last 19 calls
-            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 19);
+            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 19);
             assert.strictEqual(args.length, 19);
 
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
@@ -104,7 +104,7 @@ describe('ConfigHelper', () => {
             expectedHiddenCommands['timing:customToCustom:enabled'] = false;
             expectedHiddenCommands['timing:customToIsoLocal:enabled'] = false;
 
-            const args = executeCommandStub.args.slice(executeCommandStub.args.length - 19);
+            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 19);
             assert.strictEqual(args.length, 19);
 
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {

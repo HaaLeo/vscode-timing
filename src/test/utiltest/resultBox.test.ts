@@ -55,7 +55,7 @@ describe('ResultBox', () => {
             testObject = new ResultBox(insertButtonMock);
             assert.strictEqual(spy.calledOnce, true);
 
-            const resultBox: vscode.InputBox = spy.returnValues[0];
+            const resultBox = spy.returnValues[0] as vscode.InputBox;
             resultBoxStub = sinon.stub(resultBox);
         });
 
@@ -65,14 +65,14 @@ describe('ResultBox', () => {
         });
 
         it('should add back button and insert button', () => {
-            testObject.show('', '', '', insertMock, true);
+            void testObject.show('', '', '', insertMock, true);
 
             assert.strictEqual(resultBoxStub.buttons.length, 2);
             assert.strictEqual(resultBoxStub.buttons[0], vscode.QuickInputButtons.Back);
         });
 
         it('should set title, value and prompt', () => {
-            testObject.show('test-prompt', 'test-title', 'test-value', insertMock, true);
+            void testObject.show('test-prompt', 'test-title', 'test-value', insertMock, true);
 
             assert.strictEqual(resultBoxStub.prompt, 'test-prompt');
             assert.strictEqual(resultBoxStub.title, 'test-title');
@@ -80,7 +80,7 @@ describe('ResultBox', () => {
         });
 
         it('should register event listener and show the input box.', () => {
-            testObject.show('', '', '', insertMock, true);
+            void testObject.show('', '', '', insertMock, true);
 
             assert.strictEqual(resultBoxStub.onDidAccept.calledOnce, true);
             assert.strictEqual(resultBoxStub.onDidHide.calledOnce, true);

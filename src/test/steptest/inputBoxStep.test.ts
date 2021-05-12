@@ -40,7 +40,7 @@ describe('InputBoxStep', () => {
             () => true);
         assert.strictEqual(spy.calledOnce, true);
 
-        const inputBox: vscode.InputBox = spy.returnValues[0];
+        const inputBox = spy.returnValues[0] as vscode.InputBox;
         inputBoxStub = sinon.stub(inputBox);
 
         if (vscode.workspace.workspaceFolders !== undefined) {
@@ -58,7 +58,7 @@ describe('InputBoxStep', () => {
     describe('ctor', () => {
         it('should create an InputBox', () => {
 
-            const result: vscode.InputBox = spy.returnValues[0];
+            const result = spy.returnValues[0] as vscode.InputBox;
 
             assert.strictEqual(spy.calledOnce, true);
             assert.strictEqual(result.validationMessage, '');
@@ -70,20 +70,20 @@ describe('InputBoxStep', () => {
 
     describe('execute', () => {
         it('should add back button when step greater 1', () => {
-            testObject.execute(new MultiStepHandler(), 2, 2, true);
+            void testObject.execute(new MultiStepHandler(), 2, 2, true);
 
             assert.strictEqual(inputBoxStub.buttons.length, 1);
             assert.strictEqual(inputBoxStub.buttons[0], vscode.QuickInputButtons.Back);
         });
 
         it('should not add back button when step is 1', () => {
-            testObject.execute(new MultiStepHandler(), 1, 2, true);
+            void testObject.execute(new MultiStepHandler(), 1, 2, true);
 
             assert.strictEqual(inputBoxStub.buttons.length, 0);
         });
 
         it('should register event listener and show the input box.', () => {
-            testObject.execute(new MultiStepHandler(), 0, 0, true);
+            void testObject.execute(new MultiStepHandler(), 0, 0, true);
 
             assert.strictEqual(inputBoxStub.onDidAccept.calledOnce, true);
             assert.strictEqual(inputBoxStub.onDidChangeValue.calledOnce, true);
@@ -93,7 +93,7 @@ describe('InputBoxStep', () => {
         });
 
         it('should set input box step member.', () => {
-            testObject.execute(new MultiStepHandler(), 4, 10, true);
+            void testObject.execute(new MultiStepHandler(), 4, 10, true);
 
             assert.strictEqual(inputBoxStub.step, 4);
             assert.strictEqual(inputBoxStub.totalSteps, 10);
@@ -163,9 +163,9 @@ describe('InputBoxStep', () => {
                     false,
                     true);
                 assert.strictEqual(spy.calledOnce, true);
-                const inputBox: vscode.InputBox = spy.returnValues[0];
+                const inputBox = spy.returnValues[0] as vscode.InputBox;
                 inputBoxStub = sinon.stub(inputBox);
-                testObject.execute(new MultiStepHandler(), 0, 0, true);
+                void testObject.execute(new MultiStepHandler(), 0, 0, true);
                 assert.strictEqual(inputBoxStub.onDidAccept.calledOnce, true);
                 assert.strictEqual(inputBoxStub.ignoreFocusOut, true);
                 listener = inputBoxStub.onDidAccept.firstCall.args[0];

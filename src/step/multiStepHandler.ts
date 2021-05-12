@@ -164,7 +164,7 @@ class MultiStepHandler implements Disposable {
      * Dispose this object.
      */
     public dispose(): void {
-        this._steps.forEach(step => step.dispose());
+        this._steps.forEach(step => { step.dispose(); });
     }
 
     /**

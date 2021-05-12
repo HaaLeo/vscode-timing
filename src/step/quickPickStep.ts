@@ -201,7 +201,7 @@ class QuickPickStep implements IStep {
      * Dispose this object.
      */
     public dispose(): void {
-        this._disposables.forEach(disposable => disposable.dispose());
+        this._disposables.forEach(disposable => { disposable.dispose(); });
     }
 
 }

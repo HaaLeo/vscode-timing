@@ -12,7 +12,7 @@ import { Constants } from '../util/constants';
 import { InputDefinition } from './inputDefinition';
 
 class TimeConverter {
-    public isoRfcToCustom(date: string, targetFormat: string): any {
+    public isoRfcToCustom(date: string, targetFormat: string): string {
         const result = moment(date).format(targetFormat);
         return result;
     }
@@ -52,7 +52,7 @@ class TimeConverter {
         return result;
     }
 
-    public customToCustom(sourceFormat: string, time: string, targetFormat: string): any {
+    public customToCustom(sourceFormat: string, time: string, targetFormat: string): string {
         const result = moment(time, sourceFormat, true).format(targetFormat);
         return result;
     }
@@ -76,32 +76,32 @@ class TimeConverter {
         let text = '';
 
         if (Math.floor(duration.asDays() / 7) !== 0) {
-            text += Math.floor(duration.asDays() / 7) + 'w';
+            text += `${Math.floor(duration.asDays() / 7)}w`;
         }
         if (text !== '') {
-            text += ', ' + Math.floor(duration.asDays() % 7) + 'd';
+            text += `, ${Math.floor(duration.asDays() % 7)}d`;
         } else if (Math.floor(duration.asDays() % 7) !== 0) {
-            text += Math.floor(duration.asDays() % 7) + 'd';
+            text += `${Math.floor(duration.asDays() % 7)}d`;
         }
         if (text !== '') {
-            text += ', ' + duration.hours() + 'h';
+            text += `, ${duration.hours()}h`;
         } else if (duration.hours() !== 0) {
-            text += duration.hours() + 'h';
+            text += `${duration.hours()}h`;
         }
         if (text !== '') {
-            text += ', ' + duration.minutes() + 'min';
+            text += `, ${duration.minutes()}min`;
         } else if (duration.minutes() !== 0) {
-            text += duration.minutes() + 'min';
+            text += `${duration.minutes()}min`;
         }
         if (text !== '') {
-            text += ', ' + duration.seconds() + Constants.SECONDS;
+            text += `, ${duration.seconds()}${Constants.SECONDS}`;
         } else if (duration.seconds() !== 0) {
-            text += duration.seconds() + Constants.SECONDS;
+            text += `${duration.seconds()}${Constants.SECONDS}`;
         }
         if (text !== '') {
-            text += ', ' + duration.milliseconds() + Constants.MILLISECONDS;
+            text += `, ${duration.milliseconds()}${Constants.MILLISECONDS}`;
         } else {
-            text += duration.milliseconds() + Constants.MILLISECONDS;
+            text += `${duration.milliseconds()}${Constants.MILLISECONDS}`;
         }
 
         return text;

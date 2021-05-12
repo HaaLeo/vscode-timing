@@ -15,7 +15,7 @@ class ToggleInsertConvertedTimeUserLevelCommand {
         const newValue: boolean = !config.get('insertConvertedTime');
 
         await config.update('insertConvertedTime', newValue, vscode.ConfigurationTarget.Global);
-        vscode.window.showInformationMessage(
+        void vscode.window.showInformationMessage(
             (newValue ? 'Enabled' : 'Disabled') + ' inserting converted times.');
     }
 }

@@ -106,7 +106,8 @@ abstract class CommandBase implements vscode.Disposable {
 
         if (!abort) {
 
-            conversionResult = this._timeConverter[conversionName](...stepHandlerResult);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            conversionResult = this._timeConverter[conversionName](...stepHandlerResult) as string;
 
             if (this._insertConvertedTime) {
                 inserted = await this.insert(conversionResult);
@@ -114,7 +115,7 @@ abstract class CommandBase implements vscode.Disposable {
 
             if (this._writeToClipboard) {
                 await vscode.env.clipboard.writeText(conversionResult);
-                vscode.window.showInformationMessage('"' + conversionResult + '" was copied to the clipboard.');
+                void vscode.window.showInformationMessage('"' + conversionResult + '" was copied to the clipboard.');
                 wroteToClipboard = true;
             }
         }

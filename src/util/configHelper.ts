@@ -20,8 +20,9 @@ class ConfigHelper implements vscode.Disposable {
         return vscode.workspace.getConfiguration().get<T>(configKey, defaultValue);
     }
 
-    public subscribeToConfig<T>(configKey: string, callback: (configValue: T | undefined) => void, thisArg?: any): void {
-        const cb = thisArg ? callback.bind(thisArg) : callback;
+    public subscribeToConfig<T>(configKey: string, callback: (configValue: T | undefined) => void, thisArg?: unknown): void {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const cb: (configValue: T | undefined) => void = thisArg ? callback.bind(thisArg) : callback;
         const configValue = ConfigHelper.get<T>(configKey);
         cb(configValue);
 
@@ -34,7 +35,7 @@ class ConfigHelper implements vscode.Disposable {
     }
 
     public dispose(): void {
-        this._disposables.forEach(disposable => disposable.dispose());
+        this._disposables.forEach(disposable => { disposable.dispose(); });
     }
 
     private updateContextKeys(rawConfig: string | string[]): void {
@@ -73,7 +74,7 @@ class ConfigHelper implements vscode.Disposable {
         commands.forEach(command => {
             const isEnabled = commandsToHide.includes(command) ? false : true;
             const contextKey = [...command.split('.'), 'enabled'].join(':');
-            vscode.commands.executeCommand('setContext', contextKey, isEnabled);
+            void vscode.commands.executeCommand('setContext', contextKey, isEnabled);
         });
     }
 }

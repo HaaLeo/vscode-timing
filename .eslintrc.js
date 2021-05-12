@@ -23,7 +23,6 @@ module.exports = {
         "@typescript-eslint/adjacent-overload-signatures": "error",
         "@typescript-eslint/array-type": "error",
         "@typescript-eslint/ban-types": "error",
-        "@typescript-eslint/class-name-casing": "error",
         "@typescript-eslint/consistent-type-assertions": "error",
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/explicit-member-accessibility": [
@@ -45,10 +44,19 @@ module.exports = {
                 "SwitchCase": 1
             }
         ],
-        "@typescript-eslint/interface-name-prefix": [
+        "@typescript-eslint/naming-convention": [
             "error",
             {
-                "prefixWithI": "always"
+                "selector": "interface",
+                "format": ["PascalCase"],
+                "custom": {
+                    "regex": "^I[A-Z]",
+                    "match": true
+                }
+            },
+            {
+                "selector": "class",
+                "format": ["PascalCase"]
             }
         ],
         "@typescript-eslint/member-delimiter-style": [
@@ -130,7 +138,7 @@ module.exports = {
         "no-invalid-this": "off",
         "no-multiple-empty-lines": "error",
         "no-new-wrappers": "error",
-        "no-shadow": [
+        "@typescript-eslint/no-shadow": [
             "error",
             {
                 "hoist": "all"

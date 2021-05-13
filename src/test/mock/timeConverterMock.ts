@@ -24,6 +24,7 @@ class TimeConverterMock implements TimeConverter {
     public customToISOLocal = sinon.stub();
     public epochToISOUtc = sinon.stub();
     public epochToIsoLocal = sinon.stub();
+    public epochToGps = sinon.stub();
     public isoRfcToEpoch = sinon.stub();
     public customToEpoch = sinon.stub();
     public isValidEpoch = sinon.stub();
@@ -46,6 +47,7 @@ class TimeConverterMock implements TimeConverter {
         this.customToISOLocal.reset();
         this.epochToISOUtc.reset();
         this.epochToIsoLocal.reset();
+        this.epochToGps.reset();
         this.isoRfcToEpoch.reset();
         this.customToEpoch.reset();
         this.isValidEpoch.reset();

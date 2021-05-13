@@ -65,6 +65,13 @@ describe('TimeConverter', () => {
         });
     });
 
+    describe('epochToGps', () => {
+        it('Should convert to GPS correctly.', () => {
+            const result = testObject.epochToGps('123456789000');
+            assert.strictEqual(result, ('-192508011000'));
+        });
+    });
+
     describe('isoDurationToEpoch', () => {
         it('Should convert to epoch correctly as s.', () => {
             const result = testObject.isoDurationToEpoch('P1Y2M3DT4H5M6S', 's');

@@ -36,6 +36,7 @@ describe('ConfigHelper', () => {
             'timing:epochToIsoLocal:enabled': true,
             'timing:epochToIsoUtc:enabled': true,
             'timing:epochToIsoTimezone:enabled': true,
+            'timing:epochToGps:enabled': true,
             'timing:isoDurationToEpoch:enabled': true,
             'timing:isoRfcToCustom:enabled': true,
             'timing:isoRfcToEpoch:enabled': true,
@@ -71,9 +72,9 @@ describe('ConfigHelper', () => {
         });
 
         it('Set context keys', () => {
-            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 19);
+            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 20);
 
-            assert.strictEqual(args.length, 19);
+            assert.strictEqual(args.length, 20);
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
                 assert.strictEqual(args[index][0], 'setContext');
                 assert.strictEqual(args[index][1], key);
@@ -87,9 +88,9 @@ describe('ConfigHelper', () => {
             expectedHiddenCommands['timing:customToCustom:enabled'] = false;
             expectedHiddenCommands['timing:customToIsoLocal:enabled'] = false;
 
-            // Get last 19 calls
-            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 19);
-            assert.strictEqual(args.length, 19);
+            // Get last 20 calls
+            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 20);
+            assert.strictEqual(args.length, 20);
 
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
                 assert.strictEqual(args[index][0], 'setContext');
@@ -104,8 +105,8 @@ describe('ConfigHelper', () => {
             expectedHiddenCommands['timing:customToCustom:enabled'] = false;
             expectedHiddenCommands['timing:customToIsoLocal:enabled'] = false;
 
-            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 19);
-            assert.strictEqual(args.length, 19);
+            const args = executeCommandSpy.args.slice(executeCommandSpy.args.length - 20);
+            assert.strictEqual(args.length, 20);
 
             Object.entries(expectedHiddenCommands).forEach(([key, isEnabled], index) => {
                 assert.strictEqual(args[index][0], 'setContext');

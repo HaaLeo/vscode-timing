@@ -10,6 +10,7 @@
 import * as moment from 'moment-timezone';
 import { Constants } from '../util/constants';
 import { InputDefinition } from './inputDefinition';
+import * as gpsTime from 'gps-time';
 
 class TimeConverter {
     public isoRfcToCustom(date: string, targetFormat: string): string {
@@ -111,6 +112,29 @@ class TimeConverter {
         const ms = new InputDefinition(epoch).inputAsMs;
         const result = moment(ms, 'x').toISOString(true);
         return result;
+    }
+
+    public epochToGps(epoch: string): string {
+        const def = new InputDefinition(epoch)
+        const ms = def.inputAsMs;
+        let result: number;
+        switch (def.originalUnit) {
+            case Constants.SECONDS:
+                result = gpsTime.toGPSMS(ms) / 1000;
+                break;
+            case Constants.MILLISECONDS:
+                result = gpsTime.toGPSMS(ms);
+                break;
+            case Constants.MICROSECONDS:
+                result = gpsTime.toGPSMS(ms) * 1000;
+                break;
+            case Constants.NANOSECONDS:
+                result = gpsTime.toGPSMS(ms) * 1000000;
+                break;
+            default:
+                throw new Error('Unknown option="' + def.originalUnit + '" detected.');
+        }
+        return result.toString();
     }
 
     public isoDurationToEpoch(duration: string, targetUnit: string): string {

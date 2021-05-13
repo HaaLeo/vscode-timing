@@ -125,6 +125,7 @@ Command Id | Description | Optional Arguments (`string`)
 `timing.epochToIsoTimezone`| Epoch ⟶ ISO 8601 Custom Timezone | `timezone`
 `timing.epochToIsoUtc`| Epoch ⟶ ISO 8601 UTC
 `timing.epochToReadableDuration`| Epoch ⟶ Readable Duration | `sourceUnit`
+`timing.epochToGps`| Epoch ⟶ GPS
 `timing.isoDurationToEpoch`| ISO 8601 Duration ⟶ Epoch | `targetUnit`
 `timing.isoRfcToCustom`| ISO 8601 / RFC 2822 ⟶ Custom | `targetFormat`
 `timing.isoRfcToEpoch`| ISO 8601 / RFC 2822 ⟶ Epoch | `targetUnit`

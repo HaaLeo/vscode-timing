@@ -91,6 +91,7 @@
         "webpack-cli": "^4.7.0"
     },
     "dependencies": {
+        "gps-time": "^1.0.7",
         "moment-timezone": "^0.5.33",
         "tz-ids": "^1.0.0"
     },
@@ -130,6 +131,11 @@
                 "command": "timing.epochToIsoDuration",
                 "category": "Timing",
                 "title": "Epoch ⟶ ISO 8601 Duration"
+            },
+            {
+                "command": "timing.epochToGps",
+                "category": "Timing",
+                "title": "Epoch ⟶ Gps"
             },
             {
                 "command": "timing.isoDurationToEpoch",
@@ -221,6 +227,10 @@
                 {
                     "command": "timing.epochToIsoDuration",
                     "when": "timing:epochToIsoDuration:enabled"
+                },
+                {
+                    "command": "timing.epochToGps",
+                    "when": "timing:epochToGps:enabled"
                 },
                 {
                     "command": "timing.isoDurationToEpoch",
@@ -488,6 +498,7 @@
                                     "timing.epochToIsoLocal",
                                     "timing.epochToIsoUtc",
                                     "timing.epochToIsoTimezone",
+                                    "timing.epochToGps",
                                     "timing.isoDurationToEpoch",
                                     "timing.isoRfcToCustom",
                                     "timing.isoRfcToEpoch",

@@ -63,24 +63,5 @@ describe('NowAsIsoLocalCommand', () => {
 
             assert.strictEqual(showResultStub.calledOnce, true);
         });
-
-        it('Should insert the converted time.', async () => {
-            const config = vscode.workspace.getConfiguration('timing');
-            await config.update('insertConvertedTime', true);
-            const priorText = testEditor.document.getText(testEditor.selection);
-            const spy = sinon.spy(testEditor, 'edit');
-
-            await testObject.execute();
-
-            assert.strictEqual(showResultStub.notCalled, true);
-            assert.strictEqual(spy.calledOnce, true);
-
-            // Restore
-            const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
-                editBuilder.replace(testEditor.selection, priorText);
-            });
-            assert.strictEqual(success, true);
-            spy.restore();
-        });
     });
 });

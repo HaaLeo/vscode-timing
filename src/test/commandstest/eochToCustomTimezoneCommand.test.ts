@@ -103,26 +103,5 @@ describe('EpochToCustomTimezoneCommand', () => {
             assert.strictEqual(handlerMock.setStepResult.calledWithExactly('myTargetFormat', 1), true);
             assert.strictEqual(handlerMock.setStepResult.calledWithExactly('Europe/Berlin', 2), true);
         });
-
-        it('Should insert the converted time.', async () => {
-            const config = vscode.workspace.getConfiguration('timing');
-            await config.update('insertConvertedTime', true);
-            const priorText = testEditor.document.getText(testEditor.selection);
-            const spy = sinon.spy(testEditor, 'edit');
-
-            await testObject.execute();
-
-            assert.strictEqual(handlerMock.run.calledOnce, true);
-            assert.strictEqual(handlerMock.registerStep.calledThrice, true);
-            assert.strictEqual(showResultStub.notCalled, true);
-            assert.strictEqual(spy.calledOnce, true);
-
-            // Restore
-            const success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
-                editBuilder.replace(testEditor.selection, priorText);
-            });
-            assert.strictEqual(success, true);
-            spy.restore();
-        });
     });
 });

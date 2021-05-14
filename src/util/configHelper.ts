@@ -61,6 +61,7 @@ class ConfigHelper implements vscode.Disposable {
             'timing.epochToIsoLocal',
             'timing.epochToIsoUtc',
             'timing.epochToIsoTimezone',
+            'timing.epochToGps',
             'timing.isoDurationToEpoch',
             'timing.isoRfcToCustom',
             'timing.isoRfcToEpoch',

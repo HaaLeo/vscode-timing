@@ -40,6 +40,7 @@ Epoch (s, ms, μs, ns) | ⟶ | Custom
 Epoch (s, ms, μs, ns) | ⟶ | Custom Format and Timezone
 Epoch (s, ms, μs, ns) | ⟶ | ISO 8601 Duration
 Epoch (s, ms, μs, ns) | ⟶ | Human Readable Duration
+Epoch (s, ms, μs, ns) | ⟶ | Gps Epoch
 ISO 8601 Duration | ⟶ | Epoch (s, ms, μs, ns)
 ISO 8601 / RFC 2282 | ⟶ | Epoch (s, ms, μs, ns)
 ISO 8601 / RFC 2282 | ⟶ | Custom| [Link](#custom-formats)

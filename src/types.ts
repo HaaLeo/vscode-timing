@@ -32,3 +32,9 @@ interface ICommandOptions {
     targetUnit?: 's' | 'ms' | 'ns';
     timezone?: string;
 }
+
+// Until https://github.com/davidcalhoun/gps-time.js/issues/4 is resolved.
+declare module 'gps-time' {
+    export function toGPSMS(unixMS: number): number;
+    export function toUnixMS(gpsMS: number): number;
+}

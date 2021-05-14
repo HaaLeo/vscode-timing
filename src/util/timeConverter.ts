@@ -8,9 +8,9 @@
 'use strict';
 
 import * as moment from 'moment-timezone';
+import * as gpsTime from 'gps-time';
 import { Constants } from '../util/constants';
 import { InputDefinition } from './inputDefinition';
-import * as gpsTime from 'gps-time';
 
 class TimeConverter {
     public isoRfcToCustom(date: string, targetFormat: string): string {
@@ -115,7 +115,7 @@ class TimeConverter {
     }
 
     public epochToGps(epoch: string): string {
-        const def = new InputDefinition(epoch)
+        const def = new InputDefinition(epoch);
         const ms = def.inputAsMs;
         let result: number;
         switch (def.originalUnit) {

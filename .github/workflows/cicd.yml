@@ -97,16 +97,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ubuntu-latest
-      - run: ls
-      - run: echo ${{ needs.build-lint-test.outputs.vsixPath }}
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-          extensionFile: ${{ vsixPath-ubuntu-latest }}
+          extensionFile: ${{ needs.build-lint-test.outputs.vsixPath }}
           registryUrl: https://marketplace.visualstudio.com
       - name: Publish to Open VSX Registry
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          extensionFile: ${{ vsixPath-ubuntu-latest }}
+          extensionFile: ${{ needs.build-lint-test.outputs.vsixPath }}

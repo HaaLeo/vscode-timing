@@ -45,6 +45,7 @@
     "main": "./dist/timing",
     "scripts": {
         "vscode:prepublish": "webpack --mode production",
+        "build": "npm run compile && npm run test-compile",
         "compile": "webpack --mode none",
         "watch": "webpack --mode none --watch",
         "test-compile": "tsc -p ./",

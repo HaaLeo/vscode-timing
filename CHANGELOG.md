@@ -3,6 +3,9 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 
+### Added
+* Support for negative timestamps ([#59](https://github.com/HaaLeo/vscode-timing/issues/59)).
+
 ### Fixed
 * A bug which caused wrong time conversion in the timestamp hover provider ([#60](https://github.com/HaaLeo/vscode-timing/issues/60)).
 

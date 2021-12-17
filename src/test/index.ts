@@ -233,7 +233,7 @@ class CoverageRunner {
 
         const context = createContext({ dir: reportingDir, coverageMap: transformedMap });
 
-        const report = create('cobertura', { projectRoot: self.sourceRoot });
+        const report = create('lcov', { projectRoot: self.sourceRoot });
         // @ts-ignore
         report.execute(context);
     }

@@ -13,6 +13,14 @@ import { InputDefinition } from '../../util/inputDefinition';
 describe('InputDefinition', () => {
     describe('constructor', () => {
         describe('without optional unit', () => {
+            it('Should accept negative input.', () => {
+                const result = new InputDefinition('-123456789');
+
+                assert.strictEqual(result.inputAsMs, -123456789000);
+                assert.strictEqual(result.originalUnit, 's');
+                assert.strictEqual(result.originalInput, '-123456789');
+            });
+
             it('Should treat input as seconds.', () => {
                 const result = new InputDefinition('123456789');
 

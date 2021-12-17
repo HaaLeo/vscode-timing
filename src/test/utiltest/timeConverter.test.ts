@@ -193,6 +193,7 @@ describe('TimeConverter', () => {
     describe('isValidEpoch', () => {
         it('Should return true if it is a valid epoch time.', () => {
             assert.strictEqual(true, testObject.isValidEpoch('123456789'));
+            assert.strictEqual(true, testObject.isValidEpoch('-123456789'));
             assert.strictEqual(true, testObject.isValidEpoch('1551980884683000000'));
         });
 

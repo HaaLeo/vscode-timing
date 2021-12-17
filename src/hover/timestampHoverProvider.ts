@@ -27,7 +27,7 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
         document: vscode.TextDocument, position: vscode.Position):
         vscode.ProviderResult<vscode.Hover> {
 
-        const timeRange = document.getWordRangeAtPosition(position, new RegExp('\\d+'));
+        const timeRange = document.getWordRangeAtPosition(position, /-?\d+/);
         let result: vscode.Hover;
         if (timeRange !== undefined) {
             const hoveredWord = document.getText(timeRange);

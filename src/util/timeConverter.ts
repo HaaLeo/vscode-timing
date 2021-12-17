@@ -217,7 +217,7 @@ class TimeConverter {
 
     public isValidEpoch(epoch: string): boolean {
         let result = false;
-        if (/^\d+$/.test(epoch)) {
+        if (/^-?\d+$/.test(epoch)) {
             const input = new InputDefinition(epoch);
             // To check whether one set of epochConversionBoundaries are met.
             result = Boolean(input.inputAsMs && input.originalUnit);

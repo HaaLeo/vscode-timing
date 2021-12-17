@@ -56,19 +56,19 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
         for (const format of this._targetFormats) {
             if (format === 'utc') {
                 // UTC format
-                const utc = this._timeConverter.epochToISOUtc(input.inputAsMs.toString());
+                const utc = this._timeConverter.epochToISOUtc(input.originalInput);
                 result += '  \n*UTC Timestamp*: `' + utc + '`';
 
             } else if (format === 'local') {
                 // Local format
-                const local = this._timeConverter.epochToIsoLocal(input.inputAsMs.toString());
+                const local = this._timeConverter.epochToIsoLocal(input.originalInput);
                 result += '  \n*Local Timestamp*: `' + local + '`';
 
             } else if (typeof format === 'string') {
                 // Other simple custom format
                 if (format) {
                     const custom = this._timeConverter.epochToCustom(
-                        input.inputAsMs.toString(),
+                        input.originalInput,
                         format);
                     result += '  \n*Formatted Timestamp*: `' + custom + '`';
                 }
@@ -80,7 +80,7 @@ class TimestampHoverProvider implements vscode.HoverProvider, vscode.Disposable 
                 const timezone = format.timezone ? format.timezone : (format.localize !== undefined ? format.localize : true);
 
                 const custom = this._timeConverter.epochToCustom(
-                    input.inputAsMs.toString(),
+                    input.originalInput,
                     format.customFormat,
                     timezone);
                 if (format.name) {

@@ -51,7 +51,7 @@ describe('TimestampHoverProvider', () => {
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToISOUtc.calledOnce, true);
-        assert.strictEqual(timeConverterMock.epochToISOUtc.firstCall.args[0], '123456789000');
+        assert.strictEqual(timeConverterMock.epochToISOUtc.firstCall.args[0], '123456789');
         assert.strictEqual(result.contents.length, 1);
         assert.strictEqual(
             result.contents[0],
@@ -69,7 +69,7 @@ describe('TimestampHoverProvider', () => {
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToIsoLocal.calledOnce, true);
-        assert.strictEqual(timeConverterMock.epochToIsoLocal.firstCall.args[0], '123456789000');
+        assert.strictEqual(timeConverterMock.epochToIsoLocal.firstCall.args[0], '123456789');
         assert.strictEqual(result.contents.length, 1);
         assert.strictEqual(
             result.contents[0],
@@ -89,8 +89,8 @@ describe('TimestampHoverProvider', () => {
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToIsoLocal.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToISOUtc.calledOnce, true);
-        assert.strictEqual(timeConverterMock.epochToIsoLocal.firstCall.args[0], '123456789000');
-        assert.strictEqual(timeConverterMock.epochToISOUtc.firstCall.args[0], '123456789000');
+        assert.strictEqual(timeConverterMock.epochToIsoLocal.firstCall.args[0], '123456789');
+        assert.strictEqual(timeConverterMock.epochToISOUtc.firstCall.args[0], '123456789');
         assert.strictEqual(result.contents.length, 1);
         assert.strictEqual(
             result.contents[0],
@@ -108,7 +108,7 @@ describe('TimestampHoverProvider', () => {
 
         assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
         assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
-        assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789000');
+        assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789');
         assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[1], 'YYYY');
         assert.strictEqual(result.contents.length, 1);
         assert.strictEqual(
@@ -129,7 +129,7 @@ describe('TimestampHoverProvider', () => {
 
             assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
             assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
-            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789000');
+            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789');
             assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[1], 'YYYY');
             assert.strictEqual(result.contents.length, 1);
             assert.strictEqual(
@@ -148,7 +148,7 @@ describe('TimestampHoverProvider', () => {
 
             assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
             assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
-            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789000');
+            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789');
             assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[1], 'YYYY');
             assert.strictEqual(result.contents.length, 1);
             assert.strictEqual(
@@ -167,7 +167,7 @@ describe('TimestampHoverProvider', () => {
 
             assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
             assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
-            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789000');
+            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789');
             assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[1], 'YYYY');
             assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[2], false);
             assert.strictEqual(result.contents.length, 1);
@@ -187,7 +187,7 @@ describe('TimestampHoverProvider', () => {
 
             assert.strictEqual(timeConverterMock.isValidEpoch.calledOnce, true);
             assert.strictEqual(timeConverterMock.epochToCustom.calledOnce, true);
-            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789000');
+            assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[0], '123456789');
             assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[1], 'YYYY');
             assert.strictEqual(timeConverterMock.epochToCustom.firstCall.args[2], 'Europe/Berlin');
             assert.strictEqual(result.contents.length, 1);

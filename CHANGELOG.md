@@ -3,6 +3,14 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 
+### Fixed
+* A bug which caused wrong time conversion in the timestamp hover provider ([#60](https://github.com/HaaLeo/vscode-timing/issues/60)).
+
+### Security
+* Updated the extension's dependencies.
+
+[All Changes](https://github.com/HaaLeo/vscode-timing/compare/v2.6.0...master)
+
 ## 2021-05-14 - [v2.6.0](https://github.com/HaaLeo/vscode-timing/tree/v2.6.0)
 ### Added
 * A new command `timing.epochToGps` to convert an unix epoch timestamp to [GPS epoch](https://gis.stackexchange.com/questions/281223/what-is-gps-epoch). Thx [@osechet](https://github.com/osechet) for your contribution.

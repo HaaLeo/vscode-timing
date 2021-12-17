@@ -50,7 +50,7 @@
         "watch": "webpack --mode none --watch",
         "test-compile": "tsc -p ./",
         "test": "node ./out/test/runTests",
-        "eslint": "eslint . --ext .ts",
+        "lint": "eslint . --ext .ts",
         "package": "vsce package",
         "publish": "vsce publish -p"
     },

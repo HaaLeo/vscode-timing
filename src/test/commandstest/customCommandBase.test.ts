@@ -18,11 +18,11 @@ import { ExtensionContextMock } from '../mock/extensionContextMock';
 describe('CustomCommandBase', () => {
 
     class TestObject extends CustomCommandBase {
-        public async execute(): Promise<void> {
-        }
-
         public get customTimeFormatOptions(): vscode.QuickPickItem[] {
             return this._customTimeFormatOptions;
+        }
+
+        public async execute(): Promise<void> {
         }
     }
 

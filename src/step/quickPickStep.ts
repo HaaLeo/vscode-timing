@@ -94,6 +94,34 @@ class QuickPickStep implements IStep {
     }
 
     /**
+     * Gets skip, indicating whether this step shall be skipped when the user selection is valid.
+     */
+    public get skip(): boolean {
+        return this._skip;
+    }
+
+    /**
+     * Indicates whether this step is uses custom formats as items.
+     */
+    public get usesCustomFormats(): boolean {
+        return this._usesCustomFormats;
+    }
+
+    /**
+     * Gets the validation function used for this step.
+     */
+    public get validation(): (input: string, ...args: string[]) => boolean {
+        return (): boolean => true;
+    }
+
+    /**
+     * Set the possible items the user can pick of.
+     */
+    public set items(items: QuickPickItem[]) {
+        this._items = items;
+    }
+
+    /**
      * Execute this step.
      * @param handler The handler of the step.
      * @param stepIndex The step's index to show.
@@ -154,34 +182,6 @@ class QuickPickStep implements IStep {
 
             this._quickPick.show();
         });
-    }
-
-    /**
-     * Gets skip, indicating whether this step shall be skipped when the user selection is valid.
-     */
-    public get skip(): boolean {
-        return this._skip;
-    }
-
-    /**
-     * Indicates whether this step is uses custom formats as items.
-     */
-    public get usesCustomFormats(): boolean {
-        return this._usesCustomFormats;
-    }
-
-    /**
-     * Set the possible items the user can pick of.
-     */
-    public set items(items: QuickPickItem[]) {
-        this._items = items;
-    }
-
-    /**
-     * Gets the validation function used for this step.
-     */
-    public get validation(): (input: string, ...args: string[]) => boolean {
-        return (): boolean => true;
     }
 
     /**

@@ -48,6 +48,7 @@ describe('InputDefinition', () => {
             it('Should treat input as nanoseconds.', () => {
                 const result = new InputDefinition('123456789123456789');
 
+                // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
                 assert.strictEqual(result.inputAsMs, 123456789123.456789);
                 assert.strictEqual(result.originalUnit, 'ns');
                 assert.strictEqual(result.originalInput, '123456789123456789');

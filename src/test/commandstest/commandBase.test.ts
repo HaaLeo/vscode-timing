@@ -18,23 +18,6 @@ import { TimeConverterMock } from '../mock/timeConverterMock';
 
 describe('CommandBase', () => {
     class TestObject extends CommandBase {
-        public execute(): void { }
-
-        public internalExecuteTest(action: InputFlowAction, conversionName: string, rawInput: string): Thenable<{
-            conversionResult: string;
-            stepHandlerResult: string[];
-            showResultBox: boolean;
-        }> {
-            return this.internalExecute(action, conversionName, rawInput);
-        }
-        public getPreInputTest(): Thenable<string> {
-            return super.getPreInput();
-        }
-
-        public insert(arg: string): Thenable<boolean> {
-            return super.insert(arg);
-        }
-
         public get insertConvertedTime(): boolean {
             return this._insertConvertedTime;
         }
@@ -53,6 +36,23 @@ describe('CommandBase', () => {
 
         public get clipboardWritingEnabled(): boolean {
             return this._writeToClipboard;
+        }
+
+        public execute(): void { }
+
+        public internalExecuteTest(action: InputFlowAction, conversionName: string, rawInput: string): Thenable<{
+            conversionResult: string;
+            stepHandlerResult: string[];
+            showResultBox: boolean;
+        }> {
+            return this.internalExecute(action, conversionName, rawInput);
+        }
+        public getPreInputTest(): Thenable<string> {
+            return super.getPreInput();
+        }
+
+        public insert(arg: string): Thenable<boolean> {
+            return super.insert(arg);
         }
     }
 

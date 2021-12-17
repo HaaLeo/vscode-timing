@@ -65,6 +65,14 @@ class InputBoxStep implements IStep {
         this._disposables.push(this._inputBox);
     }
 
+    public get skip(): boolean {
+        return this._skip;
+    }
+
+    public get validation(): (input: string, ...args: string[]) => boolean {
+        return this._validate;
+    }
+
     /**
      * Execute this step.
      * @param handler The handler of the step.
@@ -158,14 +166,6 @@ class InputBoxStep implements IStep {
 
             this._inputBox.show();
         });
-    }
-
-    public get skip(): boolean {
-        return this._skip;
-    }
-
-    public get validation(): (input: string, ...args: string[]) => boolean {
-        return this._validate;
     }
 
     /**

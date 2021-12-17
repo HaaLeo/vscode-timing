@@ -81,7 +81,7 @@ jobs:
     needs:
       - build-lint-test
       - coverage
-    # if: github.event_name == 'release'
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -99,14 +99,14 @@ jobs:
           name: ubuntu-latest
       - run: ls
       - run: echo ${{ needs.build-lint-test.outputs.vsixPath }}
-      # - name: Publish to Visual Studio Marketplace
-      #   uses: HaaLeo/publish-vscode-extension@v1
-      #   with:
-      #     pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-      #     extensionFile: ${{vsixPath-ubuntu-latest}}
-      #     registryUrl: https://marketplace.visualstudio.com
-      # - name: Publish to Open VSX Registry
-      #   uses: HaaLeo/publish-vscode-extension@v1
-      #   with:
-      #     pat: ${{ secrets.OPEN_VSX_TOKEN }}
-      #     extensionFile: ${{vsixPath-ubuntu-latest}}
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          extensionFile: ${{ vsixPath-ubuntu-latest }}
+          registryUrl: https://marketplace.visualstudio.com
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          extensionFile: ${{ vsixPath-ubuntu-latest }}

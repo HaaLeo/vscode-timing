@@ -55,32 +55,34 @@ abstract class CommandBase implements vscode.Disposable {
     /**
      * Get the pre input. Either from the editors selection or from the clipboard.
      */
-    protected async getPreInput(): Promise<string> {
+    protected async getPreInput(): Promise<string[]> {
         let result = this.getSelection();
 
         if (!result && this._readInputFromClipboard) {
-            result = await vscode.env.clipboard.readText();
+            result = [await vscode.env.clipboard.readText()];
         }
 
         return result;
     }
 
-    protected insert(insertion: string): Thenable<boolean> {
+    protected insert(insertions: string[]): Thenable<boolean> {
         const activeEditor = vscode.window.activeTextEditor;
         if (activeEditor !== undefined) {
-            return activeEditor.edit(editBuilder => {
-                editBuilder.replace(activeEditor.selection, insertion);
-            });
+            return activeEditor.edit(editBuilder => insertions.map((insertion, index) =>
+                editBuilder.replace(activeEditor.selections.filter(sel => !sel.isEmpty)[index], insertion)
+            ));
         }
     }
 
-    protected async internalExecute(action: InputFlowAction, conversionName: string, rawInput: string): Promise<{
+
+    protected async internalExecute(action: InputFlowAction, conversionName: string, rawInput: any): Promise<{
         conversionResult: string;
         stepHandlerResult: string[];
         showResultBox: boolean;
     }> {
 
         let stepHandlerResult: string[];
+        let conversionResults: string[];
         let conversionResult: string;
         let inserted = false;
         let wroteToClipboard = false;
@@ -88,9 +90,9 @@ abstract class CommandBase implements vscode.Disposable {
 
         if (this._stepHandler) {
             if (action === InputFlowAction.Back) {
-                stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput, -1);
+                stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput[0] as string, -1);
             } else {
-                stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput);
+                stepHandlerResult = await this._stepHandler.run(this._ignoreFocusOut, rawInput[0] as string);
             }
 
             abort = stepHandlerResult.length === 0 ? true : false;
@@ -105,12 +107,23 @@ abstract class CommandBase implements vscode.Disposable {
         }
 
         if (!abort) {
-
+            const skipIndex = this._stepHandler.steps.findIndex(step => step.skip);
+            let results: string[][] = [];
+            if (skipIndex > -1 && rawInput.length > 1) {
+                results = rawInput.map(input => {
+                    const tempRes = [...stepHandlerResult];
+                    tempRes[skipIndex] = input;
+                    return tempRes;
+                });
+            } else {
+                results = [stepHandlerResult];
+            }
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            conversionResult = this._timeConverter[conversionName](...stepHandlerResult) as string;
+            conversionResults = results.map(res => this._timeConverter[conversionName](...res) as string);
+            conversionResult = conversionResults[0];
 
             if (this._insertConvertedTime) {
-                inserted = await this.insert(conversionResult);
+                inserted = await this.insert(conversionResults);
             }
 
             if (this._writeToClipboard) {
@@ -126,14 +139,13 @@ abstract class CommandBase implements vscode.Disposable {
         };
     }
 
-    private getSelection(): string | undefined {
-        let result: string;
+    private getSelection(): string[] | undefined {
+        let result: string[];
         const activeEditor = vscode.window.activeTextEditor;
         if (activeEditor !== undefined) {
-            const activeSelection = activeEditor.selection;
-            if (!activeSelection.isEmpty) {
-                result = activeEditor.document.getText(activeSelection);
-            }
+            result = activeEditor.selections
+                .filter(selection => !selection.isEmpty)
+                .map(selection => activeEditor.document.getText(selection));
         }
 
         return result;

@@ -37,6 +37,10 @@ class MultiStepHandler implements Disposable {
      */
     private _givenResults: Map<number, string> = new Map<number, string>();
 
+    public get steps(): IStep[] {
+        return [...this._steps];
+    }
+
     /**
      * Returns the index of the first occurrence of the `step`.
      */
@@ -212,7 +216,7 @@ class MultiStepHandler implements Disposable {
         switch (result.action) {
 
             case InputFlowAction.Continue: {
-                this._stepResults[stepIndex] = result.value;
+                this._stepResults[stepIndex] = result.value as string;
                 if (stepIndex < this._steps.length - 1) {
                     await this.executeStep(stepIndex + 1, ignoreFocusOut);
                 }

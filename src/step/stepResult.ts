@@ -20,7 +20,7 @@ class StepResult {
      */
     public constructor(
         private readonly _action: InputFlowAction,
-        private readonly _value: string) { }
+        private readonly _value: string | string[]) { }
 
     /**
      * Gets the action.
@@ -32,7 +32,7 @@ class StepResult {
     /**
      * Gets the value.
      */
-    public get value(): string {
+    public get value(): string | string[] {
         return this._value;
     }
 }

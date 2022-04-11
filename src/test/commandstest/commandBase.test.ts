@@ -47,11 +47,11 @@ describe('CommandBase', () => {
         }> {
             return this.internalExecute(action, conversionName, rawInput);
         }
-        public getPreInputTest(): Thenable<string> {
+        public getPreInputTest(): Thenable<string[]> {
             return super.getPreInput();
         }
 
-        public insert(arg: string): Thenable<boolean> {
+        public insert(arg: string[]): Thenable<boolean> {
             return super.insert(arg);
         }
     }
@@ -165,7 +165,7 @@ describe('CommandBase', () => {
         it('should insert at the cursor selection', async () => {
             const priorText = await testObject.getPreInputTest();
 
-            let success = await testObject.insert('test arg');
+            let success = await testObject.insert(['test arg']);
             const insertedText = testEditor.document.getText(testEditor.selection);
 
             assert.strictEqual(success, true);
@@ -173,7 +173,7 @@ describe('CommandBase', () => {
 
             // Restore
             success = await testEditor.edit((editBuilder: vscode.TextEditorEdit) => {
-                editBuilder.replace(testEditor.selection, priorText);
+                editBuilder.replace(testEditor.selection, priorText[0]);
             });
             assert.strictEqual(success, true);
         });

@@ -32,12 +32,12 @@ class EpochToIsoUtcCommand extends CommandBase {
         }
 
         do {
-            let rawInput = loopResult.value;
+            let rawInput = typeof loopResult.value === 'string' ? [loopResult.value] : loopResult.value;
 
             const internalResult = await this.internalExecute(loopResult.action, 'epochToISOUtc', rawInput);
 
-            [rawInput] = internalResult.stepHandlerResult;
-            const input = new InputDefinition(rawInput);
+            rawInput = internalResult.stepHandlerResult;
+            const input = new InputDefinition(rawInput[0]);
 
             if (internalResult.showResultBox) {
                 loopResult = await this._resultBox.show(

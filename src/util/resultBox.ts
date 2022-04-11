@@ -45,7 +45,7 @@ class ResultBox {
         prompt: string,
         title: string,
         value: string,
-        insertAction: (insertion: string) => Thenable<boolean>,
+        insertAction: (insertion: string[]) => Thenable<boolean>,
         ignoreFocusOut: boolean,
         backButton: boolean = true): Thenable<StepResult> {
 
@@ -67,7 +67,7 @@ class ResultBox {
                     this._resultBox.hide();
                     resolve(new StepResult(InputFlowAction.Back, undefined));
                 } else if (button === this._insertButton) {
-                    await insertAction(this._resultBox.value);
+                    await insertAction([this._resultBox.value]);
                 }
             }, this, this._disposables);
 

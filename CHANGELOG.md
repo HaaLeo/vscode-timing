@@ -3,7 +3,14 @@ All notable changes to the "timing" extension will be documented in this file. T
 
 ## Unreleased
 
-[All Changes](https://github.com/HaaLeo/vscode-timing/compare/v2.7.0...master)
+[All Changes](https://github.com/HaaLeo/vscode-timing/compare/v2.7.1...master)
+
+## 2022-04-11 - [v2.7.1](https://github.com/HaaLeo/vscode-timing/tree/v2.7.1)
+
+### Security
+* Updated the extension's dependencies.
+
+[All Changes](https://github.com/HaaLeo/vscode-timing/compare/v2.7.0...v2.7.1)
 
 ## 2021-12-17 - [v2.7.0](https://github.com/HaaLeo/vscode-timing/tree/v2.7.0)
 

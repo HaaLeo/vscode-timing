@@ -285,4 +285,64 @@ describe('MultiStepHandler', () => {
             assert.strictEqual(secondStepStub.dispose.calledOnce, true);
         });
     });
+
+    describe('replaceInput', () => {
+        const createStep = (result: string, skip: boolean = false, validation: (input: string, ...args: string[]) => boolean = () => true): IStep => ({
+            dispose: () => undefined,
+            execute: () => Promise.resolve(new StepResult(InputFlowAction.Continue, result)),
+            validation,
+            skip,
+            reset: () => undefined
+        });
+
+        it('should return undefined when there is no input step.', async () => {
+            testObject.registerStep(firstStepStub);
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(testObject.hasInputStep, false);
+            assert.strictEqual(testObject.replaceInput(result, 'new-input'), undefined);
+        });
+
+        it('should replace the result of the input step.', async () => {
+            testObject.registerStep(createStep('format'));
+            testObject.registerStep(createStep('input', true, input => Boolean(input) && input !== 'invalid'));
+            testObject.registerStep(createStep('target'));
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(testObject.hasInputStep, true);
+            assert.deepStrictEqual(testObject.replaceInput(result, 'new-input'), ['format', 'new-input', 'target']);
+            assert.deepStrictEqual(result, ['format', 'input', 'target']);
+        });
+
+        it('should return undefined when the new input is invalid.', async () => {
+            testObject.registerStep(createStep('input', true, input => Boolean(input) && input !== 'invalid'));
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(testObject.replaceInput(result, 'invalid'), undefined);
+            assert.strictEqual(testObject.replaceInput(result, ''), undefined);
+        });
+
+        it('should respect filtered sub step results and validate with the previous result.', async () => {
+            const validation = sinon.spy((input: string, previous: string) => previous === 'custom-format' && input === 'new-input');
+            // The first step mimics a quick-pick where "Other Format..." was selected (result is undefined)
+            testObject.registerStep(createStep(undefined));
+            testObject.registerStep(createStep('custom-format'));
+            testObject.registerStep(createStep('input', true, validation));
+            const result = await testObject.run(true, '');
+
+            assert.deepStrictEqual(result, ['custom-format', 'input']);
+            assert.deepStrictEqual(testObject.replaceInput(result, 'new-input'), ['custom-format', 'new-input']);
+            assert.strictEqual(validation.lastCall.args[1], 'custom-format');
+        });
+
+        it('should return undefined after the user canceled.', async () => {
+            const cancelStep = createStep(undefined, true, () => false);
+            cancelStep.execute = () => Promise.resolve(new StepResult(InputFlowAction.Cancel, undefined));
+            testObject.registerStep(cancelStep);
+            const result = await testObject.run(true, '');
+
+            assert.strictEqual(testObject.hasInputStep, false);
+            assert.strictEqual(testObject.replaceInput(result, 'new-input'), undefined);
+        });
+    });
 });

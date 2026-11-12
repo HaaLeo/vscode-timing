@@ -110,7 +110,7 @@ abstract class CommandBase implements vscode.Disposable {
             conversionResult = this._timeConverter[conversionName](...stepHandlerResult) as string;
 
             if (this._insertConvertedTime) {
-                inserted = await this.insert(conversionResult);
+                inserted = await this.insertIntoAllSelections(conversionName, stepHandlerResult, conversionResult);
             }
 
             if (this._writeToClipboard) {
@@ -124,6 +124,66 @@ abstract class CommandBase implements vscode.Disposable {
             stepHandlerResult,
             showResultBox: !inserted && !wroteToClipboard && Boolean(conversionResult)
         };
+    }
+
+    /**
+     * Replace every selection of the active editor with a converted time.
+     * The primary selection is replaced with `conversionResult`.
+     * Every other selection containing a valid input is converted on its own using the same options (e.g. formats).
+     * Other selections that are empty or contain an invalid input are left untouched and reported to the user.
+     * For commands without an input (e.g. _now_) every selection is replaced with `conversionResult`.
+     * @param conversionName The name of the `TimeConverter` function to use.
+     * @param stepHandlerResult The step results that were used to compute `conversionResult`.
+     * @param conversionResult The conversion result of the primary selection.
+     * @returns A promise indicating whether the edit was applied.
+     */
+    private async insertIntoAllSelections(
+        conversionName: string,
+        stepHandlerResult: string[],
+        conversionResult: string): Promise<boolean> {
+
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor === undefined) {
+            return false;
+        }
+
+        let skipped = 0;
+        const replacements: { selection: vscode.Selection; text: string }[] = [];
+        activeEditor.selections.forEach((selection, index) => {
+            // The primary selection is always at index 0
+            if (index === 0 || !this._stepHandler?.hasInputStep) {
+                replacements.push({ selection, text: conversionResult });
+                return;
+            }
+
+            const args = this._stepHandler.replaceInput(stepHandlerResult, activeEditor.document.getText(selection));
+            let text: string;
+            if (args) {
+                try {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    text = this._timeConverter[conversionName](...args) as string;
+                } catch {
+                    text = undefined;
+                }
+            }
+
+            if (text) {
+                replacements.push({ selection, text });
+            } else {
+                skipped++;
+            }
+        });
+
+        const result = await activeEditor.edit(editBuilder => {
+            replacements.forEach(replacement => editBuilder.replace(replacement.selection, replacement.text));
+        });
+
+        if (skipped > 0) {
+            void vscode.window.showWarningMessage(
+                `${skipped} selection(s) could not be converted because they are empty or do not contain a valid input.`);
+        }
+
+        return result;
     }
 
     private getSelection(): string | undefined {

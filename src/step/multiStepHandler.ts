@@ -38,6 +38,19 @@ class MultiStepHandler implements Disposable {
     private _givenResults: Map<number, string> = new Map<number, string>();
 
     /**
+     * Information about the step that consumed the (time) input during the last run.
+     * Used to repeat the conversion for further inputs (e.g. multiple selections).
+     */
+    private _inputStepInfo: { resultIndex: number; previousResult: string; step: IStep };
+
+    /**
+     * Indicates whether the last `run` contained a step that consumed the (time) input.
+     */
+    public get hasInputStep(): boolean {
+        return Boolean(this._inputStepInfo);
+    }
+
+    /**
      * Returns the index of the first occurrence of the `step`.
      */
     public indexOf(step: IStep): Readonly<number> {
@@ -141,10 +154,29 @@ class MultiStepHandler implements Disposable {
         }
         await this.executeStep(startIndex, ignoreFocusOut, onBack);
 
+        this.updateInputStepInfo();
+
         // Filter results when sub steps were used
         this._stepResults = this._stepResults.filter(Boolean);
 
         return this._stepResults;
+    }
+
+    /**
+     * Replace the input of the given `results` (as returned by `run`) with `input`.
+     * @param results The results of the last `run`.
+     * @param input The new input.
+     * @returns The new results, or `undefined` if there is no input step or the `input` is invalid.
+     */
+    public replaceInput(results: string[], input: string): string[] | undefined {
+        const info = this._inputStepInfo;
+        if (!info || !input || !info.step.validation(input, info.previousResult)) {
+            return undefined;
+        }
+
+        const newResults = [...results];
+        newResults[info.resultIndex] = input;
+        return newResults;
     }
 
     /**
@@ -165,6 +197,24 @@ class MultiStepHandler implements Disposable {
      */
     public dispose(): void {
         this._steps.forEach(step => { step.dispose(); });
+    }
+
+    /**
+     * Remember which (filtered) result belongs to the input step and the result it depends on.
+     * Must be called before `_stepResults` is filtered.
+     */
+    private updateInputStepInfo(): void {
+        this._inputStepInfo = undefined;
+        const inputStep = this._steps.find(step => step.skip);
+        const stepIndex = this.indexOf(inputStep);
+        // Without a result (e.g. on cancel) the input step's result is filtered and cannot be replaced
+        if (inputStep && this._stepResults[stepIndex]) {
+            this._inputStepInfo = {
+                resultIndex: this._stepResults.slice(0, stepIndex).filter(Boolean).length,
+                previousResult: this.getPreviousResult(inputStep),
+                step: inputStep
+            };
+        }
     }
 
     /**
